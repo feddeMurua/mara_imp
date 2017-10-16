@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from .views import inicio
+from modulo_I import views as mIviews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', inicio, name="inicio"),
+    url(r'^listado_clientes/$', mIviews.listado_clientes, name="listado_clientes"),
 ]

@@ -1,0 +1,34 @@
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+    
+    {% block stylesheets %}{% endblock %}
+    {% block scripts %}{% endblock %}
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% bootstrap_messages %}
+
+    {% block no-header %}
+      <header id="header-page" class="header">
+             <a href="{% block url-volver %}{% endblock %}" class="btn-volver">
+                 <span class="glyphicon glyphicon-arrow-left hvr-buzz pull-right"></span>
+             </a>
+             <h1 class="header-title pull-left">
+                 {% block header-title %}{% endblock %}
+             </h1>
+      </header>
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% block more-scripts %}
+    {% endblock %}
+</body>
+</html>
