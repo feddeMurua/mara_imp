@@ -1,0 +1,13 @@
+{% load staticfiles %}
+{% load staticfiles bootstrap3%}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}"/>
+</head>
+
+<body>
+  <div class="topnav">
+    <a class="active" href="{% url 'inicio' %}">Menú</a>
+    <a href="{% url 'listado_clientes' %}">Clientes</a>
+  </div>
+</body>
