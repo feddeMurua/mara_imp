@@ -122,7 +122,7 @@ Clientes
 '''
 
 class Cliente(Persona):
-    Domicilio_legal = models.ForeignKey(Domicilio) # (para facturacion)
+    domicilio_legal = models.ForeignKey(Domicilio) # (para facturacion)
     cargo = models.CharField(max_length=50)
     impuestos_ganancias = models.CharField(max_length=80, choices=Impuesto_Ganancias)
     impuestos_valor_agregado = models.CharField(max_length=80, choices=Impuesto_Valor_Agregado)
@@ -131,4 +131,4 @@ class Cliente(Persona):
     fecha = models.DateField(default=now)
 
     def __str__(self):
-        return "%s - %s" % (self.nombre, self.apellido) 
+        return "%s - %s" % (self.nombre, self.apellido)

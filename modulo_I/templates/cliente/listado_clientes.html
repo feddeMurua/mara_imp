@@ -2,16 +2,28 @@
 {% load staticfiles %}
 {% load staticfiles bootstrap3 %}
 
-
+{% block btn-nuevo %}
+  <a href="{% url 'alta_clientes' %}" class="btn btn-sm btn-primary btn-create">Nuevo Cliente</a>
+{% endblock %}
 
 {% block thead-tabla %}
   <thead>
   <tr>
       <th>Nombre</th>
       <th>Apellido</th>
-      <th>Email</th>
+      <th>Telefono</th>
   </tr>
   </thead>
+{% endblock %}
+
+{% block tfoot-tabla %}
+  <tfoot >
+     <tr>
+       <th>Nombre</th>
+       <th>Apellido</th>
+       <th>Telefono</th>
+    </tr>
+  </tfoot>
 {% endblock %}
 
 {% block tbody-tabla %}
@@ -20,7 +32,7 @@
       <tr>
           <td>{{ cliente.nombre }}</td>
           <td>{{ cliente.apellido }}</td>
-          <td>{{ cliente.email }}</td>
+          <td>{{ cliente.telefono_fijo }}</td>
       </tr>
   {% endfor %}
   </tbody>

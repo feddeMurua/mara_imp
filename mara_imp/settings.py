@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #librerias
     'bootstrap3',
+    'widget_tweaks',
 
     #Gestiones
     'modulo_I',

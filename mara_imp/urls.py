@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', inicio, name="inicio"),
     url(r'^listado_clientes/$', mIviews.listado_clientes, name="listado_clientes"),
+    url(r'^alta_clientes/$', mIviews.alta_clientes, name="alta_clientes"),
 ]
