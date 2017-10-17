@@ -1,83 +1,55 @@
-{% extends "base/base.html" %}
-{% load staticfiles %}
-{% load staticfiles bootstrap3 %}
+{% extends "base/base_forms.html" %}
 {% load widget_tweaks %}
 
 {% block title %}Cliente{% endblock %}
 
 {% block header-title %}Alta de Cliente{% endblock %}
 
-
-{%block content%}
-
-<style>
-div.panel-big {
-
-    padding-top: 80px;
-    padding-right: 30px;
-    padding-bottom: 50px;
-    padding-left: 80px;
-}
-</style>
-
-<div class="panel panel-big">
-  <div class="panel-body">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="panel panel-default">
-              <div class="panel-heading">Datos Personales</div>
-              <div class="panel-body">
-                <form method="post">
-                  {% csrf_token %}
-                  {% for hidden in cliente_form.hidden_fields %}
-                    {{ hidden }}
-                  {% endfor %}
-                  {% for field in cliente_form.visible_fields %}
-                    <div class="form-group">
-                      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                      {{ field|add_class:'form-control' }}
-                      {% for error in field.errors %}
-                        <span class="help-block">{{ error }}</span>
-                      {% endfor %}
-                    </div>
-                  {% endfor %}
-                </form>
-              </div>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="panel panel-default">
-              <div class="panel-heading">Domicilio</div>
-                <div class="panel-body">
-                  <form method="post">
-                    {% csrf_token %}
-                    {% for hidden in domicilio_form.hidden_fields %}
-                      {{ hidden }}
-                    {% endfor %}
-                    {% for field in domicilio_form.visible_fields %}
-                      <div class="form-group">
-                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                        {{ field|add_class:'form-control' }}
-                        {% for error in field.errors %}
-                          <span class="help-block">{{ error }}</span>
-                        {% endfor %}
-                      </div>
-                    {% endfor %}
-                    <div class="form-group">
-                      <button type="submit" class="btn btn-success">
-                        <span class="glyphicon glyphicon-ok"></span> Save
-                      </button>
-                      <a class="btn btn-danger btn-cancelar" href="{% url 'listado_clientes' %}">Cancelar</a>
-                    </div>
-                  </form>
-              </div>
-            </div>
-          </div>
+{% block panel-izq %}
+<div class="col-md-5">
+  <!--columna donde ubica panel -->
+  <div class="panel panel-default">
+    <div class="panel-heading">Datos Personales</div>
+    <div class="panel-body">
+      {% for hidden in cliente_form.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+      {% for field in cliente_form.visible_fields %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field|add_class:'form-control' }}
+          {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
         </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block panel-der%}
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">Domicilio</div>
+        <div class="panel-body">
+          {% for hidden in domicilio_form.hidden_fields %}
+            {{ hidden }}
+          {% endfor %}
+          {% for field in domicilio_form.visible_fields %}
+            <div class="form-group">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field|add_class:'form-control' }}
+              {% for error in field.errors %}
+                <span class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endfor %}
       </div>
     </div>
-</div>
+  </div>
+{% endblock %}
 
+{% block url-cancelar %}
+  {% url 'listado_clientes' %}
 {% endblock %}

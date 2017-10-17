@@ -1,0 +1,40 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/estilos_forms.css' %}"/>
+{% endblock %}
+
+
+{%block content%}
+
+<div class="container container-form">
+      <form method="post">
+          {% csrf_token %}
+          <div class="panel panel-default">
+            <div class="panel-heading">FORMULARIO DE REGISTRO</div>
+              <div class="panel-body">
+                  <div class="container"  style="padding-top:15px">
+                    <!--contenedor de los paneles qe se van agregando -->
+                    <div class="row">
+                      <!--class row para alinear paneles -->
+                      {% block panel-izq %}{% endblock %}
+                      {% block panel-der%} {% endblock %}
+                      <!--En este bloque se agrega mas paneles de ser neceario -->
+                      {% block more-paneles %}{% endblock %}
+                    </div>
+                  </div>
+                </div>
+                <div class="panel-footer text-right">
+                  <button type="submit" class="btn btn-success" >
+                    <span class="glyphicon glyphicon-ok"></span> Guardar
+                  </button>
+                  <a class="btn btn-danger btn-cancelar" href= "{% block url-cancelar %}{% endblock %}" >Cancelar</a>
+                </div>
+              </div>
+          </div>
+      </form>
+  </div>
+
+{% endblock %}

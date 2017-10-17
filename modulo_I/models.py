@@ -91,6 +91,8 @@ class Domicilio(models.Model):
     localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
     comarca = models.CharField(max_length=50, blank=True, null=True)
 
+    def __str__(self):
+        return "%s - %s - %s" % (self.barrio, self.calle, self.nro)
 
 class Establecimiento_Generador(models.Model):
     razon_social = models.CharField(max_length=50)
