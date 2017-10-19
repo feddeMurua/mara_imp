@@ -17,6 +17,13 @@ class AltaClienteForm(forms.ModelForm):
         fields = '__all__'
 
 
+class ModificacionClienteForm(forms.ModelForm):
+
+    class Meta:
+        model = Cliente
+        fields = ['telefono_fijo','celular', 'email']
+
+
 class DomicilioForm(forms.ModelForm):
 
     class Meta:

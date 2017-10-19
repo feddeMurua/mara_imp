@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
   <link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/filtro_upHeader_tabla.css' %}"/>
 {% endblock %}
 
 {% block scripts%}
@@ -11,51 +12,29 @@
   <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/logica_tabla.js' %}"></script>
 {% endblock %}
-
 
 {% block content %}
+    <div class="container container-form" style="padding-top:15px; width:100%">
+            <div class="panel panel-default">
+              <div class="panel-heading">{% block panel-heading %}{% endblock %}</div>
+                <div class="panel-body">
+                    <div class="container" style="width:100%">
+                          <div class="row" style="padding-bottom:15px">
+                            {% block btn-alta %}{% endblock %}
+                          </div>
+                          <div class="row">
+                            <table class="table table-striped table-bordered" cellspacing="0" id="table-list">
+                              {% block thead-tabla %}{% endblock %}
+                              {% block tfoot-tabla %}{% endblock %}
+                              {% block tbody-tabla %}{% endblock %}
+                            </table>
+                          </div>
+                        {% block more-datos %}{% endblock %}
 
-{% block script-tabla %}
-<script>
-  $(document).ready(function() {
-    // Setup - add a text input to each footer cell
-    $('#table-list tfoot th').each( function () {
-     var title = $(this).text();
-     $(this).html( '<input type="text" placeholder="Buscar: '+title+'" />' );
-    } );
-
-    //DataTable
-    var table = $('#table-list').DataTable();
-
-    // Apply the search
-   table.columns().every( function () {
-       var that = this;
-       $( 'input', this.footer() ).on( 'keyup change', function () {
-           if ( that.search() !== this.value ) {
-               that
-                   .search( this.value )
-                   .draw();
-           }
-       } );
-   } );
-  });
-</script>
-
-<style>
-    tfoot {
-      display: table-header-group;
-    }
-</style>
-{% endblock %}
-
-    {% block btn-nuevo %}
-    {% endblock %}
-
-    <table class="table table-striped table-bordered table-list" id="table-list">
-          {% block thead-tabla %}{% endblock %}
-          {% block tfoot-tabla %}{% endblock %}
-          {% block tbody-tabla %}{% endblock %}
-    </table>
-
+                  </div>
+                </div>
+            </div>
+      </div>
 {% endblock %}

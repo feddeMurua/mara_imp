@@ -39,6 +39,7 @@ GENERADOR RESIDUOS
 class Persona(models.Model):
     apellido = models.CharField(max_length=50)
     nombre = models.CharField(max_length=50)
+    documento = models.CharField(max_length=50, primary_key=True)
     telefono_fijo = models.CharField(max_length=50)
     celular = models.CharField(max_length=50)
     email = models.EmailField(max_length=50, blank=True)

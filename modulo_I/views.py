@@ -15,13 +15,26 @@ def alta_clientes(request):
         cliente_form = AltaClienteForm(request.POST)
         domicilio_form = DomicilioForm(request.POST)
         if cliente_form.is_valid() & domicilio_form.is_valid():
-            persona = cliente_form.save(commit=False)
-            persona.domicilio_legal = domicilio_form.save()
-            persona.save()
+            cliente = cliente_form.save(commit=False)
+            cliente.domicilio_legal = domicilio_form.save()
+            cliente.save()
             return redirect('listado_clientes')
-        else:
-            return render(request, "cliente/cliente_form.html", {'cliente_form': cliente_form, 'domicilio_form': domicilio_form})
     else:
         cliente_form = AltaClienteForm
         domicilio_form = DomicilioForm
-        return render(request, "cliente/cliente_form.html", {'cliente_form': cliente_form, 'domicilio_form': domicilio_form})
+    return render(request, "cliente/cliente_form.html", {'cliente_form': cliente_form, 'domicilio_form': domicilio_form})
+
+#@login_required(login_url='login')
+def modificar_clientes(request, documento):
+    cliente = Cliente.objects.get(documento=documento)
+    if request.method == 'POST':
+        cliente_form = ModificacionClienteForm(request.POST, instance=cliente)
+        domicilio_form = DomicilioForm(request.POST,instance=cliente.domicilio_legal)
+        if cliente_form.is_valid() & domicilio_form.is_valid():
+            domicilio_form.save()
+            cliente_form.save()
+            return redirect('listado_clientes')
+    else:
+        cliente_form = ModificacionClienteForm(instance=cliente)
+        domicilio_form = DomicilioForm(instance=cliente.domicilio_legal)
+    return render(request, "cliente/cliente_form.html", {'cliente_form': cliente_form, 'domicilio_form': domicilio_form})

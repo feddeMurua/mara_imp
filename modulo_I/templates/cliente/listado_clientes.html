@@ -2,8 +2,12 @@
 {% load staticfiles %}
 {% load staticfiles bootstrap3 %}
 
-{% block btn-nuevo %}
-  <a href="{% url 'alta_clientes' %}" class="btn btn-sm btn-primary btn-create">Nuevo Cliente</a>
+{% block panel-heading %}
+  LISTADO DE CLIENTES
+{% endblock %}
+
+{% block btn-alta %}
+  <a href="{% url 'alta_clientes' %}" class="btn btn-primary">Nuevo Cliente</a>
 {% endblock %}
 
 {% block thead-tabla %}
@@ -12,6 +16,7 @@
       <th>Nombre</th>
       <th>Apellido</th>
       <th>Telefono</th>
+      <th><em class="glyphicon glyphicon-cog"></em></th>
   </tr>
   </thead>
 {% endblock %}
@@ -33,8 +38,12 @@
           <td>{{ cliente.nombre }}</td>
           <td>{{ cliente.apellido }}</td>
           <td>{{ cliente.telefono_fijo }}</td>
+          <td align="center">
+            <a class="btn btn-warning" data-toggle="tooltip" title="Detalle" href="#"><em class="glyphicon glyphicon-eye-open"></em></a>
+            <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'modificar_clientes' cliente.documento %}"><em class="glyphicon glyphicon-pencil"></em></a>
+            <a class="btn btn-danger btn-baja" data-toggle="tooltip" title="Eliminar" data-url="#"><em class="glyphicon glyphicon-trash"></em></a>
+          </td>
       </tr>
   {% endfor %}
   </tbody>
-
 {% endblock %}
