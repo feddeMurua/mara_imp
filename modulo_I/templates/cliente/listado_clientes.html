@@ -16,7 +16,7 @@
       <th>Nombre</th>
       <th>Apellido</th>
       <th>Telefono</th>
-      <th><em class="glyphicon glyphicon-cog"></em></th>
+      <th>Acciones</th>
   </tr>
   </thead>
 {% endblock %}
@@ -27,6 +27,7 @@
        <th>Nombre</th>
        <th>Apellido</th>
        <th>Telefono</th>
+       <th><em class="glyphicon glyphicon-cog"></em></th>
     </tr>
   </tfoot>
 {% endblock %}
@@ -39,11 +40,75 @@
           <td>{{ cliente.apellido }}</td>
           <td>{{ cliente.telefono_fijo }}</td>
           <td align="center">
-            <a class="btn btn-warning" data-toggle="tooltip" title="Detalle" href="#"><em class="glyphicon glyphicon-eye-open"></em></a>
-            <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'modificar_clientes' cliente.documento %}"><em class="glyphicon glyphicon-pencil"></em></a>
-            <a class="btn btn-danger btn-baja" data-toggle="tooltip" title="Eliminar" data-url="#"><em class="glyphicon glyphicon-trash"></em></a>
+             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="#"><em class="glyphicon glyphicon-eye-open"></em></a>
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'modificar_clientes' documento=cliente.documento%}"><em class="glyphicon glyphicon-pencil"></em></a>
+             <a id="cliente_id"class="btn btn-danger btn-baja"  data-clientedoc="{{cliente.documento}}" data-clientenombre="{{cliente.nombre}}" data-clienteapellido="{{cliente.apellido}}"data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+
           </td>
       </tr>
   {% endfor %}
   </tbody>
+{% endblock %}
+
+{% block more-datos %}
+  <div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="modal_baja" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <form >
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Confirmar Baja</h4>
+          </div>
+          <div class="modal-body">
+            ¿Está seguro que desea borrar el cliente?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarCliente(value)">Eliminar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    //codigo para cambiar los datos del modal y para dar de baja
+    $(document).ready(function () {
+      $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var cliente_doc = button.data('clientedoc') // Extract info from data-* attributes
+        var cliente_nombre = button.data('clientenombre')
+        var cliente_apellido = button.data('clienteapellido')
+
+        var title = 'Confirmación de baja: ' + cliente_nombre + ', ' + cliente_apellido
+        var content = '¿Está seguro que quiere borrar la persona con documento ' + cliente_doc + '?'
+
+        // actualiza el contenido del manual
+        var modal = $(this)
+        modal.find('.modal-title').text(title)
+        modal.find('.modal-body').text(content)
+
+        // se le pasa el valor del documento al boton de confirmar
+        modal.find('button.btn-danger').val(cliente_doc)
+      })
+    })
+
+    function eliminarCliente(clienteDoc) {
+      var request = $.ajax({
+          type: "POST",
+          url: "{% url 'baja_clientes' %}",
+          data: {
+              "csrfmiddlewaretoken": "{{ csrf_token }}",
+              "cliente_id": clienteDoc
+          },
+      });
+    }
+    //para actualizar cuando se da de baja.
+    $('#modal_baja').on('hidden.bs.modal', function () {
+      window.location.reload(true);
+    })
+  </script>
 {% endblock %}

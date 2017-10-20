@@ -24,6 +24,16 @@ def alta_clientes(request):
         domicilio_form = DomicilioForm
     return render(request, "cliente/cliente_form.html", {'cliente_form': cliente_form, 'domicilio_form': domicilio_form})
 
+
+#@login_required(login_url='login')
+def baja_clientes(request):
+    documento = request.POST.get('cliente_id')
+    cliente = Cliente.objects.get(documento=documento)
+    cliente.delete()
+    response = {}
+    return JsonResponse(response)
+
+
 #@login_required(login_url='login')
 def modificar_clientes(request, documento):
     cliente = Cliente.objects.get(documento=documento)

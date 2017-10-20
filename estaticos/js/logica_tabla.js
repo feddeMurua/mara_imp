@@ -2,7 +2,9 @@ $(document).ready(function() {
   // Setup - add a text input to each footer cell
   $('#table-list tfoot th').each( function () {
    var title = $(this).text();
-   $(this).html( '<input type="text" placeholder="Buscar: '+title+'" />' );
+
+   if (title !== "") // para que no de error en la tabla y se pueda filtrar
+      $(this).html( '<input type="text" placeholder="Buscar: '+title+'" />' );
   } );
 
   //DataTable

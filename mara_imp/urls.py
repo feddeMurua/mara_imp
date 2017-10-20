@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^$', inicio, name="inicio"),
     url(r'^listado_clientes/$', mIviews.listado_clientes, name="listado_clientes"),
     url(r'^alta_clientes/$', mIviews.alta_clientes, name="alta_clientes"),
-    url(r'^modificar_clientes/(?P<documento>\d+)$', mIviews.modificar_clientes, name="modificar_clientes"),
+    url(r'^baja_clientes/$', mIviews.baja_clientes, name="baja_clientes"),
+    url(r'^modificar_clientes/(?P<documento>\d+)/$', mIviews.modificar_clientes, name="modificar_clientes"),
 ]
