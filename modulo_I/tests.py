@@ -21,7 +21,7 @@ CLIENTES
 
 - Domicilio legal: ¿mismo que generador o puede darse distintos?
 
-- contacto comercial: lo da la misma clase Persona
+- contacto comercial: lo da la misma clase Persona (diferencia responsable o apoderado y contacto comercial)
 
 -
 '''

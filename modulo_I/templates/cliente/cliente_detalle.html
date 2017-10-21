@@ -1,0 +1,42 @@
+{% extends "base/base_detalle.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+
+{% block title %}Detalle{% endblock %}
+
+{% block header-title %}Detalle del Cliente{% endblock %}
+
+{% block panel-heading %}
+  Nombres: {{cliente.apellido}}, {{cliente.nombre}}
+{% endblock %}
+
+{% block detalle %}
+  <table class="table table-striped table-bordered">
+      <tbody>
+          <tr>
+              <th>Documento:</th>
+              <td> {{cliente.documento}}</td>
+          </tr>
+          <tr>
+              <th>Cargo:</th>
+              <td> {{cliente.cargo}}</td>
+          </tr>
+          <tr>
+              <th>Teléfono:</th>
+              <td> {{cliente.telefono_fijo}}</td>
+          </tr>
+          <tr>
+              <th>Celular:</th>
+              <td> {{cliente.celular}}</td>
+          </tr>
+          <tr>
+              <th>Email:</th>
+              <td> {{cliente.email}}</td>
+          </tr>
+      </tbody>
+  </table>
+{% endblock %}
+
+{% block url-volver %}
+  {% url 'clientes:cliente_listado' %}
+{% endblock %}

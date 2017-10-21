@@ -7,7 +7,14 @@ from .forms import *
 #@login_required(login_url='login')
 def listado_clientes(request):
     listado_clientes = Cliente.objects.all()
-    return render(request, 'cliente/listado_clientes.html', {'listado_clientes': listado_clientes})
+    return render(request, 'cliente/cliente_listado.html', {'listado_clientes': listado_clientes})
+
+
+#@login_required(login_url='login')
+def detalle_clientes(request, documento):
+    cliente = Cliente.objects.get(documento=documento)    
+    return render(request, 'cliente/cliente_detalle.html', {'cliente': cliente})
+
 
 #@login_required(login_url='login')
 def alta_clientes(request):
@@ -18,7 +25,7 @@ def alta_clientes(request):
             cliente = cliente_form.save(commit=False)
             cliente.domicilio_legal = domicilio_form.save()
             cliente.save()
-            return redirect('listado_clientes')
+            return redirect('clientes:cliente_listado')
     else:
         cliente_form = AltaClienteForm
         domicilio_form = DomicilioForm
@@ -43,7 +50,7 @@ def modificar_clientes(request, documento):
         if cliente_form.is_valid() & domicilio_form.is_valid():
             domicilio_form.save()
             cliente_form.save()
-            return redirect('listado_clientes')
+            return redirect('clientes:cliente_listado')
     else:
         cliente_form = ModificacionClienteForm(instance=cliente)
         domicilio_form = DomicilioForm(instance=cliente.domicilio_legal)

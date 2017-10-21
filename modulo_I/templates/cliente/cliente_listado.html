@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block btn-alta %}
-  <a href="{% url 'alta_clientes' %}" class="btn btn-primary">Nuevo Cliente</a>
+  <a href="{% url 'clientes:alta_clientes' %}" class="btn btn-primary">Nuevo Cliente</a>  
 {% endblock %}
 
 {% block thead-tabla %}
@@ -40,40 +40,20 @@
           <td>{{ cliente.apellido }}</td>
           <td>{{ cliente.telefono_fijo }}</td>
           <td align="center">
-             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="#"><em class="glyphicon glyphicon-eye-open"></em></a>
-             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'modificar_clientes' documento=cliente.documento%}"><em class="glyphicon glyphicon-pencil"></em></a>
+             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'clientes:detalle_clientes' documento=cliente.documento%}"><em class="glyphicon glyphicon-eye-open"></em></a>
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'clientes:modificar_clientes' documento=cliente.documento%}"><em class="glyphicon glyphicon-pencil"></em></a>
              <a id="cliente_id"class="btn btn-danger btn-baja"  data-clientedoc="{{cliente.documento}}" data-clientenombre="{{cliente.nombre}}" data-clienteapellido="{{cliente.apellido}}"data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
-
           </td>
       </tr>
   {% endfor %}
   </tbody>
 {% endblock %}
 
-{% block more-datos %}
-  <div class="container">
-    <!-- Modal -->
-    <div class="modal fade" id="modal_baja" role="dialog">
-      <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-          <form >
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Confirmar Baja</h4>
-          </div>
-          <div class="modal-body">
-            ¿Está seguro que desea borrar el cliente?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarCliente(value)">Eliminar</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+{% block modal-btn-eliminar%}
+  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarCliente(value)">Eliminar</button>
+{% endblock %}
 
+{% block modal-scripts %}
   <script>
     //codigo para cambiar los datos del modal y para dar de baja
     $(document).ready(function () {
@@ -83,8 +63,8 @@
         var cliente_nombre = button.data('clientenombre')
         var cliente_apellido = button.data('clienteapellido')
 
-        var title = 'Confirmación de baja: ' + cliente_nombre + ', ' + cliente_apellido
-        var content = '¿Está seguro que quiere borrar la persona con documento ' + cliente_doc + '?'
+        var title = 'Cliente: ' + cliente_apellido + ', ' + cliente_nombre
+        var content = '¿Está seguro que quiere eliminar la persona con documento ' + cliente_doc + '?'
 
         // actualiza el contenido del manual
         var modal = $(this)
@@ -99,13 +79,14 @@
     function eliminarCliente(clienteDoc) {
       var request = $.ajax({
           type: "POST",
-          url: "{% url 'baja_clientes' %}",
+          url: "{% url 'clientes:baja_clientes' %}",
           data: {
               "csrfmiddlewaretoken": "{{ csrf_token }}",
               "cliente_id": clienteDoc
           },
       });
     }
+
     //para actualizar cuando se da de baja.
     $('#modal_baja').on('hidden.bs.modal', function () {
       window.location.reload(true);
