@@ -1,0 +1,49 @@
+{% extends "base/base_forms.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Generador{% endblock %}
+
+{% block header-title %} Información de Generador{% endblock %}
+
+{% block panel-izq %}
+  <div class="col-md-6">
+    <!--columna donde ubica panel -->
+    <div class="panel panel-default">
+      <div class="panel-heading">Datos del Generador</div>
+      <div class="panel-body">
+        {% for hidden in generador_form.hidden_fields %}
+          {{ hidden }}
+        {% endfor %}
+        {% for field in generador_form.visible_fields %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field|add_class:'form-control' }}
+            {% for error in field.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block panel-der%}
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">Tipo Actividad</div>
+        <div class="panel-body">
+          {% for value, text in actividades_form.tipo_actividad.field.choices %}
+            <div style="padding-left:50px"class="ui slider checkbox">
+              <input name="{{ actividades_form.tipo_actividad.name }}" type="checkbox" value="{{ value }}"{% if value in checked_tipo_actividad %} checked="checked"{% endif %}>
+              <label>{{ text }}</label>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block url-cancelar %}
+  {% url 'generadores:listado_generadores' %}
+{% endblock %}

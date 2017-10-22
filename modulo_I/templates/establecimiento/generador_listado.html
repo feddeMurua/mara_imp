@@ -1,0 +1,92 @@
+{% extends "base/base_listado.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+
+{% block panel-heading %}
+  LISTADO DE GENERADORES
+{% endblock %}
+
+{% block btn-alta %}
+  <a href="{% url 'generadores:alta_generadores' %}" class="btn btn-primary">Nuevo Generador</a>
+{% endblock %}
+
+{% block thead-tabla %}
+  <thead>
+  <tr>
+      <th>Razon Social</th>
+      <th>Tipo de Actividad</th>
+      <th>Acciones</th>
+  </tr>
+  </thead>
+{% endblock %}
+
+{% block tfoot-tabla %}
+  <tfoot >
+     <tr>
+       <th>Razon Social</th>
+       <th>Actividad</th>
+       <th><em class="glyphicon glyphicon-cog"></em></th>
+    </tr>
+  </tfoot>
+{% endblock %}
+
+{% block tbody-tabla %}
+  <tbody>
+  {% for generador in listado_generadores %}
+      <tr>
+          <td>{{ generador.razon_social }}</td>
+          <td>{{ generador.tipo_actividad }}</td>
+          <td align="center">
+             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'generadores:detalle_generadores' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-eye-open"></em></a>
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modificar_generadores' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-pencil"></em></a>
+             <a id="cliente_id"class="btn btn-danger btn-baja"  data-clientedoc="{{cliente.documento}}" data-clientenombre="{{cliente.nombre}}" data-clienteapellido="{{cliente.apellido}}"data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+          </td>
+      </tr>
+  {% endfor %}
+  </tbody>
+{% endblock %}
+
+{% block modal-btn-eliminar%}
+  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarCliente(value)">Eliminar</button>
+{% endblock %}
+
+{% block modal-scripts %}
+  <script>
+    //codigo para cambiar los datos del modal y para dar de baja
+    $(document).ready(function () {
+      $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var cliente_doc = button.data('clientedoc') // Extract info from data-* attributes
+        var cliente_nombre = button.data('clientenombre')
+        var cliente_apellido = button.data('clienteapellido')
+
+        var title = 'Cliente: ' + cliente_apellido + ', ' + cliente_nombre
+        var content = '¿Está seguro que quiere eliminar la persona con documento ' + cliente_doc + '?'
+
+        // actualiza el contenido del manual
+        var modal = $(this)
+        modal.find('.modal-title').text(title)
+        modal.find('.modal-body').text(content)
+
+        // se le pasa el valor del documento al boton de confirmar
+        modal.find('button.btn-danger').val(cliente_doc)
+      })
+    })
+
+    function eliminarCliente(clienteDoc) {
+      var request = $.ajax({
+          type: "POST",
+          url: "{% url 'clientes:baja_clientes' %}",
+          data: {
+              "csrfmiddlewaretoken": "{{ csrf_token }}",
+              "cliente_id": clienteDoc
+          },
+      });
+    }
+
+    //para actualizar cuando se da de baja.
+    $('#modal_baja').on('hidden.bs.modal', function () {
+      window.location.reload(true);
+    })
+  </script>
+{% endblock %}

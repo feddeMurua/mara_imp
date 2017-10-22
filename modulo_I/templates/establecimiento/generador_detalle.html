@@ -1,0 +1,30 @@
+{% extends "base/base_detalle.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+
+{% block title %}Detalle{% endblock %}
+
+{% block header-title %}Detalle del Generador{% endblock %}
+
+{% block panel-heading %}
+  Generador: {{generador.razon_social}}
+{% endblock %}
+
+{% block detalle %}
+  <table class="table table-striped table-bordered">
+      <tbody>
+          <tr>
+              <th>N° Inscripción:</th>
+              <td> {{generador.nro_inscripcion}}</td>
+          </tr>
+          <tr>
+              <th>Actividad:</th>
+              <td> {{generador.tipo_actividad}}</td>
+          </tr>
+      </tbody>
+  </table>
+{% endblock %}
+
+{% block url-volver %}
+  {% url 'generadores:listado_generadores' %}
+{% endblock %}

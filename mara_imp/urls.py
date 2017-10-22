@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', inicio, name="inicio"),
     url(r'^clientes/', include('modulo_I.urls_cliente', namespace='clientes')),
+    url(r'^generadores/', include('modulo_I.urls_generador', namespace='generadores')),
 ]

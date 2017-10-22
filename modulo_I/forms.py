@@ -3,10 +3,15 @@ from __future__ import unicode_literals
 from django import forms
 from django.utils.translation import ugettext as _
 from .models import *
+from .choices import *
 
 '''
 multipleChoiceField:
 https://stackoverflow.com/questions/15393134/django-how-can-i-create-a-multiple-select-form
+'''
+
+'''
+CLIENTES
 '''
 
 class AltaClienteForm(forms.ModelForm):
@@ -45,3 +50,30 @@ class LocalidadForm(forms.ModelForm):
         labels = {
             'cp': _("Código postal")
         }
+
+
+'''
+GENERADORES
+'''
+
+class AltaGeneradorForm(forms.ModelForm):
+
+    class Meta:
+        model = EstablecimientoGenerador
+        exclude = ['tipo_actividad']
+        fields = '__all__'
+
+
+class ModificacionGeneradorForm(forms.ModelForm):
+
+    class Meta:
+        model = EstablecimientoGenerador
+        exclude = ['tipo_actividad',]
+        fields = '__all__'
+
+
+class ActividadesForm(forms.ModelForm):
+
+    class Meta:
+        model = EstablecimientoGenerador
+        fields = ['tipo_actividad',]
