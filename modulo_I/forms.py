@@ -68,7 +68,7 @@ class ModificacionGeneradorForm(forms.ModelForm):
 
     class Meta:
         model = EstablecimientoGenerador
-        exclude = ['tipo_actividad',]
+        exclude = ['tipo_actividad','nro_inscripcion',]
         fields = '__all__'
 
 

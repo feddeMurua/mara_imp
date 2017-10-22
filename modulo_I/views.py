@@ -97,7 +97,7 @@ def alta_generadores(request):
 #@login_required(login_url='login')
 def baja_generadores(request):
     nro_inscripcion = request.POST.get('generador_id')
-    generador = Cliente.objects.get(nro_inscripcion=nro_inscripcion)
+    generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
     generador.delete()
     response = {}
     return JsonResponse(response)
@@ -106,14 +106,18 @@ def baja_generadores(request):
 #@login_required(login_url='login')
 def modificar_generadores(request, nro_inscripcion):
     generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+    flag = 0
     if request.method == 'POST':
         generador_form = ModificacionGeneradorForm(request.POST, instance=generador)
-        actividades_form = ActividadesForm(request.POST,instance=generador.tipo_actividad)
+        actividades_form = ActividadesForm(request.POST)
         if generador_form.is_valid() & actividades_form.is_valid():
-            actividades_form.save()
-            generador_form.save()
+            generador = generador_form.save(commit=False)
+            tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
+            generador.tipo_actividad = tipo_actividad
+            generador.save()
             return redirect('generadores:listado_generadores')
     else:
         generador_form = ModificacionGeneradorForm(instance=generador)
-        actividades_form = ActividadesForm
-    return render(request, "establecimiento/generador_form.html", {'generador_form': generador_form, 'actividades_form': actividades_form})
+        actividades_form = ActividadesForm(instance=generador)
+        flag = 1
+    return render(request, "establecimiento/generador_form.html", {'generador_form': generador_form, 'actividades_form': actividades_form, 'flag':flag})

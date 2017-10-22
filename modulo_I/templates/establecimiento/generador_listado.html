@@ -39,7 +39,7 @@
           <td align="center">
              <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'generadores:detalle_generadores' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-eye-open"></em></a>
              <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modificar_generadores' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-pencil"></em></a>
-             <a id="cliente_id"class="btn btn-danger btn-baja"  data-clientedoc="{{cliente.documento}}" data-clientenombre="{{cliente.nombre}}" data-clienteapellido="{{cliente.apellido}}"data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+             <a id="generador_id"class="btn btn-danger btn-baja"  data-generadornro="{{generador.nro_inscripcion}}" data-generadornombre="{{generador.razon_social}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
           </td>
       </tr>
   {% endfor %}
@@ -47,7 +47,7 @@
 {% endblock %}
 
 {% block modal-btn-eliminar%}
-  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarCliente(value)">Eliminar</button>
+  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarGenerador(value)">Eliminar</button>
 {% endblock %}
 
 {% block modal-scripts %}
@@ -56,12 +56,12 @@
     $(document).ready(function () {
       $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var cliente_doc = button.data('clientedoc') // Extract info from data-* attributes
-        var cliente_nombre = button.data('clientenombre')
-        var cliente_apellido = button.data('clienteapellido')
+        var generador_nro = button.data('generadornro') // Extract info from data-* attributes
+        var generador_nombre = button.data('generadornombre')
 
-        var title = 'Cliente: ' + cliente_apellido + ', ' + cliente_nombre
-        var content = '¿Está seguro que quiere eliminar la persona con documento ' + cliente_doc + '?'
+
+        var title = 'Generador: ' + generador_nombre
+        var content = '¿Está seguro que quiere eliminar el generador con N° inscripción: ' + generador_nro + '?'
 
         // actualiza el contenido del manual
         var modal = $(this)
@@ -69,17 +69,17 @@
         modal.find('.modal-body').text(content)
 
         // se le pasa el valor del documento al boton de confirmar
-        modal.find('button.btn-danger').val(cliente_doc)
+        modal.find('button.btn-danger').val(generador_nro)
       })
     })
 
-    function eliminarCliente(clienteDoc) {
+    function eliminarGenerador(generadorNro) {
       var request = $.ajax({
           type: "POST",
-          url: "{% url 'clientes:baja_clientes' %}",
+          url: "{% url 'generadores:baja_generadores' %}",
           data: {
               "csrfmiddlewaretoken": "{{ csrf_token }}",
-              "cliente_id": clienteDoc
+              "generador_id": generadorNro
           },
       });
     }

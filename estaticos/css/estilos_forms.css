@@ -5,3 +5,8 @@ div.container-form {
       padding-bottom: 50px;
       padding-left: 40px;
   }
+
+ul
+  {
+    list-style-type: none;
+  }
