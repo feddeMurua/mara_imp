@@ -33,17 +33,21 @@ class Nacionalidad(models.Model):
         return "%s" % self.nombre
 
 
-'''
-GENERADOR RESIDUOS
-'''
-
 class Persona(models.Model):
     apellido = models.CharField(max_length=50)
     nombre = models.CharField(max_length=50)
-    documento = models.CharField(max_length=50, primary_key=True)
-    telefono_fijo = models.CharField(max_length=50)
-    celular = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50, blank=True)
+    documento = models.CharField(max_length=50)
+    telefono_fijo = models.CharField(max_length=50, null=True, blank=True)
+    celular = models.CharField(max_length=50, null=True, blank=True)
+    email = models.EmailField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return "%s -%s -%s" % (self.apellido, self.nombre, self.documento)
+
+
+'''
+GENERADOR RESIDUOS
+'''
 
 
 class AmbitoDependencia(models.Model):
@@ -57,17 +61,13 @@ class CaracteristicasGenerales(models.Model):
     nro_camas = models.IntegerField(blank=True, null=True)
     poblacion_promedio_atendida = models.FloatField() # (al mes)
     poblacion_promedio_atendida_365 = models.FloatField() # (al año)
-    via_acceso = models.CharField(max_length=80, choices=Accesos)
+    via_acceso = MultiSelectField(choices=Accesos)
 
 
 class ResiduoGenerador(models.Model):
-    tipo = models.CharField(max_length=80, choices=TiposResiduos)
-
-
-class DetalleResiduo(models.Model):
+    tipo = models.CharField(max_length=80, choices=TiposResiduos) # MAS DE UNO
     volumen_mensual_estimado = models.CharField(max_length=50)
-    kgs_mensual_estimado = models.CharField(max_length=50)
-    residuo = models.ForeignKey('ResiduoGenerador')
+    kgs_mensual_estimado = models.CharField(max_length=50, null=True, blank=True)
 
 
 class AcopioTransitorio(models.Model):
@@ -97,6 +97,12 @@ class Domicilio(models.Model):
         return "%s - %s - %s" % (self.barrio, self.calle, self.nro)
 
 
+class Horario_Atencion(models.Model):
+    dia = MultiSelectField(choices=Dias)
+    hora = models.TimeField()
+    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
+
+
 class EstablecimientoGenerador(models.Model):
     nro_inscripcion = models.BigIntegerField(primary_key=True) # N° inscripcion registro de generadores provincia del chubut
     razon_social = models.CharField(max_length=50)
@@ -124,27 +130,31 @@ class EstablecimientoGenerador(models.Model):
         return "%s - %s" % (self.nro_inscripcion, self.razon_social)
 
 
-class Horario_Atencion(models.Model):
-    dia = models.CharField(max_length=50, choices=Dias)
-    hora = models.TimeField()
-    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
-
-
 '''
 Clientes
 '''
 
-class Cliente(Persona):
+class DatoImpositivo(models.Model):
+    impuestos_ganancias = MultiSelectField(choices=Impuesto_Ganancias)
+    impuestos_valor_agregado = MultiSelectField(choices=Impuesto_Valor_Agregado)
+    ingresos_brutos = MultiSelectField(choices=Ingresos_Brutos)
+    nro_iibb = models.BigIntegerField(primary_key=True)
+        
+    def __str__(self):
+        return "%s" % self.nro_iibb
+
+
+
+class Cliente(models.Model):
     razon_social = models.CharField(max_length=50) # puede ser distinta de la del generador
     domicilio_legal = models.ForeignKey('Domicilio') # (para facturacion)
-    contacto_comercial = models.ForeignKey('Persona', related_name='contact_comercial')
+    apoderado = models.ForeignKey('Persona', related_name='apoderado')
+    contacto_comercial = models.ForeignKey('Persona', related_name='contact_comercial', null=True, blank=True)
+    '''
     cargo = models.CharField(max_length=50)
-    impuestos_ganancias = models.CharField(max_length=80, choices=Impuesto_Ganancias)
-    impuestos_valor_agregado = models.CharField(max_length=80, choices=Impuesto_Valor_Agregado)
-    ingresos_brutos = models.CharField(max_length=80, choices=Ingresos_Brutos)
-    nro_iibb = models.BigIntegerField()
+    dato_impositivo = models.OneToOneField('DatoImpositivo')
     fecha = models.DateField(default=now) #fecha de hoy
     fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
-
+    '''
     def __str__(self):
         return "%s - %s - %s" % (self.nombre, self.apellido, self.documento)

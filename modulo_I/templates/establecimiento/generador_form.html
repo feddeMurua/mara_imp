@@ -32,18 +32,8 @@
   <div class="col-md-5">
     <div class="panel panel-default">
       <div class="panel-heading">Tipo Actividad</div>
-        <div class="panel-body">
-        {% if flag == 1 %}
-            <!-- bullets, se arreglaron con css en estilos_forms.css -->
+        <div class="panel-body">          
             {{actividades_form}}
-        {% else %}
-          {% for value, text in actividades_form.tipo_actividad.field.choices %}
-            <div style="padding-left:50px"class="ui slider checkbox">
-              <input name="{{ actividades_form.tipo_actividad.name }}" type="checkbox" value="{{ value }}"{% if value in checked_tipo_actividad %} checked="checked"{% endif %}>
-              <label>{{ text }}</label>
-            </div>
-          {% endfor %}
-        {% endif %}
         </div>
     </div>
   </div>

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from .models import *
 from .forms import *
+from django.template.loader import render_to_string
 
 # Create your views here.
 
@@ -15,9 +17,31 @@ def listado_clientes(request):
 
 
 #@login_required(login_url='login')
-def detalle_clientes(request, documento):
-    cliente = Cliente.objects.get(documento=documento)
+def detalle_clientes(request, id_cliente):
+    cliente = Cliente.objects.get(id=id_cliente)
     return render(request, 'cliente/cliente_detalle.html', {'cliente': cliente})
+
+
+#@login_required(login_url='login')
+def alta_personas(request):
+    data = dict()
+
+    if request.method == 'POST':
+        form = PersonaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = PersonaForm()
+
+    context = {'form': form}
+    data['html_form'] = render_to_string('cliente/partial_persona_alta.html',
+        context,
+        request=request
+    )
+    return JsonResponse(data)
 
 
 #@login_required(login_url='login')
@@ -25,29 +49,46 @@ def alta_clientes(request):
     if request.method == 'POST':
         cliente_form = AltaClienteForm(request.POST)
         domicilio_form = DomicilioForm(request.POST)
-        if cliente_form.is_valid() & domicilio_form.is_valid():
+        datos_impositivos_form = DatosImpositivosForm(request.POST)
+
+        if cliente_form.is_valid() & domicilio_form.is_valid() & datos_impositivos_form.is_valid():
+
             cliente = cliente_form.save(commit=False)
             cliente.domicilio_legal = domicilio_form.save()
+            cliente.dato_impositivo= datos_impositivos_form.save()
             cliente.save()
             return redirect('clientes:listado_clientes')
+
     else:
         cliente_form = AltaClienteForm
         domicilio_form = DomicilioForm
-    return render(request, "cliente/cliente_form.html", {'cliente_form': cliente_form, 'domicilio_form': domicilio_form})
+        datos_impositivos_form = DatosImpositivosForm
+
+    persona_form = PersonaForm
+
+
+    contexto= {'cliente_form': cliente_form,
+                'domicilio_form': domicilio_form,
+                'datos_impositivos_form':datos_impositivos_form,
+                'persona_form':PersonaForm
+    }
+
+
+    return render(request, "cliente/cliente_form.html", contexto)
 
 
 #@login_required(login_url='login')
 def baja_clientes(request):
-    documento = request.POST.get('cliente_id')
-    cliente = Cliente.objects.get(documento=documento)
+    cliente_id = request.POST.get('cliente_id')
+    cliente = Cliente.objects.get(id=cliente_id)
     cliente.delete()
     response = {}
     return JsonResponse(response)
 
 
 #@login_required(login_url='login')
-def modificar_clientes(request, documento):
-    cliente = Cliente.objects.get(documento=documento)
+def modificar_clientes(request, id_cliente):
+    cliente = Cliente.objects.get(id=id_cliente)
     if request.method == 'POST':
         cliente_form = ModificacionClienteForm(request.POST, instance=cliente)
         domicilio_form = DomicilioForm(request.POST,instance=cliente.domicilio_legal)
@@ -106,7 +147,6 @@ def baja_generadores(request):
 #@login_required(login_url='login')
 def modificar_generadores(request, nro_inscripcion):
     generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
-    flag = 0
     if request.method == 'POST':
         generador_form = ModificacionGeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
@@ -119,5 +159,4 @@ def modificar_generadores(request, nro_inscripcion):
     else:
         generador_form = ModificacionGeneradorForm(instance=generador)
         actividades_form = ActividadesForm(instance=generador)
-        flag = 1
-    return render(request, "establecimiento/generador_form.html", {'generador_form': generador_form, 'actividades_form': actividades_form, 'flag':flag})
+    return render(request, "establecimiento/generador_form.html", {'generador_form': generador_form, 'actividades_form': actividades_form})

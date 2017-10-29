@@ -1,41 +1,98 @@
 {% extends "base/base_forms.html" %}
+{% load staticfiles %}
 {% load widget_tweaks %}
+
+{% block more-stylesheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}"/>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+{% endblock %}
 
 {% block title %}Cliente{% endblock %}
 
 {% block header-title %} Información de Cliente{% endblock %}
 
 {% block panel-izq %}
-<div class="col-md-6">
-  <!--columna donde ubica panel -->
-  <div class="panel panel-default">
-    <div class="panel-heading">Datos Personales</div>
-    <div class="panel-body">
-      {% for hidden in cliente_form.hidden_fields %}
-        {{ hidden }}
-      {% endfor %}
-      {% for field in cliente_form.visible_fields %}
-        <div class="form-group">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field|add_class:'form-control' }}
-          {% for error in field.errors %}
-            <span class="help-block">{{ error }}</span>
+  <div class="col-md-4">
+      <!--columna donde ubica panel -->
+      <div class="panel panel-default" style="height:75%">
+        <div class="panel-heading">DATOS APODERADO/RESPONSABLE</div>
+        <div class="panel-body">
+          {% for field in cliente_form.visible_fields %}
+            <div class="form-group">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field|add_class:'form-control' }}
+
+              {% if field.label == "Apoderado" or field.label == "Contacto comercial" %}
+                <br>
+                <a class="btn btn-success js-alta-persona" >
+                  <span class="glyphicon glyphicon-plus"></span>
+                </a>
+              {% endif %}
+
+              {% for error in field.errors %}
+                <span class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
           {% endfor %}
         </div>
-      {% endfor %}
-    </div>
+      </div>
   </div>
-</div>
+
+  <script>
+
+    $.datepicker.regional['es'] = {
+     closeText: 'Cerrar',
+     prevText: '< Ant',
+     nextText: 'Sig >',
+     currentText: 'Hoy',
+     monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+     monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+     dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+     dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+     dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+     weekHeader: 'Sm',
+     dateFormat: 'dd/mm/yy',
+     firstDay: 1,
+     isRTL: false,
+     showMonthAfterYear: false,
+     yearSuffix: ''
+     };
+     $.datepicker.setDefaults($.datepicker.regional['es']);
+
+     $(function() {
+       $( ".datepicker" ).datepicker({
+         changeMonth: true,
+         changeYear: true,
+         minYear:2000
+         // You can put more options here.
+       });
+     });
+ </script>
+
+{% endblock %}
+
+{% block panel-cent%}
+  <div class="col-md-3">
+    <div class="panel panel-default" style="height:75%">
+      <div class="panel-heading">DATOS IMPOSITIVOS</div>
+        <div class="panel-body">
+          {{datos_impositivos_form}}
+        </div>
+      </div>
+  </div>
 {% endblock %}
 
 {% block panel-der%}
-  <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading">Domicilio</div>
+  <div class="col-md-4">
+    <div class="panel panel-default" style="height:100%">
+      <div class="panel-heading">DOMICILIO LEGAL PARA FACTURACION</div>
         <div class="panel-body">
-          {% for hidden in domicilio_form.hidden_fields %}
-            {{ hidden }}
-          {% endfor %}
           {% for field in domicilio_form.visible_fields %}
             <div class="form-group">
               <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -48,6 +105,56 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block alta-persona%}
+
+  <div class="modal fade" id="modal-persona">
+    <div class="modal-dialog">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+
+  <script>
+    $(".js-alta-persona").click(function () {
+     $.ajax({
+       url: "{% url 'clientes:alta_personas' %}",
+       type: 'get',
+       dataType: 'json',
+       beforeSend: function () {
+         $("#modal-persona").modal("show");
+       },
+       success: function (data) {
+         $("#modal-persona .modal-content").html(data.html_form);
+       }
+     });
+    });
+
+    $("#modal-persona").on("submit", ".js-alta-persona-form", function () {
+    var form = $(this);
+    $.ajax({
+     url: form.attr("action"),
+     data: form.serialize(),
+     type: form.attr("method"),
+     dataType: 'json',
+     success: function (data) {
+       if (data.form_is_valid) {
+         $("#modal-persona").modal("hide");  // <-- Close the modal
+       }
+       else {
+         $("#modal-persona .modal-content").html(data.html_form);
+       }
+     }
+    });
+    return false;
+    });
+
+    //para actualizar cuando se da de baja.
+    $('#modal-persona').on('hidden.bs.modal', function () {
+      window.location.reload(true);
+    })
+</script>
+
 {% endblock %}
 
 {% block url-cancelar %}

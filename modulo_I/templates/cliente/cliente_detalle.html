@@ -7,7 +7,7 @@
 {% block header-title %}Detalle del Cliente{% endblock %}
 
 {% block panel-heading %}
-  Nombres: {{cliente.apellido}}, {{cliente.nombre}}
+  Nombres: {{cliente.apoderado.apellido}}, {{cliente.apoderado.nombre}}
 {% endblock %}
 
 {% block detalle %}
@@ -15,23 +15,23 @@
       <tbody>
           <tr>
               <th>Documento:</th>
-              <td> {{cliente.documento}}</td>
+              <td> {{cliente.apoderado.documento}}</td>
           </tr>
           <tr>
               <th>Cargo:</th>
-              <td> {{cliente.cargo}}</td>
+              <td> {{cliente.apoderado.cargo}}</td>
           </tr>
           <tr>
               <th>Teléfono:</th>
-              <td> {{cliente.telefono_fijo}}</td>
+              <td> {{cliente.apoderado.telefono_fijo}}</td>
           </tr>
           <tr>
               <th>Celular:</th>
-              <td> {{cliente.celular}}</td>
+              <td> {{cliente.apoderado.celular}}</td>
           </tr>
           <tr>
               <th>Email:</th>
-              <td> {{cliente.email}}</td>
+              <td> {{cliente.apoderado.email}}</td>
           </tr>
       </tbody>
   </table>

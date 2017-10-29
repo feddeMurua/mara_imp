@@ -4,26 +4,30 @@
 
 {% block stylesheets %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/estilos_forms.css' %}"/>
+  {% block more-stylesheets %} {% endblock %}
 {% endblock %}
 
+{% block scripts %}{% endblock %}
 
 {%block content%}
 
-<div class="container container-form" style="width:100%">
+<div class="container container-form">
       <form method="post">
           {% csrf_token %}
           <div class="panel panel-primary">
             <div class="panel-heading">FORMULARIO DE REGISTRO</div>
               <div class="panel-body">
-                  <div class="container" style="padding-top:15px">
+                  <div class="container" style="padding-top:15px; padding-left:15px">
                     <!--contenedor de los paneles qe se van agregando -->
                     <div class="row">
                       <!--class row para alinear paneles -->
                       {% block panel-izq %}{% endblock %}
-                      {% block panel-cent%} {% endblock %}
+                      {% block panel-cent%}{% endblock %}
                       {% block panel-der%} {% endblock %}
-                      <!--En este bloque se agrega mas paneles de ser neceario -->
-                      {% block more-paneles %}{% endblock %}
+                    </div>
+                    <!--class row para alinear paneles (segunda fila) -->
+                    <div class="row">
+                      {% block snd-fila %}{% endblock %}
                     </div>
                   </div>
                 </div>
@@ -36,6 +40,7 @@
               </div>
           </div>
       </form>
+      {% block alta-persona%} {% endblock %}
   </div>
 
 {% endblock %}
