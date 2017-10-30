@@ -70,7 +70,7 @@ class AltaClienteForm(forms.ModelForm):
 
     class Meta:
         model = Cliente
-        exclude = ['domicilio_legal', 'fecha','dato_impositivo',]
+        exclude = ['domicilio_legal', 'fecha','dato_impositivo','apoderado','contacto_comercial']
 
 
     '''

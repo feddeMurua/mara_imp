@@ -54,6 +54,12 @@ def alta_clientes(request):
         if cliente_form.is_valid() & domicilio_form.is_valid() & datos_impositivos_form.is_valid():
 
             cliente = cliente_form.save(commit=False)
+            documento = request.POST.get('persona') #Obtengo documento del selector
+            doc_contacto_personal = request.POST.get('contacto') #Obtengo documento del selector
+            if doc_contacto_personal:
+                cliente.contacto_comercial = Persona.objects.get(documento=doc_contacto_personal)
+
+            cliente.apoderado = Persona.objects.get(documento=documento)
             cliente.domicilio_legal = domicilio_form.save()
             cliente.dato_impositivo= datos_impositivos_form.save()
             cliente.save()
@@ -65,12 +71,13 @@ def alta_clientes(request):
         datos_impositivos_form = DatosImpositivosForm
 
     persona_form = PersonaForm
-
+    listado_personas = Persona.objects.all()
 
     contexto= {'cliente_form': cliente_form,
                 'domicilio_form': domicilio_form,
                 'datos_impositivos_form':datos_impositivos_form,
-                'persona_form':PersonaForm
+                'persona_form':PersonaForm,
+                'listado_personas':listado_personas,
     }
 
 

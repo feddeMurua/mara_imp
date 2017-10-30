@@ -4,10 +4,12 @@
 
 {% block more-stylesheets %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}"/>
 {% endblock %}
 
 {% block scripts %}
   <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/chosen.jquery.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -19,32 +21,55 @@
 
 {% block panel-izq %}
   <div class="col-md-4">
-      <!--columna donde ubica panel -->
-      <div class="panel panel-default" style="height:75%">
-        <div class="panel-heading">DATOS APODERADO/RESPONSABLE</div>
-        <div class="panel-body">
-          {% for field in cliente_form.visible_fields %}
-            <div class="form-group">
-              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-              {{ field|add_class:'form-control' }}
+    <!--columna donde ubica panel -->
+    <div class="panel panel-default" style="height:75%">
+      <div class="panel-heading">DATOS APODERADO/RESPONSABLE</div>
+      <div class="panel-body">
+        {% for field in cliente_form.visible_fields %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field|add_class:'form-control' }}
 
-              {% if field.label == "Apoderado" or field.label == "Contacto comercial" %}
-                <br>
-                <a class="btn btn-success js-alta-persona" >
-                  <span class="glyphicon glyphicon-plus"></span>
-                </a>
-              {% endif %}
+            {% for error in field.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
 
-              {% for error in field.errors %}
-                <span class="help-block">{{ error }}</span>
+        <label>Apoderado</label>
+        <br>
+        <select name="persona" id="persona_select" class="chosen" required>
+              <option value="">Seleccione un apoderado...</option>
+              {% for persona in listado_personas %}
+                <option value="{{persona.documento}}">{{persona}}</option>
               {% endfor %}
-            </div>
-          {% endfor %}
-        </div>
+        </select>
+        <a class="btn btn-success js-alta-persona" >
+          <span class="glyphicon glyphicon-plus"></span>
+        </a>
+
+        <br><br>
+
+        <label>Contacto Comercial</label>
+        <br>
+        <select name="contacto" id="contacto_select" class="chosen">
+              <option value="">Seleccione un contacto...</option>
+              {% for persona in listado_personas %}
+                <option value="{{persona.documento}}">{{persona}}</option>
+              {% endfor %}
+        </select>
+        <a class="btn btn-success js-alta-persona" >
+          <span class="glyphicon glyphicon-plus"></span>
+        </a>
+
       </div>
+    </div>
   </div>
 
   <script>
+
+    $('.chosen').chosen();
+
 
     $.datepicker.regional['es'] = {
      closeText: 'Cerrar',
@@ -149,7 +174,7 @@
     return false;
     });
 
-    //para actualizar cuando se da de baja.
+    //para actualizar cuando se crea la persona.
     $('#modal-persona').on('hidden.bs.modal', function () {
       window.location.reload(true);
     })
