@@ -73,27 +73,12 @@ class AltaClienteForm(forms.ModelForm):
         exclude = ['domicilio_legal', 'fecha','dato_impositivo','apoderado','contacto_comercial']
 
 
-    '''
-    https://stackoverflow.com/questions/18945481/django-forms-make-two-fields-xor-required
-    '''
-    '''
-    def clean(self):
-        cleaned_data = super(AltaClienteForm, self).clean()
-
-        telefono_fijo = cleaned_data.get("telefono_fijo")
-        celular = cleaned_data.get("celular")
-
-        if  not telefono_fijo and not celular:
-            raise forms.ValidationError("Debe ingresar al menos un telefono fijo o celular")
-
-        return cleaned_data
-    '''
-
 class ModificacionClienteForm(forms.ModelForm):
 
     class Meta:
         model = Cliente
-        fields = '__all__'
+        exclude = ['contacto_comercial','apoderado','domicilio_legal','dato_impositivo',
+                    'fecha_vinculo','fecha']
 
 
 class DomicilioForm(forms.ModelForm):

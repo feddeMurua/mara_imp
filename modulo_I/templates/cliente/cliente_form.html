@@ -25,6 +25,42 @@
     <div class="panel panel-default" style="height:75%">
       <div class="panel-heading">DATOS APODERADO/RESPONSABLE</div>
       <div class="panel-body">
+        {% if persona_form %}
+            <label>Apoderado</label>
+            <br>
+            <select name="persona" id="persona_select" class="chosen">
+                  <option value="">Seleccione un apoderado...</option>
+                  {% for persona in listado_personas %}
+                    <option value="{{persona.documento}}">{{persona}}</option>
+                  {% endfor %}
+            </select>
+            <a class="btn btn-success js-alta-persona" >
+              <span class="glyphicon glyphicon-plus"></span>
+            </a>
+
+            <br><br>
+
+            {% if messages %}
+              {% for message in messages %}
+                <div align="center">
+                  <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            <label>Contacto Comercial</label>
+            <br>
+            <select name="contacto" id="contacto_select" class="chosen">
+                  <option value="">Seleccione un contacto...</option>
+                  {% for persona in listado_personas %}
+                    <option value="{{persona.documento}}">{{persona}}</option>
+                  {% endfor %}
+            </select>
+            <a class="btn btn-success js-alta-persona" >
+              <span class="glyphicon glyphicon-plus"></span>
+            </a>
+        {% endif %}
+        <br><br>
         {% for field in cliente_form.visible_fields %}
           <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -35,33 +71,6 @@
             {% endfor %}
           </div>
         {% endfor %}
-
-        <label>Apoderado</label>
-        <br>
-        <select name="persona" id="persona_select" class="chosen" required>
-              <option value="">Seleccione un apoderado...</option>
-              {% for persona in listado_personas %}
-                <option value="{{persona.documento}}">{{persona}}</option>
-              {% endfor %}
-        </select>
-        <a class="btn btn-success js-alta-persona" >
-          <span class="glyphicon glyphicon-plus"></span>
-        </a>
-
-        <br><br>
-
-        <label>Contacto Comercial</label>
-        <br>
-        <select name="contacto" id="contacto_select" class="chosen">
-              <option value="">Seleccione un contacto...</option>
-              {% for persona in listado_personas %}
-                <option value="{{persona.documento}}">{{persona}}</option>
-              {% endfor %}
-        </select>
-        <a class="btn btn-success js-alta-persona" >
-          <span class="glyphicon glyphicon-plus"></span>
-        </a>
-
       </div>
     </div>
   </div>
@@ -165,6 +174,7 @@
      success: function (data) {
        if (data.form_is_valid) {
          $("#modal-persona").modal("hide");  // <-- Close the modal
+         window.location.reload(true);
        }
        else {
          $("#modal-persona .modal-content").html(data.html_form);
@@ -173,11 +183,12 @@
     });
     return false;
     });
-
+    /*
     //para actualizar cuando se crea la persona.
     $('#modal-persona').on('hidden.bs.modal', function () {
       window.location.reload(true);
     })
+    */
 </script>
 
 {% endblock %}

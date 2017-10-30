@@ -150,11 +150,10 @@ class Cliente(models.Model):
     domicilio_legal = models.ForeignKey('Domicilio') # (para facturacion)
     apoderado = models.ForeignKey('Persona', related_name='apoderado')
     contacto_comercial = models.ForeignKey('Persona', related_name='contact_comercial', null=True, blank=True)
-    '''
     cargo = models.CharField(max_length=50)
     dato_impositivo = models.OneToOneField('DatoImpositivo')
     fecha = models.DateField(default=now) #fecha de hoy
     fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
-    '''
+
     def __str__(self):
         return "%s - %s - %s" % (self.apoderado.nombre, self.apoderado.apellido, self.apoderado.documento)
