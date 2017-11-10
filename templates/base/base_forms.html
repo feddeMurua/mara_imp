@@ -11,13 +11,13 @@
 
 {%block content%}
 
-<div class="container container-form">
+  <div class="container container-form" style="width:90%">
       <form method="post">
           {% csrf_token %}
           <div class="panel panel-primary">
             <div class="panel-heading">FORMULARIO DE REGISTRO</div>
               <div class="panel-body">
-                  <div class="container" style="padding-top:15px; padding-left:15px">
+                  <div class="container" style="padding-top:15px;">
                     <!--contenedor de los paneles qe se van agregando -->
                     <div class="row">
                       <!--class row para alinear paneles -->
@@ -26,21 +26,69 @@
                       {% block panel-der%} {% endblock %}
                     </div>
                     <!--class row para alinear paneles (segunda fila) -->
-                    <div class="row">
-                      {% block snd-fila %}{% endblock %}
-                    </div>
+                    {% block snd-fila %}{% endblock %}                    
                   </div>
-                </div>
-                <div class="panel-footer text-right">
-                  <button type="submit" class="btn btn-success" >
-                    <span class="glyphicon glyphicon-ok"></span> Guardar
-                  </button>
-                  <a class="btn btn-danger btn-cancelar" href= "{% block url-cancelar %}{% endblock %}" >Cancelar</a>
-                </div>
               </div>
-          </div>
-      </form>
-      {% block alta-persona%} {% endblock %}
+              <div class="panel-footer text-right">
+                <button type="submit" class="btn btn-success" >
+                  <span class="glyphicon glyphicon-ok"></span> Guardar
+                </button>
+                <a class="btn btn-danger btn-cancelar" href= "{% block url-cancelar %}{% endblock %}" >Cancelar</a>
+              </div>
+            </div>
+        </form>
   </div>
+
+  {% block non-alta-persona%}
+
+    <div class="modal fade" id="modal-persona">
+      <div class="modal-dialog">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+
+    <script>
+      $(".js-alta-persona").click(function () {
+       $.ajax({
+         url: "{% url 'clientes:alta_personas' %}",
+         type: 'get',
+         dataType: 'json',
+         beforeSend: function () {
+           $("#modal-persona").modal("show");
+         },
+         success: function (data) {
+           $("#modal-persona .modal-content").html(data.html_form);
+         }
+       });
+      });
+
+      $("#modal-persona").on("submit", ".js-alta-persona-form", function () {
+      var form = $(this);
+      $.ajax({
+       url: form.attr("action"),
+       data: form.serialize(),
+       type: form.attr("method"),
+       dataType: 'json',
+       success: function (data) {
+         if (data.form_is_valid) {
+           $("#modal-persona").modal("hide");  // <-- Close the modal
+           window.location.reload(true);
+         }
+         else {
+           $("#modal-persona .modal-content").html(data.html_form);
+         }
+       }
+      });
+      return false;
+      });
+      /*
+      //para actualizar cuando se crea la persona.
+      $('#modal-persona').on('hidden.bs.modal', function () {
+        window.location.reload(true);
+      })
+      */
+    </script>
+
+  {% endblock %}
 
 {% endblock %}

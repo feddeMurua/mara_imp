@@ -1,16 +1,30 @@
 {% extends "base/base_forms.html" %}
+{% load staticfiles %}
 {% load widget_tweaks %}
+
+{% block more-stylesheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}"/>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/chosen.jquery.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+{% endblock %}
 
 {% block title %}Generador{% endblock %}
 
 {% block header-title %} Información de Generador{% endblock %}
 
 {% block panel-izq %}
-  <div class="col-md-6">
+  <div class="col-md-4">
     <!--columna donde ubica panel -->
     <div class="panel panel-default">
-      <div class="panel-heading">Datos del Generador</div>
-      <div class="panel-body">        
+      <div class="panel-heading">DATOS DEL GENERADOR</div>
+      <div class="panel-body">
         {% for field in generador_form.visible_fields %}
           <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -20,21 +34,157 @@
             {% endfor %}
           </div>
         {% endfor %}
+
+        {% if persona_form %}
+            <label>Director Responsable</label>
+            <br>
+            <select name="director_responsable" id="director_responsable_select" class="chosen">
+                  <option value="">Seleccione un director ...</option>
+                  {% for persona in listado_personas %}
+                    <option value="{{persona.documento}}">{{persona}}</option>
+                  {% endfor %}
+            </select>
+            <a class="btn btn-success js-alta-persona" >
+              <span class="glyphicon glyphicon-plus"></span>
+            </a>
+
+            <br><br>
+
+            <label>Responsable Gestión Residuos</label>
+            <br>
+            <select name="responsable_residuos" id="responsable_residuos_select" class="chosen">
+                  <option value="">Seleccione un responsable...</option>
+                  {% for persona in listado_personas %}
+                    <option value="{{persona.documento}}">{{persona}}</option>
+                  {% endfor %}
+            </select>
+            <a class="btn btn-success js-alta-persona" >
+              <span class="glyphicon glyphicon-plus"></span>
+            </a>
+
+            <br><br>
+
+            <label>Responsable Suplente Gestión Residuos</label>
+            <br>
+            <select name="responsable_suplente" id="responsable_suplente_select" class="chosen">
+                  <option value="">Seleccione un suplente ...</option>
+                  {% for persona in listado_personas %}
+                    <option value="{{persona.documento}}">{{persona}}</option>
+                  {% endfor %}
+            </select>
+            <a class="btn btn-success js-alta-persona" >
+              <span class="glyphicon glyphicon-plus"></span>
+            </a>
+
+            <br><br>
+
+            <label>Responsable Técnico</label>
+            <br>
+            <select name="responsable_tecnico " id="responsable_tecnico _select" class="chosen">
+                  <option value="">Seleccione un técnico ...</option>
+                  {% for persona in listado_personas %}
+                    <option value="{{persona.documento}}">{{persona}}</option>
+                  {% endfor %}
+            </select>
+            <a class="btn btn-success js-alta-persona" >
+              <span class="glyphicon glyphicon-plus"></span>
+            </a>
+
+            {% if messages %}
+              {% for message in messages %}
+                <div align="center">
+                  <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+                </div>
+              {% endfor %}
+            {% endif %}
+
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $('.chosen').chosen();
+  </script>
+{% endblock %}
+
+{% block panel-cent%}
+  <div class="col-md-4">
+    <div class="panel panel-default" style="height:111%">
+      <div class="panel-heading">DOMICILIO REAL DEL CENTRO GENERADOR</div>
+        <div class="panel-body">
+          {% for field in domicilio_form.visible_fields %}
+            <div class="form-group">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field|add_class:'form-control' }}
+              {% for error in field.errors %}
+                <span class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endfor %}
       </div>
     </div>
   </div>
 {% endblock %}
 
 {% block panel-der%}
-  <div class="col-md-5">
+  <div class="col-md-4">
     <div class="panel panel-default">
-      <div class="panel-heading">Tipo Actividad</div>
+      <div class="panel-heading">TIPO DE ACTIVIDAD</div>
         <div class="panel-body">
             {{actividades_form}}
         </div>
     </div>
   </div>
 {% endblock %}
+
+
+{% block snd-fila %}
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">ÁMBITO/DEPENDENCIA</div>
+          <div class="panel-body">
+            {% for field in ambito_dpcia_form.visible_fields %}
+              <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field|add_class:'form-control' }}
+                {% for error in field.errors %}
+                  <span class="help-block">{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">CARACTERÍSTICAS GENERALES DEL CENTRO DE ATENCIÓN</div>
+          <div class="panel-body">
+            {% for field in caract_generales_form.visible_fields %}
+              {% if field.label != 'Via acceso' %}
+                <div class="form-group">
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                  {{ field|add_class:'form-control' }}
+                  {% for error in field.errors %}
+                    <span class="help-block">{{ error }}</span>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endfor %}
+
+            {{ caract_generales_form.via_acceso }}
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}
+
+
 
 {% block url-cancelar %}
   {% url 'generadores:listado_generadores' %}

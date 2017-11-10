@@ -112,7 +112,7 @@ class AltaGeneradorForm(forms.ModelForm):
 
     class Meta:
         model = EstablecimientoGenerador
-        exclude = ['tipo_actividad']
+        exclude = ['tipo_actividad', 'director_responsable', 'responsable_residuos', 'responsable_suplente', 'responsable_tecnico' ]
         fields = '__all__'
 
 
@@ -129,3 +129,17 @@ class ActividadesForm(forms.ModelForm):
     class Meta:
         model = EstablecimientoGenerador
         fields = ['tipo_actividad',]
+
+
+class AmbitoDependenciaForm(forms.ModelForm):
+
+    class Meta:
+        model = AmbitoDependencia
+        fields = '__all__'
+
+
+class CaracteristicasGeneralesForm(forms.ModelForm):
+
+    class Meta:
+        model = CaracteristicasGenerales        
+        fields = '__all__'

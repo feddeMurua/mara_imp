@@ -21,18 +21,24 @@
               <th>Cargo:</th>
               <td> {{cliente.cargo}}</td>
           </tr>
-          <tr>
-              <th>Teléfono:</th>
-              <td> {{cliente.apoderado.telefono_fijo}}</td>
-          </tr>
+          {% if cliente.apoderado.telefono_fijo %}
+            <tr>
+                <th>Teléfono:</th>
+                <td> {{cliente.apoderado.telefono_fijo}}</td>
+            </tr>
+          {% endif %}
+          {% if cliente.apoderado.celular %}
           <tr>
               <th>Celular:</th>
               <td> {{cliente.apoderado.celular}}</td>
           </tr>
+          {% endif %}
+          {% if cliente.apoderado.email %}
           <tr>
               <th>Email:</th>
               <td> {{cliente.apoderado.email}}</td>
           </tr>
+          {% endif %}
       </tbody>
   </table>
 {% endblock %}

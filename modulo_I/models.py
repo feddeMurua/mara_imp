@@ -107,23 +107,29 @@ class EstablecimientoGenerador(models.Model):
     nro_inscripcion = models.BigIntegerField(primary_key=True) # N° inscripcion registro de generadores provincia del chubut
     razon_social = models.CharField(max_length=50)
     tipo_actividad = MultiSelectField(choices=Actividades)
-    '''
-    Domicilio = models.ForeignKey('Domicilio', on_delete=models.CASCADE)
-    telefono = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50, blank=True)
     director_responsable = models.ForeignKey('Cliente', related_name='director_responsable')
     responsable_residuos = models.ForeignKey('Persona', related_name='responsable_residuos')
     responsable_suplente = models.ForeignKey('Persona', related_name='responsable_suplente')
     responsable_tecnico = models.ForeignKey('Persona', related_name='responsable_tecnico')
-    nro_inscripcion = models.BigIntegerField(primary_key=True) # N° inscripcion registro de generadores provincia del chubut
-    ambito_dependencia = models.ForeignKey('Ambito_Dependencia')
-    #tipo_actividad = models.CharField(max_length=50, choices=Actividades)
-    caract_generales = models.ForeignKey('Caracteristicas_Generales')
+    telefono = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50, blank=True)
+    domicilio = models.ForeignKey('Domicilio', on_delete=models.CASCADE)
+    ambito_dependencia = models.ForeignKey('AmbitoDependencia')
+    caract_generales = models.ForeignKey('CaracteristicasGenerales')
+
+    '''
     residuo = models.ForeignKey('Residuo_Generador')
     observaciones_comentarios = models.CharField(max_length=200)
-    titular = models.ForeignKey('Persona', related_name='titular')
     fecha = models.DateField(default=now)
     fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
+    '''
+
+    '''
+    TODO:
+    *Seguir con el formulario de establecimiento generador
+
+    realizado:
+    +Agregado de las personas responsables.
     '''
 
     def __str__(self):
