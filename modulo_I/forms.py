@@ -109,11 +109,14 @@ GENERADORES
 '''
 
 class AltaGeneradorForm(forms.ModelForm):
-
+    fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     class Meta:
         model = EstablecimientoGenerador
-        exclude = ['tipo_actividad', 'director_responsable', 'responsable_residuos', 'responsable_suplente', 'responsable_tecnico' ]
+        exclude = ['tipo_actividad', 'director_responsable', 'responsable_residuos', 'responsable_suplente', 'responsable_tecnico', 'fecha' ]
         fields = '__all__'
+        widgets = {
+            'observaciones_comentarios': forms.Textarea(attrs={'rows': 2, 'cols': 20}),            
+        }
 
 
 class ModificacionGeneradorForm(forms.ModelForm):
@@ -141,5 +144,5 @@ class AmbitoDependenciaForm(forms.ModelForm):
 class CaracteristicasGeneralesForm(forms.ModelForm):
 
     class Meta:
-        model = CaracteristicasGenerales        
+        model = CaracteristicasGenerales
         fields = '__all__'

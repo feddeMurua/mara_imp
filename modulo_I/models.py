@@ -8,7 +8,6 @@ from multiselectfield import MultiSelectField
 CLASES IMPORTANTES
 '''
 
-
 class Localidad(models.Model):
     nombre = models.CharField(max_length=25)
     cp = models.IntegerField()
@@ -65,7 +64,7 @@ class CaracteristicasGenerales(models.Model):
 
 
 class ResiduoGenerador(models.Model):
-    tipo = models.CharField(max_length=80, choices=TiposResiduos) # MAS DE UNO
+    tipo = models.CharField(max_length=80, choices=TiposResiduos) # ENTONCES DEBERIA SER DINAMIC FORMSET (Puede ser mas de un tipo)
     volumen_mensual_estimado = models.CharField(max_length=50)
     kgs_mensual_estimado = models.CharField(max_length=50, null=True, blank=True)
 
@@ -116,20 +115,11 @@ class EstablecimientoGenerador(models.Model):
     domicilio = models.ForeignKey('Domicilio', on_delete=models.CASCADE)
     ambito_dependencia = models.ForeignKey('AmbitoDependencia')
     caract_generales = models.ForeignKey('CaracteristicasGenerales')
-
+    fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
+    fecha = models.DateField(default=now)
+    observaciones_comentarios = models.TextField(max_length=200, default='', blank=True)
     '''
     residuo = models.ForeignKey('Residuo_Generador')
-    observaciones_comentarios = models.CharField(max_length=200)
-    fecha = models.DateField(default=now)
-    fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
-    '''
-
-    '''
-    TODO:
-    *Seguir con el formulario de establecimiento generador
-
-    realizado:
-    +Agregado de las personas responsables.
     '''
 
     def __str__(self):
