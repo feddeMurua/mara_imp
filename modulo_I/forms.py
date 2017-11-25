@@ -112,10 +112,10 @@ class AltaGeneradorForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     class Meta:
         model = EstablecimientoGenerador
-        exclude = ['tipo_actividad', 'director_responsable', 'responsable_residuos', 'responsable_suplente', 'responsable_tecnico', 'fecha' ]
+        exclude = ['tipo_actividad', 'director_responsable', 'responsable_residuos', 'responsable_suplente', 'responsable_tecnico', 'fecha', 'via_acceso' ]
         fields = '__all__'
         widgets = {
-            'observaciones_comentarios': forms.Textarea(attrs={'rows': 2, 'cols': 20}),            
+            'observaciones_comentarios': forms.Textarea(attrs={'rows': 2, 'cols': 20}),
         }
 
 
@@ -146,3 +146,25 @@ class CaracteristicasGeneralesForm(forms.ModelForm):
     class Meta:
         model = CaracteristicasGenerales
         fields = '__all__'
+
+
+class ViaAccesoSectorForm(forms.ModelForm):
+
+    class Meta:
+        model = ViaAccesoSector
+        fields = ['tipo',]
+
+
+class AcopioTransitorioForm(forms.ModelForm):
+
+    class Meta:
+        model = AcopioTransitorio
+        fields = '__all__'
+
+
+class HorarioAtencionForm(forms.ModelForm):
+
+    class Meta:
+        model = HorarioAtencion
+        fields = '__all__'
+        exclude = ['establecimiento_generador']

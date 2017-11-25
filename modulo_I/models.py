@@ -77,8 +77,8 @@ class AcopioTransitorio(models.Model):
 
 
 class ViaAccesoSector(models.Model):
-    tipo = models.CharField(max_length=80, choices=Acceso_sector_acopio)
     acopio_transitorio = models.ForeignKey('AcopioTransitorio')
+    tipo =MultiSelectField(choices=Acceso_sector_acopio)
 
 
 class Domicilio(models.Model):
@@ -96,7 +96,7 @@ class Domicilio(models.Model):
         return "%s - %s - %s" % (self.barrio, self.calle, self.nro)
 
 
-class Horario_Atencion(models.Model):
+class HorarioAtencion(models.Model):
     dia = MultiSelectField(choices=Dias)
     hora = models.TimeField()
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
@@ -118,8 +118,14 @@ class EstablecimientoGenerador(models.Model):
     fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
     fecha = models.DateField(default=now)
     observaciones_comentarios = models.TextField(max_length=200, default='', blank=True)
+    via_acceso = models.ForeignKey('ViaAccesoSector')
+
+
     '''
     residuo = models.ForeignKey('Residuo_Generador')
+
+    *TODO:
+    residuos
     '''
 
     def __str__(self):

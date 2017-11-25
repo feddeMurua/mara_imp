@@ -135,6 +135,7 @@ def alta_generadores(request):
         domicilio_form = DomicilioForm(request.POST)
         ambito_dpcia_form = AmbitoDependenciaForm(request.POST)
         caract_generales_form = CaracteristicasGeneralesForm(request.POST)
+        #via_acceso_form = ViaAccesoSectorForm(request.POST)
         if generador_form.is_valid() & actividades_form.is_valid() & domicilio_form.is_valid() \
             & ambito_dpcia_form.is_valid() & caract_generales_form.is_valid():
 
@@ -152,6 +153,7 @@ def alta_generadores(request):
             generador.domicilio = domicilio_form.save()
             generador.ambito_dependencia = ambito_dpcia_form.save()
             generador.caract_generales = caract_generales_form.save()
+            generador.via_acceso = via_acceso_form.save()
             generador.save()
             return redirect('generadores:listado_generadores')
     else:
@@ -160,6 +162,9 @@ def alta_generadores(request):
         domicilio_form = DomicilioForm
         ambito_dpcia_form = AmbitoDependenciaForm
         caract_generales_form = CaracteristicasGeneralesForm
+        via_acceso_form = ViaAccesoSectorForm
+        acopio_transitorio_form = AcopioTransitorioForm
+        horario_atencion_form = HorarioAtencionForm
         persona_form = PersonaForm
         listado_personas = Persona.objects.all()
 
@@ -169,7 +174,10 @@ def alta_generadores(request):
                'listado_personas':listado_personas,
                'domicilio_form':domicilio_form,
                'ambito_dpcia_form':ambito_dpcia_form,
-               'caract_generales_form':caract_generales_form
+               'caract_generales_form':caract_generales_form,
+               'via_acceso_form':via_acceso_form,
+               'acopio_transitorio_form':acopio_transitorio_form,
+               'horario_atencion_form':horario_atencion_form
     }
 
     return render(request, "establecimiento/generador_form.html",contexto)

@@ -5,6 +5,7 @@
 {% block more-stylesheets %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
 {% endblock %}
 
 {% block scripts %}
@@ -13,13 +14,16 @@
   <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
 {% endblock %}
+
 
 {% block title %}Generador{% endblock %}
 
 {% block header-title %} Información de Generador{% endblock %}
 
-{% block panel-izq %}
+{% block prim-fila %}
+
   <div class="col-md-4">
     <!--columna donde ubica panel -->
     <div class="panel panel-default">
@@ -104,43 +108,8 @@
     </div>
   </div>
 
-  <script>
-
-    $('.chosen').chosen();
 
 
-    $.datepicker.regional['es'] = {
-     closeText: 'Cerrar',
-     prevText: '< Ant',
-     nextText: 'Sig >',
-     currentText: 'Hoy',
-     monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-     monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-     dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-     dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-     dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-     weekHeader: 'Sm',
-     dateFormat: 'dd/mm/yy',
-     firstDay: 1,
-     isRTL: false,
-     showMonthAfterYear: false,
-     yearSuffix: ''
-     };
-     $.datepicker.setDefaults($.datepicker.regional['es']);
-
-     $(function() {
-       $( ".datepicker" ).datepicker({
-         changeMonth: true,
-         changeYear: true,
-         minYear:2000
-         // You can put more options here.
-       });
-     });
- </script>
- 
-{% endblock %}
-
-{% block panel-cent%}
   <div class="col-md-4">
     <div class="panel panel-default" style="height:111%">
       <div class="panel-heading">DOMICILIO REAL DEL CENTRO GENERADOR</div>
@@ -157,9 +126,7 @@
       </div>
     </div>
   </div>
-{% endblock %}
 
-{% block panel-der%}
   <div class="col-md-4">
     <div class="panel panel-default">
       <div class="panel-heading">TIPO DE ACTIVIDAD</div>
@@ -170,9 +137,7 @@
   </div>
 {% endblock %}
 
-
 {% block snd-fila %}
-  <div class="row">
     <div class="col-md-4">
       <div class="panel panel-default">
         <div class="panel-heading">ÁMBITO/DEPENDENCIA</div>
@@ -211,10 +176,84 @@
       </div>
     </div>
 
-  </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">SECTOR DE ACOPIO TRANSITORIO EN EL CENTRO GENERADOR</div>
+          <div class="panel-body">
+            <div class="form-group">
+
+              {{ acopio_transitorio_form.camara_frio|attr:"class:camara_frio"|attr:"name:camara_frio"|attr:"onchange:valueChanged()"}}
+              <label>Cámara de Frío</label>
+              <br>
+
+              <div class="dimension_camara_frio" style="display:none">
+                <label>Dimensión cámara de frío</label>
+                {{ acopio_transitorio_form.dimension_camara_frio}}
+                <br><br>
+              </div>
+
+              {{ acopio_transitorio_form.sector_interno_p_estacionar|attr:"class:sector_interno"|attr:"name:sector_interno"|attr:"onchange:valueChanged()"}}
+              <label>Sector interno p/estacionar</label>
+              <br>
+
+              <div class="dimension_sector_interno" style="display:none">
+                <label>Dimensión del sector de acopio</label>
+                {{ acopio_transitorio_form.dimension_sector}}
+                <br>
+              </div>
+
+            </div>
+
+            <u>Vía de Acceso al sector de acopio</u>
+            <br>
+
+            {{via_acceso_form}}
+          </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      function valueChanged()
+      {
+          if($('.camara_frio').is(":checked"))
+              $(".dimension_camara_frio").show();
+          else
+              $(".dimension_camara_frio").hide();
+
+          if($('.sector_interno').is(":checked"))
+              $(".dimension_sector_interno").show();
+          else
+              $(".dimension_sector_interno").hide();
+      }
+  </script>
 {% endblock %}
 
+{% block trc-fila %}
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">HORARIO DE ATENCION</div>
+        <div class="panel-body">
+          <div class="form-group">
 
+            <label>Día</label>
+            {{horario_atencion_form.dia|add_class:'checkbox'}}
+            <br>
+            <label>Horario de Atención</label>
+            <br>
+            <div class="input-group bootstrap-timepicker timepicker">
+              {{horario_atencion_form.hora|add_class:'form-control'|attr:"id:hs_timepicker"}}
+              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      $('#hs_timepicker').timepicker();
+  </script>
+
+{% endblock %}
 
 {% block url-cancelar %}
   {% url 'generadores:listado_generadores' %}

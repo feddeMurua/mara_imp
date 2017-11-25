@@ -17,16 +17,20 @@
           <div class="panel panel-primary">
             <div class="panel-heading">FORMULARIO DE REGISTRO</div>
               <div class="panel-body">
+                  <!--contenedor de los paneles qe se van agregando -->
                   <div class="container" style="padding-top:15px;">
-                    <!--contenedor de los paneles qe se van agregando -->
+                    <!--class paneles primera fila -->
                     <div class="row">
-                      <!--class row para alinear paneles -->
-                      {% block panel-izq %}{% endblock %}
-                      {% block panel-cent%}{% endblock %}
-                      {% block panel-der%} {% endblock %}
+                      {% block prim-fila %}{% endblock %}
                     </div>
-                    <!--class row para alinear paneles (segunda fila) -->
-                    {% block snd-fila %}{% endblock %}                    
+                    <!--class paneles segunda fila -->
+                    <div class="row">
+                      {% block snd-fila %}{% endblock %}
+                    </div>
+                    <!--class paneles tercera fila -->
+                    <div class="row">
+                      {% block trc-fila %}{% endblock %}
+                    </div>
                   </div>
               </div>
               <div class="panel-footer text-right">
@@ -88,7 +92,41 @@
       })
       */
     </script>
+  {% endblock %}
 
+  {% block more-scripts %}
+      <script>
+
+        $('.chosen').chosen();
+
+        $.datepicker.regional['es'] = {
+         closeText: 'Cerrar',
+         prevText: '< Ant',
+         nextText: 'Sig >',
+         currentText: 'Hoy',
+         monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+         monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+         dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+         dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+         dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+         weekHeader: 'Sm',
+         dateFormat: 'dd/mm/yy',
+         firstDay: 1,
+         isRTL: false,
+         showMonthAfterYear: false,
+         yearSuffix: ''
+         };
+         $.datepicker.setDefaults($.datepicker.regional['es']);
+
+         $(function() {
+           $( ".datepicker" ).datepicker({
+             changeMonth: true,
+             changeYear: true,
+             minYear:2000
+           });
+         });
+
+       </script>
   {% endblock %}
 
 {% endblock %}

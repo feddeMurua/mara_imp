@@ -19,7 +19,9 @@
 
 {% block header-title %} Información de Cliente{% endblock %}
 
-{% block panel-izq %}
+
+{% block prim-fila %}
+
   <div class="col-md-4">
     <!--columna donde ubica panel -->
     <div class="panel panel-default" style="height:75%">
@@ -75,43 +77,6 @@
     </div>
   </div>
 
-  <script>
-
-    $('.chosen').chosen();
-
-
-    $.datepicker.regional['es'] = {
-     closeText: 'Cerrar',
-     prevText: '< Ant',
-     nextText: 'Sig >',
-     currentText: 'Hoy',
-     monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-     monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-     dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-     dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-     dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-     weekHeader: 'Sm',
-     dateFormat: 'dd/mm/yy',
-     firstDay: 1,
-     isRTL: false,
-     showMonthAfterYear: false,
-     yearSuffix: ''
-     };
-     $.datepicker.setDefaults($.datepicker.regional['es']);
-
-     $(function() {
-       $( ".datepicker" ).datepicker({
-         changeMonth: true,
-         changeYear: true,
-         minYear:2000
-         // You can put more options here.
-       });
-     });
- </script>
-
-{% endblock %}
-
-{% block panel-cent%}
   <div class="col-md-3">
     <div class="panel panel-default" style="height:75%">
       <div class="panel-heading">DATOS IMPOSITIVOS</div>
@@ -120,9 +85,7 @@
         </div>
       </div>
   </div>
-{% endblock %}
 
-{% block panel-der%}
   <div class="col-md-4">
     <div class="panel panel-default" style="height:100%">
       <div class="panel-heading">DOMICILIO LEGAL PARA FACTURACION</div>
@@ -139,6 +102,7 @@
       </div>
     </div>
   </div>
+  
 {% endblock %}
 
 {% block url-cancelar %}
