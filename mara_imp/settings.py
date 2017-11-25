@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'widget_tweaks',
     'multiselectfield',
+    'dynamic_formsets',
 
     #Gestiones
     'modulo_I',

@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.http import JsonResponse
 from .models import *
 from .forms import *
 from django.template.loader import render_to_string
 from django.contrib import messages
-
+from django.template import RequestContext  # For CSRF
+from django.forms.formsets import formset_factory, BaseFormSet
+from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
 '''
@@ -129,6 +131,13 @@ def detalle_generadores(request, nro_inscripcion):
 
 #@login_required(login_url='login')
 def alta_generadores(request):
+    class RequiredFormSet(BaseFormSet):
+        def __init__(self, *args, **kwargs):
+            super(RequiredFormSet, self).__init__(*args, **kwargs)
+            for form in self.forms:
+                form.empty_permitted = False
+    ResiduoGeneradorFormSet = formset_factory(ResiduoGeneradorForm, max_num=3, formset=RequiredFormSet)
+
     if request.method == 'POST':
         generador_form = AltaGeneradorForm(request.POST)
         actividades_form = ActividadesForm(request.POST)
@@ -165,8 +174,10 @@ def alta_generadores(request):
         via_acceso_form = ViaAccesoSectorForm
         acopio_transitorio_form = AcopioTransitorioForm
         horario_atencion_form = HorarioAtencionForm
+        residuo_generador_formset = ResiduoGeneradorFormSet()
         persona_form = PersonaForm
         listado_personas = Persona.objects.all()
+
 
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,
@@ -177,7 +188,8 @@ def alta_generadores(request):
                'caract_generales_form':caract_generales_form,
                'via_acceso_form':via_acceso_form,
                'acopio_transitorio_form':acopio_transitorio_form,
-               'horario_atencion_form':horario_atencion_form
+               'horario_atencion_form':horario_atencion_form,
+               'residuo_generador_formset':residuo_generador_formset,
     }
 
     return render(request, "establecimiento/generador_form.html",contexto)

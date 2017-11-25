@@ -67,7 +67,7 @@ class ResiduoGenerador(models.Model):
     tipo = models.CharField(max_length=80, choices=TiposResiduos) # ENTONCES DEBERIA SER DINAMIC FORMSET (Puede ser mas de un tipo)
     volumen_mensual_estimado = models.CharField(max_length=50)
     kgs_mensual_estimado = models.CharField(max_length=50, null=True, blank=True)
-
+    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
 class AcopioTransitorio(models.Model):
     sector_interno_p_estacionar = models.BooleanField()
@@ -120,14 +120,6 @@ class EstablecimientoGenerador(models.Model):
     observaciones_comentarios = models.TextField(max_length=200, default='', blank=True)
     via_acceso = models.ForeignKey('ViaAccesoSector')
 
-
-    '''
-    residuo = models.ForeignKey('Residuo_Generador')
-
-    *TODO:
-    residuos
-    '''
-
     def __str__(self):
         return "%s - %s" % (self.nro_inscripcion, self.razon_social)
 
@@ -135,6 +127,7 @@ class EstablecimientoGenerador(models.Model):
 '''
 Clientes
 '''
+
 
 class DatoImpositivo(models.Model):
     impuestos_ganancias = MultiSelectField(choices=Impuesto_Ganancias)

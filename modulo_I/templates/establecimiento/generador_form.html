@@ -15,6 +15,85 @@
   <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      // Code adapted from http://djangosnippets.org/snippets/1389/
+      function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+        var replacement = prefix + '-' + ndx + '-';
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+      }
+
+      function deleteForm(btn, prefix) {
+        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        if (formCount > 1) {
+          // Delete the item/form
+          $(btn).parents('.item').remove();
+          var forms = $('.item'); // Get all the forms
+          // Update the total number of forms (1 less than before)
+          $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+          var i = 0;
+          // Go through the forms and set their indices, names and IDs
+          for (formCount = forms.length; i < formCount; i++) {
+            $(forms.get(i)).children().children().each(function() {
+              updateElementIndex(this, prefix, i);
+            });
+          }
+        } // End if
+        else {
+            alert("Tiene que ingresar al menos un elemento!");
+        }
+        return false;
+      }
+
+      function addForm(btn, prefix) {
+        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        // You can only submit a maximum of 3 todo items
+        if (formCount < 3) {
+          // Clone a form (without event handlers) from the first form
+          var row = $(".item:first").clone(false).get(0);
+          // Insert it after the last form
+          $(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
+
+          // Remove the bits we don't want in the new row/form
+          // e.g. error messages
+          $(".errorlist", row).remove();
+          $(row).children().removeClass('error');
+
+          // Relabel/rename all the relevant bits
+          $(row).children().children().each(function() {
+            updateElementIndex(this, prefix, formCount);
+            if ( $(this).attr('type') == 'text' )
+              $(this).val('');
+          });
+
+          // Add an event handler for the delete item/form link
+          $(row).find('.delete').click(function() {
+            return deleteForm(this, prefix);
+          });
+          // Update the total form count
+          $('#id_' + prefix + '-TOTAL_FORMS').val(formCount + 1);
+        } // End if
+        else {
+          alert("Se puede agregar solo un máximo de 3 elementos.");
+        }
+        return false;
+      }
+
+      // Register the click event handlers
+      $("#add").click(function() {
+        return addForm(this, 'form');
+      });
+
+      $(".delete").click(function() {
+        return deleteForm(this, 'form');
+      });
+
+    });
+  </script>
+
 {% endblock %}
 
 
@@ -235,10 +314,10 @@
         <div class="panel-body">
           <div class="form-group">
 
-            <label>Día</label>
+            <label>Días</label>
             {{horario_atencion_form.dia|add_class:'checkbox'}}
             <br>
-            <label>Horario de Atención</label>
+            <label>Horario</label>
             <br>
             <div class="input-group bootstrap-timepicker timepicker">
               {{horario_atencion_form.hora|add_class:'form-control'|attr:"id:hs_timepicker"}}
@@ -248,6 +327,36 @@
       </div>
     </div>
   </div>
+
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
+        <div class="panel-body">
+          <!--<form action="" method="POST"> -->
+            <!-- {% csrf_token %} -->
+            {{ residuo_generador_formset.management_form }}
+            {% for form in residuo_generador_formset.forms %}
+              <div class="item">
+                <!-- {{ form.as_p }} -->
+                {% for field in form.visible_fields %}
+                  <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field|add_class:'form-control' }}
+                    {% for error in field.errors %}
+                      <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                {% endfor %} <!-- Agrego tweaks a cada formset -->
+                <p style=""><a class="delete" href="#">Borrar</a></p>
+              </div>
+            {% endfor %}
+            <p><a id="add" href="#">Agregar otro elemento</a></p>
+            <!-- <input type="submit" value=" Submit "/> -->
+          <!--</form> -->
+        </div>
+    </div>
+  </div>
+
 
   <script type="text/javascript">
       $('#hs_timepicker').timepicker();
