@@ -112,7 +112,8 @@ class AltaGeneradorForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     class Meta:
         model = EstablecimientoGenerador
-        exclude = ['tipo_actividad', 'director_responsable', 'responsable_residuos', 'responsable_suplente', 'responsable_tecnico', 'fecha', 'via_acceso' ]        
+        exclude = ['tipo_actividad', 'director_responsable', 'responsable_residuos', 'responsable_suplente', 'responsable_tecnico',
+                  'fecha', 'via_acceso', 'domicilio', 'caract_generales', 'ambito_dependencia' ]
         widgets = {
             'observaciones_comentarios': forms.Textarea(attrs={'rows': 2, 'cols': 20}),
         }

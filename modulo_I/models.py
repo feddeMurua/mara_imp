@@ -98,7 +98,7 @@ class Domicilio(models.Model):
 
 class HorarioAtencion(models.Model):
     dia = MultiSelectField(choices=Dias)
-    hora = models.TimeField()
+    hora = models.CharField(max_length=15)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
 
@@ -123,6 +123,12 @@ class EstablecimientoGenerador(models.Model):
     def __str__(self):
         return "%s - %s" % (self.nro_inscripcion, self.razon_social)
 
+    '''
+    AGREGAR:
+    default cero cant quirofanos
+    default cant camas
+    volumen_mensual_estimado tmb puede ser null
+    '''
 
 '''
 Clientes
