@@ -14,13 +14,34 @@
   <table class="table table-striped table-bordered">
       <tbody>
           <tr>
-              <th>N° Inscripción:</th>
-              <td> {{generador.nro_inscripcion}}</td>
+              <th>Director/Responsable del Centro Generador:</th>
+              <td> {{generador.director_responsable}}</td>
           </tr>
           <tr>
-              <th>Actividad:</th>
-              <td> {{generador.tipo_actividad}}</td>
+              <th>Responsable Gestión de Residuos:</th>
+              <td> {{generador.responsable_residuos}}</td>
           </tr>
+          <tr>
+              <th>Responsable Suplente de Gestión de Residuos:</th>
+              <td> {{generador.responsable_suplente}}</td>
+          </tr>
+          <tr>
+              <th>Responsable Técnico:</th>
+              <td> {{generador.responsable_tecnico}}</td>
+          </tr>
+          <tr>
+              <th>Teléfono:</th>
+              <td> {{generador.telefono}}</td>
+          </tr>
+          <tr>
+              <th>Email:</th>
+              <td> {{generador.email}}</td>
+          </tr>
+          <tr>
+              <th>Domicilio:</th>
+              <td> {{generador.domicilio}}</td>
+          </tr>
+
       </tbody>
   </table>
 {% endblock %}

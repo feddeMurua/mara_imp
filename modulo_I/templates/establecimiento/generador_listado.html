@@ -13,6 +13,7 @@
 {% block thead-tabla %}
   <thead>
   <tr>
+      <th>N° Inscripción:</th>
       <th>Razon Social</th>
       <th>Tipo de Actividad</th>
       <th>Acciones</th>
@@ -23,6 +24,7 @@
 {% block tfoot-tabla %}
   <tfoot >
      <tr>
+       <th>N° Inscripción:</th>
        <th>Razon Social</th>
        <th>Actividad</th>
        <th><em class="glyphicon glyphicon-cog"></em></th>
@@ -34,6 +36,7 @@
   <tbody>
   {% for generador in listado_generadores %}
       <tr>
+          <td> {{generador.nro_inscripcion}}</td>
           <td>{{ generador.razon_social }}</td>
           <td>{{ generador.tipo_actividad }}</td>
           <td align="center">

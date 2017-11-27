@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.timezone import now
 from .choices import *
 from multiselectfield import MultiSelectField
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 '''
@@ -10,7 +11,7 @@ CLASES IMPORTANTES
 
 class Localidad(models.Model):
     nombre = models.CharField(max_length=25)
-    cp = models.IntegerField()
+    cp = models.IntegerField(validators=[MinValueValidator(1)])
     provincia = models.ForeignKey('Provincia', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -35,13 +36,28 @@ class Nacionalidad(models.Model):
 class Persona(models.Model):
     apellido = models.CharField(max_length=50)
     nombre = models.CharField(max_length=50)
-    documento = models.CharField(max_length=50)
+    documento = models.BigIntegerField(primary_key=True)
     telefono_fijo = models.CharField(max_length=50, null=True, blank=True)
     celular = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return "%s -%s -%s" % (self.apellido, self.nombre, self.documento)
+
+
+class Domicilio(models.Model):
+    barrio = models.CharField(max_length=50)
+    calle = models.CharField(max_length=50)
+    calle_entre1 = models.CharField(max_length=50, null=True, blank=True)
+    calle_entre2 = models.CharField(max_length=50, null=True, blank=True)
+    nro = models.IntegerField(default=1,validators=[MinValueValidator(1)])
+    piso = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(1)])
+    dpto = models.CharField(max_length=50, blank=True, null=True)
+    localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
+    comarca = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return "%s - %s - %s" % (self.barrio, self.calle, self.nro)
 
 
 '''
@@ -56,15 +72,15 @@ class AmbitoDependencia(models.Model):
 
 
 class CaracteristicasGenerales(models.Model):
-    cant_quirofanos = models.IntegerField(blank=True, null=True)
-    nro_camas = models.IntegerField(blank=True, null=True)
-    poblacion_promedio_atendida = models.FloatField() # (al mes)
-    poblacion_promedio_atendida_365 = models.FloatField() # (al año)
+    cant_quirofanos = models.IntegerField(default=0,validators=[MinValueValidator(0)])
+    nro_camas = models.IntegerField(default=0,validators=[MinValueValidator(0)])
+    poblacion_promedio_atendida = models.FloatField(default=0) # (al mes)
+    poblacion_promedio_atendida_365 = models.FloatField(default=0) # (al año)
     via_acceso = MultiSelectField(choices=Accesos)
 
 
 class ResiduoGenerador(models.Model):
-    tipo = models.CharField(max_length=80, choices=TiposResiduos) # ENTONCES DEBERIA SER DINAMIC FORMSET (Puede ser mas de un tipo)
+    tipo = models.CharField(max_length=80, choices=TiposResiduos)
     volumen_mensual_estimado = models.CharField(max_length=50)
     kgs_mensual_estimado = models.CharField(max_length=50, null=True, blank=True)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
@@ -79,21 +95,6 @@ class AcopioTransitorio(models.Model):
 class ViaAccesoSector(models.Model):
     acopio_transitorio = models.ForeignKey('AcopioTransitorio')
     tipo =MultiSelectField(choices=Acceso_sector_acopio)
-
-
-class Domicilio(models.Model):
-    barrio = models.CharField(max_length=50)
-    calle = models.CharField(max_length=50)
-    calle_entre1 = models.CharField(max_length=50, null=True, blank=True)
-    calle_entre2 = models.CharField(max_length=50, null=True, blank=True)
-    nro = models.IntegerField()
-    piso = models.IntegerField(blank=True, null=True)
-    dpto = models.CharField(max_length=50, blank=True, null=True)
-    localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
-    comarca = models.CharField(max_length=50, blank=True, null=True)
-
-    def __str__(self):
-        return "%s - %s - %s" % (self.barrio, self.calle, self.nro)
 
 
 class HorarioAtencion(models.Model):
@@ -123,12 +124,6 @@ class EstablecimientoGenerador(models.Model):
     def __str__(self):
         return "%s - %s" % (self.nro_inscripcion, self.razon_social)
 
-    '''
-    AGREGAR:
-    default cero cant quirofanos
-    default cant camas
-    volumen_mensual_estimado tmb puede ser null
-    '''
 
 '''
 Clientes

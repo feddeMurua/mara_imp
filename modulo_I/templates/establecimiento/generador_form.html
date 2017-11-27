@@ -127,7 +127,7 @@
                     <option value="{{cliente.apoderado.documento}}">{{cliente}}</option>
                   {% endfor %}
             </select>
-            
+
             <br><br>
 
             <label>Responsable Gestión Residuos</label>
@@ -301,7 +301,7 @@
           else
               $(".dimension_sector_interno").hide();
       }
-  </script>
+    </script>
 {% endblock %}
 
 {% block trc-fila %}
@@ -312,7 +312,7 @@
           <div class="form-group">
 
             <label>Días</label>
-            {{horario_atencion_form.dia|add_class:'checkbox'}}
+            {{horario_atencion_form.dia}}
             <br>
             <label>Horario</label>
             <br>
