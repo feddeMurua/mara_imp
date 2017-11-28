@@ -17,21 +17,23 @@
           <div class="panel panel-primary">
             <div class="panel-heading">FORMULARIO DE REGISTRO</div>
               <div class="panel-body">
-                  <!--contenedor de los paneles qe se van agregando -->
-                  <div class="container" style="padding-top:15px;">
-                    <!--class paneles primera fila -->
-                    <div class="row">
-                      {% block prim-fila %}{% endblock %}
+                  {% block step-form %}
+                    <!--contenedor de los paneles qe se van agregando -->
+                    <div class="container" style="padding-top:15px;">
+                      <!--class paneles primera fila -->
+                      <div class="row">
+                        {% block prim-fila %}{% endblock %}
+                      </div>
+                      <!--class paneles segunda fila -->
+                      <div class="row">
+                        {% block snd-fila %}{% endblock %}
+                      </div>
+                      <!--class paneles tercera fila -->
+                      <div class="row">
+                        {% block trc-fila %}{% endblock %}
+                      </div>
                     </div>
-                    <!--class paneles segunda fila -->
-                    <div class="row">
-                      {% block snd-fila %}{% endblock %}
-                    </div>
-                    <!--class paneles tercera fila -->
-                    <div class="row">
-                      {% block trc-fila %}{% endblock %}
-                    </div>
-                  </div>
+                  {% endblock %}
               </div>
               <div class="panel-footer text-right">
                 <button type="submit" class="btn btn-success" >

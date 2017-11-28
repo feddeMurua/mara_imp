@@ -6,6 +6,7 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.steps.css' %}"/>
 {% endblock %}
 
 {% block scripts %}
@@ -15,6 +16,7 @@
   <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.steps.js' %}"></script>
   <script type="text/javascript">
     $(document).ready(function() {
       // Code adapted from http://djangosnippets.org/snippets/1389/
@@ -101,96 +103,15 @@
 
 {% block header-title %} Información de Generador{% endblock %}
 
-{% block prim-fila %}
+{% block step-form %}
 
-  <div class="col-md-4">
-    <!--columna donde ubica panel -->
-    <div class="panel panel-default">
-      <div class="panel-heading">DATOS DEL GENERADOR</div>
-      <div class="panel-body">
-        {% for field in generador_form.visible_fields %}
-          <div class="form-group">
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field|add_class:'form-control' }}
-            {% for error in field.errors %}
-              <span class="help-block">{{ error }}</span>
-            {% endfor %}
-          </div>
-        {% endfor %}
+  <div id="form-wizard">
 
-        {% if persona_form %}
-            <label>Director Responsable</label>
-            <br>
-            <select name="director_responsable" id="director_responsable_select" class="chosen">
-                  <option value="">Seleccione un director ...</option>
-                  {% for cliente in listado_clientes %}
-                    <option value="{{cliente.apoderado.documento}}">{{cliente}}</option>
-                  {% endfor %}
-            </select>
-
-            <br><br>
-
-            <label>Responsable Gestión Residuos</label>
-            <br>
-            <select name="responsable_residuos" id="responsable_residuos_select" class="chosen">
-                  <option value="">Seleccione un responsable...</option>
-                  {% for persona in listado_personas %}
-                    <option value="{{persona.documento}}">{{persona}}</option>
-                  {% endfor %}
-            </select>
-            <a class="btn btn-success js-alta-persona" >
-              <span class="glyphicon glyphicon-plus"></span>
-            </a>
-
-            <br><br>
-
-            <label>Responsable Suplente Gestión Residuos</label>
-            <br>
-            <select name="responsable_suplente" id="responsable_suplente_select" class="chosen">
-                  <option value="">Seleccione un suplente ...</option>
-                  {% for persona in listado_personas %}
-                    <option value="{{persona.documento}}">{{persona}}</option>
-                  {% endfor %}
-            </select>
-            <a class="btn btn-success js-alta-persona" >
-              <span class="glyphicon glyphicon-plus"></span>
-            </a>
-
-            <br><br>
-
-            <label>Responsable Técnico</label>
-            <br>
-            <select name="responsable_tecnico" id="responsable_tecnico_select" class="chosen">
-                  <option value="">Seleccione un técnico ...</option>
-                  {% for persona in listado_personas %}
-                    <option value="{{persona.documento}}">{{persona}}</option>
-                  {% endfor %}
-            </select>
-            <a class="btn btn-success js-alta-persona" >
-              <span class="glyphicon glyphicon-plus"></span>
-            </a>
-
-            {% if messages %}
-              {% for message in messages %}
-                <div align="center">
-                  <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
-                </div>
-              {% endfor %}
-            {% endif %}
-
-        {% endif %}
-
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">DOMICILIO REAL DEL CENTRO GENERADOR</div>
+    <h3>DATOS DEL GENERADOR</h3>
+    <section style="overflow-y: auto;">
+      <div class="panel panel-default">
         <div class="panel-body">
-          {% for field in domicilio_form.visible_fields %}
+          {% for field in generador_form.visible_fields %}
             <div class="form-group">
               <label for="{{ field.id_for_label }}">{{ field.label }}</label>
               {{ field|add_class:'form-control' }}
@@ -199,24 +120,102 @@
               {% endfor %}
             </div>
           {% endfor %}
-      </div>
-    </div>
-  </div>
 
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">TIPO DE ACTIVIDAD</div>
-        <div class="panel-body">
-            {{actividades_form}}
+          {% if persona_form %}
+              <label>Director Responsable</label>
+              <br>
+              <select name="director_responsable" id="director_responsable_select" class="chosen">
+                    <option value="">Seleccione un director ...</option>
+                    {% for cliente in listado_clientes %}
+                      <option value="{{cliente.apoderado.documento}}">{{cliente}}</option>
+                    {% endfor %}
+              </select>
+
+              <br><br>
+
+              <label>Responsable Gestión Residuos</label>
+              <br>
+              <select name="responsable_residuos" id="responsable_residuos_select" class="chosen">
+                    <option value="">Seleccione un responsable...</option>
+                    {% for persona in listado_personas %}
+                      <option value="{{persona.documento}}">{{persona}}</option>
+                    {% endfor %}
+              </select>
+              <a class="btn btn-success js-alta-persona" >
+                <span class="glyphicon glyphicon-plus"></span>
+              </a>
+
+              <br><br>
+
+              <label>Responsable Suplente Gestión Residuos</label>
+              <br>
+              <select name="responsable_suplente" id="responsable_suplente_select" class="chosen">
+                    <option value="">Seleccione un suplente ...</option>
+                    {% for persona in listado_personas %}
+                      <option value="{{persona.documento}}">{{persona}}</option>
+                    {% endfor %}
+              </select>
+              <a class="btn btn-success js-alta-persona" >
+                <span class="glyphicon glyphicon-plus"></span>
+              </a>
+
+              <br><br>
+
+              <label>Responsable Técnico</label>
+              <br>
+              <select name="responsable_tecnico" id="responsable_tecnico_select" class="chosen">
+                    <option value="">Seleccione un técnico ...</option>
+                    {% for persona in listado_personas %}
+                      <option value="{{persona.documento}}">{{persona}}</option>
+                    {% endfor %}
+              </select>
+              <a class="btn btn-success js-alta-persona" >
+                <span class="glyphicon glyphicon-plus"></span>
+              </a>
+
+              {% if messages %}
+                {% for message in messages %}
+                  <div align="center">
+                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+                  </div>
+                {% endfor %}
+              {% endif %}
+
+          {% endif %}
+          </div>
         </div>
-    </div>
-  </div>
-{% endblock %}
+    </section>
 
-{% block snd-fila %}
-    <div class="col-md-4">
+    <h3>DOMICILIO REAL DEL CENTRO GENERADOR</h3>
+    <section style="overflow-y: auto;">
       <div class="panel panel-default">
-        <div class="panel-heading">ÁMBITO/DEPENDENCIA</div>
+          <div class="panel-body">
+            {% for field in domicilio_form.visible_fields %}
+              <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field|add_class:'form-control' }}
+                {% for error in field.errors %}
+                  <span class="help-block">{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <h3>TIPO DE ACTIVIDAD</h3>
+    <section style="overflow-y: auto;">
+      <div class="panel panel-default">
+        <div class="panel-heading">TIPO DE ACTIVIDAD</div>
+          <div class="panel-body">
+              {{actividades_form}}
+          </div>
+      </div>
+    </section>
+
+    <h3>ÁMBITO/DEPENDENCIA</h3>
+    <section style="overflow-y: auto;">
+      <div class="panel panel-default">
           <div class="panel-body">
             {% for field in ambito_dpcia_form.visible_fields %}
               <div class="form-group">
@@ -229,11 +228,11 @@
             {% endfor %}
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="col-md-4">
+    <h3>CARACTERÍSTICAS GENERALES DEL CENTRO DE ATENCIÓN</h3>
+    <section style="overflow-y: auto;">
       <div class="panel panel-default">
-        <div class="panel-heading">CARACTERÍSTICAS GENERALES DEL CENTRO DE ATENCIÓN</div>
           <div class="panel-body">
             {% for field in caract_generales_form.visible_fields %}
               {% if field.label != 'Via acceso' %}
@@ -250,131 +249,134 @@
             {{ caract_generales_form.via_acceso }}
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="col-md-4">
+    <h3>SECTOR DE ACOPIO TRANSITORIO EN EL CENTRO GENERADOR</h3>
+    <section style="overflow-y: auto;">
       <div class="panel panel-default">
-        <div class="panel-heading">SECTOR DE ACOPIO TRANSITORIO EN EL CENTRO GENERADOR</div>
           <div class="panel-body">
             <div class="form-group">
-
               {{ acopio_transitorio_form.camara_frio|attr:"class:camara_frio"|attr:"name:camara_frio"|attr:"onchange:valueChanged()"}}
               <label>Cámara de Frío</label>
               <br>
-
               <div class="dimension_camara_frio" style="display:none">
                 <label>Dimensión cámara de frío</label>
                 {{ acopio_transitorio_form.dimension_camara_frio}}
                 <br><br>
               </div>
-
               {{ acopio_transitorio_form.sector_interno_p_estacionar|attr:"class:sector_interno"|attr:"name:sector_interno"|attr:"onchange:valueChanged()"}}
               <label>Sector interno p/estacionar</label>
               <br>
-
               <div class="dimension_sector_interno" style="display:none">
                 <label>Dimensión del sector de acopio</label>
                 {{ acopio_transitorio_form.dimension_sector}}
                 <br>
               </div>
-
             </div>
-
             <u>Vía de Acceso al sector de acopio</u>
             <br>
-
             {{via_acceso_form}}
           </div>
       </div>
-    </div>
+    </section>
 
-    <script type="text/javascript">
-      function valueChanged()
-      {
-          if($('.camara_frio').is(":checked"))
-              $(".dimension_camara_frio").show();
-          else
-              $(".dimension_camara_frio").hide();
+    <h3>HORARIO DE ATENCION</h3>
+    <section style="overflow-y: auto;">
+      <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group">
 
-          if($('.sector_interno').is(":checked"))
-              $(".dimension_sector_interno").show();
-          else
-              $(".dimension_sector_interno").hide();
-      }
-    </script>
-{% endblock %}
-
-{% block trc-fila %}
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">HORARIO DE ATENCION</div>
-        <div class="panel-body">
-          <div class="form-group">
-
-            <label>Días</label>
-            {{horario_atencion_form.dia}}
-            <br>
-            <label>Horario</label>
-            <br>
-            <div class="input-group bootstrap-timepicker timepicker">
-              {{horario_atencion_form.hora|add_class:'form-control'|attr:"id:hs_timepicker"}}
-              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+              <label>Días</label>
+              {{horario_atencion_form.dia}}
+              <br>
+              <label>Horario</label>
+              <br>
+              <div class="input-group bootstrap-timepicker timepicker">
+                {{horario_atencion_form.hora|add_class:'form-control'|attr:"id:hs_timepicker"}}
+                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+              </div>
             </div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      a:link {
+          text-decoration: none;
+      }
+
+      a:visited {
+          text-decoration: none;
+      }
+
+      a:hover {
+          text-decoration: underline;
+      }
+
+      a:active {
+          text-decoration: underline;
+      }
+    </style>
+
+    <h3>TIPO Y CANTIDAD DE RESIDUOS GENERADOR</h3>
+    <section style="overflow-y: auto;">
+      <div class="panel panel-default">
+          <div class="panel-body">
+            <!--<form action="" method="POST"> -->
+              <!-- {% csrf_token %} -->
+              {{ residuo_generador_formset.management_form }}
+              {% for form in residuo_generador_formset.forms %}
+                <div class="item">
+                  <!-- {{ form.as_p }} -->
+                  {% for field in form.visible_fields %}
+                    <div class="form-group">
+                      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                      {{ field|add_class:'form-control' }}
+                      {% for error in field.errors %}
+                        <span class="help-block">{{ error }}</span>
+                      {% endfor %}
+                    </div>
+                  {% endfor %} <!-- Agrego tweaks a cada formset -->
+                  <p style=""><a class="delete" href="#">Borrar</a></p>
+                </div>
+              {% endfor %}
+              <p><a id="add" href="#">Agregar otro elemento</a></p>
+              <!-- <input type="submit" value=" Submit "/> -->
+            <!--</form> -->
           </div>
       </div>
-    </div>
+    </section>
+
   </div>
 
-  <style>
-    a:link {
-        text-decoration: none;
-    }
+<script type="text/javascript">
 
-    a:visited {
-        text-decoration: none;
-    }
+  $("#form-wizard").steps({
+    headerTag: "h3",
+    bodyTag: "section",
+    transitionEffect: "slideLeft",
+    stepsOrientation: "vertical",
+    autoFocus: true,
+    enableFinishButton: false,
+  });
 
-    a:hover {
-        text-decoration: underline;
-    }
+  function valueChanged()
+  {
+      if($('.camara_frio').is(":checked"))
+          $(".dimension_camara_frio").show();
+      else
+          $(".dimension_camara_frio").hide();
 
-    a:active {
-        text-decoration: underline;
-    }
-  </style>
+      if($('.sector_interno').is(":checked"))
+          $(".dimension_sector_interno").show();
+      else
+          $(".dimension_sector_interno").hide();
+  }
 
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
-        <div class="panel-body">
-          <!--<form action="" method="POST"> -->
-            <!-- {% csrf_token %} -->
-            {{ residuo_generador_formset.management_form }}
-            {% for form in residuo_generador_formset.forms %}
-              <div class="item">
-                <!-- {{ form.as_p }} -->
-                {% for field in form.visible_fields %}
-                  <div class="form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field|add_class:'form-control' }}
-                    {% for error in field.errors %}
-                      <span class="help-block">{{ error }}</span>
-                    {% endfor %}
-                  </div>
-                {% endfor %} <!-- Agrego tweaks a cada formset -->
-                <p style=""><a class="delete" href="#">Borrar</a></p>
-              </div>
-            {% endfor %}
-            <p><a id="add" href="#">Agregar otro elemento</a></p>
-            <!-- <input type="submit" value=" Submit "/> -->
-          <!--</form> -->
-        </div>
-    </div>
-  </div>
+  $('#hs_timepicker').timepicker();
 
-  <script type="text/javascript">
-      $('#hs_timepicker').timepicker();
-  </script>
+</script>
+
 {% endblock %}
 
 {% block url-cancelar %}
