@@ -33,6 +33,7 @@ class PersonaForm(forms.ModelForm):
             raise forms.ValidationError('El nombre de la persona, solo puede contener letras y/o espacios')
         return nombre
 
+
     def clean_documento(self):
         documento = self.cleaned_data['documento']
         if not re.match(r"^[0-9]{7,}$", documento):
@@ -112,10 +113,9 @@ class AltaGeneradorForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     class Meta:
         model = EstablecimientoGenerador
-        exclude = ['tipo_actividad', 'director_responsable', 'responsable_residuos', 'responsable_suplente', 'responsable_tecnico',
-                  'fecha', 'via_acceso', 'domicilio', 'caract_generales', 'ambito_dependencia' ]
+        exclude = ['tipo_actividad', 'fecha', 'via_acceso', 'domicilio', 'caract_generales', 'ambito_dependencia' ]
         widgets = {
-            'observaciones_comentarios': forms.Textarea(attrs={'rows': 2, 'cols': 20}),
+            'observaciones_comentarios': forms.Textarea(attrs={'rows': 4, 'cols': 10}),
         }
 
 

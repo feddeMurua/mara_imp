@@ -36,7 +36,7 @@ class Nacionalidad(models.Model):
 class Persona(models.Model):
     apellido = models.CharField(max_length=50)
     nombre = models.CharField(max_length=50)
-    documento = models.BigIntegerField(primary_key=True)
+    documento = models.CharField(max_length=50, unique=True)
     telefono_fijo = models.CharField(max_length=50, null=True, blank=True)
     celular = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=50, null=True, blank=True)

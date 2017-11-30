@@ -4,15 +4,30 @@
 
 {% block stylesheets %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/estilos_forms.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/parsley.css' %}"/>
   {% block more-stylesheets %} {% endblock %}
 {% endblock %}
 
-{% block scripts %}{% endblock %}
+{% block scripts %}
+  <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/select2.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/parsley.js' %}"></script>
+
+  <script>
+  $(document).ready(function() {
+    $('.select_personas').select2();
+  });
+  </script>
+{% endblock %}
 
 {%block content%}
 
-  <div class="container container-form" style="width:90%">
-      <form method="post">
+  <div class="container container-form">
+      <form class="form-wizard" method="post">
           {% csrf_token %}
           <div class="panel panel-primary">
             <div class="panel-heading">FORMULARIO DE REGISTRO</div>
@@ -36,9 +51,11 @@
                   {% endblock %}
               </div>
               <div class="panel-footer text-right">
+                {% block btn-save-form %}
                 <button type="submit" class="btn btn-success" >
                   <span class="glyphicon glyphicon-ok"></span> Guardar
                 </button>
+                {% endblock %}
                 <a class="btn btn-danger btn-cancelar" href= "{% block url-cancelar %}{% endblock %}" >Cancelar</a>
               </div>
             </div>
@@ -97,38 +114,80 @@
   {% endblock %}
 
   {% block more-scripts %}
-      <script>
 
-        $('.chosen').chosen();
+    <script type="text/javascript">
 
-        $.datepicker.regional['es'] = {
-         closeText: 'Cerrar',
-         prevText: '< Ant',
-         nextText: 'Sig >',
-         currentText: 'Hoy',
-         monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-         monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-         dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-         dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-         dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-         weekHeader: 'Sm',
-         dateFormat: 'dd/mm/yy',
-         firstDay: 1,
-         isRTL: false,
-         showMonthAfterYear: false,
-         yearSuffix: ''
-         };
-         $.datepicker.setDefaults($.datepicker.regional['es']);
+      $(function () {
+        var $sections = $('.form-section');
 
-         $(function() {
-           $( ".datepicker" ).datepicker({
-             changeMonth: true,
-             changeYear: true,
-             minYear:2000
-           });
+        function navigateTo(index) {
+          // Mark the current section with the class 'current'
+          $sections
+            .removeClass('current')
+            .eq(index)
+              .addClass('current');
+          // Show only the navigation buttons that make sense for the current section:
+          $('.form-navigation .previous').toggle(index > 0);
+          var atTheEnd = index >= $sections.length - 1;
+          $('.form-navigation .next').toggle(!atTheEnd);
+          $('.form-navigation [type=submit]').toggle(atTheEnd);
+        }
+
+        function curIndex() {
+          // Return the current index by looking at which section has the class 'current'
+          return $sections.index($sections.filter('.current'));
+        }
+
+        // Previous button is easy, just go back
+        $('.form-navigation .previous').click(function() {
+          navigateTo(curIndex() - 1);
+        });
+
+        // Next button goes forward iff current block validates
+        $('.form-navigation .next').click(function() {
+          $('.form-wizard').parsley().whenValidate({
+            group: 'block-' + curIndex()
+          }).done(function() {
+            navigateTo(curIndex() + 1);
+          });
+        });
+
+        // Prepare sections by setting the `data-parsley-group` attribute to 'block-0', 'block-1', etc.
+        $sections.each(function(index, section) {
+          $(section).find(':input').attr('data-parsley-group', 'block-' + index);
+        });
+        navigateTo(0); // Start at the beginning
+      });
+
+      //DATEPICKER
+      $.datepicker.regional['es'] = {
+       closeText: 'Cerrar',
+       prevText: '< Ant',
+       nextText: 'Sig >',
+       currentText: 'Hoy',
+       monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+       monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+       dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+       dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+       dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+       weekHeader: 'Sm',
+       dateFormat: 'dd/mm/yy',
+       firstDay: 1,
+       isRTL: false,
+       showMonthAfterYear: false,
+       yearSuffix: ''
+       };
+       $.datepicker.setDefaults($.datepicker.regional['es']);
+
+       $(function() {
+         $( ".datepicker" ).datepicker({
+           changeMonth: true,
+           changeYear: true,
+           minYear:2000
          });
+       });
 
-       </script>
+    </script>
   {% endblock %}
 
 {% endblock %}

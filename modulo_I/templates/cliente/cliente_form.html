@@ -4,15 +4,10 @@
 
 {% block more-stylesheets %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}"/>
-  <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}"/>
 {% endblock %}
 
 {% block scripts %}
-  <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/chosen.jquery.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  {{block.super}}
 {% endblock %}
 
 {% block title %}Cliente{% endblock %}
@@ -30,34 +25,28 @@
         {% if persona_form %}
             <label>Apoderado</label>
             <br>
-            <select name="persona" id="persona_select" class="chosen">
+            <select class="select_personas" style="width:100%" name="apoderado" required data-parsley-error-message="(*)El campo Apoderado es obligatorio">
                   <option value="">Seleccione un apoderado...</option>
                   {% for persona in listado_personas %}
                     <option value="{{persona.documento}}">{{persona}}</option>
                   {% endfor %}
             </select>
+            <br>
             <a class="btn btn-success js-alta-persona" >
               <span class="glyphicon glyphicon-plus"></span>
             </a>
 
             <br><br>
 
-            {% if messages %}
-              {% for message in messages %}
-                <div align="center">
-                  <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
-                </div>
-              {% endfor %}
-            {% endif %}
-
             <label>Contacto Comercial</label>
             <br>
-            <select name="contacto" id="contacto_select" class="chosen">
+            <select class="select_personas" style="width:100%" name="contacto-comercial" required data-parsley-error-message="(*)El campo Contacto Comercial es obligatorio">
                   <option value="">Seleccione un contacto...</option>
                   {% for persona in listado_personas %}
                     <option value="{{persona.documento}}">{{persona}}</option>
                   {% endfor %}
             </select>
+            <br>
             <a class="btn btn-success js-alta-persona" >
               <span class="glyphicon glyphicon-plus"></span>
             </a>
@@ -102,7 +91,7 @@
       </div>
     </div>
   </div>
-  
+
 {% endblock %}
 
 {% block url-cancelar %}

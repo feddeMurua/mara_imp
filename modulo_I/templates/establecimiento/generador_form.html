@@ -4,21 +4,15 @@
 
 {% block more-stylesheets %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}"/>
-  <link rel="stylesheet" href="{% static 'css/chosen.min.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.steps.css' %}"/>
 {% endblock %}
 
 {% block scripts %}
-  <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/chosen.jquery.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  {{block.super}}
   <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/jquery.steps.js' %}"></script>
   <script type="text/javascript">
     $(document).ready(function() {
+
       // Code adapted from http://djangosnippets.org/snippets/1389/
       function updateElementIndex(el, prefix, ndx) {
         var id_regex = new RegExp('(' + prefix + '-\\d+-)');
@@ -105,41 +99,49 @@
 
 {% block step-form %}
 
-  <div id="form-wizard">
-
-    <h3>DATOS DEL GENERADOR</h3>
-    <section style="overflow-y: auto;">
+   <div class="form-section">
       <div class="panel panel-default">
-        <div class="panel-body">
-          {% for field in generador_form.visible_fields %}
-            <div class="form-group">
-              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-              {{ field|add_class:'form-control' }}
-              {% for error in field.errors %}
-                <span class="help-block">{{ error }}</span>
-              {% endfor %}
-            </div>
-          {% endfor %}
+        <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
+          <div class="panel-body">
 
-          {% if persona_form %}
-              <label>Director Responsable</label>
+            <label>(*)Número de Inscripción en el Registro de Generadores Provincia del Chubut:</label>
+            {{generador_form.nro_inscripcion|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo N° inscripción es obligatorio"}}
+            <br>
+            <label>(*)Razón Social:</label>
+            {{generador_form.razon_social|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo razón social es obligatorio"}}
+            <br>
+            <label>(*)Teléfono:</label>
+            {{generador_form.telefono|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo teléfono es obligatorio"}}
+            <br>
+            <label>Correo Electrónico:</label>
+            {{generador_form.email|add_class:'form-control'|attr:"type:email"|attr:"data-parsley-type=email"|attr:"data-parsley-error-message:(*)Formato de correo incorrecto"}}
+            <br>
+            <label>(*)Fecha Vínculo:</label>
+            {{generador_form.telefono|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha que se creo el vínculo es obligatorio"}}
+            <br>
+            <label>Observaciones/Comentarios:</label>
+            {{generador_form.observaciones_comentarios|add_class:'form-control'}}
+
+            {% if persona_form %}
+              <br><br>
+              <label>(*)Director Responsable:</label>
               <br>
-              <select name="director_responsable" id="director_responsable_select" class="chosen">
-                    <option value="">Seleccione un director ...</option>
-                    {% for cliente in listado_clientes %}
-                      <option value="{{cliente.apoderado.documento}}">{{cliente}}</option>
-                    {% endfor %}
+              <select class="select_personas" style="width:100%" name="director" required data-parsley-error-message="(*)El campo Director responsable es obligatorio">
+                <option value="">Seleccione un director ...</option>
+                {% for cliente in listado_clientes %}
+                  <option value="{{cliente.apoderado.documento}}">{{cliente}}</option>
+                {% endfor %}
               </select>
 
               <br><br>
 
-              <label>Responsable Gestión Residuos</label>
+              <label>(*)Responsable de Gestión de Residuos:</label>
               <br>
-              <select name="responsable_residuos" id="responsable_residuos_select" class="chosen">
-                    <option value="">Seleccione un responsable...</option>
-                    {% for persona in listado_personas %}
-                      <option value="{{persona.documento}}">{{persona}}</option>
-                    {% endfor %}
+              <select class="select_personas" style="width:100%" name="responsable-residuos" required data-parsley-error-message="(*)El campo Responsable de gestión de residuos es obligatorio">
+                <option value="">Seleccione un responsable ...</option>
+                {% for persona in listado_personas %}
+                  <option value="{{persona.documento}}">{{persona}}</option>
+                {% endfor %}
               </select>
               <a class="btn btn-success js-alta-persona" >
                 <span class="glyphicon glyphicon-plus"></span>
@@ -147,9 +149,9 @@
 
               <br><br>
 
-              <label>Responsable Suplente Gestión Residuos</label>
+              <label>(*)Responsable Suplente Gestión Residuos</label>
               <br>
-              <select name="responsable_suplente" id="responsable_suplente_select" class="chosen">
+              <select class="select_personas" style="width:100%" name="responsable-suplente" required data-parsley-error-message="(*)El campo Responsable Suplente de gestión de residuos es obligatorio">
                     <option value="">Seleccione un suplente ...</option>
                     {% for persona in listado_personas %}
                       <option value="{{persona.documento}}">{{persona}}</option>
@@ -161,9 +163,9 @@
 
               <br><br>
 
-              <label>Responsable Técnico</label>
+              <label>(*)Responsable Técnico</label>
               <br>
-              <select name="responsable_tecnico" id="responsable_tecnico_select" class="chosen">
+              <select class="select_personas" style="width:100%" name="responsable-técnico" required data-parsley-error-message="(*)El campo Responsable Técnico es obligatorio">
                     <option value="">Seleccione un técnico ...</option>
                     {% for persona in listado_personas %}
                       <option value="{{persona.documento}}">{{persona}}</option>
@@ -172,49 +174,40 @@
               <a class="btn btn-success js-alta-persona" >
                 <span class="glyphicon glyphicon-plus"></span>
               </a>
+            {% endif %}
 
-              {% if messages %}
-                {% for message in messages %}
-                  <div align="center">
-                    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
-                  </div>
-                {% endfor %}
-              {% endif %}
-
-          {% endif %}
           </div>
         </div>
-    </section>
+    </div>
 
-    <h3>DOMICILIO REAL DEL CENTRO GENERADOR</h3>
-    <section style="overflow-y: auto;">
+    <div class="form-section">
+      <h3>DOMICILIO REAL DEL CENTRO GENERADOR</h3>
       <div class="panel panel-default">
-          <div class="panel-body">
-            {% for field in domicilio_form.visible_fields %}
-              <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field|add_class:'form-control' }}
-                {% for error in field.errors %}
-                  <span class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% endfor %}
+            <div class="panel-body">
+              {% for field in domicilio_form.visible_fields %}
+                <div class="form-group">
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                  {{ field|add_class:'form-control' }}
+                  {% for error in field.errors %}
+                    <span class="help-block">{{ error }}</span>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+          </div>
         </div>
-      </div>
-    </section>
+    </div>
 
-    <h3>TIPO DE ACTIVIDAD</h3>
-    <section style="overflow-y: auto;">
+    <div class="form-section">
+      <h3>TIPO DE ACTIVIDAD</h3>
       <div class="panel panel-default">
-        <div class="panel-heading">TIPO DE ACTIVIDAD</div>
           <div class="panel-body">
-              {{actividades_form}}
+            {{actividades_form}}
           </div>
       </div>
-    </section>
+    </div>
 
-    <h3>ÁMBITO/DEPENDENCIA</h3>
-    <section style="overflow-y: auto;">
+    <div class="form-section">
+      <h3>ÁMBITO/DEPENDENCIA</h3>
       <div class="panel panel-default">
           <div class="panel-body">
             {% for field in ambito_dpcia_form.visible_fields %}
@@ -228,14 +221,14 @@
             {% endfor %}
         </div>
       </div>
-    </section>
+    </div>
 
-    <h3>CARACTERÍSTICAS GENERALES DEL CENTRO DE ATENCIÓN</h3>
-    <section style="overflow-y: auto;">
+    <div class="form-section">
+      <h3>CARACTERÍSTICAS GENERALES DEL CENTRO DE ATENCIÓN</h3>
       <div class="panel panel-default">
           <div class="panel-body">
             {% for field in caract_generales_form.visible_fields %}
-              {% if field.label != 'Via acceso' %}
+              {% if field.html_name  != 'via_acceso' %}
                 <div class="form-group">
                   <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                   {{ field|add_class:'form-control' }}
@@ -249,10 +242,10 @@
             {{ caract_generales_form.via_acceso }}
         </div>
       </div>
-    </section>
+    </div>
 
-    <h3>SECTOR DE ACOPIO TRANSITORIO EN EL CENTRO GENERADOR</h3>
-    <section style="overflow-y: auto;">
+    <div class="form-section">
+      <h3>SECTOR DE ACOPIO TRANSITORIO EN EL CENTRO GENERADOR</h3>
       <div class="panel panel-default">
           <div class="panel-body">
             <div class="form-group">
@@ -278,10 +271,10 @@
             {{via_acceso_form}}
           </div>
       </div>
-    </section>
+    </div>
 
-    <h3>HORARIO DE ATENCION</h3>
-    <section style="overflow-y: auto;">
+    <div class="form-section">
+      <h3>HORARIO DE ATENCION</h3>
       <div class="panel panel-default">
           <div class="panel-body">
             <div class="form-group">
@@ -298,7 +291,7 @@
             </div>
         </div>
       </div>
-    </section>
+    </div>
 
     <style>
       a:link {
@@ -318,8 +311,8 @@
       }
     </style>
 
-    <h3>TIPO Y CANTIDAD DE RESIDUOS GENERADOR</h3>
-    <section style="overflow-y: auto;">
+    <div class="form-section">
+      <h3>TIPO Y CANTIDAD DE RESIDUOS GENERADOR</h3>
       <div class="panel panel-default">
           <div class="panel-body">
             <!--<form action="" method="POST"> -->
@@ -345,39 +338,38 @@
             <!--</form> -->
           </div>
       </div>
-    </section>
+    </div>
 
-  </div>
+    <div class="form-navigation">
+      <button type="button" class="previous btn btn-info pull-left">&lt; Anterior</button>
+      <button type="button" class="next btn btn-info pull-right">Siguiente &gt;</button>
+      <span class="clearfix"></span>
+    </div>
 
-<script type="text/javascript">
+  <script type="text/javascript">
 
-  $("#form-wizard").steps({
-    headerTag: "h3",
-    bodyTag: "section",
-    transitionEffect: "slideLeft",
-    stepsOrientation: "vertical",
-    autoFocus: true,
-    enableFinishButton: false,
-  });
+    // Función para el checkbox del formulario de sector de acopio transitorio
+    function valueChanged()
+    {
+        if($('.camara_frio').is(":checked"))
+            $(".dimension_camara_frio").show();
+        else
+            $(".dimension_camara_frio").hide();
 
-  function valueChanged()
-  {
-      if($('.camara_frio').is(":checked"))
-          $(".dimension_camara_frio").show();
-      else
-          $(".dimension_camara_frio").hide();
+        if($('.sector_interno').is(":checked"))
+            $(".dimension_sector_interno").show();
+        else
+            $(".dimension_sector_interno").hide();
+    }
 
-      if($('.sector_interno').is(":checked"))
-          $(".dimension_sector_interno").show();
-      else
-          $(".dimension_sector_interno").hide();
-  }
+    // timepicker para los campos requeridos
+    $('#hs_timepicker').timepicker();
 
-  $('#hs_timepicker').timepicker();
-
-</script>
+  </script>
 
 {% endblock %}
+
+
 
 {% block url-cancelar %}
   {% url 'generadores:listado_generadores' %}
