@@ -55,8 +55,8 @@ def alta_clientes(request):
         datos_impositivos_form = DatosImpositivosForm(request.POST)
         if cliente_form.is_valid() & domicilio_form.is_valid() & datos_impositivos_form.is_valid():
             cliente = cliente_form.save(commit=False)
-            documento = request.POST.get('persona') #Obtengo documento del selector
-            doc_contacto_personal = request.POST.get('contacto') #Obtengo documento del selector
+            documento = request.POST.get('apoderado') #Obtengo documento del selector
+            doc_contacto_personal = request.POST.get('contacto-comercial') #Obtengo documento del selector
             if doc_contacto_personal:
                 cliente.contacto_comercial = Persona.objects.get(documento=doc_contacto_personal)
             if documento:
@@ -140,6 +140,7 @@ def alta_generadores(request):
 
     listado_personas = Persona.objects.all()
     listado_clientes = Cliente.objects.all()
+    listado_localidades = Localidad.objects.all()
 
     if request.method == 'POST':
         generador_form = AltaGeneradorForm(request.POST)
@@ -211,6 +212,7 @@ def alta_generadores(request):
                'listado_personas':listado_personas,
                'listado_clientes':listado_clientes,
                'domicilio_form':domicilio_form,
+               'listado_localidades':listado_localidades,
                'ambito_dpcia_form':ambito_dpcia_form,
                'caract_generales_form':caract_generales_form,
                'via_acceso_form':via_acceso_form,

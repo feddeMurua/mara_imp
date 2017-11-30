@@ -82,7 +82,7 @@ class CaracteristicasGenerales(models.Model):
 class ResiduoGenerador(models.Model):
     tipo = models.CharField(max_length=80, choices=TiposResiduos)
     volumen_mensual_estimado = models.CharField(max_length=50)
-    kgs_mensual_estimado = models.CharField(max_length=50, null=True, blank=True)
+    kgs_mensual_estimado = models.CharField(max_length=50)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
 class AcopioTransitorio(models.Model):
@@ -118,7 +118,7 @@ class EstablecimientoGenerador(models.Model):
     caract_generales = models.ForeignKey('CaracteristicasGenerales')
     fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
     fecha = models.DateField(default=now)
-    observaciones_comentarios = models.TextField(max_length=200, default='', blank=True)
+    observaciones_comentarios = models.TextField(max_length=200, default='', blank=True, null=True)
     via_acceso = models.ForeignKey('ViaAccesoSector')
 
     def __str__(self):
