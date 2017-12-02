@@ -5,7 +5,8 @@
   <head>
       <meta charset="UTF-8"/>
       <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
-
+      <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}"/>
+      
       {% block stylesheets %}{% endblock %}
       {% block scripts %}{% endblock %}
 
@@ -25,7 +26,7 @@
         </header>
       {% endblock %}
 
-      <main role="main">      
+      <main role="main">
       {% block content %}{% endblock %}
       </main>
 

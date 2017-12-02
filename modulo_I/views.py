@@ -55,31 +55,18 @@ def alta_clientes(request):
         datos_impositivos_form = DatosImpositivosForm(request.POST)
         if cliente_form.is_valid() & domicilio_form.is_valid() & datos_impositivos_form.is_valid():
             cliente = cliente_form.save(commit=False)
-            documento = request.POST.get('apoderado') #Obtengo documento del selector
-            doc_contacto_personal = request.POST.get('contacto-comercial') #Obtengo documento del selector
-            if doc_contacto_personal:
-                cliente.contacto_comercial = Persona.objects.get(documento=doc_contacto_personal)
-            if documento:
-                cliente.apoderado = Persona.objects.get(documento=documento)
-                cliente.domicilio_legal = domicilio_form.save()
-                cliente.dato_impositivo= datos_impositivos_form.save()
-                cliente.save()
-                return redirect('clientes:listado_clientes')
-            else:
-                messages.add_message(request, messages.WARNING, 'Atención: No ingresó ningún apoderado')
+            cliente.domicilio_legal = domicilio_form.save()
+            cliente.dato_impositivo= datos_impositivos_form.save()
+            cliente.save()
+            return redirect('clientes:listado_clientes')
     else:
         cliente_form = AltaClienteForm
         domicilio_form = DomicilioForm
         datos_impositivos_form = DatosImpositivosForm
 
-    persona_form = PersonaForm
-    listado_personas = Persona.objects.all()
-
     contexto= {'cliente_form': cliente_form,
                 'domicilio_form': domicilio_form,
-                'datos_impositivos_form':datos_impositivos_form,
-                'persona_form':PersonaForm,
-                'listado_personas':listado_personas,
+                'datos_impositivos_form':datos_impositivos_form,                
     }
 
     return render(request, "cliente/cliente_form.html", contexto)

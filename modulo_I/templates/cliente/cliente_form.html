@@ -14,82 +14,63 @@
 
 {% block header-title %} Información de Cliente{% endblock %}
 
+{% block step-form %}
 
-{% block prim-fila %}
-
-  <div class="col-md-4">
-    <!--columna donde ubica panel -->
-    <div class="panel panel-default" style="height:75%">
+  <div class="form-section">
+    <div class="panel panel-default">
       <div class="panel-heading">DATOS APODERADO/RESPONSABLE</div>
-      <div class="panel-body">
-            <label>Apoderado</label>
-            <br>
-            <select class="select_generico" style="width:100%" name="apoderado" required data-parsley-error-message="(*)El campo Apoderado es obligatorio">
-                  <option value="">Seleccione un apoderado...</option>
-                  {% for persona in listado_personas %}
-                    <option value="{{persona.documento}}">{{persona}}</option>
-                  {% endfor %}
-            </select>
-            <br>
-            <a class="btn btn-success js-alta-persona" >
-              <span class="glyphicon glyphicon-plus"></span>
-            </a>
-
-            <br><br>
-
-            <label>Contacto Comercial</label>
-            <br>
-            <select class="select_generico" style="width:100%" name="contacto-comercial" required data-parsley-error-message="(*)El campo Contacto Comercial es obligatorio">
-                  <option value="">Seleccione un contacto...</option>
-                  {% for persona in listado_personas %}
-                    <option value="{{persona.documento}}">{{persona}}</option>
-                  {% endfor %}
-            </select>
-            <br>
-            <a class="btn btn-success js-alta-persona" >
-              <span class="glyphicon glyphicon-plus"></span>
-            </a>        
-        <br><br>
-        {% for field in cliente_form.visible_fields %}
-          <div class="form-group">
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field|add_class:'form-control' }}
-
-            {% for error in field.errors %}
-              <span class="help-block">{{ error }}</span>
-            {% endfor %}
-          </div>
-        {% endfor %}
-      </div>
+        <div class="panel-body">
+          <label>(*)Apoderado:</label>
+          {{cliente_form.apoderado|attr:"required:"|attr:"data-parsley-error-message:(*)EL campo apoderado es obligatorio"}}
+          <br>
+          <a class="btn btn-success js-alta-persona" >
+            <span class="glyphicon glyphicon-plus"></span>
+          </a>
+          <br><br>
+          <label>(*)Contacto Comercial:</label>
+          {{cliente_form.contacto_comercial|attr:"required:"|attr:"data-parsley-error-message:(*)EL campo contacto comercial es obligatorio"}}
+          <br>
+          <a class="btn btn-success js-alta-persona" >
+            <span class="glyphicon glyphicon-plus"></span>
+          </a>
+          <br><br>
+          <label>(*)Razón Social:</label>
+          {{cliente_form.razon_social|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo razón social es obligatorio"}}
+          <br>
+          <label>(*)Cargo:</label>
+          {{cliente_form.cargo|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo cargo es obligatorio"}}
+          <br>
+          <label>(*)Fecha vínculo:</label>
+          {{cliente_form.fecha_vinculo|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha vínculo es obligatorio"}}
+          <br>
+        </div>
     </div>
   </div>
 
-  <div class="col-md-3">
-    <div class="panel panel-default" style="height:75%">
+  <div class="form-section">
+    <div class="panel panel-default">
       <div class="panel-heading">DATOS IMPOSITIVOS</div>
         <div class="panel-body">
-          {{datos_impositivos_form}}
+          <label>(*)Impuesto Ganancias:</label>
+          {{datos_impositivos_form.impuestos_ganancias|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos un impuesto a las ganancias"}}
+          <br>
+          <label>(*)Impuesto Valor Agregado:</label>
+          {{datos_impositivos_form.impuestos_valor_agregado|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos un impuesto al valor agregado"}}
+          <br>
+          <label>(*)Impuesto Ingresos Brutos:</label>
+          {{datos_impositivos_form.ingresos_brutos|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos un impuesto de ingresos brutos"}}
+          <br>
+          <label>(*)Número IIBB:</label>
+          {{datos_impositivos_form.nro_iibb|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo IIBB es obligatorio"}}
+          <br>
         </div>
-      </div>
-  </div>
-
-  <div class="col-md-4">
-    <div class="panel panel-default" style="height:100%">
-      <div class="panel-heading">DOMICILIO LEGAL PARA FACTURACION</div>
-        <div class="panel-body">
-          {% for field in domicilio_form.visible_fields %}
-            <div class="form-group">
-              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-              {{ field|add_class:'form-control' }}
-              {% for error in field.errors %}
-                <span class="help-block">{{ error }}</span>
-              {% endfor %}
-            </div>
-          {% endfor %}
-      </div>
     </div>
   </div>
+{% endblock %}
 
+<!-- nombre en el heading del panel -->
+{% block phDomicilio %}
+  <div class="panel-heading">DOMICILIO REAL DEL CLIENTE</div>
 {% endblock %}
 
 {% block url-cancelar %}

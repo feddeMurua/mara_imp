@@ -3,8 +3,8 @@
 {% load staticfiles bootstrap3 %}
 
 {% block stylesheets %}
-  <link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/filtro_upHeader_tabla.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap.css' %}"/>
 {% endblock %}
 
 {% block scripts%}
@@ -12,6 +12,7 @@
   <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dataTables.bootstrap.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/logica_tabla.js' %}"></script>
   {% block more-scripts %}{% endblock %}
 {% endblock %}
@@ -33,6 +34,7 @@
                         </table>
                       </div>
                   </div>
+
                   <div class="container">
                     <!-- Modal -->
                     <div class="modal fade" id="modal_baja" role="dialog">
@@ -53,6 +55,7 @@
                       </div>
                     </div>
                   </div>
+                  
                 </div>
             </div>
       </div>

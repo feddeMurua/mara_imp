@@ -1,12 +1,12 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
-{% load staticfiles bootstrap3 %}
+{% load widget_tweaks %}
 
 {% block stylesheets %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/estilos_forms.css' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'css/parsley.css' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'css/select2.css' %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/select2-bootstrap.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/select2-bootstrap.css' %}"/>  
   {% block more-stylesheets %} {% endblock %}
 {% endblock %}
 
@@ -15,7 +15,7 @@
   <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js/select2.full.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/select2.full.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/parsley.js' %}"></script>
 {% endblock %}
 
@@ -27,30 +27,54 @@
           <div class="panel panel-primary">
             <div class="panel-heading">FORMULARIO DE REGISTRO</div>
               <div class="panel-body">
-                  {% block step-form %}
-                    <!--contenedor de los paneles qe se van agregando -->
-                    <div class="container" style="padding-top:15px;">
-                      <!--class paneles primera fila -->
-                      <div class="row">
-                        {% block prim-fila %}{% endblock %}
-                      </div>
-                      <!--class paneles segunda fila -->
-                      <div class="row">
-                        {% block snd-fila %}{% endblock %}
-                      </div>
-                      <!--class paneles tercera fila -->
-                      <div class="row">
-                        {% block trc-fila %}{% endblock %}
-                      </div>
-                    </div>
-                  {% endblock %}
+                <!-- seccciones de cada formulario -->
+                {% block step-form %}{% endblock %}
+                <!-- secccion domicilio-step-form -->
+                <div class="form-section">
+                 <div class="panel panel-default">
+                    {% block phDomicilio %}{% endblock %}
+                       <div class="panel-body">
+                         <label>(*)Barrio:</label>
+                         {{domicilio_form.barrio|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Barrio es obligatorio"}}
+                         <br>
+                         <label>(*)Calle:</label>
+                         {{domicilio_form.calle|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Calle es obligatorio"}}
+                         <br>
+                         <label>Entre:</label>
+                         {{domicilio_form.calle_entre1|add_class:'form-control'}}
+                         <br>
+                         <label>Entre:</label>
+                         {{domicilio_form.calle_entre2|add_class:'form-control'}}
+                         <br>
+                         <label>(*)Número°:</label>
+                         {{domicilio_form.nro|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo Número° "}}
+                         <br>
+                         <label>Piso:</label>
+                         {{domicilio_form.piso|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+                         <br>
+                         <label>Dpto:</label>
+                         {{domicilio_form.dpto|add_class:'form-control'}}
+                         <br>
+                         <label>Comarca:</label>
+                         {{domicilio_form.comarca|add_class:'form-control'}}
+                         <br>
+                         <label>(*)Localidad:</label>
+                         {{domicilio_form.localidad|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
+                         <br>
+                     </div>
+                   </div>
+                </div>
+                <!-- navegación de cada formulario -->
+                <div class="form-navigation">
+                  <button type="button" class="previous btn btn-info pull-left">&lt; Anterior</button>
+                  <button type="button" class="next btn btn-info pull-right">Siguiente &gt;</button>
+                  <button type="submit" class="btn btn-success pull-right" >
+                    <span class="glyphicon glyphicon-ok"></span> Guardar
+                  </button>
+                  <span class="clearfix"></span>
+                </div>
               </div>
               <div class="panel-footer text-right">
-                <!--
-                <button type="submit" class="btn btn-success" >
-                  <span class="glyphicon glyphicon-ok"></span> Guardar
-                </button>
-                -->
                 <a class="btn btn-danger btn-cancelar" href= "{% block url-cancelar %}{% endblock %}" >Cancelar</a>
               </div>
             </div>

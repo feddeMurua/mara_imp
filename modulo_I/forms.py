@@ -71,7 +71,7 @@ class AltaClienteForm(forms.ModelForm):
 
     class Meta:
         model = Cliente
-        exclude = ['domicilio_legal', 'fecha','dato_impositivo','apoderado','contacto_comercial']
+        exclude = ['domicilio_legal', 'fecha','dato_impositivo',]
 
 
 class ModificacionClienteForm(forms.ModelForm):
@@ -115,14 +115,14 @@ class AltaGeneradorForm(forms.ModelForm):
             'observaciones_comentarios': forms.Textarea(attrs={'rows': 4, 'cols': 10}),
         }
 
-'''
+
 class ModificacionGeneradorForm(forms.ModelForm):
 
     class Meta:
         model = EstablecimientoGenerador
         exclude = ['tipo_actividad','nro_inscripcion',]
 
-'''
+
 class ActividadesForm(forms.ModelForm):
 
     class Meta:
