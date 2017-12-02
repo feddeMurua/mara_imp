@@ -40,7 +40,7 @@ def alta_personas(request):
         form = PersonaForm()
 
     context = {'form': form}
-    data['html_form'] = render_to_string('cliente/partial_persona_alta.html',
+    data['html_form'] = render_to_string('persona/partial_persona_alta.html',
         context,
         request=request
     )
@@ -66,7 +66,7 @@ def alta_clientes(request):
 
     contexto= {'cliente_form': cliente_form,
                 'domicilio_form': domicilio_form,
-                'datos_impositivos_form':datos_impositivos_form,                
+                'datos_impositivos_form':datos_impositivos_form,
     }
 
     return render(request, "cliente/cliente_form.html", contexto)
