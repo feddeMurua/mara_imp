@@ -131,6 +131,7 @@ def detalle_generadores(request, nro_inscripcion):
 
 #@login_required(login_url='login')
 def alta_generadores(request):
+
     class RequiredFormSet(BaseFormSet):
         def __init__(self, *args, **kwargs):
             super(RequiredFormSet, self).__init__(*args, **kwargs)
@@ -138,51 +139,29 @@ def alta_generadores(request):
                 form.empty_permitted = False
     ResiduoGeneradorFormSet = formset_factory(ResiduoGeneradorForm, max_num=3, formset=RequiredFormSet)
 
-    listado_personas = Persona.objects.all()
-    listado_clientes = Cliente.objects.all()
-    listado_localidades = Localidad.objects.all()
-
     if request.method == 'POST':
         generador_form = AltaGeneradorForm(request.POST)
         actividades_form = ActividadesForm(request.POST)
+        horario_atencion_form = HorarioAtencionForm(request.POST)
+        residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, request.FILES)
+        acopio_transitorio_form = AcopioTransitorioForm(request.POST)
+        via_acceso_form = ViaAccesoSectorForm(request.POST)
         domicilio_form = DomicilioForm(request.POST)
         ambito_dpcia_form = AmbitoDependenciaForm(request.POST)
         caract_generales_form = CaracteristicasGeneralesForm(request.POST)
-        via_acceso_form = ViaAccesoSectorForm(request.POST)
-        acopio_transitorio_form = AcopioTransitorioForm(request.POST)
-        horario_atencion_form = HorarioAtencionForm(request.POST)
-        residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, request.FILES)
 
         if generador_form.is_valid() & actividades_form.is_valid() & domicilio_form.is_valid() \
             & ambito_dpcia_form.is_valid() & caract_generales_form.is_valid() \
             & via_acceso_form.is_valid() & acopio_transitorio_form.is_valid() \
             & horario_atencion_form.is_valid() & residuo_generador_formset.is_valid():
 
-
             generador = generador_form.save(commit=False)
-            tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
-            generador.tipo_actividad = tipo_actividad
-            documento_director = request.POST.get('director_responsable') #Obtengo documento del selector desde el template
-            documento_responsable = request.POST.get('responsable_residuos')
-            documento_suplente = request.POST.get('responsable_suplente')
-            documento_tecnico = request.POST.get('responsable_tecnico')
-            generador.director_responsable = Cliente.objects.get(apoderado__documento=documento_director)
-            generador.responsable_residuos = Persona.objects.get(documento=documento_responsable)
-            generador.responsable_suplente = Persona.objects.get(documento=documento_suplente)
-            generador.responsable_tecnico = Persona.objects.get(documento=documento_tecnico)
-            generador.domicilio = domicilio_form.save()
-            generador.ambito_dependencia = ambito_dpcia_form.save()
-            generador.caract_generales = caract_generales_form.save()
 
             # Guardo el formset de residuos
             for form in residuo_generador_formset.forms:
                 residuo_generador_item = form.save(commit=False)
                 residuo_generador_item.establecimiento_generador = generador
                 residuo_generador_item.save()
-
-            horario_atencion = horario_atencion_form.save(commit=False)
-            horario_atencion.establecimiento_generador = generador
-            horario_atencion.save()
 
             acopio = acopio_transitorio_form.save()
             via_acceso = ViaAccesoSector() # se crea objeto via_acceso para asignarle sector acopio
@@ -191,28 +170,36 @@ def alta_generadores(request):
             via_acceso.save()
 
             generador.via_acceso = via_acceso
+            generador.domicilio = domicilio_form.save()
+            generador.ambito_dependencia = ambito_dpcia_form.save()
+            generador.caract_generales = caract_generales_form.save()
+
+            generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
+            horario_atencion = horario_atencion_form.save(commit=False)
+            generador.dia_atención= horario_atencion.dia_atención
+            generador.hora_atención= horario_atencion.hora_atención
+
             generador.save()
+
 
             return redirect('generadores:listado_generadores')
     else:
         generador_form = AltaGeneradorForm
+        horario_atencion_form = HorarioAtencionForm
         actividades_form = ActividadesForm
+        residuo_generador_formset = ResiduoGeneradorFormSet()
+        acopio_transitorio_form = AcopioTransitorioForm
+        via_acceso_form = ViaAccesoSectorForm
+        persona_form = PersonaForm # para el Agregado que tiene
         domicilio_form = DomicilioForm
         ambito_dpcia_form = AmbitoDependenciaForm
         caract_generales_form = CaracteristicasGeneralesForm
-        via_acceso_form = ViaAccesoSectorForm
-        acopio_transitorio_form = AcopioTransitorioForm
-        horario_atencion_form = HorarioAtencionForm
-        residuo_generador_formset = ResiduoGeneradorFormSet()
-        persona_form = PersonaForm # para el Agregado que tiene
+
 
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,
                'persona_form':PersonaForm,
-               'listado_personas':listado_personas,
-               'listado_clientes':listado_clientes,
                'domicilio_form':domicilio_form,
-               'listado_localidades':listado_localidades,
                'ambito_dpcia_form':ambito_dpcia_form,
                'caract_generales_form':caract_generales_form,
                'via_acceso_form':via_acceso_form,

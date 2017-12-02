@@ -4,8 +4,9 @@
 
 {% block stylesheets %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/estilos_forms.css' %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'css/parsley.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/select2.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/select2-bootstrap.css' %}"/>
   {% block more-stylesheets %} {% endblock %}
 {% endblock %}
 
@@ -14,14 +15,8 @@
   <script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/select2.min.js' %}"></script>
+  <script src="{% static 'js/select2.full.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/parsley.js' %}"></script>
-
-  <script>
-  $(document).ready(function() {
-    $('.select_generico').select2();
-  });
-  </script>
 {% endblock %}
 
 {%block content%}
@@ -51,11 +46,11 @@
                   {% endblock %}
               </div>
               <div class="panel-footer text-right">
-                {% block btn-save-form %}
+                <!--
                 <button type="submit" class="btn btn-success" >
                   <span class="glyphicon glyphicon-ok"></span> Guardar
                 </button>
-                {% endblock %}
+                -->
                 <a class="btn btn-danger btn-cancelar" href= "{% block url-cancelar %}{% endblock %}" >Cancelar</a>
               </div>
             </div>
@@ -185,6 +180,10 @@
            changeYear: true,
            minYear:2000
          });
+       });
+
+       $('select').select2({
+         theme: "bootstrap"
        });
 
     </script>

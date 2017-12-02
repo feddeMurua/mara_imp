@@ -1,16 +1,20 @@
 {% extends "base/base_forms.html" %}
 {% load staticfiles %}
+{% load staticfiles bootstrap3 %}
 {% load widget_tweaks %}
 
 {% block more-stylesheets %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.steps.css' %}"/>
 {% endblock %}
 
 {% block scripts %}
   {{block.super}}
   <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
-  <script type="text/javascript">
+  <script type="text/javascript" src="{% static 'js/jquery.steps.js' %}"></script>
+
+    <script type="text/javascript">
     $(document).ready(function() {
 
       // Code adapted from http://djangosnippets.org/snippets/1389/
@@ -102,275 +106,223 @@
       <div class="panel panel-default">
         <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
           <div class="panel-body">
-
-            <label>(*)Número de Inscripción en el Registro de Generadores Provincia del Chubut:</label>
-            {{generador_form.nro_inscripcion|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo N° inscripción es obligatorio"}}
-            <br>
-            <label>(*)Razón Social:</label>
-            {{generador_form.razon_social|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo razón social es obligatorio"}}
-            <br>
-            <label>(*)Teléfono:</label>
-            {{generador_form.telefono|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo teléfono es obligatorio"}}
-            <br>
-            <label>Correo Electrónico:</label>
-            {{generador_form.email|add_class:'form-control'|attr:"type:email"|attr:"data-parsley-type=email"|attr:"data-parsley-error-message:(*)Formato de correo incorrecto"}}
-            <br>
-            <label>(*)Fecha Vínculo:</label>
-            {{generador_form.fecha_vinculo|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha que se creo el vínculo es obligatorio"}}
-            <br>
-            <label>Observaciones/Comentarios:</label>
-            {{generador_form.observaciones_comentarios|add_class:'form-control'}}
-
-
-            <br><br>
-            <label>(*)Director Responsable:</label>
-            <br>
-            <select class="select_generico" style="width:100%" name="director_responsable" required data-parsley-error-message="(*)El campo Director responsable es obligatorio">
-              <option value="">Seleccione un director ...</option>
-              {% for cliente in listado_clientes %}
-                <option value="{{cliente.apoderado.documento}}">{{cliente}}</option>
-              {% endfor %}
-            </select>
-
-            <br><br>
-
-            <label>(*)Responsable de Gestión de Residuos:</label>
-            <br>
-            <select class="select_generico" style="width:100%" name="responsable_residuos" required data-parsley-error-message="(*)El campo Responsable de gestión de residuos es obligatorio">
-              <option value="">Seleccione un responsable ...</option>
-              {% for persona in listado_personas %}
-                <option value="{{persona.documento}}">{{persona}}</option>
-              {% endfor %}
-            </select>
-            <a class="btn btn-success js-alta-persona" >
-              <span class="glyphicon glyphicon-plus"></span>
-            </a>
-
-            <br><br>
-
-            <label>(*)Responsable Suplente Gestión Residuos</label>
-            <br>
-            <select class="select_generico" style="width:100%" name="responsable_suplente" required data-parsley-error-message="(*)El campo Responsable Suplente de gestión de residuos es obligatorio">
-                  <option value="">Seleccione un suplente ...</option>
-                  {% for persona in listado_personas %}
-                    <option value="{{persona.documento}}">{{persona}}</option>
-                  {% endfor %}
-            </select>
-            <a class="btn btn-success js-alta-persona" >
-              <span class="glyphicon glyphicon-plus"></span>
-            </a>
-
-            <br><br>
-
-            <label>(*)Responsable Técnico</label>
-            <br>
-            <select class="select_generico" style="width:100%" name="responsable_técnico" required data-parsley-error-message="(*)El campo Responsable Técnico es obligatorio">
-                  <option value="">Seleccione un técnico ...</option>
-                  {% for persona in listado_personas %}
-                    <option value="{{persona.documento}}">{{persona}}</option>
-                  {% endfor %}
-            </select>
-            <a class="btn btn-success js-alta-persona" >
-              <span class="glyphicon glyphicon-plus"></span>
-            </a>
-
-          </div>
-        </div>
-    </div>
-
-    <div class="form-section">
-      <div class="panel panel-default">
-        <div class="panel-heading">DOMICILIO REAL DEL CENTRO GENERADOR</div>
-            <div class="panel-body">
-              <label>(*)Barrio:</label>
-              {{domicilio_form.barrio|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Barrio es obligatorio"}}
-              <br>
-              <label>(*)Calle:</label>
-              {{domicilio_form.calle|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Calle es obligatorio"}}
-              <br>
-              <label>Entre:</label>
-              {{domicilio_form.calle_entre1|add_class:'form-control'}}
-              <br>
-              <label>Entre:</label>
-              {{domicilio_form.calle_entre2|add_class:'form-control'}}
-              <br>
-              <label>(*)Número°:</label>
-              {{domicilio_form.nro|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo Número° "}}
-              <br>
-              <label>Piso:</label>
-              {{domicilio_form.calle_entre2|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
-              <br>
-              <label>Dpto:</label>
-              {{domicilio_form.dpto|add_class:'form-control'}}
-              <br>
-              <label>Comarca:</label>
-              {{domicilio_form.comarca|add_class:'form-control'}}
-              <br><br>
-              <label>(*)Localidad:</label>
-              <br>
-              <select class="select_generico" style="width:100%" name="director" required data-parsley-error-message="(*)El campo Localidad es obligatorio">
-                <option value="">Seleccione un localidad ...</option>
-                {% for localidad in listado_localidades %}
-                  <option value="{{localidad.nombre}}">{{localidad}}</option>
-                {% endfor %}
-              </select>
-          </div>
-        </div>
-    </div>
-
-    <div class="form-section">
-      <div class="panel panel-default">
-        <div class="panel-heading">TIPO DE ACTIVIDAD</div>
-          <div class="panel-body">
-            <label>(*)Tipo de actividad:</label>
-            {{actividades_form.tipo_actividad|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos un tipo de actividad del centro generador"}}
-            <br>
-          </div>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="panel panel-default">
-        <div class="panel-heading">ÁMBITO/DEPENDENCIA</div>
-          <div class="panel-body">
-            <label>(*)Categoría:</label>
-            {{ambito_dpcia_form.categoria|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Categoría es obligatorio"}}
-            <br>
-            <label>Municipalidad:</label>
-            {{ambito_dpcia_form.municipalidad|add_class:'form-control'}}
-            <br>
-            <label>Nombre del centro del que depende:</label>
-            {{ambito_dpcia_form.centro_que_depende|add_class:'form-control'}}
-        </div>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="panel panel-default">
-        <div class="panel-heading">CARACTERÍSTICAS GENERALES DEL CENTRO DE ATENCIÓN</div>
-          <div class="panel-body">
-            <label>(*)Cantidad de Quirófanos:</label>
-            {{caract_generales_form.cant_quirofanos|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Cantidad de quirófanos es obligatorio"}}
-            <br>
-            <label>(*)N° de camas:</label>
-            {{caract_generales_form.nro_camas|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo N° de camas es obligatorio"}}
-            <br>
-            <label>(*)Población promedio antendida (al mes):</label>
-            {{caract_generales_form.poblacion_promedio_atendida|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Población promedio atendido es obligatorio"}}
-            <br>
-            <label>(*)Población promedio antendida (al año):</label>
-            {{caract_generales_form.poblacion_promedio_atendida_365|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Población promedio atendido al año es obligatorio"}}
-            <br>
-            <label>(*)Vía de Acceso al centro generador:</label>
-            {{caract_generales_form.via_acceso|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una vía de acceso al centro generador"}}
-            <br>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="panel panel-default">
-        <div class="panel-heading">SECTOR DE ACOPIO TRANSITORIO EN EL CENTRO GENERADOR</div>
-          <div class="panel-body">
             <div class="form-group">
-              {{ acopio_transitorio_form.camara_frio|attr:"class:camara_frio"|attr:"name:camara_frio"|attr:"onchange:valueChanged()"}}
-              <label>Cámara de Frío</label>
+              <label>(*)Director Responsable:</label>
+              {{generador_form.director_responsable|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo director responsable es obligatorio"}}
               <br>
-              <div class="dimension_camara_frio" style="display:none">
-                <label>Dimensión cámara de frío</label>
-                {{ acopio_transitorio_form.dimension_camara_frio|add_class:'form-control'}}
-                <br><br>
-              </div>
-              {{ acopio_transitorio_form.sector_interno_p_estacionar|attr:"class:sector_interno"|attr:"name:sector_interno"|attr:"onchange:valueChanged()"}}
-              <label>Sector interno p/estacionar</label>
+              <label>(*)Responsable Residuos:</label>
+              {{generador_form.responsable_residuos|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo responsable de residuos es obligatorio"}}
               <br>
-              <div class="dimension_sector_interno" style="display:none">
-                <label>Dimensión del sector de acopio</label>
-                {{ acopio_transitorio_form.dimension_sector|add_class:'form-control'}}
-                <br>
-              </div>
+              <label>(*)Responsable Suplentes Residuos:</label>
+              {{generador_form.responsable_suplente|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo director responsable suplente de residuos es obligatorio"}}
+              <br>
+              <label>(*)Responsable Técnico:</label>
+              {{generador_form.responsable_tecnico|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo responsable técnico es obligatorio"}}
+              <br>
+              <label>(*)Número de Inscripción en el Registro de Generadores Provincia del Chubut:</label>
+              {{generador_form.nro_inscripcion|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo N° inscripción es obligatorio"}}
+              <br>
+              <label>(*)Razón Social:</label>
+              {{generador_form.razon_social|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo razón social es obligatorio"}}
+              <br>
+              <label>(*)Teléfono:</label>
+              {{generador_form.telefono|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo teléfono es obligatorio"}}
+              <br>
+              <label>Correo Electrónico:</label>
+              {{generador_form.email|add_class:'form-control'|attr:"type:email"|attr:"data-parsley-type=email"|attr:"data-parsley-error-message:(*)Formato de correo incorrecto"}}
+              <br>
+              <label>Observaciones/Comentarios:</label>
+              {{generador_form.observaciones_comentarios|add_class:'form-control'}}
+              <br>
+              <label>(*)Fecha vínculo:</label>
+              {{generador_form.fecha_vinculo|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha vínculo es obligatorio"}}
+              <br>              
             </div>
-            <label>(*)Vía de Acceso al sector de acopio:</label>
-            {{via_acceso_form.tipo|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una vía de acceso al sector de acopio"}}
           </div>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="panel panel-default">
-        <div class="panel-heading">HORARIO DE ATENCIÓN</div>
-          <div class="panel-body">
-            <div class="form-group">
-              <label>(*)Días</label>
-              {{horario_atencion_form.dia|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una día de la semana"}}
-              <br>
-              <label>Horario</label>
-              <br>
-              <div class="input-group bootstrap-timepicker timepicker">
-                {{horario_atencion_form.hora|add_class:'form-control'|attr:"id:hs_timepicker"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Horario es obligatorio"}}
-                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-              </div>
-            </div>
         </div>
-      </div>
     </div>
-
-    <style>
-      a:link {
-          text-decoration: none;
-      }
-
-      a:visited {
-          text-decoration: none;
-      }
-
-      a:hover {
-          text-decoration: underline;
-      }
-
-      a:active {
-          text-decoration: underline;
-      }
-    </style>
 
     <div class="form-section">
-      <div class="panel panel-default">
-        <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
-          <div class="panel-body">
-              {{ residuo_generador_formset.management_form }}
-              <!-- Agrego tweaks a cada formset -->
-              {% for form in residuo_generador_formset.forms %}
-                <div class="item">
-                  {% for field in form.visible_fields %}
-                    <div class="form-group">
-                      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                      {{ field|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio"}}
-                      {% for error in field.errors %}
-                        <span class="help-block">{{ error }}</span>
-                      {% endfor %}
-                    </div>
-                  {% endfor %}
-                  <p style=""><a class="delete" href="#">Borrar</a></p>
-                </div>
-              {% endfor %}
-              <p><a id="add" href="#">Agregar otro elemento</a></p>
-          </div>
-      </div>
+     <div class="panel panel-default">
+       <div class="panel-heading">DOMICILIO REAL DEL CENTRO GENERADOR</div>
+           <div class="panel-body">
+             <label>(*)Barrio:</label>
+             {{domicilio_form.barrio|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Barrio es obligatorio"}}
+             <br>
+             <label>(*)Calle:</label>
+             {{domicilio_form.calle|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Calle es obligatorio"}}
+             <br>
+             <label>Entre:</label>
+             {{domicilio_form.calle_entre1|add_class:'form-control'}}
+             <br>
+             <label>Entre:</label>
+             {{domicilio_form.calle_entre2|add_class:'form-control'}}
+             <br>
+             <label>(*)Número°:</label>
+             {{domicilio_form.nro|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo Número° "}}
+             <br>
+             <label>Piso:</label>
+             {{domicilio_form.piso|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+             <br>
+             <label>Dpto:</label>
+             {{domicilio_form.dpto|add_class:'form-control'}}
+             <br>
+             <label>Comarca:</label>
+             {{domicilio_form.comarca|add_class:'form-control'}}
+             <br>
+             <label>(*)Localidad:</label>
+             {{domicilio_form.localidad|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
+             <br>
+         </div>
+       </div>
     </div>
+
+   <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">TIPO DE ACTIVIDAD</div>
+         <div class="panel-body">
+           <label>(*)Tipo de actividad:</label>
+           {{actividades_form.tipo_actividad|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos un tipo de actividad del centro generador"}}
+           <br>
+         </div>
+     </div>
+   </div>
+
+   <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">SECTOR DE ACOPIO TRANSITORIO EN EL CENTRO GENERADOR</div>
+         <div class="panel-body">
+           <div class="form-group">
+             {{ acopio_transitorio_form.camara_frio|attr:"class:camara_frio"|attr:"name:camara_frio"|attr:"onchange:valueChanged()"}}
+             <label>Cámara de Frío</label>
+             <br>
+             <div class="dimension_camara_frio" style="display:none">
+               <label>Dimensión cámara de frío</label>
+               {{ acopio_transitorio_form.dimension_camara_frio|add_class:'form-control'}}
+               <br><br>
+             </div>
+             {{ acopio_transitorio_form.sector_interno_p_estacionar|attr:"class:sector_interno"|attr:"name:sector_interno"|attr:"onchange:valueChanged()"}}
+             <label>Sector interno p/estacionar</label>
+             <br>
+             <div class="dimension_sector_interno" style="display:none">
+               <label>Dimensión del sector de acopio</label>
+               {{ acopio_transitorio_form.dimension_sector|add_class:'form-control'}}
+               <br>
+             </div>
+           </div>
+           <label>(*)Vía de Acceso al sector de acopio:</label>
+           {{via_acceso_form.tipo|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una vía de acceso al sector de acopio"}}
+         </div>
+     </div>
+   </div>
+
+   <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">ÁMBITO/DEPENDENCIA</div>
+         <div class="panel-body">
+           <label>(*)Categoría:</label>
+           {{ambito_dpcia_form.categoria|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Categoría es obligatorio"}}
+           <br>
+           <label>Municipalidad:</label>
+           {{ambito_dpcia_form.municipalidad|add_class:'form-control'}}
+           <br>
+           <label>Nombre del centro del que depende:</label>
+           {{ambito_dpcia_form.centro_que_depende|add_class:'form-control'}}
+       </div>
+     </div>
+   </div>
+
+   <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">CARACTERÍSTICAS GENERALES DEL CENTRO DE ATENCIÓN</div>
+         <div class="panel-body">
+           <label>(*)Cantidad de Quirófanos:</label>
+           {{caract_generales_form.cant_quirofanos|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Cantidad de quirófanos es obligatorio"}}
+           <br>
+           <label>(*)N° de camas:</label>
+           {{caract_generales_form.nro_camas|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo N° de camas es obligatorio"}}
+           <br>
+           <label>(*)Población promedio antendida (al mes):</label>
+           {{caract_generales_form.poblacion_promedio_atendida|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Población promedio atendido es obligatorio"}}
+           <br>
+           <label>(*)Población promedio antendida (al año):</label>
+           {{caract_generales_form.poblacion_promedio_atendida_365|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Población promedio atendido al año es obligatorio"}}
+           <br>
+           <label>(*)Vía de Acceso al centro generador:</label>
+           {{caract_generales_form.via_acceso|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una vía de acceso al centro generador"}}
+           <br>
+       </div>
+     </div>
+   </div>
+
+   <div class="form-section">
+     <style>
+       a:link {
+           text-decoration: none;
+       }
+       a:visited {
+           text-decoration: none;
+       }
+       a:hover {
+           text-decoration: underline;
+       }
+       a:active {
+           text-decoration: underline;
+       }
+     </style>
+     <div class="panel panel-default">
+       <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
+         <div class="panel-body">
+             {{ residuo_generador_formset.management_form }}
+             {% for form in residuo_generador_formset.forms %}
+               <div class="item">
+                 {% for field in form.visible_fields %}
+                   <div class="form-group">
+                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                     {{ field|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio"}}
+                     {% for error in field.errors %}
+                       <span class="help-block">{{ error }}</span>
+                     {% endfor %}
+                   </div>
+                 {% endfor %}
+                 <p style=""><a class="delete" href="#">Borrar</a></p>
+               </div>
+             {% endfor %}
+             <p><a id="add" href="#">Agregar otro elemento</a></p>
+         </div>
+     </div>
+   </div>
+
+   <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">HORARIO DE ATENCIÓN</div>
+         <div class="panel-body">
+           <div class="form-group">
+             <label>(*)Días</label>
+             {{horario_atencion_form.dia_atención|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una día de la semana"}}
+             <br>
+             <label>Horario</label>
+             <br>
+             <div class="input-group bootstrap-timepicker timepicker">
+               {{horario_atencion_form.hora_atención|add_class:'form-control'|attr:"id:hs_timepicker"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Horario es obligatorio"}}
+               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+             </div>
+           </div>
+       </div>
+     </div>
+   </div>
+
 
     <div class="form-navigation">
       <button type="button" class="previous btn btn-info pull-left">&lt; Anterior</button>
       <button type="button" class="next btn btn-info pull-right">Siguiente &gt;</button>
-      <input type="submit" class="btn btn-default pull-right">      
+      <button type="submit" class="btn btn-success pull-right" >
+        <span class="glyphicon glyphicon-ok"></span> Guardar
+      </button>
       <span class="clearfix"></span>
     </div>
 
   <script type="text/javascript">
-
-  /*
-form: tipo actividad
-  */
-
 
     // Función para el checkbox del formulario de sector de acopio transitorio
     function valueChanged()

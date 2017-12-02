@@ -87,12 +87,6 @@ class DomicilioForm(forms.ModelForm):
     class Meta:
         model = Domicilio
         fields = '__all__'
-        labels = {
-            'calle_entre1': _("Entre"),
-            'calle_entre2': _("Entre"),
-            'nro': _("N°"),
-            'dpto': _("Departamento")
-        }
 
 
 class LocalidadForm(forms.ModelForm):
@@ -113,26 +107,28 @@ class AltaGeneradorForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     class Meta:
         model = EstablecimientoGenerador
-        exclude = ['tipo_actividad', 'responsable_residuos', 'responsable_suplente', 'responsable_tecnico',
-                  'fecha', 'via_acceso', 'domicilio', 'caract_generales', 'ambito_dependencia' ]
+        exclude = ['via_acceso','tipo_actividad','domicilio','ambito_dependencia',
+                   'dia_atención','hora_atención','tipo_actividad', 'caract_generales',
+                   'via_acceso', 'ambito_dependencia','fecha' ]
+
         widgets = {
             'observaciones_comentarios': forms.Textarea(attrs={'rows': 4, 'cols': 10}),
         }
 
-
+'''
 class ModificacionGeneradorForm(forms.ModelForm):
 
     class Meta:
         model = EstablecimientoGenerador
         exclude = ['tipo_actividad','nro_inscripcion',]
 
-
+'''
 class ActividadesForm(forms.ModelForm):
 
     class Meta:
         model = EstablecimientoGenerador
-        fields = ['tipo_actividad',]
 
+        fields = ['tipo_actividad',]
 
 class AmbitoDependenciaForm(forms.ModelForm):
 
@@ -148,13 +144,6 @@ class CaracteristicasGeneralesForm(forms.ModelForm):
         fields = '__all__'
 
 
-class ViaAccesoSectorForm(forms.ModelForm):
-
-    class Meta:
-        model = ViaAccesoSector
-        fields = ['tipo',]
-
-
 class AcopioTransitorioForm(forms.ModelForm):
 
     class Meta:
@@ -162,15 +151,22 @@ class AcopioTransitorioForm(forms.ModelForm):
         fields = '__all__'
 
 
+class ViaAccesoSectorForm(forms.ModelForm):
+
+    class Meta:
+        model = ViaAccesoSector
+        fields = ['tipo',]
+
+
 class HorarioAtencionForm(forms.ModelForm):
 
     class Meta:
-        model = HorarioAtencion
-        exclude = ['establecimiento_generador']
+        model = EstablecimientoGenerador
+        fields = ['hora_atención','dia_atención',]
 
 
 class ResiduoGeneradorForm(forms.ModelForm):
 
     class Meta:
         model = ResiduoGenerador
-        exclude = ['establecimiento_generador']
+        exclude = ['establecimiento_generador',]

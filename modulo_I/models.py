@@ -85,6 +85,7 @@ class ResiduoGenerador(models.Model):
     kgs_mensual_estimado = models.CharField(max_length=50)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
+
 class AcopioTransitorio(models.Model):
     sector_interno_p_estacionar = models.BooleanField()
     dimension_sector = models.CharField(max_length=50, blank=True, null=True)
@@ -97,29 +98,25 @@ class ViaAccesoSector(models.Model):
     tipo =MultiSelectField(choices=Acceso_sector_acopio)
 
 
-class HorarioAtencion(models.Model):
-    dia = MultiSelectField(choices=Dias)
-    hora = models.CharField(max_length=15)
-    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
-
-
 class EstablecimientoGenerador(models.Model):
     nro_inscripcion = models.BigIntegerField(primary_key=True) # N° inscripcion registro de generadores provincia del chubut
     razon_social = models.CharField(max_length=50)
-    tipo_actividad = MultiSelectField(choices=Actividades)
+    telefono = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50, blank=True, null=True)
     director_responsable = models.ForeignKey('Cliente', related_name='director_responsable')
     responsable_residuos = models.ForeignKey('Persona', related_name='responsable_residuos')
     responsable_suplente = models.ForeignKey('Persona', related_name='responsable_suplente')
     responsable_tecnico = models.ForeignKey('Persona', related_name='responsable_tecnico')
-    telefono = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50, blank=True)
-    domicilio = models.ForeignKey('Domicilio', on_delete=models.CASCADE)
-    ambito_dependencia = models.ForeignKey('AmbitoDependencia')
-    caract_generales = models.ForeignKey('CaracteristicasGenerales')
     fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
     fecha = models.DateField(default=now)
     observaciones_comentarios = models.TextField(max_length=200, default='', blank=True, null=True)
-    via_acceso = models.ForeignKey('ViaAccesoSector')
+    caract_generales = models.ForeignKey('CaracteristicasGenerales')
+    domicilio = models.ForeignKey('Domicilio', on_delete=models.CASCADE)
+    ambito_dependencia = models.ForeignKey('AmbitoDependencia')
+    via_acceso = models.ForeignKey('ViaAccesoSector')    
+    tipo_actividad = MultiSelectField(choices=Actividades)
+    dia_atención = MultiSelectField(choices=Dias)
+    hora_atención = models.CharField(max_length=15)
 
     def __str__(self):
         return "%s - %s" % (self.nro_inscripcion, self.razon_social)

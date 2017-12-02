@@ -22,7 +22,6 @@
     <div class="panel panel-default" style="height:75%">
       <div class="panel-heading">DATOS APODERADO/RESPONSABLE</div>
       <div class="panel-body">
-        {% if persona_form %}
             <label>Apoderado</label>
             <br>
             <select class="select_generico" style="width:100%" name="apoderado" required data-parsley-error-message="(*)El campo Apoderado es obligatorio">
@@ -49,8 +48,7 @@
             <br>
             <a class="btn btn-success js-alta-persona" >
               <span class="glyphicon glyphicon-plus"></span>
-            </a>
-        {% endif %}
+            </a>        
         <br><br>
         {% for field in cliente_form.visible_fields %}
           <div class="form-group">

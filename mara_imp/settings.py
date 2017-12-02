@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'multiselectfield',
     'dynamic_formsets',
-
+    
     #Gestiones
     'modulo_I',
 ]
