@@ -1,9 +1,14 @@
 div.container-form {
-
-      padding-top: 70px;
-      padding-right: 20px;
-      padding-bottom: 20px;
-      padding-left: 20px;
+    /*
+      padding-top: 0px;
+      padding-right: 250px;
+      padding-bottom: 0px;
+      padding-left: 250px;
+    */
+   display: center;
+   position: relative;
+   width: 50%;   
+   background-size: contain;
   }
 
 ul

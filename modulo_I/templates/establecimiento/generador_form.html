@@ -29,10 +29,8 @@
             <div class="form-group">
               <label>(*)Director Responsable:</label>
               {{generador_form.director_responsable|attr:"required:"|attr:"data-parsley-error-message:(*)El campo director responsable es obligatorio"}}
-              <br>
               <label>(*)Responsable Residuos:</label>
-              {{generador_form.responsable_residuos|attr:"required:"|attr:"data-parsley-error-message:(*)El campo responsable de residuos es obligatorio"}}
-              <br>
+              {{generador_form.responsable_residuos|attr:"required:"|attr:"data-parsley-error-message:(*)El campo responsable de residuos es obligatorio"}}              
               <a class="btn btn-success js-alta-persona" >
                 <span class="glyphicon glyphicon-plus"></span>
               </a>
@@ -51,6 +49,9 @@
                 <span class="glyphicon glyphicon-plus"></span>
               </a>
               <br><br>
+              <label>(*)Fecha vínculo:</label>
+              {{generador_form.fecha_vinculo|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha vínculo es obligatorio"}}
+              <br>
               <label>(*)Número de Inscripción en el Registro de Generadores Provincia del Chubut:</label>
               {{generador_form.nro_inscripcion|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo N° inscripción es obligatorio"}}
               <br>
@@ -65,9 +66,6 @@
               <br>
               <label>Observaciones/Comentarios:</label>
               {{generador_form.observaciones_comentarios|add_class:'form-control'}}
-              <br>
-              <label>(*)Fecha vínculo:</label>
-              {{generador_form.fecha_vinculo|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha vínculo es obligatorio"}}
               <br>
             </div>
           </div>

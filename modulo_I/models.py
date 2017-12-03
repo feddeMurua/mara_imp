@@ -42,7 +42,7 @@ class Persona(models.Model):
     email = models.EmailField(max_length=50, null=True, blank=True)
 
     def __str__(self):
-        return "%s -%s -%s" % (self.apellido, self.nombre, self.documento)
+        return "%s, %s - %s" % (self.apellido, self.nombre, self.documento)
 
 
 class Domicilio(models.Model):
@@ -113,7 +113,7 @@ class EstablecimientoGenerador(models.Model):
     caract_generales = models.ForeignKey('CaracteristicasGenerales')
     domicilio = models.ForeignKey('Domicilio', on_delete=models.CASCADE)
     ambito_dependencia = models.ForeignKey('AmbitoDependencia')
-    via_acceso = models.ForeignKey('ViaAccesoSector')    
+    via_acceso = models.ForeignKey('ViaAccesoSector')
     tipo_actividad = MultiSelectField(choices=Actividades)
     dia_atención = MultiSelectField(choices=Dias)
     hora_atención = models.CharField(max_length=15)
@@ -137,7 +137,6 @@ class DatoImpositivo(models.Model):
         return "%s" % self.nro_iibb
 
 
-
 class Cliente(models.Model):
     razon_social = models.CharField(max_length=50) # puede ser distinta de la del generador
     domicilio_legal = models.ForeignKey('Domicilio') # (para facturacion)
@@ -149,4 +148,4 @@ class Cliente(models.Model):
     fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
 
     def __str__(self):
-        return "%s - %s - %s" % (self.apoderado.nombre, self.apoderado.apellido, self.apoderado.documento)
+        return "%s, %s - %s" % (self.apoderado.apellido, self.apoderado.nombre, self.apoderado.documento)

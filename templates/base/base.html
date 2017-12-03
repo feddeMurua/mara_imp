@@ -6,28 +6,23 @@
       <meta charset="UTF-8"/>
       <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
       <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}"/>
-      
+
       {% block stylesheets %}{% endblock %}
       {% block scripts %}{% endblock %}
 
       <title>{% block title %}{% endblock %}</title>
   </head>
-  <body>
+  <body style="background:PaleTurquoise">
 
       {% block no-navbar %}
           {% include 'base/nav.html' %}
       {% endblock %}
 
-      {% block no-header %}
-        <header id="header-page" class="header">
-               <h1 class="header-title pull-left">
-                   {% block header-title %}{% endblock %}
-               </h1>
-        </header>
-      {% endblock %}
-
       <main role="main">
-      {% block content %}{% endblock %}
+        <div class="page-title" align="center">
+            <h3><strong>{% block header-title %}{% endblock %}</strong></h3>
+        </div>
+        {% block content %}{% endblock %}
       </main>
 
   </body>

@@ -2,7 +2,11 @@ $(function() {
   $( ".datepicker" ).datepicker({
     changeMonth: true,
     changeYear: true,
-    minYear:2000
+    minYear:2000,
+    //para validar el datefield parsley
+    onClose: function () {
+    $(this).parsley().validate();
+    }
   });
 });
 
