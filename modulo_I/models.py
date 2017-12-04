@@ -134,7 +134,7 @@ class DatoImpositivo(models.Model):
     nro_iibb = models.BigIntegerField(primary_key=True)
 
     def __str__(self):
-        return "%s" % self.nro_iibb
+        return "IIBB:%s || Ganancias:%s || Valor Agregado:%s || Ingresos Brutos:%s" % (self.nro_iibb, self.impuestos_ganancias, self.impuestos_valor_agregado, self.ingresos_brutos)
 
 
 class Cliente(models.Model):

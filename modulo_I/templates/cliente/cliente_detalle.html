@@ -28,17 +28,39 @@
             </tr>
           {% endif %}
           {% if cliente.apoderado.celular %}
-          <tr>
-              <th>Celular:</th>
-              <td> {{cliente.apoderado.celular}}</td>
-          </tr>
+            <tr>
+                <th>Celular:</th>
+                <td> {{cliente.apoderado.celular}}</td>
+            </tr>
           {% endif %}
           {% if cliente.apoderado.email %}
-          <tr>
-              <th>Email:</th>
-              <td> {{cliente.apoderado.email}}</td>
-          </tr>
+            <tr>
+                <th>Email:</th>
+                <td> {{cliente.apoderado.email}}</td>
+            </tr>
           {% endif %}
+          <tr>
+              <th>Razón Social:</th>
+              <td> {{cliente.razon_social}}</td>
+          </tr>
+          <tr>
+              <th>Domicilio Legal:</th>
+              <td> {{cliente.domicilio_legal}}</td>
+          </tr>
+          {% if cliente.contacto_comercial %}
+            <tr>
+                <th>Contacto Comercial:</th>
+                <td> {{cliente.contacto_comercial}}</td>
+            </tr>
+          {% endif %}
+          <tr>
+              <th>Fecha Vínculo:</th>
+              <td> {{cliente.fecha_vinculo}}</td>
+          </tr>
+          <tr>
+              <th>Datos Impositivos:</th>
+              <td> {{cliente.dato_impositivo}}</td>
+          </tr>            
       </tbody>
   </table>
 {% endblock %}

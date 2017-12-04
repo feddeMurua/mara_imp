@@ -79,20 +79,12 @@ class DatosImpositivosForm(forms.ModelForm):
         fields = '__all__'
 
 
-class AltaClienteForm(forms.ModelForm):
+class ClienteForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
 
     class Meta:
         model = Cliente
         exclude = ['domicilio_legal', 'fecha','dato_impositivo',]
-
-
-class ModificacionClienteForm(forms.ModelForm):
-
-    class Meta:
-        model = Cliente
-        exclude = ['contacto_comercial','apoderado','domicilio_legal','dato_impositivo',
-                    'fecha_vinculo','fecha']
 
 
 class DomicilioForm(forms.ModelForm):
@@ -116,7 +108,7 @@ class LocalidadForm(forms.ModelForm):
 GENERADORES
 '''
 
-class AltaGeneradorForm(forms.ModelForm):
+class GeneradorForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     class Meta:
         model = EstablecimientoGenerador
@@ -127,13 +119,6 @@ class AltaGeneradorForm(forms.ModelForm):
         widgets = {
             'observaciones_comentarios': forms.Textarea(attrs={'rows': 4, 'cols': 10}),
         }
-
-
-class ModificacionGeneradorForm(forms.ModelForm):
-
-    class Meta:
-        model = EstablecimientoGenerador
-        exclude = ['tipo_actividad','nro_inscripcion',]
 
 
 class ActividadesForm(forms.ModelForm):

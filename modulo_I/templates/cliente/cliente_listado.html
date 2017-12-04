@@ -38,7 +38,11 @@
       <tr>
           <td>{{ cliente.apoderado.nombre }}</td>
           <td>{{ cliente.apoderado.apellido }}</td>
-          <td>{{ cliente.apoderado.telefono_fijo }}</td>
+          {% if cliente.apoderado.telefono %}
+            <td>{{ cliente.apoderado.telefono_fijo }}</td>
+          {% else %}
+            <td>-</td>
+          {% endif %}
           <td align="center">
              <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'clientes:detalle_clientes' id_cliente=cliente.id%}"><em class="glyphicon glyphicon-eye-open"></em></a>
              <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'clientes:modificar_clientes' id_cliente=cliente.id%}"><em class="glyphicon glyphicon-pencil"></em></a>

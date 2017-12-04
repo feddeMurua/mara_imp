@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.template import RequestContext  # For CSRF
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.http import HttpResponse, HttpResponseRedirect
+from django.forms import modelformset_factory
+
 # Create your views here.
 
 '''
@@ -51,7 +53,7 @@ def alta_personas(request):
 @login_required
 def alta_clientes(request):
     if request.method == 'POST':
-        cliente_form = AltaClienteForm(request.POST)
+        cliente_form = ClienteForm(request.POST)
         domicilio_form = DomicilioForm(request.POST)
         datos_impositivos_form = DatosImpositivosForm(request.POST)
         if cliente_form.is_valid() & domicilio_form.is_valid() & datos_impositivos_form.is_valid():
@@ -61,7 +63,7 @@ def alta_clientes(request):
             cliente.save()
             return redirect('clientes:listado_clientes')
     else:
-        cliente_form = AltaClienteForm
+        cliente_form = ClienteForm
         domicilio_form = DomicilioForm
         datos_impositivos_form = DatosImpositivosForm
 
@@ -86,7 +88,7 @@ def baja_clientes(request):
 def modificar_clientes(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente)
     if request.method == 'POST':
-        cliente_form = ModificacionClienteForm(request.POST, instance=cliente)
+        cliente_form = ClienteForm(request.POST, instance=cliente)
         domicilio_form = DomicilioForm(request.POST,instance=cliente.domicilio_legal)
         datos_impositivos_form = DatosImpositivosForm(request.POST, instance=cliente.dato_impositivo)
         if cliente_form.is_valid() & domicilio_form.is_valid() & datos_impositivos_form.is_valid():
@@ -95,7 +97,7 @@ def modificar_clientes(request, id_cliente):
             datos_impositivos_form.save()
             return redirect('clientes:listado_clientes')
     else:
-        cliente_form = ModificacionClienteForm(instance=cliente)
+        cliente_form = ClienteForm(instance=cliente)
         domicilio_form = DomicilioForm(instance=cliente.domicilio_legal)
         datos_impositivos_form = DatosImpositivosForm(instance=cliente.dato_impositivo)
     return render(request, "cliente/cliente_form.html", {'cliente_form': cliente_form, 'domicilio_form': domicilio_form, 'datos_impositivos_form':datos_impositivos_form})
@@ -128,7 +130,7 @@ def alta_generadores(request):
     ResiduoGeneradorFormSet = formset_factory(ResiduoGeneradorForm, max_num=3, formset=RequiredFormSet)
 
     if request.method == 'POST':
-        generador_form = AltaGeneradorForm(request.POST)
+        generador_form = GeneradorForm(request.POST)
         actividades_form = ActividadesForm(request.POST)
         horario_atencion_form = HorarioAtencionForm(request.POST)
         residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, request.FILES)
@@ -172,7 +174,7 @@ def alta_generadores(request):
 
             return redirect('generadores:listado_generadores')
     else:
-        generador_form = AltaGeneradorForm
+        generador_form = GeneradorForm
         horario_atencion_form = HorarioAtencionForm
         actividades_form = ActividadesForm
         residuo_generador_formset = ResiduoGeneradorFormSet()
@@ -210,17 +212,90 @@ def baja_generadores(request):
 
 @login_required
 def modificar_generadores(request, nro_inscripcion):
+
+    class RequiredFormSet(BaseFormSet):
+        def __init__(self, *args, **kwargs):
+            super(RequiredFormSet, self).__init__(*args, **kwargs)
+            for form in self.forms:
+                form.empty_permitted = False
+    ResiduoGeneradorFormSet = formset_factory(ResiduoGeneradorForm, max_num=3, formset=RequiredFormSet)
+
     generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
     if request.method == 'POST':
-        generador_form = ModificacionGeneradorForm(request.POST, instance=generador)
+        generador_form = GeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
-        if generador_form.is_valid() & actividades_form.is_valid():
+        horario_atencion_form = HorarioAtencionForm(request.POST, instance=generador)
+        residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, request.FILES)
+        acopio_transitorio_form = AcopioTransitorioForm(request.POST, instance=generador.via_acceso.acopio_transitorio)
+        via_acceso_form = ViaAccesoSectorForm(request.POST, instance=generador.via_acceso)
+        domicilio_form = DomicilioForm(request.POST, instance=generador.domicilio)
+        ambito_dpcia_form = AmbitoDependenciaForm(request.POST, instance=generador.ambito_dependencia)
+        caract_generales_form = CaracteristicasGeneralesForm(request.POST,instance=generador.caract_generales)
+
+        if generador_form.is_valid() & actividades_form.is_valid() & domicilio_form.is_valid() \
+            & ambito_dpcia_form.is_valid() & caract_generales_form.is_valid() \
+            & via_acceso_form.is_valid() & acopio_transitorio_form.is_valid() \
+            & horario_atencion_form.is_valid() & residuo_generador_formset.is_valid():
+
+            residuos = ResiduoGenerador.objects.filter(establecimiento_generador__nro_inscripcion=nro_inscripcion)
+            for r in residuos:
+                r.delete()
+            '''
+            SE ELIMINAN LOS ELEMENTOS DLE FORMESET PARA QUE EN EL POST NO SE DUPLIQUEN EN LA BASE
+            '''
+
             generador = generador_form.save(commit=False)
-            tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
-            generador.tipo_actividad = tipo_actividad
+            # Guardo el formset de residuos
+            for form in residuo_generador_formset.forms:
+                residuo_generador_item = form.save(commit=False)
+                residuo_generador_item.establecimiento_generador = generador
+                residuo_generador_item.save()
+
+            acopio = acopio_transitorio_form.save()
+            via_acceso = ViaAccesoSector() # se crea objeto via_acceso para asignarle sector acopio
+            via_acceso.acopio_transitorio = acopio
+            via_acceso.tipo = via_acceso_form.cleaned_data.get('tipo')
+            via_acceso.save()
+
+            generador.via_acceso = via_acceso
+            generador.domicilio = domicilio_form.save()
+            generador.ambito_dependencia = ambito_dpcia_form.save()
+            generador.caract_generales = caract_generales_form.save()
+
+            generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
+            horario_atencion = horario_atencion_form.save(commit=False)
+            generador.dia_atención= horario_atencion.dia_atención
+            generador.hora_atención= horario_atencion.hora_atención
+
             generador.save()
             return redirect('generadores:listado_generadores')
     else:
-        generador_form = ModificacionGeneradorForm(instance=generador)
+
+        generador_form = GeneradorForm(instance=generador)
         actividades_form = ActividadesForm(instance=generador)
-    return render(request, "establecimiento/generador_form.html", {'generador_form': generador_form, 'actividades_form': actividades_form})
+        horario_atencion_form = HorarioAtencionForm(instance=generador)
+
+        RgFormSet = modelformset_factory(ResiduoGenerador,exclude=('establecimiento_generador',))
+        residuo_generador_formset= RgFormSet(queryset=ResiduoGenerador.objects.filter(establecimiento_generador__nro_inscripcion=nro_inscripcion))
+        '''
+        PARA OBTENER LOS ELEMENTOS Y QUE SE MUESTREN EN EL FORMSET PARA ACTUALIZAR
+        '''
+
+        acopio_transitorio_form = AcopioTransitorioForm(instance=generador.via_acceso.acopio_transitorio)
+        via_acceso_form = ViaAccesoSectorForm(instance=generador.via_acceso)
+        domicilio_form = DomicilioForm(instance=generador.domicilio)
+        ambito_dpcia_form = AmbitoDependenciaForm(instance=generador.ambito_dependencia)
+        caract_generales_form = CaracteristicasGeneralesForm(instance=generador.caract_generales)
+
+    contexto= {'generador_form': generador_form,
+               'actividades_form': actividades_form,
+               'persona_form':PersonaForm,
+               'domicilio_form':domicilio_form,
+               'ambito_dpcia_form':ambito_dpcia_form,
+               'caract_generales_form':caract_generales_form,
+               'via_acceso_form':via_acceso_form,
+               'acopio_transitorio_form':acopio_transitorio_form,
+               'horario_atencion_form':horario_atencion_form,
+               'residuo_generador_formset':residuo_generador_formset,
+    }
+    return render(request, "establecimiento/generador_form.html", contexto)
