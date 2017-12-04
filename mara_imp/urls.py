@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from .views import inicio
+from .views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', inicio, name="inicio"),
+    url(r'^$', login_usuario, name="login"),
+    url(r'^logout/$', logout_usuario, name="logout"),
+    url(r'^signup/$', signup_usuario, name="signup"),
+    url(r'^password/$', cambiar_ctr, name="cambiar_contraseña"),
     url(r'^clientes/', include('modulo_I.urls_cliente', namespace='clientes')),
     url(r'^generadores/', include('modulo_I.urls_generador', namespace='generadores')),
 ]

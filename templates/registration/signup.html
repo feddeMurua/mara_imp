@@ -1,0 +1,21 @@
+{% extends 'base/base_login-nuevo_usuario.html' %}
+{% load widget_tweaks %}
+
+{% block formulario %}
+<h1>Nuevo Usuario</h1>
+<form method="post">
+  {% csrf_token %}
+  {% for field in form.visible_fields %}
+     <div class="form-group">
+       <strong><label for="{{ field.id_for_label }}">{{ field.label }}</label></strong>
+       {{ field|add_class:'form-control' }}
+       {% for error in field.errors %}
+         <span class="help-block">{{ error }}</span>
+       {% endfor %}
+     </div>
+   {% endfor %}
+  <br><button type="submit" class="btn btn-primary btn-lg" style="background-color:#DarkBlue ;">Ingresar</button>
+  <br><br>
+  <a class="btn btn-danger btn-cancelar" href="{% url 'login' %}" >Cancelar</a>
+</form>
+{% endblock %}

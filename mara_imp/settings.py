@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'multiselectfield',
     'dynamic_formsets',
-    
+
     #Gestiones
     'modulo_I',
 ]
@@ -131,3 +131,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "estaticos"),
 )
+
+
+LOGIN_REDIRECT_URL = 'login'

@@ -1,0 +1,45 @@
+{% load staticfiles %}
+
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base_login-nuevo_usuario.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+{% endblock %}
+
+{% block contenido %}
+
+  {% if form.errors.items %}
+      {% for field, error in form.errors.items %}
+      <div align= "center">
+        <div class="alert alert-danger">
+            <ul style="list-style-type:none;"><strong>{{error}}</strong></ul>
+        </div>
+      </div>
+      {% endfor %}
+  {% endif %}
+
+  {% block principal %}
+    <div class="login">
+      <div class="login-screen" style="margin-top:150px; background-color:white; border: 2px solid black;">
+  			<div class="app-title">
+            {% block logo %}
+              <img src="{% static 'images/logo.png' %}">
+            {% endblock %}
+        </div>
+        <div class="login-form">
+        <div class="control-group">
+          <form method="post">
+            {% block formulario %}
+            {% endblock %}
+          </form>
+  		  </div>
+    	 </div>
+     </div>
+   </div>
+   <div class="login-screen" style="margin-top:100px; background-color:white; border: 2px solid black;">
+     <div class="footer" align="center">
+       Desarrollado por FNM-Federico Nicolas Murua-12/2017 .
+     </div>
+   </div>
+  {% endblock %}
+
+{% endblock %}

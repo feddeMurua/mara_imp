@@ -1,0 +1,14 @@
+{% extends 'base/base_login-nuevo_usuario.html' %}
+
+{% block formulario %}
+  {% csrf_token %}
+  <h1>Ingresar</h1>
+  {% for field in form %}
+      <br>{{ field }}<br>
+      {% if field.help_text %}
+        <br><p><small style="color: grey">{{ field.help_text }}</small></p>
+      {% endif %}
+  {% endfor %}
+  <br><button type="submit" class="btn btn-primary btn-lg" style="background-color:#DarkBlue ;">Ingresar</button>
+  <p><a style="color: black" class="login-link" href="{% url 'signup' %}">Nuevo en el sistema?</a></p>
+{% endblock %}

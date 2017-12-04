@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django import forms
 from django.utils.translation import ugettext as _
+from django.contrib.auth.forms import AuthenticationForm
 from .models import *
 from .choices import *
 from functools import partial
@@ -14,6 +15,7 @@ regex_alfanumerico = re.compile(r"^[a-zñA-ZÑ0-9]+((\s[a-zñA-ZÑ0-9]+)+)?$")
 '''
 CLASES IMPORTANTES
 '''
+
 
 class PersonaForm(forms.ModelForm):
 
@@ -53,6 +55,17 @@ class PersonaForm(forms.ModelForm):
             if not re.match(r"^[0-9]{2,}-[0-9]{6,}$", celular):
                 raise forms.ValidationError('Celular inválido, por favor siga este formato PREFIJO-NUMERO (yyyy-nnnnnnnn)')
         return celular
+
+
+class FormularioUsuario(AuthenticationForm):
+    '''
+    Corresponde al formulario que permite el acceso al sistema por parte del usuario.
+    '''
+    def __init__(self, *args, **kwargs):
+        super(FormularioUsuario, self).__init__(*args, **kwargs)
+        self.fields['username'].label = "Usuario"
+        self.fields['username'].widget.attrs['placeholder'] = " Ingrese su usuario"
+        self.fields['password'].widget.attrs['placeholder'] = " Ingrese su contraseña"
 
 
 '''

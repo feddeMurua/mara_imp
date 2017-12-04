@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, render_to_response
 from django.http import JsonResponse
 from .models import *
@@ -13,19 +14,19 @@ from django.http import HttpResponse, HttpResponseRedirect
 CLIENTES
 '''
 
-#@login_required(login_url='login')
+@login_required
 def listado_clientes(request):
     listado_clientes = Cliente.objects.all()
     return render(request, 'cliente/cliente_listado.html', {'listado_clientes': listado_clientes})
 
 
-#@login_required(login_url='login')
+@login_required
 def detalle_clientes(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente)
     return render(request, 'cliente/cliente_detalle.html', {'cliente': cliente})
 
 
-#@login_required(login_url='login')
+@login_required
 def alta_personas(request):
     data = dict()
 
@@ -47,7 +48,7 @@ def alta_personas(request):
     return JsonResponse(data)
 
 
-#@login_required(login_url='login')
+@login_required
 def alta_clientes(request):
     if request.method == 'POST':
         cliente_form = AltaClienteForm(request.POST)
@@ -72,7 +73,7 @@ def alta_clientes(request):
     return render(request, "cliente/cliente_form.html", contexto)
 
 
-#@login_required(login_url='login')
+@login_required
 def baja_clientes(request):
     cliente_id = request.POST.get('cliente_id')
     cliente = Cliente.objects.get(id=cliente_id)
@@ -81,7 +82,7 @@ def baja_clientes(request):
     return JsonResponse(response)
 
 
-#@login_required(login_url='login')
+@login_required
 def modificar_clientes(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente)
     if request.method == 'POST':
@@ -104,19 +105,19 @@ ESTABLECIMIENTOS GENERADORES
 '''
 
 
-#@login_required(login_url='login')
+@login_required
 def listado_generadores(request):
     listado_generadores = EstablecimientoGenerador.objects.all()
     return render(request, 'establecimiento/generador_listado.html', {'listado_generadores': listado_generadores})
 
 
-#@login_required(login_url='login')
+@login_required
 def detalle_generadores(request, nro_inscripcion):
     generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
     return render(request, 'establecimiento/generador_detalle.html', {'generador': generador})
 
 
-#@login_required(login_url='login')
+@login_required
 def alta_generadores(request):
 
     class RequiredFormSet(BaseFormSet):
@@ -198,7 +199,7 @@ def alta_generadores(request):
     return render(request, "establecimiento/generador_form.html",contexto)
 
 
-#@login_required(login_url='login')
+@login_required
 def baja_generadores(request):
     nro_inscripcion = request.POST.get('generador_id')
     generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
@@ -207,7 +208,7 @@ def baja_generadores(request):
     return JsonResponse(response)
 
 
-#@login_required(login_url='login')
+@login_required
 def modificar_generadores(request, nro_inscripcion):
     generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
     if request.method == 'POST':
