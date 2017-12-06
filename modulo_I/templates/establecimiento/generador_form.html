@@ -23,35 +23,6 @@
 {% block step-form %}
 
   <div class="form-section">
-    <div class="panel panel-default">
-      <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
-      <div class="panel-body">
-        {{ residuo_generador_formset.management_form }}
-        {% for form in residuo_generador_formset.forms %}
-          <div class="item">
-            {% for field in form.visible_fields %}
-              <div class="form-group">
-                <label for="{{ field.id_for_label }}">(*){{ field.label }}</label>
-                {% if field.label == 'Tipo' %}
-                  {{ field|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio"}}
-                {% else %}
-                  {{ field|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio" }}
-                {% endif %}
-
-                {% for error in field.errors %}
-                  <span class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% endfor %}
-            <p style=""><a class="delete" href="#"><i class="fa fa-trash-o"></i> Borrar</a></p>
-          </div>
-        {% endfor %}
-        <p><a id="add" href="#"><i class="fa fa-plus-square"></i> Agregar otro elemento</a></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="form-section">
       <div class="panel panel-default">
         <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
           <div class="panel-body">
@@ -197,6 +168,40 @@
        </div>
      </div>
    </div>
+
+  <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
+      <div class="panel-body">
+        {{ residuo_generador_formset.management_form }}
+        {% for form in residuo_generador_formset.forms %}
+          <div class="item">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                {% for field in form.visible_fields %}
+                  <div class="form-group">
+                    <label for="{{ field.id_for_label }}">(*){{ field.label }}</label>
+                    {% if field.label == 'Tipo' %}
+                      {{ field|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio"}}
+                    {% else %}
+                      {{ field|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio" }}
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                      <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+                <p style=""><a class="delete" href="#"><i class="fa fa-trash-o"></i> Borrar</a></p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        <p><a id="add" href="#"><i class="fa fa-plus-square"></i> Agregar otro elemento</a></p>
+      </div>
+    </div>
+  </div>
+
 
   <script type="text/javascript">
 
