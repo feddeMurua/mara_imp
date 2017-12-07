@@ -1,0 +1,55 @@
+{% extends "base/base_listado.html" %}
+{% load staticfiles %}
+
+{% block panel-heading %}
+  LISTADO DE HOJAS DE RUTA
+{% endblock %}
+
+{% block panel-heading-tabla %}
+  <a href="#" class="btn btn-primary"> Nueva Hoja de Ruta </a>
+{% endblock %}
+
+
+{% block thead-tabla %}
+  <thead>
+  <tr>
+      <th>Establecimiento Generador</th>
+      <th>N° precinto</th>
+      <th>Acciones</th>
+  </tr>
+  </thead>
+{% endblock %}
+
+{% block tfoot-tabla %}
+  <tfoot >
+     <tr>
+       <th>Establecimiento</th>
+       <th>N° precinto</th>
+       <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
+    </tr>
+  </tfoot>
+{% endblock %}
+
+{% block tbody-tabla %}
+  <tbody>
+    {% for hoja_ruta in listado_hojas_de_ruta %}
+        <tr>
+            <td>{{ hoja_ruta.establecimiento_generador }}</td>
+            <td>{{ hoja_ruta.nro_precinto}}</td>
+            <td align="center">
+               <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="#"><em class="glyphicon glyphicon-eye-open"></em></a>
+               <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="#"><em class="glyphicon glyphicon-pencil"></em></a>
+               <a class="btn btn-danger btn-baja" data-toggle="tooltip" title="Eliminar"href="#"><em class="glyphicon glyphicon-trash"></em></a>
+            </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+{% endblock %}
+
+{% block modal-btn-eliminar%}
+
+{% endblock %}
+
+{% block modal-scripts %}
+
+{% endblock %}

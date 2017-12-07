@@ -57,7 +57,7 @@ class Domicilio(models.Model):
     comarca = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return "B° %s, %s  N°%s" % (self.barrio, self.calle, self.nro)
+        return "B° %s, %s  N° %s" % (self.barrio, self.calle, self.nro)
 
 
 '''
@@ -72,14 +72,14 @@ class AmbitoDependencia(models.Model):
 
     def __str__(self):
         if self.municipalidad and self.centro_que_depende:
-            return "Categoria:%s - Municipalidad:%s - Centro del que Depende:%s" % \
+            return "Categoria: %s || Municipalidad: %s || Centro del que Depende: %s" % \
             (self.categoria, self.municipalidad, self.centro_que_depende)
         elif self.municipalidad:
-            return "Categoría:%s - Municipalidad:%s" % (self.categoria, self.municipalidad)
+            return "Categoría: %s || Municipalidad: %s" % (self.categoria, self.municipalidad)
         elif self.centro_que_depende:
-            return "Centro del que Depende:%s - Municipalidad:%s" % (self.centro_que_depende, self.municipalidad)
+            return "Centro del que Depende: %s || Municipalidad: %s" % (self.centro_que_depende, self.municipalidad)
         else:
-            return "Categoría:%s" % self.categoria
+            return "Categoría: %s" % self.categoria
 
 
 class CaracteristicasGenerales(models.Model):
@@ -90,7 +90,7 @@ class CaracteristicasGenerales(models.Model):
     via_acceso = MultiSelectField(choices=Accesos)
 
     def __str__(self):
-        return "Cant. Quirófanos:%s || N° camas:%s || Via Acceso:%s" % \
+        return "Cant. Quirófanos: %s || N° camas: %s || Via Acceso: %s" % \
         (self.cant_quirofanos, self.nro_camas, self.via_acceso)
 
 
@@ -101,7 +101,7 @@ class ResiduoGenerador(models.Model):
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
     def __str__(self):
-        return "Tipo:%s - Volumen Mensual Estimado:%s - Kgs Mensual Estimado:%s" % \
+        return "Tipo: %s || Volumen Mensual Estimado: %s || Kgs Mensual Estimado: %s" % \
         (self.tipo, self.volumen_mensual_estimado, self.kgs_mensual_estimado)
 
 
@@ -113,7 +113,7 @@ class AcopioTransitorio(models.Model):
 
     def __str__(self):
         if self.sector_interno_p_estacionar and self.camara_frio:
-            return "Dimensión Sector interno para estacionar:%s - Dmensión Cámara Frío:%s" % \
+            return "Dimensión Sector interno para estacionar:%s || Dmensión Cámara Frío:%s" % \
             (self.dimension_sector, self.dimension_camara_frio)
         elif self.sector_interno_p_estacionar:
             return "Dimensión Sector interno para estacionar:%s" % (self.dimension_sector)
@@ -153,7 +153,27 @@ class EstablecimientoGenerador(models.Model):
     hora_atención = models.CharField(max_length=15)
 
     def __str__(self):
-        return "%s - %s" % (self.nro_inscripcion, self.razon_social)
+        return "%s" % (self.razon_social)
+
+
+'''
+Hoja de Ruta
+'''
+
+'''
+REQUIERIMENTO INFORMAL:
+-el sistema debera:
+* el operadorar seleccionara el dia y el sistema devolvera los establecimientos correspondientes
+contemplar los feriados. (elegir dia excepcional que plantee el generador, de forma manual)
+'''
+
+class HojaRuta(models.Model):
+    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
+    hora_programada = models.CharField(max_length=15)
+    hora_llegada = models.CharField(max_length=15)
+    hora_salida = models.CharField(max_length=15)
+    volumen_retirado = models.CharField(max_length=15)
+    nro_precinto = models.BigIntegerField(unique=True) #unico para el dia
 
 
 '''

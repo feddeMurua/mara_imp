@@ -5,6 +5,7 @@ from .models import *
 admin.site.register(Persona)
 admin.site.register(Cliente)
 admin.site.register(DatoImpositivo)
+admin.site.register(HojaRuta)
 admin.site.register(EstablecimientoGenerador)
 admin.site.register(AmbitoDependencia)
 admin.site.register(CaracteristicasGenerales)

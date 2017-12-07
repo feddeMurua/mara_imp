@@ -102,6 +102,17 @@ def modificar_clientes(request, id_cliente):
         datos_impositivos_form = DatosImpositivosForm(instance=cliente.dato_impositivo)
     return render(request, "cliente/cliente_form.html", {'cliente_form': cliente_form, 'domicilio_form': domicilio_form, 'datos_impositivos_form':datos_impositivos_form})
 
+
+'''
+HOJAS DE RUTA
+'''
+
+@login_required
+def listado_hojas_de_ruta(request):
+    listado_hojas_de_ruta = HojaRuta.objects.all()
+    return render(request, 'hojaRuta/hojaruta_listado.html', {'listado_hojas_de_ruta': listado_hojas_de_ruta})
+
+
 '''
 ESTABLECIMIENTOS GENERADORES
 '''

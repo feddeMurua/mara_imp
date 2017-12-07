@@ -64,8 +64,4 @@ hora programada | hora de llegada (camioneta) | hora de salida | generador ( nom
 | precintos (cantidad) | firma y aclaracion
 
 
-
-
-
-
 '''
