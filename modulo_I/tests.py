@@ -57,11 +57,11 @@ contemplar los feriados. (elegir dia excpecional que plantee el generador, de fo
 
 
 columnas :
-hora programanada | hora de llegada (camioneta) | hora de salida | generador ( nombre y direccion )
+hora programada | hora de llegada (camioneta) | hora de salida | generador ( nombre y direccion )
 
 | volumen retirado y nro precinto (unico para el dia) | baldes entregados (cant) | bolsas (cantidad)
 
-| precintos (cantidad) | firma y aclaracion 
+| precintos (cantidad) | firma y aclaracion
 
 
 
