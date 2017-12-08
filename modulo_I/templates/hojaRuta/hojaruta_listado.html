@@ -6,7 +6,8 @@
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <a href="#" class="btn btn-primary"> Nueva Hoja de Ruta </a>
+  <a href="{% url 'hojaRuta:alta_hoja_ruta' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nueva Hoja de Ruta </a>
+  <a href="#" class="btn btn-info"><i class="fa fa-print"></i> Generar Hoja de Ruta </a>
 {% endblock %}
 
 

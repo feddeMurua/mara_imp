@@ -1,0 +1,77 @@
+{% extends "base/base_forms.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+{% load widget_tweaks %}
+
+{% block stylesheets %}
+  {{block.super}}
+  <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
+{% endblock %}
+
+{% block scripts %}
+  {{block.super}}
+  <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+{% endblock %}
+
+{% block title %}Hoja de Ruta{% endblock %}
+
+{% block header-title %} Información de Hoja de Ruta{% endblock %}
+
+{% block step-form %}
+
+  <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">DATOS HOJA DE RUTA</div>
+      <div class="panel-body">
+        <label>(*)Establecimiento Generador:</label>
+        {{hojaruta_form.establecimiento_generador|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Establecimiento Generador es obligatorio"}}
+        <br>
+        <label>(*)Volumen Retirado:</label>
+        {{hojaruta_form.volumen_retirado|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Volumen es obligatorio"}}
+        <br>
+        <label>(*)Número de Precinto:</label>
+        {{hojaruta_form.nro_precinto|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo N° precinto es obligatorio"}}
+        <br>
+        <label>(*)Hora Programada:</label>
+        <br>
+        <div class="input-group bootstrap-timepicker timepicker">
+        {{hojaruta_form.hora_programada|add_class:'form-control hs_timepicker'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Hora Programada es obligatorio"}}
+        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+        </div>
+        <br>
+        <label>(*)Hora Llegada:</label>
+        <br>
+        <div class="input-group bootstrap-timepicker timepicker">
+        {{hojaruta_form.hora_llegada|add_class:'form-control hs_timepicker'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Hora llegada es obligatorio"}}
+        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+        </div>
+        <br>
+        <label>(*)Hora Llegada:</label>
+        <br>
+        <div class="input-group bootstrap-timepicker timepicker">
+        {{hojaruta_form.hora_salida|add_class:'form-control hs_timepicker'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Hora salida es obligatorio"}}
+        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $('.hs_timepicker').timepicker();
+  </script>
+
+
+{% endblock %}
+
+<!-- para no mostrar step domicilio -->
+{% block no-domicilio-step-form%}
+{% endblock %}
+
+{% block url-cancelar %}
+  {% url 'hojaRuta:listado_hojas_de_ruta' %}
+{% endblock %}
+
+<!-- no incluye alta de las personas -->
+{% block non-alta-persona%}
+{% endblock %}

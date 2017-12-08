@@ -2,14 +2,6 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 
-{% block more-stylesheets %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}"/>
-{% endblock %}
-
-{% block scripts %}
-  {{block.super}}
-{% endblock %}
-
 {% block title %}Cliente{% endblock %}
 
 {% block header-title %} Información del Cliente {% endblock %}
@@ -19,28 +11,28 @@
   <div class="form-section">
     <div class="panel panel-default">
       <div class="panel-heading">DATOS APODERADO/RESPONSABLE</div>
-        <div class="panel-body">
-          <label>(*)Apoderado:</label>
-            {{cliente_form.apoderado|attr:"required:"|attr:"data-parsley-error-message:(*)El campo apoderado es obligatorio"}}
-            <a class="btn btn-success js-alta-persona" >
-              <span class="glyphicon glyphicon-plus"></span>
-            </a>
-          <br><br>
-          <label>(*)Contacto Comercial:</label>
-          {{cliente_form.contacto_comercial|attr:"required:"|attr:"data-parsley-error-message:(*)El campo contacto comercial es obligatorio"}}
+      <div class="panel-body">
+        <label>(*)Apoderado:</label>
+          {{cliente_form.apoderado|attr:"required:"|attr:"data-parsley-error-message:(*)El campo apoderado es obligatorio"}}
           <a class="btn btn-success js-alta-persona" >
             <span class="glyphicon glyphicon-plus"></span>
           </a>
-          <br><br>
-          <label>(*)Fecha vínculo:</label>
-          {{cliente_form.fecha_vinculo|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha vínculo es obligatorio"}}
-          <br>
-          <label>(*)Razón Social:</label>
-          {{cliente_form.razon_social|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo razón social es obligatorio"}}
-          <br>
-          <label>(*)Cargo:</label>
-          {{cliente_form.cargo|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo cargo es obligatorio"}}
-        </div>
+        <br><br>
+        <label>(*)Contacto Comercial:</label>
+        {{cliente_form.contacto_comercial|attr:"required:"|attr:"data-parsley-error-message:(*)El campo contacto comercial es obligatorio"}}
+        <a class="btn btn-success js-alta-persona" >
+          <span class="glyphicon glyphicon-plus"></span>
+        </a>
+        <br><br>
+        <label>(*)Fecha vínculo:</label>
+        {{cliente_form.fecha_vinculo|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha vínculo es obligatorio"}}
+        <br>
+        <label>(*)Razón Social:</label>
+        {{cliente_form.razon_social|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo razón social es obligatorio"}}
+        <br>
+        <label>(*)Cargo:</label>
+        {{cliente_form.cargo|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo cargo es obligatorio"}}
+      </div>
     </div>
   </div>
 

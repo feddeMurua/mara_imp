@@ -113,6 +113,19 @@ def listado_hojas_de_ruta(request):
     return render(request, 'hojaRuta/hojaruta_listado.html', {'listado_hojas_de_ruta': listado_hojas_de_ruta})
 
 
+@login_required
+def alta_hoja_ruta(request):
+    if request.method == 'POST':
+        hojaruta_form = HojaRutaForm(request.POST)
+        if hojaruta_form.is_valid():
+            hoja_ruta = hojaruta_form.save()
+            return redirect('hojaRuta:listado_hojas_de_ruta')
+    else:
+        hojaruta_form = HojaRutaForm
+
+    return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form})
+
+
 '''
 ESTABLECIMIENTOS GENERADORES
 '''

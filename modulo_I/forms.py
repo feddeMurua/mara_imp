@@ -105,6 +105,17 @@ class LocalidadForm(forms.ModelForm):
 
 
 '''
+HOJAS DE RUTA
+'''
+
+class HojaRutaForm(forms.ModelForm):
+
+    class Meta:
+        model = HojaRuta
+        fields = '__all__'
+
+
+'''
 GENERADORES
 '''
 

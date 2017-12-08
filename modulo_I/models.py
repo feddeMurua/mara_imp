@@ -175,6 +175,9 @@ class HojaRuta(models.Model):
     volumen_retirado = models.CharField(max_length=15)
     nro_precinto = models.BigIntegerField(unique=True) #unico para el dia
 
+    def __str__(self):
+        return "%s || N° precinto: %s " % (self.establecimiento_generador, self.nro_precinto)
+
 
 '''
 Clientes

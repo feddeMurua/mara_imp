@@ -3,16 +3,14 @@
 {% load staticfiles bootstrap3 %}
 {% load widget_tweaks %}
 
-{% block more-stylesheets %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}"/>
+{% block stylesheets %}
+  {{block.super}}
   <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.steps.css' %}"/>
 {% endblock %}
 
 {% block scripts %}
   {{block.super}}
   <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/jquery.steps.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/django-formsets.js' %}"></script>
 {% endblock %}
 
@@ -162,7 +160,7 @@
              <br>
              <div class="input-group bootstrap-timepicker timepicker">
                {{horario_atencion_form.hora_atención|add_class:'form-control'|attr:"id:hs_timepicker"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Horario es obligatorio"}}
-               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+               <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
              </div>
            </div>
        </div>
@@ -176,7 +174,7 @@
         {{ residuo_generador_formset.management_form }}
         {% for form in residuo_generador_formset.forms %}
           <div class="panel panel-default">
-            <div class="item">            
+            <div class="item">
               <div class="panel-body">
                 {% for field in form.visible_fields %}
                   <div class="form-group">
@@ -186,10 +184,6 @@
                     {% else %}
                       {{ field|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio" }}
                     {% endif %}
-
-                    {% for error in field.errors %}
-                      <span class="help-block">{{ error }}</span>
-                    {% endfor %}
                   </div>
                 {% endfor %}
                 <p style=""><a class="delete" href="#"><i class="fa fa-trash-o"></i> Borrar</a></p>
