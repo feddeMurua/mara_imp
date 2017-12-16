@@ -38,7 +38,7 @@
       <tr>
           <td>{{ cliente.apoderado.nombre }}</td>
           <td>{{ cliente.apoderado.apellido }}</td>
-          {% if cliente.apoderado.telefono %}
+          {% if cliente.apoderado.telefono_fijo %}
             <td>{{ cliente.apoderado.telefono_fijo }}</td>
           {% else %}
             <td>-</td>
@@ -69,7 +69,8 @@
         var cliente_id = button.data('clienteid') // id cliente.
 
         var title = 'Cliente: ' + cliente_apellido + ', ' + cliente_nombre
-        var content = '¿Está seguro que quiere eliminar la persona con razon social: ' + cliente_rs + '?'
+        var content = '¿Está seguro que quiere eliminar la persona con razon social: ' + cliente_rs + '?'+
+                      ' Se eliminarán todos los establecimientos generadores asociados'
 
         // actualiza el contenido del manual
         var modal = $(this)

@@ -96,8 +96,8 @@ class CaracteristicasGenerales(models.Model):
 
 class ResiduoGenerador(models.Model):
     tipo = models.CharField(max_length=80, choices=TiposResiduos)
-    volumen_mensual_estimado = models.CharField(max_length=50)
-    kgs_mensual_estimado = models.CharField(max_length=50)
+    volumen_mensual_estimado = models.FloatField()
+    kgs_mensual_estimado = models.FloatField()
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -123,13 +123,26 @@ class AcopioTransitorio(models.Model):
             return ""
 
 
-
 class ViaAccesoSector(models.Model):
     acopio_transitorio = models.ForeignKey('AcopioTransitorio', on_delete=models.CASCADE)
     tipo =MultiSelectField(choices=Acceso_sector_acopio)
 
     def __str__(self):
         return "%s - %s" % (self.acopio_transitorio, self.tipo)
+
+
+class HorarioAtencion(models.Model):
+
+    dia = models.CharField(max_length=20, choices=Dias)
+    hora_desde_m = models.CharField(max_length=20, null=True, blank=True) # Turno mañana
+    hora_hasta_m = models.CharField(max_length=20, null=True, blank=True)
+    hora_desde_t = models.CharField(max_length=20, null=True, blank=True) # Turno tarde
+    hora_hasta_t = models.CharField(max_length=20, null=True, blank=True)
+    horario_retiro = models.CharField(max_length=20) #fundamental para crear la hoja de ruta (ordenar por horario retiro)
+    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "%s || %s" % (self.dia, self.establecimiento_generador)
 
 
 class EstablecimientoGenerador(models.Model):
@@ -151,6 +164,7 @@ class EstablecimientoGenerador(models.Model):
     tipo_actividad = MultiSelectField(choices=Actividades)
     dia_atención = MultiSelectField(choices=Dias)
     hora_atención = models.CharField(max_length=15)
+    sector = models.IntegerField() # cuadrante que pertenece a la ciudad el generador
 
     def __str__(self):
         return "%s" % (self.razon_social)
@@ -174,6 +188,8 @@ class HojaRuta(models.Model):
     hora_salida = models.CharField(max_length=15)
     volumen_retirado = models.CharField(max_length=15)
     nro_precinto = models.BigIntegerField(unique=True) #unico para el dia
+    nro_balde_entrega = models.BigIntegerField(unique=True) #unico para el dia
+    nro_balde_retiro = models.BigIntegerField(unique=True) #unico para el dia
 
     def __str__(self):
         return "%s || N° precinto: %s " % (self.establecimiento_generador, self.nro_precinto)
@@ -203,6 +219,7 @@ class Cliente(models.Model):
     dato_impositivo = models.OneToOneField('DatoImpositivo', on_delete=models.CASCADE)
     fecha = models.DateField(default=now) #fecha de hoy
     fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
+    cuit_cuil = models.CharField(max_length=20)
 
     def __str__(self):
         return "%s, %s - %s" % (self.apoderado.apellido, self.apoderado.nombre, self.apoderado.documento)

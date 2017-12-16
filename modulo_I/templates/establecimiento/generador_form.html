@@ -21,6 +21,35 @@
 {% block step-form %}
 
   <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
+      <div class="panel-body">
+        {{ residuo_generador_formset.management_form }}
+        {% for form in residuo_generador_formset.forms %}
+          <div class="panel panel-default">
+            <div class="item">
+              <div class="panel-body">
+                {% for field in form.visible_fields %}
+                  <div class="form-group">
+                    <label for="{{ field.id_for_label }}">(*){{ field.label }}</label>
+                    {% if field.label == 'Tipo' %}
+                      {{ field|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio"}}
+                    {% else %}
+                      {{ field|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio" }}
+                    {% endif %}
+                  </div>
+                {% endfor %}
+                <p style=""><a class="delete" href="#"><i class="fa fa-trash-o"></i> Borrar</a></p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        <p><a id="add" href="#"><i class="fa fa-plus-square"></i> Agregar otro elemento</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
       <div class="panel panel-default">
         <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
           <div class="panel-body">
@@ -64,6 +93,9 @@
               <br>
               <label>Observaciones/Comentarios:</label>
               {{generador_form.observaciones_comentarios|add_class:'form-control'}}
+              <br>
+              <label>(*)Número de Sector Asociado:</label>
+              {{generador_form.sector|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo sector es obligatorio"}}
               <br>
             </div>
           </div>
@@ -166,36 +198,6 @@
        </div>
      </div>
    </div>
-
-  <div class="form-section">
-    <div class="panel panel-default">
-      <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
-      <div class="panel-body">
-        {{ residuo_generador_formset.management_form }}
-        {% for form in residuo_generador_formset.forms %}
-          <div class="panel panel-default">
-            <div class="item">
-              <div class="panel-body">
-                {% for field in form.visible_fields %}
-                  <div class="form-group">
-                    <label for="{{ field.id_for_label }}">(*){{ field.label }}</label>
-                    {% if field.label == 'Tipo' %}
-                      {{ field|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio"}}
-                    {% else %}
-                      {{ field|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio" }}
-                    {% endif %}
-                  </div>
-                {% endfor %}
-                <p style=""><a class="delete" href="#"><i class="fa fa-trash-o"></i> Borrar</a></p>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-        <p><a id="add" href="#"><i class="fa fa-plus-square"></i> Agregar otro elemento</a></p>
-      </div>
-    </div>
-  </div>
-
 
   <script type="text/javascript">
 
