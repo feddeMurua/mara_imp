@@ -22,7 +22,7 @@
             <div class="panel panel-primary">
               <div class="panel-heading">{% block panel-heading %}{% endblock %}</div>
                 <div class="panel-body" style="background:OldLace">
-                  <div class="container" style="width:100%">                      
+                  <div class="container" style="width:100%">
                       <div class="row">
                         <div class="panel panel-default">
                           <div class="panel-heading">{% block panel-heading-tabla %}{% endblock %}</div>
@@ -36,28 +36,28 @@
                           </div>
                       </div>
                   </div>
-
-                  <div class="container">
-                    <!-- Modal -->
-                    <div class="modal fade" id="modal_baja" role="dialog">
-                      <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <form >
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <div class="modal-title"></div>
-                          </div>
-                          <div class="modal-body"></div>
-                          <div class="modal-footer">
-                            {% block modal-btn-eliminar%}{% endblock %}
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                  {% block no-modal%}
+                    <div class="container">
+                      <!-- Modal -->
+                      <div class="modal fade" id="modal_baja" role="dialog">
+                        <div class="modal-dialog">
+                          <!-- Modal content-->
+                          <div class="modal-content">
+                            <form >
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <div class="modal-title"></div>
+                            </div>
+                            <div class="modal-body"></div>
+                            <div class="modal-footer">
+                              {% block modal-btn-eliminar%}{% endblock %}
+                              <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-
+                  {% endblock %}
                 </div>
             </div>
       </div>

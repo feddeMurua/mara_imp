@@ -162,8 +162,7 @@ class EstablecimientoGenerador(models.Model):
     ambito_dependencia = models.ForeignKey('AmbitoDependencia', on_delete=models.CASCADE)
     via_acceso = models.ForeignKey('ViaAccesoSector', on_delete=models.CASCADE)
     tipo_actividad = MultiSelectField(choices=Actividades)
-    dia_atención = MultiSelectField(choices=Dias)
-    hora_atención = models.CharField(max_length=15)
+    dia_atencion = MultiSelectField(choices=Dias)    
     sector = models.IntegerField() # cuadrante que pertenece a la ciudad el generador
 
     def __str__(self):
@@ -214,7 +213,7 @@ class Cliente(models.Model):
     razon_social = models.CharField(max_length=50) # puede ser distinta de la del generador
     domicilio_legal = models.ForeignKey('Domicilio', on_delete=models.CASCADE) # (para facturacion)
     apoderado = models.ForeignKey('Persona', related_name='apoderado', on_delete=models.CASCADE)
-    contacto_comercial = models.ForeignKey('Persona', related_name='contact_comercial', null=True, blank=True, on_delete=models.CASCADE)
+    contacto_comercial = models.ForeignKey('Persona', related_name='contact_comercial', on_delete=models.CASCADE)
     cargo = models.CharField(max_length=50)
     dato_impositivo = models.OneToOneField('DatoImpositivo', on_delete=models.CASCADE)
     fecha = models.DateField(default=now) #fecha de hoy

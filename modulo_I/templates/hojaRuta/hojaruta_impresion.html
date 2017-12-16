@@ -1,0 +1,55 @@
+{% extends "base/base_listado.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+
+{% block panel-heading %}
+  GENERAR HOJA DE RUTA DEL DIA :
+{% endblock %}
+
+{% block panel-heading-tabla %}
+  Horarios de Atención
+{% endblock %}
+
+{% block thead-tabla %}
+  <thead>
+  <tr>
+    <th>Establecimiento Generador</th>
+    <th>Sector Establecimiento Generador</th>
+    <th>Horario de Retiro</th>
+    <th>Acciones</th>
+  </tr>
+  </thead>
+{% endblock %}
+
+{% block tfoot-tabla %}
+  <tfoot >
+     <tr>
+       <th>Establecimiento</th>
+       <th>Sector</th>
+       <th>Horario de Retiro</th>
+       <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
+    </tr>
+  </tfoot>
+{% endblock %}
+
+{% block tbody-tabla %}
+  <tbody>
+  {% for establecimiento in establecimientos %}
+      <tr>
+          <td>{{ establecimiento.establecimiento_generador }}</td>
+          <td>{{ establecimiento.establecimiento_generador.sector }}</td>
+          <td>{{ establecimiento.horario_retiro }}</td>
+          <td align="center">
+             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'hojaRuta:detalle_horario_atencion' id_horario=establecimiento.id%}"><em class="glyphicon glyphicon-eye-open"></em></a>
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="#"><em class="glyphicon glyphicon-pencil"></em></a>
+          </td>
+      </tr>
+  {% endfor %}
+  </tbody>
+{% endblock %}
+
+{% block modal-btn-eliminar%}
+{% endblock %}
+
+{% block no-modal%}
+{% endblock %}

@@ -170,8 +170,8 @@ class ViaAccesoSectorForm(forms.ModelForm):
 class HorarioAtencionForm(forms.ModelForm):
 
     class Meta:
-        model = EstablecimientoGenerador
-        fields = ['hora_atención','dia_atención',]
+        model = HorarioAtencion
+        fields = ['dia',]
 
 
 class ResiduoGeneradorForm(forms.ModelForm):

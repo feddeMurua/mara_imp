@@ -21,6 +21,19 @@
 {% block step-form %}
 
   <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">HORARIO DE ATENCIÓN</div>
+         <div class="panel-body">
+           <div class="form-group">
+             <label>(*)Días</label>
+             {{horario_atencion_form.dia|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una día de la semana"}}
+             <br>
+           </div>
+       </div>
+     </div>
+   </div>
+
+  <div class="form-section">
     <div class="panel panel-default">
       <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
       <div class="panel-body">
@@ -176,25 +189,6 @@
            <label>(*)Vía de Acceso al centro generador:</label>
            {{caract_generales_form.via_acceso|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una vía de acceso al centro generador"}}
            <br>
-       </div>
-     </div>
-   </div>
-
-  <div class="form-section">
-     <div class="panel panel-default">
-       <div class="panel-heading">HORARIO DE ATENCIÓN</div>
-         <div class="panel-body">
-           <div class="form-group">
-             <label>(*)Días</label>
-             {{horario_atencion_form.dia_atención|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una día de la semana"}}
-             <br>
-             <label>Horario</label>
-             <br>
-             <div class="input-group bootstrap-timepicker timepicker">
-               {{horario_atencion_form.hora_atención|add_class:'form-control'|attr:"id:hs_timepicker"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Horario es obligatorio"}}
-               <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-             </div>
-           </div>
        </div>
      </div>
    </div>

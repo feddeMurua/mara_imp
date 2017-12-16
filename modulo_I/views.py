@@ -7,8 +7,10 @@ from django.template.loader import render_to_string
 from django.contrib import messages
 from django.template import RequestContext  # For CSRF
 from django.forms.formsets import formset_factory, BaseFormSet
-from django.http import HttpResponse, HttpResponseRedirect
 from django.forms import modelformset_factory
+from django.http import HttpResponse, HttpResponseRedirect
+import datetime
+
 
 # Create your views here.
 
@@ -124,6 +126,22 @@ def alta_hoja_ruta(request):
         hojaruta_form = HojaRutaForm
 
     return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form})
+
+
+@login_required
+def generar_hoja_ruta(request):
+    dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
+
+    #informacion de los establecimientos que atienden un dia en particular
+    establecimientos = HorarioAtencion.objects.filter(dia=dia_actual).order_by('establecimiento_generador__sector').order_by('horario_retiro')
+    return render(request, "hojaRuta/hojaruta_impresion.html", {'establecimientos': establecimientos})
+
+
+
+@login_required
+def detalle_horario_atencion(request, id_horario):
+    horario_atencion = HorarioAtencion.objects.get(id=id_horario)
+    return render(request, 'hojaRuta/horarioatencion_detalle.html', {'horario_atencion': horario_atencion})
 
 
 '''

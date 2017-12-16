@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext as _
 
 Categorias = (
-    ('Ministerio de Salud', _("Productor")),
+    ('Ministerio de Salud', _("Ministerio de Salud")),
     ('Municipal', _("Municipal")),
     ('Privado', _("Privado")),
     ('Otro', _("Otro")),
@@ -59,13 +59,13 @@ Acceso_sector_acopio = (
 )
 
 Dias = (
-    ('Lunes', _("Lunes")),
-    ('Martes', _("Martes")),
-    ('Miercoles', _("Miercoles")),
-    ('Jueves', _("Jueves")),
-    ('Viernes', _("Viernes")),
-    ('Sábado', _("Sábado")),
-    ('Domingo', _("Domingo")),
+    ('0', _("Domingo")),
+    ('1', _("Lunes")),
+    ('2', _("Martes")),
+    ('3', _("Miercoles")),
+    ('4', _("Jueves")),
+    ('5', _("Viernes")),
+    ('6', _("Sábado")),
 )
 
 Impuesto_Ganancias = (
