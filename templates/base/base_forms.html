@@ -28,15 +28,15 @@
           {% csrf_token %}
           <div class="panel panel-primary">
             <div class="panel-heading">FORMULARIO DE REGISTRO</div>
-              <div class="panel-body" style="background:OldLace">
+              <div class="panel-body" style="background:OldLace;">
                 <!-- secciones de cada formulario -->
                 {% block step-form %}{% endblock %}
                 {% block no-domicilio-step-form%}
                   <!-- sección domicilio-step-form (heredan cliente y generador)-->
                   <div class="form-section">
                    <div class="panel panel-default">
-                      {% block phDomicilio %}{% endblock %}
-                         <div class="panel-body">
+                    {% block phDomicilio %}{% endblock %}
+                    <div class="panel-body">
                            <label>(*)Barrio:</label>
                            {{domicilio_form.barrio|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Barrio es obligatorio"}}
                            <br>
@@ -62,15 +62,15 @@
                            {{domicilio_form.comarca|add_class:'form-control'}}
                            <br>
                            <label>(*)Localidad:</label>
-                           {{domicilio_form.localidad|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
-                       </div>
-                     </div>
+                           {{domicilio_form.localidad|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
+                         </div>
+                  </div>
                   </div>
                 {% endblock %}
                 <!-- navegación de cada formulario -->
                 <div class="form-navigation">
                   <button type="button" class="previous btn btn-info pull-left">&lt; Anterior</button>
-                  <button type="button" class="next btn btn-info pull-right">Siguiente &gt;</button>
+                  <button id="btn-siguiente" type="button" class="next btn btn-info pull-right">Siguiente &gt;</button>
                   <button type="submit" class="btn btn-success pull-right" >
                     <span class="glyphicon glyphicon-ok"></span> Guardar
                   </button>
@@ -91,7 +91,7 @@
   {% block more-scripts %}
 
     <script type="text/javascript">
-      $('select').select2({
+      $('.select-2').select2({
         theme: "bootstrap"
       });
     </script>

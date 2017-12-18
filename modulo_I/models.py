@@ -96,8 +96,8 @@ class CaracteristicasGenerales(models.Model):
 
 class ResiduoGenerador(models.Model):
     tipo = models.CharField(max_length=80, choices=TiposResiduos)
-    volumen_mensual_estimado = models.FloatField()
-    kgs_mensual_estimado = models.FloatField()
+    volumen_mensual_estimado = models.FloatField(default=0)
+    kgs_mensual_estimado = models.FloatField(default=0)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -146,6 +146,8 @@ class HorarioAtencion(models.Model):
 
 
 class EstablecimientoGenerador(models.Model):
+    tipo_actividad = MultiSelectField(choices=Actividades)
+    '''
     nro_inscripcion = models.BigIntegerField(primary_key=True) # N° inscripcion registro de generadores provincia del chubut
     razon_social = models.CharField(max_length=50)
     telefono = models.CharField(max_length=50)
@@ -162,12 +164,12 @@ class EstablecimientoGenerador(models.Model):
     ambito_dependencia = models.ForeignKey('AmbitoDependencia', on_delete=models.CASCADE)
     via_acceso = models.ForeignKey('ViaAccesoSector', on_delete=models.CASCADE)
     tipo_actividad = MultiSelectField(choices=Actividades)
-    dia_atencion = MultiSelectField(choices=Dias)    
+    dia_atencion = MultiSelectField(choices=Dias)
     sector = models.IntegerField() # cuadrante que pertenece a la ciudad el generador
 
     def __str__(self):
         return "%s" % (self.razon_social)
-
+    '''
 
 '''
 Hoja de Ruta

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'widget_tweaks',
     'multiselectfield',
-    'dynamic_formsets',
+    'django_bootstrap_dynamic_formsets',
 
     #Gestiones
     'modulo_I',

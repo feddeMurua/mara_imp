@@ -13,13 +13,13 @@
       <div class="panel-heading">DATOS APODERADO/RESPONSABLE</div>
       <div class="panel-body">
         <label>(*)Apoderado:</label>
-          {{cliente_form.apoderado|attr:"required:"|attr:"data-parsley-error-message:(*)El campo apoderado es obligatorio"}}
+          {{cliente_form.apoderado|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo apoderado es obligatorio"}}
           <a class="btn btn-success js-alta-persona" >
             <span class="glyphicon glyphicon-plus"></span>
           </a>
         <br><br>
         <label>(*)Contacto Comercial:</label>
-        {{cliente_form.contacto_comercial|attr:"required:"|attr:"data-parsley-error-message:(*)El campo contacto comercial es obligatorio"}}
+        {{cliente_form.contacto_comercial|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo contacto comercial es obligatorio"}}
         <a class="btn btn-success js-alta-persona" >
           <span class="glyphicon glyphicon-plus"></span>
         </a>
