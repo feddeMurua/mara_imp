@@ -24,7 +24,6 @@
      <div class="panel panel-default">
        <div class="panel-heading">HORARIO DE ATENCIÓN</div>
        <div class="panel-body">
-         {{horario_atencion_formset.management_form}}
          {% bootstrap_dynamic_formset horario_atencion_formset can_delete=True %}
        </div>
     </div>
@@ -34,7 +33,7 @@
   <div class="form-section">
     <div class="panel panel-default">
       <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
-      <div class="panel-body">        
+      <div class="panel-body">
         {% bootstrap_dynamic_formset residuo_generador_formset can_delete=True %}
       </div>
     </div>
@@ -194,7 +193,7 @@
 
     // timepicker para los campos requeridos
     $('.hs_timepicker').timepicker();
-
+    
   </script>
 {% endblock %}
 

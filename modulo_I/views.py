@@ -8,9 +8,9 @@ from django.contrib import messages
 from django.template import RequestContext  # For CSRF
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.forms import modelformset_factory
+from django.forms import TextInput
 from django.http import HttpResponse, HttpResponseRedirect
 import datetime
-
 
 # Create your views here.
 
@@ -164,13 +164,20 @@ def detalle_generadores(request, nro_inscripcion):
 @login_required
 def alta_generadores(request):
 
-    ResiduoGeneradorFormSet = modelformset_factory(ResiduoGenerador, max_num=3, can_delete= True,
+    ResiduoGeneradorFormSet = modelformset_factory(ResiduoGenerador, validate_min=True, max_num=3, can_delete= True,
                                         fields=['tipo','volumen_mensual_estimado','kgs_mensual_estimado',])
 
-    HorarioAtencionFormSet = modelformset_factory(HorarioAtencion, max_num=7, can_delete= True,
+    HorarioAtencionFormSet = modelformset_factory(HorarioAtencion,validate_min=True, max_num=7, can_delete= True,
                                         fields=['dia','hora_desde_m','hora_hasta_m',
                                                 'hora_desde_t','hora_hasta_t',
-                                                'horario_retiro',])
+                                                'horario_retiro',],
+                                         widgets={'hora_desde_m': TextInput(attrs={'class':'hs_timepicker',}),
+                                                'hora_hasta_m': TextInput(attrs={'class':'hs_timepicker',}),
+                                                'hora_desde_t': TextInput(attrs={'class':'hs_timepicker',}),
+                                                'hora_hasta_t': TextInput(attrs={'class':'hs_timepicker',}),
+                                                'horario_retiro': TextInput(attrs={'class':'hs_timepicker',})
+                                         })
+
 
     if request.method == 'POST':
 
@@ -202,7 +209,6 @@ def alta_generadores(request):
         actividades_form = ActividadesForm
         residuo_generador_formset = ResiduoGeneradorFormSet(queryset=ResiduoGenerador.objects.none(), prefix='residuos') #prefijo: para tener multiples formset en el form
         horario_atencion_formset = HorarioAtencionFormSet(queryset=HorarioAtencion.objects.none(), prefix='horarios')
-
 
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,

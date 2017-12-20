@@ -3,7 +3,7 @@ from django.utils.timezone import now
 from .choices import *
 from multiselectfield import MultiSelectField
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from django.utils.translation import ugettext as _
 # Create your models here.
 '''
 CLASES IMPORTANTES
@@ -134,11 +134,11 @@ class ViaAccesoSector(models.Model):
 class HorarioAtencion(models.Model):
 
     dia = models.CharField(max_length=20, choices=Dias)
-    hora_desde_m = models.CharField(max_length=20, null=True, blank=True) # Turno mañana
-    hora_hasta_m = models.CharField(max_length=20, null=True, blank=True)
-    hora_desde_t = models.CharField(max_length=20, null=True, blank=True) # Turno tarde
-    hora_hasta_t = models.CharField(max_length=20, null=True, blank=True)
-    horario_retiro = models.CharField(max_length=20) #fundamental para crear la hoja de ruta (ordenar por horario retiro)
+    hora_desde_m = models.CharField(_(u"Hora desde (Mañana)"), max_length=15, blank=True, null=True) # Turno mañana
+    hora_hasta_m = models.CharField(_(u"Hora hasta (Mañana)"), max_length=15, blank=True, null=True)
+    hora_desde_t = models.CharField(_(u"Hora desde (Tarde)"), max_length=15, blank=True, null=True) # Turno tarde
+    hora_hasta_t = models.CharField(_(u"Hora hasta (Tarde)"), max_length=15, blank=True, null=True)
+    horario_retiro = models.CharField(_(u"Horario Retiro"), max_length=15, blank=True, null=True) #fundamental para crear la hoja de ruta (ordenar por horario retiro)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
     def __str__(self):
