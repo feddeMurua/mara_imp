@@ -100,6 +100,10 @@ class ResiduoGenerador(models.Model):
     kgs_mensual_estimado = models.FloatField(default=0)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('tipo', 'establecimiento_generador')
+
+
     def __str__(self):
         return "Tipo: %s || Volumen Mensual Estimado: %s || Kgs Mensual Estimado: %s" % \
         (self.tipo, self.volumen_mensual_estimado, self.kgs_mensual_estimado)
@@ -132,14 +136,21 @@ class ViaAccesoSector(models.Model):
 
 
 class HorarioAtencion(models.Model):
-
     dia = models.CharField(max_length=20, choices=Dias)
-    hora_desde_m = models.CharField(_(u"Hora desde (Mañana)"), max_length=15, blank=True, null=True) # Turno mañana
-    hora_hasta_m = models.CharField(_(u"Hora hasta (Mañana)"), max_length=15, blank=True, null=True)
-    hora_desde_t = models.CharField(_(u"Hora desde (Tarde)"), max_length=15, blank=True, null=True) # Turno tarde
-    hora_hasta_t = models.CharField(_(u"Hora hasta (Tarde)"), max_length=15, blank=True, null=True)
-    horario_retiro = models.CharField(_(u"Horario Retiro"), max_length=15, blank=True, null=True) #fundamental para crear la hoja de ruta (ordenar por horario retiro)
+    hora_desde_m = models.IntegerField(_(u"Hora desde (Mañana)"), default=0, null=True,
+                                        validators=[MaxValueValidator(2400),MinValueValidator(0)]) # Turno mañana
+    hora_hasta_m = models.IntegerField(_(u"Hora hasta (Mañana)"), default=0, null=True,
+                                        validators=[MaxValueValidator(2400),MinValueValidator(0)])
+    hora_desde_t = models.IntegerField(_(u"Hora desde (Tarde)"), default=0, null=True,
+                                        validators=[MaxValueValidator(2400),MinValueValidator(0)]) # Turno tarde
+    hora_hasta_t = models.IntegerField(_(u"Hora hasta (Tarde)"), default=0, null=True,
+                                        validators=[MaxValueValidator(2400),MinValueValidator(0)])
+    horario_retiro = models.IntegerField(_(u"Horario Retiro"), default=0, null=True,
+                                        validators=[MaxValueValidator(2400),MinValueValidator(0)]) #fundamental para crear la hoja de ruta (ordenar por horario retiro)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('dia', 'establecimiento_generador')
 
     def __str__(self):
         return "%s || %s" % (self.dia, self.establecimiento_generador)
@@ -164,7 +175,6 @@ class EstablecimientoGenerador(models.Model):
     ambito_dependencia = models.ForeignKey('AmbitoDependencia', on_delete=models.CASCADE)
     via_acceso = models.ForeignKey('ViaAccesoSector', on_delete=models.CASCADE)
     tipo_actividad = MultiSelectField(choices=Actividades)
-    dia_atencion = MultiSelectField(choices=Dias)
     sector = models.IntegerField() # cuadrante que pertenece a la ciudad el generador
 
     def __str__(self):

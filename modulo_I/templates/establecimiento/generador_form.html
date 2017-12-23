@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load staticfiles bootstrap3 %}
 {% load widget_tweaks %}
-{% load bootstrap_dynamic_formsets %}
+
 
 {% block stylesheets %}
   {{block.super}}
@@ -20,25 +20,106 @@
 
 {% block step-form %}
 
-  <div class="form-section">
-     <div class="panel panel-default">
-       <div class="panel-heading">HORARIO DE ATENCIÓN</div>
-       <div class="panel-body">
-         {% bootstrap_dynamic_formset horario_atencion_formset can_delete=True %}
-       </div>
-    </div>
-  </div>
-
 
   <div class="form-section">
-    <div class="panel panel-default">
-      <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
-      <div class="panel-body">
-        {% bootstrap_dynamic_formset residuo_generador_formset can_delete=True %}
-      </div>
-    </div>
+   <div class="panel panel-default">
+     <div class="panel-heading">HORARIO DE ATENCIÓN</div>
+     <div class="panel-body">
+       {{horario_atencion_formset.management_form}}
+       {% for form in horario_atencion_formset %}
+        <div class='form'>
+          <div class="panel panel-default">
+            <div class="panel-body">
+               <fieldset class='no_error'>
+                 <leyend><strong>(*)Día:</strong></leyend>
+                 {{form.dia|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo día es obligatorio"}}
+                 <br>
+                 <leyend><strong>TURNO MAÑANA</strong></leyend>
+                 <br>
+                 <leyend><strong>Desde:</strong></leyend>
+                 {{form.hora_desde_m|add_class:"form-control"|attr:"type:range"|attr:"data-parsley=range=[6, 10]"}}
+                 {% for error in form.hora_desde_m.errors %}
+                  <span style="color:red;" class="help-block">{{ error }}</span>
+                 {% endfor %}
+                 <br>
+                 <leyend><strong>Hasta:</strong></leyend>
+                 {{form.hora_hasta_t|add_class:"form-control"}}
+                 {% for error in form.hora_hasta_t.errors %}
+                  <span style="color:red;" class="help-block">{{ error }}</span>
+                 {% endfor %}
+                 <br>
+                 <leyend><strong>TURNO TARDE</strong></leyend>
+                 <br>
+                 <leyend><strong>Desde:</strong></leyend>
+                 {{form.hora_desde_t|add_class:"form-control"}}
+                 {% for error in form.hora_desde_t.errors %}
+                  <span style="color:red;" class="help-block">{{ error }}</span>
+                 {% endfor %}
+                 <br>
+                 <leyend><strong>Hasta:</strong></leyend>
+                 {{form.hora_hasta_t|add_class:"form-control"}}
+                 {% for error in form.hora_hasta_t.errors %}
+                  <span style="color:red;" class="help-block">{{ error }}</span>
+                 {% endfor %}
+                 <br>
+                 <leyend><strong>(*)Horario de Retiro:</strong></leyend>
+                 {{form.horario_retiro|add_class:"form-control"|attr:"required:"}}
+                 {% for error in form.horario_retiro.errors %}
+                  <span style="color:red;" class="help-block">{{ error }}</span>
+                 {% endfor %}
+                 <br>
+                 <leyend><strong>CANCELAR FORMULARIO ACTUAL</strong></leyend>
+                 {{form.DELETE}}
+                 <br>
+               </fieldset>
+             </div>
+           </div>
+        </div>
+        {% endfor %}
+        <br>
+        <button id="add_more" type="button" class="btn btn-success">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
+
+     </div>
+   </div>
+
+   <script>
+      $('#add_more').click(function() {
+          cloneMore('div.form:last', 'service');
+      });
+
+      /* Alta form*/
+      function cloneMore(selector, type) {
+        var newElement = $(selector).clone(true);
+        var total = $('#id_' + type + '-TOTAL_FORMS').val();
+        newElement.find(':input').each(function() {
+            var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
+            var id = 'id_' + name;
+            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+        });
+        newElement.find('label').each(function() {
+            var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
+            $(this).attr('for', newFor);
+        });
+        total++;
+        $('#id_' + type + '-TOTAL_FORMS').val(total);
+        $(selector).after(newElement);
+      }
+
+    </script>
   </div>
 
+<!--
+  <div class="form-section">
+   <div class="panel panel-default">
+     <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
+     <div class="panel-body">
+
+     </div>
+   </div>
+  </div>
+-->
 
   <div class="form-section">
      <div class="panel panel-default">
@@ -192,8 +273,8 @@
     }
 
     // timepicker para los campos requeridos
-    $('.hs_timepicker').timepicker();
-    
+    //$('.hs_timepicker').timepicker();
+
   </script>
 {% endblock %}
 

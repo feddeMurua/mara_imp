@@ -4,12 +4,8 @@ from django.http import JsonResponse
 from .models import *
 from .forms import *
 from django.template.loader import render_to_string
-from django.contrib import messages
-from django.template import RequestContext  # For CSRF
 from django.forms.formsets import formset_factory, BaseFormSet
-from django.forms import modelformset_factory
-from django.forms import TextInput
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 import datetime
 
 # Create your views here.
@@ -164,56 +160,41 @@ def detalle_generadores(request, nro_inscripcion):
 @login_required
 def alta_generadores(request):
 
-    ResiduoGeneradorFormSet = modelformset_factory(ResiduoGenerador, validate_min=True, max_num=3, can_delete= True,
-                                        fields=['tipo','volumen_mensual_estimado','kgs_mensual_estimado',])
-
-    HorarioAtencionFormSet = modelformset_factory(HorarioAtencion,validate_min=True, max_num=7, can_delete= True,
-                                        fields=['dia','hora_desde_m','hora_hasta_m',
-                                                'hora_desde_t','hora_hasta_t',
-                                                'horario_retiro',],
-                                         widgets={'hora_desde_m': TextInput(attrs={'class':'hs_timepicker',}),
-                                                'hora_hasta_m': TextInput(attrs={'class':'hs_timepicker',}),
-                                                'hora_desde_t': TextInput(attrs={'class':'hs_timepicker',}),
-                                                'hora_hasta_t': TextInput(attrs={'class':'hs_timepicker',}),
-                                                'horario_retiro': TextInput(attrs={'class':'hs_timepicker',})
-                                         })
-
+    HorarioAtencionFormSet = formset_factory(HorarioAtencionForm,\
+                            max_num=7, validate_max=True, can_delete=True)
 
     if request.method == 'POST':
 
         generador_form = GeneradorForm(request.POST)
         actividades_form = ActividadesForm(request.POST)
-        residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, prefix='residuos')
-        horario_atencion_formset = HorarioAtencionFormSet(request.POST, prefix='horarios')
+        horario_atencion_formset = HorarioAtencionFormSet(request.POST)
 
-        if generador_form.is_valid() & actividades_form.is_valid() \
-            & horario_atencion_formset.is_valid() & residuo_generador_formset.is_valid():
+        if generador_form.is_valid() & actividades_form.is_valid()\
+            & horario_atencion_formset.is_valid():
 
             generador = generador_form.save(commit=False)
             generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
 
             generador.save()
 
-            for form in horario_atencion_formset.forms:
-                form.instance.establecimiento_generador = generador
-            horario_atencion_formset.save()
+            # Guardo el formset de residuos
+            for form in horario_atencion_formset:
+                horario_atencion_item = form.save(commit=False)
+                horario_atencion_item.establecimiento_generador = generador
+                horario_atencion_item.save()
 
-            for form in residuo_generador_formset.forms:
-                form.instance.establecimiento_generador = generador
-            residuo_generador_formset.save()
 
             return redirect('generadores:listado_generadores')
 
     else:
         generador_form = GeneradorForm
         actividades_form = ActividadesForm
-        residuo_generador_formset = ResiduoGeneradorFormSet(queryset=ResiduoGenerador.objects.none(), prefix='residuos') #prefijo: para tener multiples formset en el form
-        horario_atencion_formset = HorarioAtencionFormSet(queryset=HorarioAtencion.objects.none(), prefix='horarios')
+        horario_atencion_formset = HorarioAtencionFormSet()
+
 
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,
-               'residuo_generador_formset':residuo_generador_formset,
-               'horario_atencion_formset':horario_atencion_formset,
+               'horario_atencion_formset': horario_atencion_formset,
     }
 
     return render(request, "establecimiento/generador_form.html",contexto)
