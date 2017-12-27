@@ -15,7 +15,20 @@
   <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
   <script type="text/javascript">
    $(function() {
-       $('#myForm tbody tr').formset();
+
+     $('#fieldset_horario').formset({
+           prefix: '{{ horario_atencion_formset.prefix }}',
+           formCssClass: 'dynamic-horario_atencion_formset',
+           addText: 'Agregar otro horario',
+           deleteText: 'Eliminar'
+       });
+       $('#fieldset_residuo').formset({
+           prefix: '{{ residuo_generador_formset.prefix }}',
+           formCssClass: 'dynamic-residuo_generador_formset',
+           addText: 'Agregar otro residuo',
+           deleteText: 'Eliminar'
+       });
+
    })
  </script>
 {% endblock %}
@@ -26,88 +39,67 @@
 
 {% block step-form %}
 
-
   <div class="form-section">
    <div class="panel panel-default">
      <div class="panel-heading">HORARIO DE ATENCIÓN</div>
      <div class="panel-body">
        <div class="panel panel-default">
          <div class="panel-body">
-              <table border="0" cellpadding="0" cellspacing="0">
-                <tbody>
-                    {% for form in horario_atencion_formset.forms %}
-                    <tr>
-                       <td>{{ form.dia }}</td>
-                       <td>{{ form.hora_desde_m }}</td>
-                       <td>{{ form.hora_hasta_m }}</td>
-                       <td>{{ form.hora_desde_t }}</td>
-                       <td>{{ form.hora_hasta_t }}</td>
-                       <td>{{ form.horario_retiro }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
-              {{ horario_atencion_formset.management_form }}            
-            <!--
-               <fieldset class='no_error'>
-                 <leyend><strong>(*)Día:</strong></leyend>
-                 {{form.dia|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo día es obligatorio"}}
-                 <br>
-                 <leyend><strong>TURNO MAÑANA</strong></leyend>
-                 <br>
-                 <leyend><strong>Desde:</strong></leyend>
-                 {{form.hora_desde_m|add_class:"form-control"|attr:"type:range"|attr:"data-parsley=range=[6, 10]"}}
-                 {% for error in form.hora_desde_m.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                 {% endfor %}
-                 <br>
-                 <leyend><strong>Hasta:</strong></leyend>
-                 {{form.hora_hasta_t|add_class:"form-control"}}
-                 {% for error in form.hora_hasta_t.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                 {% endfor %}
-                 <br>
-                 <leyend><strong>TURNO TARDE</strong></leyend>
-                 <br>
-                 <leyend><strong>Desde:</strong></leyend>
-                 {{form.hora_desde_t|add_class:"form-control"}}
-                 {% for error in form.hora_desde_t.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                 {% endfor %}
-                 <br>
-                 <leyend><strong>Hasta:</strong></leyend>
-                 {{form.hora_hasta_t|add_class:"form-control"}}
-                 {% for error in form.hora_hasta_t.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                 {% endfor %}
-                 <br>
-                 <leyend><strong>(*)Horario de Retiro:</strong></leyend>
-                 {{form.horario_retiro|add_class:"form-control"|attr:"required:"}}
-                 {% for error in form.horario_retiro.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                 {% endfor %}
-                 <br>
-                 <leyend><strong>CANCELAR FORMULARIO ACTUAL</strong></leyend>
-                 {{form.DELETE}}
-                 <br>
-               </fieldset>
-                -->
+           <fieldset id="fieldset_horario">
+            {% for form in horario_atencion_formset.forms %}
+
+              {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+              {% endfor %}
+
+              {% for field in form.visible_fields %}
+                <div class="form-group">
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                  {{ field|add_class:'form-control' }}
+
+                  {% for error in field.errors %}
+                    <span style="color:red;" class="help-block">{{ error }}</span>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+
+            {% endfor %}
+          </fieldset>
+          {{ horario_atencion_formset.management_form }}
         </div>
       </div>
      </div>
    </div>
   </div>
 
-<!--
   <div class="form-section">
    <div class="panel panel-default">
      <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
      <div class="panel-body">
+       <fieldset id="fieldset_residuo">
+        {% for form in residuo_generador_formset.forms %}
 
+          {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+          {% endfor %}
+
+          {% for field in form.visible_fields %}
+            <div class="form-group">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field|add_class:'form-control' }}
+
+              {% for error in field.errors %}
+                <span style="color:red;" class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endfor %}
+
+        {% endfor %}
+      </fieldset>
+      {{ residuo_generador_formset.management_form }}
      </div>
    </div>
   </div>
--->
 
   <div class="form-section">
      <div class="panel panel-default">
@@ -120,13 +112,13 @@
      </div>
    </div>
 
-<!--
 
   <div class="form-section">
       <div class="panel panel-default">
         <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
           <div class="panel-body">
             <div class="form-group">
+
               <label>(*)Director Responsable:</label>
               {{generador_form.director_responsable|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo director responsable es obligatorio"}}
               <br>
@@ -241,8 +233,6 @@
      </div>
    </div>
 
- -->
-
 
   <script type="text/javascript">
 
@@ -264,9 +254,6 @@
     //$('.hs_timepicker').timepicker();
 
   </script>
-{% endblock %}
-
-{% block no-domicilio-step-form%}
 {% endblock %}
 
 {% block url-cancelar %}

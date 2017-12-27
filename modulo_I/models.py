@@ -137,14 +137,10 @@ class ViaAccesoSector(models.Model):
 
 class HorarioAtencion(models.Model):
     dia = models.CharField(max_length=20, choices=Dias)
-    hora_desde_m = models.IntegerField(_(u"Hora desde (Mañana)"), default=0, null=True,
-                                        validators=[MaxValueValidator(2400),MinValueValidator(0)]) # Turno mañana
-    hora_hasta_m = models.IntegerField(_(u"Hora hasta (Mañana)"), default=0, null=True,
-                                        validators=[MaxValueValidator(2400),MinValueValidator(0)])
-    hora_desde_t = models.IntegerField(_(u"Hora desde (Tarde)"), default=0, null=True,
-                                        validators=[MaxValueValidator(2400),MinValueValidator(0)]) # Turno tarde
-    hora_hasta_t = models.IntegerField(_(u"Hora hasta (Tarde)"), default=0, null=True,
-                                        validators=[MaxValueValidator(2400),MinValueValidator(0)])
+    hora_desde_m = models.IntegerField(_(u"Hora desde (Mañana)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)]) # Turno mañana
+    hora_hasta_m = models.IntegerField(_(u"Hora hasta (Mañana)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)])
+    hora_desde_t = models.IntegerField(_(u"Hora desde (Tarde)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)]) # Turno tarde
+    hora_hasta_t = models.IntegerField(_(u"Hora hasta (Tarde)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)])
     horario_retiro = models.IntegerField(_(u"Horario Retiro"), default=0, null=True,
                                         validators=[MaxValueValidator(2400),MinValueValidator(0)]) #fundamental para crear la hoja de ruta (ordenar por horario retiro)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
@@ -158,7 +154,6 @@ class HorarioAtencion(models.Model):
 
 class EstablecimientoGenerador(models.Model):
     tipo_actividad = MultiSelectField(choices=Actividades)
-    '''
     nro_inscripcion = models.BigIntegerField(primary_key=True) # N° inscripcion registro de generadores provincia del chubut
     razon_social = models.CharField(max_length=50)
     telefono = models.CharField(max_length=50)
@@ -178,8 +173,8 @@ class EstablecimientoGenerador(models.Model):
     sector = models.IntegerField() # cuadrante que pertenece a la ciudad el generador
 
     def __str__(self):
-        return "%s" % (self.razon_social)
-    '''
+        return "%s || %s" % (self.nro_inscripcion, self.razon_social)
+
 
 '''
 Hoja de Ruta

@@ -120,11 +120,10 @@ GENERADORES
 '''
 
 class GeneradorForm(forms.ModelForm):
-    #fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
+    fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     class Meta:
         model = EstablecimientoGenerador
-        fields='__all__'
-        '''
+
         exclude = ['via_acceso','tipo_actividad','domicilio','ambito_dependencia',
                    'dia_atención','hora_atención','tipo_actividad', 'caract_generales',
                    'via_acceso', 'ambito_dependencia','fecha' ]
@@ -132,7 +131,6 @@ class GeneradorForm(forms.ModelForm):
         widgets = {
             'observaciones_comentarios': forms.Textarea(attrs={'rows': 4, 'cols': 10}),
         }
-        '''
 
 
 class ActividadesForm(forms.ModelForm):
