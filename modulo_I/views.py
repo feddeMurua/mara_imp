@@ -178,7 +178,7 @@ def alta_generadores(request):
             generador.save()
 
             # Guardo el formset de residuos
-            for form in horario_atencion_formset:
+            for form in horario_atencion_formset.forms:
                 horario_atencion_item = form.save(commit=False)
                 horario_atencion_item.establecimiento_generador = generador
                 horario_atencion_item.save()
