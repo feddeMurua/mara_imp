@@ -141,8 +141,7 @@ class HorarioAtencion(models.Model):
     hora_hasta_m = models.IntegerField(_(u"Hora hasta (Mañana)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)])
     hora_desde_t = models.IntegerField(_(u"Hora desde (Tarde)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)]) # Turno tarde
     hora_hasta_t = models.IntegerField(_(u"Hora hasta (Tarde)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)])
-    horario_retiro = models.IntegerField(_(u"Horario Retiro"), default=0, null=True,
-                                        validators=[MaxValueValidator(2400),MinValueValidator(0)]) #fundamental para crear la hoja de ruta (ordenar por horario retiro)
+    horario_retiro = models.IntegerField(_(u"Horario Retiro"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)]) #fundamental para crear la hoja de ruta (ordenar por horario retiro)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
     class Meta:

@@ -13,16 +13,15 @@
       <div class="panel-heading">DATOS APODERADO/RESPONSABLE</div>
       <div class="panel-body">
         <label>(*)Apoderado:</label>
-          {{cliente_form.apoderado|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo apoderado es obligatorio"}}
-          <a class="btn btn-success js-alta-persona" >
-            <span class="glyphicon glyphicon-plus"></span>
-          </a>
-        <br><br>
+        {{cliente_form.apoderado|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo apoderado es obligatorio"}}
+        <br>
         <label>(*)Contacto Comercial:</label>
         {{cliente_form.contacto_comercial|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo contacto comercial es obligatorio"}}
+        <!--
         <a class="btn btn-success js-alta-persona" >
           <span class="glyphicon glyphicon-plus"></span>
         </a>
+        -->
         <br><br>
         <label>(*)Fecha vínculo:</label>
         {{cliente_form.fecha_vinculo|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha vínculo es obligatorio"}}
@@ -37,6 +36,8 @@
       </div>
     </div>
   </div>
+
+  {% include 'base/form_section_domicilio.html' %}
 
   <div class="form-section">
     <div class="panel panel-default">
@@ -60,10 +61,6 @@
 
 {% endblock %}
 
-<!-- nombre en el heading del panel -->
-{% block phDomicilio %}
-  <div class="panel-heading">DOMICILIO REAL DEL CLIENTE</div>
-{% endblock %}
 
 {% block url-cancelar %}
   {% url 'clientes:listado_clientes' %}

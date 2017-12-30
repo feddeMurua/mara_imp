@@ -6,6 +6,13 @@ from .forms import *
 from django.template.loader import render_to_string
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.http import HttpResponse
+'''
+PARA EL POP UP
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django_addanother.views import CreatePopupMixin
+from django.views.generic.edit import CreateView
+'''
+from django.forms import modelformset_factory
 import datetime
 
 # Create your views here.
@@ -262,7 +269,7 @@ def modificar_generadores(request, nro_inscripcion):
         generador_form = GeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
         horario_atencion_form = HorarioAtencionForm(request.POST, instance=generador)
-        residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, request.FILES)
+        #residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, request.FILES)
         acopio_transitorio_form = AcopioTransitorioForm(request.POST, instance=generador.via_acceso.acopio_transitorio)
         via_acceso_form = ViaAccesoSectorForm(request.POST, instance=generador.via_acceso)
         domicilio_form = DomicilioForm(request.POST, instance=generador.domicilio)
@@ -272,7 +279,7 @@ def modificar_generadores(request, nro_inscripcion):
         if generador_form.is_valid() & actividades_form.is_valid() & domicilio_form.is_valid() \
             & ambito_dpcia_form.is_valid() & caract_generales_form.is_valid() \
             & via_acceso_form.is_valid() & acopio_transitorio_form.is_valid() \
-            & horario_atencion_form.is_valid() & residuo_generador_formset.is_valid():
+            & horario_atencion_form.is_valid(): #& residuo_generador_formset.is_valid():
 
             residuos = ResiduoGenerador.objects.filter(establecimiento_generador__nro_inscripcion=nro_inscripcion)
             for r in residuos:
@@ -282,11 +289,14 @@ def modificar_generadores(request, nro_inscripcion):
             '''
 
             generador = generador_form.save(commit=False)
+
+            '''
             # Guardo el formset de residuos
             for form in residuo_generador_formset.forms:
                 residuo_generador_item = form.save(commit=False)
                 residuo_generador_item.establecimiento_generador = generador
                 residuo_generador_item.save()
+            '''
 
             acopio = acopio_transitorio_form.save()
             via_acceso = ViaAccesoSector() # se crea objeto via_acceso para asignarle sector acopio
@@ -311,6 +321,7 @@ def modificar_generadores(request, nro_inscripcion):
         generador_form = GeneradorForm(instance=generador)
         actividades_form = ActividadesForm(instance=generador)
         horario_atencion_form = HorarioAtencionForm(instance=generador)
+
 
         RgFormSet = modelformset_factory(ResiduoGenerador,exclude=('establecimiento_generador',))
         residuo_generador_formset= RgFormSet(queryset=ResiduoGenerador.objects.filter(establecimiento_generador__nro_inscripcion=nro_inscripcion))

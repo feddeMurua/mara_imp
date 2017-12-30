@@ -6,6 +6,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import *
 from .choices import *
 from functools import partial
+from django_addanother.widgets import AddAnotherWidgetWrapper
+from django.core.urlresolvers import reverse_lazy
 import re
 
 DateInput = partial(forms.DateInput, {'class': 'datepicker'})

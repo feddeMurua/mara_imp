@@ -1,0 +1,37 @@
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+{% load widget_tweaks %}
+
+<!-- sección domicilio-step-form (heredan cliente y generador)-->
+<div class="form-section">
+ <div class="panel panel-default">
+  <div class="panel-body">
+         <label>(*)Barrio:</label>
+         {{domicilio_form.barrio|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Barrio es obligatorio"}}
+         <br>
+         <label>(*)Calle:</label>
+         {{domicilio_form.calle|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Calle es obligatorio"}}
+         <br>
+         <label>Entre:</label>
+         {{domicilio_form.calle_entre1|add_class:'form-control'}}
+         <br>
+         <label>Entre:</label>
+         {{domicilio_form.calle_entre2|add_class:'form-control'}}
+         <br>
+         <label>(*)Número°:</label>
+         {{domicilio_form.nro|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo Número° "}}
+         <br>
+         <label>Piso:</label>
+         {{domicilio_form.piso|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+         <br>
+         <label>Dpto:</label>
+         {{domicilio_form.dpto|add_class:'form-control'}}
+         <br>
+         <label>Comarca:</label>
+         {{domicilio_form.comarca|add_class:'form-control'}}
+         <br>
+         <label>(*)Localidad:</label>
+         {{domicilio_form.localidad|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
+       </div>
+    </div>
+</div>

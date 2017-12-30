@@ -43,8 +43,8 @@
           <td>{{ generador.domicilio }}</td>
           <td>{{ generador.sector }}</td>
           <td align="center">
-             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="#"><em class="glyphicon glyphicon-eye-open"></em></a>
-             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="#"><em class="glyphicon glyphicon-pencil"></em></a>
+            <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'generadores:detalle_generadores' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-eye-open"></em></a>
+            <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modificar_generadores' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-pencil"></em></a>
              <a id="generador_id"class="btn btn-danger btn-baja"  data-generadornro="{{generador.nro_inscripcion}}" data-generadornombre="{{generador.razon_social}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
           </td>
       </tr>

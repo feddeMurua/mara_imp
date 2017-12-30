@@ -1,6 +1,8 @@
 $(function () {
 
   var $sections = $('.form-section');
+  var flag_r = 0 ;
+  var flag_h = 0 ;
 
   function navigateTo(index) {
     // Mark the current section with the class 'current'
@@ -13,6 +15,23 @@ $(function () {
     var atTheEnd = index >= $sections.length - 1;
     $('.form-navigation .next').toggle(!atTheEnd);
     $('.form-navigation [type=submit]').toggle(atTheEnd);
+
+    if ((curIndex() == 0) && (flag_r == 0))  {
+      $('#fieldset_residuo').formset({
+          prefix: 'fs2',
+          addText: 'Agregar otro residuo',
+          deleteText: 'Eliminar'
+      });
+      flag_r =1;
+    } else if ((curIndex() == 1) && (flag_h == 0)) {
+      $('#fieldset_horario').formset({
+          prefix: 'fs1',
+          addText: 'Agregar otro horario',
+          deleteText: 'Eliminar'
+      });
+      flag_h =1;
+    }
+
   }
 
   function curIndex() {
