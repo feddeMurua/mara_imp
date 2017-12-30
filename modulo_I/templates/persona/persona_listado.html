@@ -1,0 +1,107 @@
+{% extends "base/base_listado.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+
+{% block panel-heading %}
+  LISTADO DE PERSONAS
+{% endblock %}
+
+{% block panel-heading-tabla %}
+  <a href="#}" class="btn btn-primary js-alta-persona"><i class="fa fa-plus"></i> Nueva Persona</a>
+{% endblock %}
+
+{% block thead-tabla %}
+  <thead>
+  <tr>
+      <th>Apellido</th>
+      <th>Nombre</th>
+      <th>Documento</th>
+      <th>Telefono Fijo</th>
+      <th>Acciones</th>
+  </tr>
+  </thead>
+{% endblock %}
+
+{% block tfoot-tabla %}
+  <tfoot >
+     <tr>
+       <th>Apellido</th>
+       <th>Nombre</th>
+       <th>Documento</th>
+       <th>Telefono</th>
+       <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
+    </tr>
+  </tfoot>
+{% endblock %}
+
+{% block tbody-tabla %}
+  <tbody>
+  {% for persona in listado_personas %}
+      <tr>
+          <td>{{ persona.apellido }}</td>
+          <td>{{ persona.nombre }}</td>
+          <td>{{ persona.documento }}</td>
+          {% if persona.telefono_fijo %}
+            <td>{{ persona.telefono_fijo }}</td>
+          {% else %}
+            <td>-</td>
+          {% endif %}
+          <td align="center">
+             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="#"><em class="glyphicon glyphicon-eye-open"></em></a>
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="#"><em class="glyphicon glyphicon-pencil"></em></a>
+             <a id="persona_id"class="btn btn-danger btn-baja" data-personaid="{{persona.id}}" data-personanombre="{{persona.nombre}}" data-personaapellido="{{persona.apellido}}"data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+          </td>
+      </tr>
+  {% endfor %}
+  </tbody>
+{% endblock %}
+
+{% block more-datos %}
+  {% include "persona/persona_alta.html" %}
+{% endblock %}
+
+{% block modal-btn-eliminar%}
+  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarPersona(value)">Eliminar</button>
+{% endblock %}
+
+{% block modal-scripts %}
+  <script>
+    //codigo para cambiar los datos del modal y para dar de baja
+    $(document).ready(function () {
+      $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var persona_nombre = button.data('personanombre')
+        var persona_apellido = button.data('personaapellido')
+        var persona_id = button.data('personaid') // id persona.
+
+        var title = 'Persona: ' + persona_apellido + ', ' + persona_nombre
+        var content = '¿Está seguro que quiere eliminar la persona ?'
+
+
+        // actualiza el contenido del manual
+        var modal = $(this)
+        modal.find('.modal-title').text(title)
+        modal.find('.modal-body').text(content)
+
+        // se le pasa el valor del documento al boton de confirmar
+        modal.find('button.btn-danger').val(persona_id)
+      })
+    })
+
+    function eliminarPersona(persona_id) {
+      var request = $.ajax({
+          type: "POST",
+          url: "{% url 'personas:baja_personas' %}",
+          data: {
+              "csrfmiddlewaretoken": "{{ csrf_token }}",
+              "persona_id": persona_id
+          },
+      });
+    }
+
+    //para actualizar cuando se da de baja.
+    $('#modal_baja').on('hidden.bs.modal', function () {
+      window.location.reload(true);
+    })
+  </script>
+{% endblock %}

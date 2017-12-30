@@ -18,19 +18,13 @@ import datetime
 # Create your views here.
 
 '''
-CLIENTES
+PERSONAS
 '''
 
 @login_required
-def listado_clientes(request):
-    listado_clientes = Cliente.objects.all()
-    return render(request, 'cliente/cliente_listado.html', {'listado_clientes': listado_clientes})
-
-
-@login_required
-def detalle_clientes(request, id_cliente):
-    cliente = Cliente.objects.get(id=id_cliente)
-    return render(request, 'cliente/cliente_detalle.html', {'cliente': cliente})
+def listado_personas(request):
+    listado_personas = Persona.objects.all()
+    return render(request, 'persona/persona_listado.html', {'listado_personas': listado_personas})
 
 
 @login_required
@@ -53,6 +47,31 @@ def alta_personas(request):
         request=request
     )
     return JsonResponse(data)
+
+
+@login_required
+def baja_personas(request):
+    persona_id = request.POST.get('persona_id')
+    persona = Persona.objects.get(id=persona_id)
+    persona.delete()
+    response = {}
+    return JsonResponse(response)
+
+
+'''
+CLIENTES
+'''
+
+@login_required
+def listado_clientes(request):
+    listado_clientes = Cliente.objects.all()
+    return render(request, 'cliente/cliente_listado.html', {'listado_clientes': listado_clientes})
+
+
+@login_required
+def detalle_clientes(request, id_cliente):
+    cliente = Cliente.objects.get(id=id_cliente)
+    return render(request, 'cliente/cliente_detalle.html', {'cliente': cliente})
 
 
 @login_required
