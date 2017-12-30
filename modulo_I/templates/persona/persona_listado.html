@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <a href="#}" class="btn btn-primary js-alta-persona"><i class="fa fa-plus"></i> Nueva Persona</a>
+  <a class="btn btn-primary js-alta-persona"><i class="fa fa-plus"></i> Nueva Persona</a>
 {% endblock %}
 
 {% block thead-tabla %}
@@ -15,7 +15,6 @@
   <tr>
       <th>Apellido</th>
       <th>Nombre</th>
-      <th>Documento</th>
       <th>Telefono Fijo</th>
       <th>Acciones</th>
   </tr>
@@ -27,7 +26,6 @@
      <tr>
        <th>Apellido</th>
        <th>Nombre</th>
-       <th>Documento</th>
        <th>Telefono</th>
        <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
     </tr>
@@ -40,15 +38,14 @@
       <tr>
           <td>{{ persona.apellido }}</td>
           <td>{{ persona.nombre }}</td>
-          <td>{{ persona.documento }}</td>
           {% if persona.telefono_fijo %}
             <td>{{ persona.telefono_fijo }}</td>
           {% else %}
             <td>-</td>
           {% endif %}
           <td align="center">
-             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="#"><em class="glyphicon glyphicon-eye-open"></em></a>
-             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="#"><em class="glyphicon glyphicon-pencil"></em></a>
+             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'personas:detalle_personas' id_persona=persona.id%}"><em class="glyphicon glyphicon-eye-open"></em></a>
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'personas:modificar_personas' id_persona=persona.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
              <a id="persona_id"class="btn btn-danger btn-baja" data-personaid="{{persona.id}}" data-personanombre="{{persona.nombre}}" data-personaapellido="{{persona.apellido}}"data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
           </td>
       </tr>

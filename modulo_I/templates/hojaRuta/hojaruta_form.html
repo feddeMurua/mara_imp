@@ -24,7 +24,7 @@
       <div class="panel-heading">DATOS HOJA DE RUTA</div>
       <div class="panel-body">
         <label>(*)Establecimiento Generador:</label>
-        {{hojaruta_form.establecimiento_generador|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Establecimiento Generador es obligatorio"}}
+        {{hojaruta_form.establecimiento_generador|add_class:'select-2'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Establecimiento Generador es obligatorio"}}
         <br>
         <label>(*)Volumen Retirado:</label>
         {{hojaruta_form.volumen_retirado|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Volumen es obligatorio"}}

@@ -28,6 +28,12 @@ def listado_personas(request):
 
 
 @login_required
+def detalle_personas(request, id_persona):
+    persona = Persona.objects.get(id=id_persona)
+    return render(request, 'persona/persona_detalle.html', {'persona': persona})
+
+
+@login_required
 def alta_personas(request):
     data = dict()
 
@@ -56,6 +62,21 @@ def baja_personas(request):
     persona.delete()
     response = {}
     return JsonResponse(response)
+
+
+@login_required
+def modificar_personas(request, id_persona):
+    persona = Persona.objects.get(id=id_persona)
+    if request.method == 'POST':
+        persona_form = PersonaForm(request.POST, instance=persona)
+
+        if persona_form.is_valid():
+            persona_form.save()
+            return redirect('personas:listado_personas')
+    else:
+        persona_form = PersonaForm(instance=persona)
+
+    return render(request, "persona/persona_form.html", {'persona_form': persona_form})
 
 
 '''
