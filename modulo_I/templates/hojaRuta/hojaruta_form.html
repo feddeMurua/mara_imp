@@ -24,41 +24,57 @@
       <div class="panel-heading">DATOS HOJA DE RUTA</div>
       <div class="panel-body">
         <label>(*)Establecimiento Generador:</label>
-        {{hojaruta_form.establecimiento_generador|add_class:'select-2'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Establecimiento Generador es obligatorio"}}
+        {{hojaruta_form.establecimiento_generador|add_class:'select-2'|attr:"required:"}}
         <br>
         <label>(*)Volumen Retirado:</label>
-        {{hojaruta_form.volumen_retirado|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Volumen es obligatorio"}}
+        {{hojaruta_form.volumen_retirado|add_class:'form-control'|attr:"required:"}}
         <br>
         <label>(*)Número de Precinto:</label>
-        {{hojaruta_form.nro_precinto|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo N° precinto es obligatorio"}}
+        {{hojaruta_form.nro_precinto|add_class:'form-control'|attr:"required:"}}
+        <br>
+        <label>(*)Número de balde de entrega:</label>
+        {{hojaruta_form.nro_balde_entrega|add_class:'form-control'|attr:"required:"}}
+        {% for error in hojaruta_form.nro_balde_entrega.errors %}
+          <span style="color:red;" class="help-block">{{ error }}</span>
+        {% endfor %}
+        <br>
+        <label>(*)Número de balde de retiro:</label>
+        {{hojaruta_form.nro_balde_retiro|add_class:'form-control'|attr:"required:"}}
+        {% for error in hojaruta_form.nro_balde_retiro.errors %}
+          <span style="color:red;" class="help-block">{{ error }}</span>
+        {% endfor %}
         <br>
         <label>(*)Hora Programada:</label>
         <br>
         <div class="input-group bootstrap-timepicker timepicker">
-        {{hojaruta_form.hora_programada|add_class:'form-control hs_timepicker'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Hora Programada es obligatorio"}}
+        {{hojaruta_form.hora_programada|add_class:'form-control hs_timepicker'|attr:"readonly"|attr:"style:background:white"}}
         <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
         </div>
         <br>
         <label>(*)Hora Llegada:</label>
         <br>
         <div class="input-group bootstrap-timepicker timepicker">
-        {{hojaruta_form.hora_llegada|add_class:'form-control hs_timepicker'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Hora llegada es obligatorio"}}
+        {{hojaruta_form.hora_llegada|add_class:'form-control hs_timepicker'|attr:"readonly"|attr:"style:background:white"}}
         <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
         </div>
         <br>
-        <label>(*)Hora Llegada:</label>
+        <label>(*)Hora Salida:</label>
         <br>
         <div class="input-group bootstrap-timepicker timepicker">
-        {{hojaruta_form.hora_salida|add_class:'form-control hs_timepicker'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Hora salida es obligatorio"}}
+        {{hojaruta_form.hora_salida|add_class:'form-control hs_timepicker'|attr:"readonly"|attr:"style:background:white"}}
         <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
         </div>
-        <br>
+        <br>        
       </div>
     </div>
   </div>
 
   <script type="text/javascript">
-    $('.hs_timepicker').timepicker();
+    $('.hs_timepicker').timepicker({
+      minuteStep:1,
+      defaultTime:false,
+      showMeridian:false
+    });
   </script>
 
 

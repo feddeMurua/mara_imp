@@ -142,6 +142,7 @@ class ActividadesForm(forms.ModelForm):
 
         fields = ['tipo_actividad',]
 
+
 class AmbitoDependenciaForm(forms.ModelForm):
 
     class Meta:
@@ -171,13 +172,7 @@ class ViaAccesoSectorForm(forms.ModelForm):
 
 
 class HorarioAtencionForm(forms.ModelForm):
-    '''
-    hora_desde_m = forms.CharField(widget=forms.TextInput(attrs={'class' : 'hs_timepicker'}))
-    hora_hasta_m = forms.CharField(widget=forms.TextInput(attrs={'class' : 'hs_timepicker'}))
-    hora_desde_t = forms.CharField(widget=forms.TextInput(attrs={'class' : 'hs_timepicker'}))
-    hora_hasta_t = forms.CharField(widget=forms.TextInput(attrs={'class' : 'hs_timepicker'}))
-    horario_retiro = forms.CharField(widget=forms.TextInput(attrs={'class' : 'hs_timepicker'}))
-    '''
+    
     class Meta:
         model = HorarioAtencion
         exclude = ['establecimiento_generador',]

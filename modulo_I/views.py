@@ -5,7 +5,10 @@ from .models import *
 from .forms import *
 from django.template.loader import render_to_string
 from django.forms.formsets import formset_factory, BaseFormSet
+from django.forms import modelform_factory
 from django.http import HttpResponse
+from easy_pdf.views import PDFTemplateView
+from django.forms import TextInput
 '''
 PARA EL POP UP
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -177,7 +180,8 @@ def generar_hoja_ruta(request):
 
     #informacion de los establecimientos que atienden un dia en particular
     establecimientos = HorarioAtencion.objects.filter(dia=dia_actual).order_by('establecimiento_generador__sector').order_by('horario_retiro')
-    return render(request, "hojaRuta/hojaruta_impresion.html", {'establecimientos': establecimientos})
+    #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
+    return render(request, "hojaRuta/hojaruta_impresion.html", {'establecimientos': establecimientos, 'dia':(establecimientos[0].get_dia_display()).upper()})
 
 
 
@@ -185,6 +189,15 @@ def generar_hoja_ruta(request):
 def detalle_horario_atencion(request, id_horario):
     horario_atencion = HorarioAtencion.objects.get(id=id_horario)
     return render(request, 'hojaRuta/horarioatencion_detalle.html', {'horario_atencion': horario_atencion})
+
+
+class HojaRutaPdf(PDFTemplateView):
+
+    template_name = 'hojaRuta/hoja_ruta_pdf.html'
+    title = "Planilla de Hoja de Ruta"
+
+    def imprimir_hoja_ruta(self,**kwargs):
+        return None
 
 
 '''
@@ -208,7 +221,6 @@ def detalle_generadores(request, nro_inscripcion):
 def alta_generadores(request):
 
     HorarioAtencionFormSet = formset_factory(HorarioAtencionForm, max_num=7, validate_max=True)
-
     ResiduoGeneradorFormSet = formset_factory(ResiduoGeneradorForm, max_num=3, validate_max=True)
 
     if request.method == 'POST':
@@ -297,19 +309,13 @@ def baja_generadores(request):
 @login_required
 def modificar_generadores(request, nro_inscripcion):
 
-    class RequiredFormSet(BaseFormSet):
-        def __init__(self, *args, **kwargs):
-            super(RequiredFormSet, self).__init__(*args, **kwargs)
-            for form in self.forms:
-                form.empty_permitted = False
-    ResiduoGeneradorFormSet = formset_factory(ResiduoGeneradorForm, max_num=3, formset=RequiredFormSet)
-
     generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+
     if request.method == 'POST':
         generador_form = GeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
-        horario_atencion_form = HorarioAtencionForm(request.POST, instance=generador)
-        #residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, request.FILES)
+        horario_atencion_formset = HorarioAtencionFormSet(request.POST, instance=generador, prefix='fs1')
+        residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, instance=generador, prefix='fs2')
         acopio_transitorio_form = AcopioTransitorioForm(request.POST, instance=generador.via_acceso.acopio_transitorio)
         via_acceso_form = ViaAccesoSectorForm(request.POST, instance=generador.via_acceso)
         domicilio_form = DomicilioForm(request.POST, instance=generador.domicilio)
@@ -318,25 +324,10 @@ def modificar_generadores(request, nro_inscripcion):
 
         if generador_form.is_valid() & actividades_form.is_valid() & domicilio_form.is_valid() \
             & ambito_dpcia_form.is_valid() & caract_generales_form.is_valid() \
-            & via_acceso_form.is_valid() & acopio_transitorio_form.is_valid() \
-            & horario_atencion_form.is_valid(): #& residuo_generador_formset.is_valid():
-
-            residuos = ResiduoGenerador.objects.filter(establecimiento_generador__nro_inscripcion=nro_inscripcion)
-            for r in residuos:
-                r.delete()
-            '''
-            SE ELIMINAN LOS ELEMENTOS DLE FORMESET PARA QUE EN EL POST NO SE DUPLIQUEN EN LA BASE
-            '''
+            & via_acceso_form.is_valid() & acopio_transitorio_form.is_valid():
 
             generador = generador_form.save(commit=False)
-
-            '''
-            # Guardo el formset de residuos
-            for form in residuo_generador_formset.forms:
-                residuo_generador_item = form.save(commit=False)
-                residuo_generador_item.establecimiento_generador = generador
-                residuo_generador_item.save()
-            '''
+            generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
 
             acopio = acopio_transitorio_form.save()
             via_acceso = ViaAccesoSector() # se crea objeto via_acceso para asignarle sector acopio
@@ -349,26 +340,13 @@ def modificar_generadores(request, nro_inscripcion):
             generador.ambito_dependencia = ambito_dpcia_form.save()
             generador.caract_generales = caract_generales_form.save()
 
-            generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
-            horario_atencion = horario_atencion_form.save(commit=False)
-            generador.dia_atención= horario_atencion.dia_atención
-            generador.hora_atención= horario_atencion.hora_atención
-
             generador.save()
+
             return redirect('generadores:listado_generadores')
     else:
 
         generador_form = GeneradorForm(instance=generador)
         actividades_form = ActividadesForm(instance=generador)
-        horario_atencion_form = HorarioAtencionForm(instance=generador)
-
-
-        RgFormSet = modelformset_factory(ResiduoGenerador,exclude=('establecimiento_generador',))
-        residuo_generador_formset= RgFormSet(queryset=ResiduoGenerador.objects.filter(establecimiento_generador__nro_inscripcion=nro_inscripcion))
-        '''
-        PARA OBTENER LOS ELEMENTOS Y QUE SE MUESTREN EN EL FORMSET PARA ACTUALIZAR
-        '''
-
         acopio_transitorio_form = AcopioTransitorioForm(instance=generador.via_acceso.acopio_transitorio)
         via_acceso_form = ViaAccesoSectorForm(instance=generador.via_acceso)
         domicilio_form = DomicilioForm(instance=generador.domicilio)
@@ -383,7 +361,5 @@ def modificar_generadores(request, nro_inscripcion):
                'caract_generales_form':caract_generales_form,
                'via_acceso_form':via_acceso_form,
                'acopio_transitorio_form':acopio_transitorio_form,
-               'horario_atencion_form':horario_atencion_form,
-               'residuo_generador_formset':residuo_generador_formset,
     }
     return render(request, "establecimiento/generador_form.html", contexto)

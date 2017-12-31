@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'multiselectfield',
     'django_bootstrap_dynamic_formsets',
+    'easy_pdf',
 
     #Gestiones
     'modulo_I',

@@ -2,8 +2,9 @@ from django.db import models
 from django.utils.timezone import now
 from .choices import *
 from multiselectfield import MultiSelectField
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator
 from django.utils.translation import ugettext as _
+
 # Create your models here.
 '''
 CLASES IMPORTANTES
@@ -137,11 +138,11 @@ class ViaAccesoSector(models.Model):
 
 class HorarioAtencion(models.Model):
     dia = models.CharField(max_length=20, choices=Dias)
-    hora_desde_m = models.IntegerField(_(u"Hora desde (Mañana)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)]) # Turno mañana
-    hora_hasta_m = models.IntegerField(_(u"Hora hasta (Mañana)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)])
-    hora_desde_t = models.IntegerField(_(u"Hora desde (Tarde)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)]) # Turno tarde
-    hora_hasta_t = models.IntegerField(_(u"Hora hasta (Tarde)"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)])
-    horario_retiro = models.IntegerField(_(u"Horario Retiro"), default=0, null=True, validators=[MaxValueValidator(2400),MinValueValidator(0)]) #fundamental para crear la hoja de ruta (ordenar por horario retiro)
+    hora_desde_m = models.TimeField(_(u"Hora desde (Mañana)"), blank=True, null=True) # Turno mañana
+    hora_hasta_m = models.TimeField(_(u"Hora hasta (Mañana)"), blank=True, null=True)
+    hora_desde_t = models.TimeField(_(u"Hora desde (Tarde)"), blank=True, null=True) # Turno tarde
+    hora_hasta_t = models.TimeField(_(u"Hora hasta (Tarde)"), blank=True, null=True)
+    horario_retiro = models.TimeField(_(u"Horario Retiro"), blank=True, null=True) #fundamental para crear la hoja de ruta (ordenar por horario retiro)
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
 
     class Meta:
@@ -172,7 +173,7 @@ class EstablecimientoGenerador(models.Model):
     sector = models.IntegerField() # cuadrante que pertenece a la ciudad el generador
 
     def __str__(self):
-        return "%s || %s" % (self.nro_inscripcion, self.razon_social)
+        return "%s" % (self.razon_social)
 
 
 '''
@@ -188,9 +189,9 @@ contemplar los feriados. (elegir dia excepcional que plantee el generador, de fo
 
 class HojaRuta(models.Model):
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
-    hora_programada = models.CharField(max_length=15)
-    hora_llegada = models.CharField(max_length=15)
-    hora_salida = models.CharField(max_length=15)
+    hora_programada = models.TimeField()
+    hora_llegada = models.TimeField()
+    hora_salida = models.TimeField()
     volumen_retirado = models.CharField(max_length=15)
     nro_precinto = models.BigIntegerField(unique=True) #unico para el dia
     nro_balde_entrega = models.BigIntegerField(unique=True) #unico para el dia

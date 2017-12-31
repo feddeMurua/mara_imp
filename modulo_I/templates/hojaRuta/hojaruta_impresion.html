@@ -3,11 +3,11 @@
 {% load staticfiles bootstrap3 %}
 
 {% block panel-heading %}
-  GENERAR HOJA DE RUTA DEL DIA :
+  GENERAR HOJA DE RUTA DEL DIA : {{dia}}
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  Horarios de Atención
+  <a target="_blank" href="{% url 'hojaRuta:hoja_ruta_pdf' %}" class="btn btn-success"><i class="fa fa-print"></i> imprimir </a>
 {% endblock %}
 
 {% block thead-tabla %}

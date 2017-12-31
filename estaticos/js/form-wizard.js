@@ -16,14 +16,16 @@ $(function () {
     $('.form-navigation .next').toggle(!atTheEnd);
     $('.form-navigation [type=submit]').toggle(atTheEnd);
 
-    if ((curIndex() == 0) && (flag_r == 0))  {
+    //Indice del residuo generador
+    if ((curIndex() == 5) && (flag_r == 0))  {
       $('#fieldset_residuo').formset({
           prefix: 'fs2',
           addText: 'Agregar otro residuo',
           deleteText: 'Eliminar'
       });
       flag_r =1;
-    } else if ((curIndex() == 1) && (flag_h == 0)) {
+      //Indice del horario
+    } else if ((curIndex() == 7) && (flag_h == 0)) {
       $('#fieldset_horario').formset({
           prefix: 'fs1',
           addText: 'Agregar otro horario',
