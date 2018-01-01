@@ -10,7 +10,7 @@
 
 {% block scripts %}
   {{block.super}}
-  <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.mask.js' %}"></script>
 {% endblock %}
 
 {% block title %}Hoja de Ruta{% endblock %}
@@ -46,34 +46,25 @@
         <br>
         <label>(*)Hora Programada:</label>
         <br>
-        <div class="input-group bootstrap-timepicker timepicker">
-        {{hojaruta_form.hora_programada|add_class:'form-control hs_timepicker'|attr:"readonly"|attr:"style:background:white"}}
-        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-        </div>
+        {{hojaruta_form.hora_programada|add_class:'form-control hora'}}
         <br>
         <label>(*)Hora Llegada:</label>
         <br>
-        <div class="input-group bootstrap-timepicker timepicker">
-        {{hojaruta_form.hora_llegada|add_class:'form-control hs_timepicker'|attr:"readonly"|attr:"style:background:white"}}
-        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-        </div>
+        {{hojaruta_form.hora_llegada|add_class:'form-control hora'}}
         <br>
         <label>(*)Hora Salida:</label>
         <br>
-        <div class="input-group bootstrap-timepicker timepicker">
-        {{hojaruta_form.hora_salida|add_class:'form-control hs_timepicker'|attr:"readonly"|attr:"style:background:white"}}
-        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-        </div>
-        <br>        
+        {{hojaruta_form.hora_salida|add_class:'form-control hora'}}
+
+        <br>
       </div>
     </div>
   </div>
 
   <script type="text/javascript">
-    $('.hs_timepicker').timepicker({
-      minuteStep:1,
-      defaultTime:false,
-      showMeridian:false
+    //MASCARAS
+    $(document).ready(function(){
+      $('.hora').mask('00:00', {placeholder: "__:__"});
     });
   </script>
 

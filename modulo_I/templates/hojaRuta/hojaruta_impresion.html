@@ -2,12 +2,34 @@
 {% load staticfiles %}
 {% load staticfiles bootstrap3 %}
 
+<!--
+{% block stylesheets %}
+  {{block.super}}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/parsley.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/select2.css' %}"/>
+{% endblock %}
+
+{% block scripts %}
+  {{block.super}}
+  <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+{% endblock %}
+-->
+
 {% block panel-heading %}
-  GENERAR HOJA DE RUTA DEL DIA : {{dia}}
+  Generar hoja de ruta del día: {{dia}}
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <a target="_blank" href="{% url 'hojaRuta:hoja_ruta_pdf' %}" class="btn btn-success"><i class="fa fa-print"></i> imprimir </a>
+  <!--
+  <form class="form-inline" method="post">
+    <p><strong>Filtro (Sector):</strong></p>
+    <input type="number" placeholder="Desde" name="desde" class="form-control">
+    <input type="number" placeholder="Hasta" name="hasta" class="form-control">
+    <a type="submit" target="_blank" href="{% url 'hojaRuta:hoja_ruta_pdf' dia=dia_nro %}" class="btn btn-success"><i class="fa fa-print"></i> imprimir </a>
+  </form>
+  -->
+  <a target="_blank" href="{% url 'hojaRuta:hoja_ruta_pdf' dia=dia_nro %}" class="btn btn-success"><i class="fa fa-print"></i> imprimir </a>
+  <a href="{% url 'hojaRuta:listado_hojas_de_ruta' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;"></i></a>
 {% endblock %}
 
 {% block thead-tabla %}
@@ -41,7 +63,6 @@
           <td>{{ establecimiento.horario_retiro }}</td>
           <td align="center">
              <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'hojaRuta:detalle_horario_atencion' id_horario=establecimiento.id%}"><em class="glyphicon glyphicon-eye-open"></em></a>
-             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="#"><em class="glyphicon glyphicon-pencil"></em></a>
           </td>
       </tr>
   {% endfor %}

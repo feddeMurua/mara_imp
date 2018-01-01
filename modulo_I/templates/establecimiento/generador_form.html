@@ -3,16 +3,16 @@
 {% load staticfiles bootstrap3 %}
 {% load widget_tweaks %}
 
-
+<!--
 {% block stylesheets %}
   {{block.super}}
-  <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
 {% endblock %}
+-->
 
 {% block scripts %}
   {{block.super}}
-  <script type="text/javascript" src="{% static 'js/bootstrap-timepicker.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.mask.js' %}"></script>
 {% endblock %}
 
 {% block title %}Generador{% endblock %}
@@ -192,42 +192,27 @@
                   <span style="color:red;" class="help-block">{{ error }}</span>
                 {% endfor %}
                 <br>
-                <label>FORMATOS HORARIOS (HH:MM):</label>
+                <label>FORMATOS HORARIOS (HH:MM)</label>
                 <br>
                 <label>(*)Hora Desde (Mañana):</label>
                 <br>
-                {{form.hora_desde_m|add_class:'form-control' }}
-                {% for error in form.hora_desde_m.errors %}
-                  <span style="color:red;" class="help-block">{{ error }} Formato: HH:MM</span>
-                {% endfor %}
+                {{form.hora_desde_m|add_class:'form-control hora' }}
                 <br>
                 <label>(*)Hora Hasta (Mañana):</label>
                 <br>
-                {{form.hora_hasta_m|add_class:'form-control' }}
-                {% for error in form.hora_hasta_m.errors %}
-                  <span style="color:red;" class="help-block">{{ error }} Formato: HH:MM</span>
-                {% endfor %}
+                {{form.hora_hasta_m|add_class:'form-control hora' }}
                 <br>
                 <label>(*)Hora Desde (Tarde):</label>
                 <br>
-                {{form.hora_desde_t|add_class:'form-control' }}
-                {% for error in form.hora_desde_t.errors %}
-                  <span style="color:red;" class="help-block">{{ error }} Formato: HH:MM</span>
-                {% endfor %}
+                {{form.hora_desde_t|add_class:'form-control hora' }}
                 <br>
                 <label>(*)Hora Hasta (Tarde):</label>
                 <br>
-                {{form.hora_hasta_t|add_class:'form-control' }}
-                {% for error in form.hora_hasta_t.errors %}
-                  <span style="color:red;" class="help-block">{{ error }} Formato: HH:MM</span>
-                {% endfor %}
+                {{form.hora_hasta_t|add_class:'form-control hora' }}
                 <br>
                 <label>(*)Hora Retiro:</label>
                 <br>
-                {{form.horario_retiro|add_class:'form-control' }}
-                {% for error in form.horario_retiro.errors %}
-                  <span style="color:red;" class="help-block">{{ error }} Formato: HH:MM</span>
-                {% endfor %}
+                {{form.horario_retiro|add_class:'form-control hora' }}
                 <br>
               {% endfor %}
              </fieldset>
@@ -254,6 +239,12 @@
         else
             $(".dimension_sector_interno").hide();
     }
+
+    //MASCARAS
+
+    $(document).ready(function(){
+      $('.hora').mask('00:00', {placeholder: "__:__"});      
+    });
 
   </script>
 {% endblock %}

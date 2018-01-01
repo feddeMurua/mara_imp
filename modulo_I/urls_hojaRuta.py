@@ -7,5 +7,5 @@ urlpatterns = [
     url(r'^alta_hoja_ruta/$', alta_hoja_ruta, name="alta_hoja_ruta"),
     url(r'^generar_hoja_ruta/$', generar_hoja_ruta, name="generar_hoja_ruta"),
     url(r'^detalle_horario_atencion/(?P<id_horario>\d+)/$', detalle_horario_atencion, name="detalle_horario_atencion"),
-    url(r'^hoja_ruta_PDF/$', HojaRutaPdf.as_view(), name= 'hoja_ruta_pdf'),
+    url(r'^hoja_ruta_PDF/(?P<dia>\d+)/$', HojaRutaPdf.as_view(), name= 'hoja_ruta_pdf'),
 ]

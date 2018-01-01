@@ -8,7 +8,7 @@ from django.forms.formsets import formset_factory, BaseFormSet
 from django.forms import modelform_factory
 from django.http import HttpResponse
 from easy_pdf.views import PDFTemplateView
-from django.forms import TextInput
+from django.contrib.auth.mixins import LoginRequiredMixin
 '''
 PARA EL POP UP
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -180,8 +180,13 @@ def generar_hoja_ruta(request):
 
     #informacion de los establecimientos que atienden un dia en particular
     establecimientos = HorarioAtencion.objects.filter(dia=dia_actual).order_by('establecimiento_generador__sector').order_by('horario_retiro')
+
+    dia_nombre = ""
+    if establecimientos:
+        dia_nombre = (establecimientos[0].get_dia_display()).upper()
+
     #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
-    return render(request, "hojaRuta/hojaruta_impresion.html", {'establecimientos': establecimientos, 'dia':(establecimientos[0].get_dia_display()).upper()})
+    return render(request, "hojaRuta/hojaruta_impresion.html", {'establecimientos': establecimientos, 'dia':dia_nombre,'dia_nro':dia_actual})
 
 
 
@@ -191,13 +196,20 @@ def detalle_horario_atencion(request, id_horario):
     return render(request, 'hojaRuta/horarioatencion_detalle.html', {'horario_atencion': horario_atencion})
 
 
-class HojaRutaPdf(PDFTemplateView):
+class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
 
     template_name = 'hojaRuta/hoja_ruta_pdf.html'
-    title = "Planilla de Hoja de Ruta"
+    title = "Planilla de Hoja de Ruta del dia: " + datetime.datetime.now().strftime("%x")
+    login_url = '/accounts/login/'
+    redirect_field_name = 'next'
 
-    def imprimir_hoja_ruta(self,**kwargs):
-        return None
+    def get_context_data(self, dia):
+        establecimientos = HorarioAtencion.objects.filter(dia=dia).order_by('establecimiento_generador__sector').order_by('horario_retiro')
+
+        return super(HojaRutaPdf, self).get_context_data(
+            pagesize="A4",
+            establecimientos=establecimientos
+        )
 
 
 '''
