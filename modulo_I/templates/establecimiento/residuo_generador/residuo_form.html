@@ -1,0 +1,33 @@
+{% extends "base/base_forms.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}Residuo Generador{% endblock %}
+
+{% block header-title %} Información de los residuos del centro generador {% endblock %}
+
+{% block step-form %}
+
+  <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">DATOS RESIDUOS GENERADOR</div>
+      <div class="panel-body">
+        {% for field in residuo_form.visible_fields %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio" }}
+            {% for error in field.errors %}
+              <span style="color:red;" class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+
+{% block url-cancelar %}
+  {% url 'generadores:listado_residuos' nro_inscripcion=nro_inscripcion%}
+{% endblock %}

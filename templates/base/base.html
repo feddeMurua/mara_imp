@@ -21,13 +21,6 @@
         <div class="page-title" align="center">
             <h3><strong>{% block header-title %}{% endblock %}</strong></h3>
         </div>
-        {% if messages %}
-          {% for message in messages %}
-          <div align="center" style="background-color: #FFE0B2; border-radius:6px;">
-            <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-          </div>
-          {% endfor %}
-        {% endif %}
         {% block content %}{% endblock %}
         <div class="footer" align="center">
           Desarrollado por FNM-Federico Nicolás Murua-12/2017 .

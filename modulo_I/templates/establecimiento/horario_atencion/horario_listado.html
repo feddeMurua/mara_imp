@@ -1,0 +1,142 @@
+{% extends "base/base_detalle.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+
+{% block scripts%}
+  <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+{% endblock %}
+
+{% block title %}Detalle{% endblock %}
+
+{% block header-title %}Detalle del Horario de Atención{% endblock %}
+
+{% block panel-heading %}
+  Horarios
+{% endblock %}
+
+{% block detalle %}
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <a href="{% url 'generadores:alta_horarios' nro_inscripcion=nro_inscripcion %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Horario</a>
+    </div>
+    <div class="panel-body" style="background:OldLace">
+      <div class="panel panel-default">
+        <table class="table table-striped table-bordered">
+        <thead>
+        <tr style="background:#6495ED;">
+            <th>Día</th>
+            <th>Horario Mañana</th>
+            <th>Cierre </th>
+            <th>Horario Tarde</th>
+            <th>Cierre</th>
+            <th>Horario Retiro</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+          {% for horario in listado_horarios %}
+              <tr>
+                  <td>{{ horario.get_dia_display }}</td>
+                  {% if horario.hora_desde_m %}
+                    <td>{{ horario.hora_desde_m }} hs.</td>
+                  {% else %}
+                    <td>-</td>
+                  {% endif %}
+                  {% if horario.hora_hasta_m %}
+                    <td>{{ horario.hora_hasta_m }} hs.</td>
+                  {% else %}
+                    <td>-</td>
+                  {% endif %}
+                  {% if horario.hora_desde_t %}
+                    <td>{{ horario.hora_desde_t }} hs.</td>
+                  {% else %}
+                    <td>-</td>
+                  {% endif %}
+                  {% if horario.hora_hasta_t %}
+                    <td>{{ horario.hora_hasta_t }} hs.</td>
+                  {% else %}
+                    <td>-</td>
+                  {% endif %}
+                  <td>{{ horario.horario_retiro }} hs.</td>
+                  <td align="center">
+                    <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modificar_horarios' nro_inscripcion=nro_inscripcion id_horario=horario.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
+                    <a id="horario_id"class="btn btn-danger btn-baja"  data-horariodia="{{horario.dia}}" data-horarioid="{{horario.id}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+                  </td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="modal_baja" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <form >
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <div class="modal-title"></div>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarHorario(value)">Eliminar</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block url-volver %}
+  {% url 'generadores:listado_generadores' %}
+{% endblock %}
+
+{% block modal-scripts %}
+  <script>
+    //codigo para cambiar los datos del modal y para dar de baja
+    $(document).ready(function () {
+      $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var horario_dia = button.data('horariodia') // Extract info from data-* attributes
+        var horario_id = button.data('horarioid')
+
+        var title = 'Día: ' + horario_dia
+        var content = '¿Está seguro que quiere eliminar este día?'
+
+        // actualiza el contenido del manual
+        var modal = $(this)
+        modal.find('.modal-title').text(title)
+        modal.find('.modal-body').text(content)
+
+        // se le pasa el valor del id al boton de confirmar
+        modal.find('button.btn-danger').val(horario_id)
+      })
+    })
+
+    function eliminarHorario(horarioid) {
+      var request = $.ajax({
+          type: "POST",
+          url: "{% url 'generadores:baja_horarios' %}",
+          data: {
+              "csrfmiddlewaretoken": "{{ csrf_token }}",
+              "horario_id": horarioid
+          },
+      });
+    }
+
+    //para actualizar cuando se da de baja.
+    $('#modal_baja').on('hidden.bs.modal', function () {
+      window.location.reload(true);
+    })
+
+  </script>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base/base_forms.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}Horario Atención{% endblock %}
+
+{% block header-title %} Información del horario de atención del centro generador {% endblock %}
+
+{% block scripts %}
+  {{block.super}}
+  <script type="text/javascript" src="{% static 'js/jquery.mask.js' %}"></script>
+{% endblock %}
+{% block step-form %}
+
+  <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">DATOS HORARIO DE ATENCIÓN</div>
+      <div class="panel-body">
+        <label>(*)Día:</label>
+        {{horario_form.dia|add_class:'select-2'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo día es obligatorio" }}
+        {% if messages %}
+          {% for message in messages %}
+          <div align="center">
+            <div class="alert alert-danger {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+          </div>
+          {% endfor %}
+        {% endif %}
+        <br>
+        <label>FORMATOS HORARIOS (HH:MM)</label>
+        <br>
+        <label>(*)Hora Desde (Mañana):</label>
+        <br>
+        {{horario_form.hora_desde_m|add_class:'form-control hora' }}
+        {% for error in horario_form.hora_desde_m.errors %}
+          <span style="color:red;" class="help-block">{{ error }}</span>
+        {% endfor %}
+        <br>
+        <label>(*)Hora Hasta (Mañana):</label>
+        <br>
+        {{horario_form.hora_hasta_m|add_class:'form-control hora' }}
+        {% for error in horario_form.hora_hasta_m.errors %}
+          <span style="color:red;" class="help-block">{{ error }}</span>
+        {% endfor %}
+        <br>
+        <label>(*)Hora Desde (Tarde):</label>
+        <br>
+        {{horario_form.hora_desde_t|add_class:'form-control hora' }}
+        {% for error in horario_form.hora_desde_t.errors %}
+          <span style="color:red;" class="help-block">{{ error }}</span>
+        {% endfor %}
+        <br>
+        <label>(*)Hora Hasta (Tarde):</label>
+        <br>
+        {{horario_form.hora_hasta_t|add_class:'form-control hora' }}
+        {% for error in horario_form.hora_hasta_t.errors %}
+          <span style="color:red;" class="help-block">{{ error }}</span>
+        {% endfor %}
+        <br>
+        <label>(*)Hora Retiro:</label>
+        <br>
+        {{horario_form.horario_retiro|add_class:'form-control hora' }}
+        {% for error in horario_form.horario_retiro.errors %}
+          <span style="color:red;" class="help-block">{{ error }}</span>
+        {% endfor %}
+        <br>
+      </div>
+    </div>
+
+    <script>
+      //MASCARAS
+      $(document).ready(function(){
+        $('.hora').mask('00:00', {placeholder: "__:__"});
+      });
+    </script>
+
+  </div>
+
+{% endblock %}
+
+
+{% block url-cancelar %}
+  {% url 'generadores:listado_horarios' nro_inscripcion=nro_inscripcion%}
+{% endblock %}

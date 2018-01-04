@@ -197,22 +197,37 @@
                 <label>(*)Hora Desde (Mañana):</label>
                 <br>
                 {{form.hora_desde_m|add_class:'form-control hora' }}
+                {% for error in horario_form.hora_desde_m.errors %}
+                  <span style="color:red;" class="help-block">{{ error }}</span>
+                {% endfor %}
                 <br>
                 <label>(*)Hora Hasta (Mañana):</label>
                 <br>
                 {{form.hora_hasta_m|add_class:'form-control hora' }}
+                {% for error in horario_form.hora_hasta_m.errors %}
+                  <span style="color:red;" class="help-block">{{ error }}</span>
+                {% endfor %}
                 <br>
                 <label>(*)Hora Desde (Tarde):</label>
                 <br>
                 {{form.hora_desde_t|add_class:'form-control hora' }}
+                {% for error in horario_form.hora_desde_t.errors %}
+                  <span style="color:red;" class="help-block">{{ error }}</span>
+                {% endfor %}
                 <br>
                 <label>(*)Hora Hasta (Tarde):</label>
                 <br>
                 {{form.hora_hasta_t|add_class:'form-control hora' }}
+                {% for error in horario_form.hora_hasta_t.errors %}
+                  <span style="color:red;" class="help-block">{{ error }}</span>
+                {% endfor %}
                 <br>
                 <label>(*)Hora Retiro:</label>
                 <br>
                 {{form.horario_retiro|add_class:'form-control hora' }}
+                {% for error in horario_form.horario_retiro.errors %}
+                  <span style="color:red;" class="help-block">{{ error }}</span>
+                {% endfor %}
                 <br>
               {% endfor %}
              </fieldset>
@@ -243,7 +258,7 @@
     //MASCARAS
 
     $(document).ready(function(){
-      $('.hora').mask('00:00', {placeholder: "__:__"});      
+      $('.hora').mask('00:00', {placeholder: "__:__"});
     });
 
   </script>

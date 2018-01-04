@@ -23,7 +23,7 @@ class PersonaForm(forms.ModelForm):
 
     class Meta:
         model = Persona
-        fields = '__all__'
+        exclude = '__all__'
 
     def clean_apellido(self):
         apellido = self.cleaned_data['apellido']
@@ -172,7 +172,7 @@ class ViaAccesoSectorForm(forms.ModelForm):
 
 
 class HorarioAtencionForm(forms.ModelForm):
-    
+
     class Meta:
         model = HorarioAtencion
         exclude = ['establecimiento_generador',]

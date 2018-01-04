@@ -16,7 +16,7 @@
             <tr>
                 <th>Horario Desde(Turno Mañana):</th>
                 {% if horario_atencion.hora_desde_m %}
-                  <td>{{horario_atencion.hora_desde_m}}</td>
+                  <td>{{horario_atencion.hora_desde_m}} hs.</td>
                 {% else %}
                   <td>-</td>
                 {% endif %}
@@ -25,7 +25,7 @@
             <tr>
                 <th>Horario Hasta(Turno Mañana):</th>
                 {% if horario_atencion.hora_hasta_m %}
-                  <td>{{horario_atencion.hora_hasta_m}}</td>
+                  <td>{{horario_atencion.hora_hasta_m}} hs.</td>
                 {% else %}
                   <td>-</td>
                 {% endif %}
@@ -34,7 +34,7 @@
           <tr>
               <th>Horario Desde(Turno Tarde):</th>
               {% if horario_atencion.hora_desde_t %}
-                <td>{{horario_atencion.hora_desde_t}}</td>
+                <td>{{horario_atencion.hora_desde_t}} hs.</td>
               {% else %}
                 <td>-</td>
               {% endif %}
@@ -42,7 +42,7 @@
           <tr>
               <th>Horario Hasta(Turno Tarde):</th>
               {% if horario_atencion.hora_hasta_t %}
-                <td>{{horario_atencion.hora_hasta_t}}</td>
+                <td>{{horario_atencion.hora_hasta_t}} hs.</td>
               {% else %}
                 <td>-</td>
               {% endif %}

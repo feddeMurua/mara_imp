@@ -12,7 +12,7 @@
 
 {% block thead-tabla %}
   <thead>
-  <tr>
+  <tr style="background:#6495ED;">
       <th>N° Inscripción:</th>
       <th>Razon Social</th>
       <th>Domicilio</th>
@@ -29,7 +29,7 @@
        <th>Razon Social</th>
        <th>Domicilio</th>
        <th>Sector</th>
-       <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
+       <th style="text-align:center;"><i class="fa fa-cogs"></i></th>
     </tr>
   </tfoot>
 {% endblock %}
@@ -41,11 +41,13 @@
           <td>{{ generador.nro_inscripcion }}</td>
           <td>{{ generador.razon_social }}</td>
           <td>{{ generador.domicilio }}</td>
-          <td>{{ generador.sector }}</td>
+          <td style="text-align:center;">{{ generador.sector }}</td>
           <td align="center">
             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'generadores:detalle_generadores' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-eye-open"></em></a>
             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modificar_generadores' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-pencil"></em></a>
-             <a id="generador_id"class="btn btn-danger btn-baja"  data-generadornro="{{generador.nro_inscripcion}}" data-generadornombre="{{generador.razon_social}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+            <a id="generador_id"class="btn btn-danger btn-baja"  data-generadornro="{{generador.nro_inscripcion}}" data-generadornombre="{{generador.razon_social}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+            <a class="btn btn-primary" data-toggle="tooltip" title="Horario de Atención" href="{% url 'generadores:listado_horarios' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-calendar"></em></a>
+            <a class="btn btn-success" data-toggle="tooltip" title="Residuo Generador" href="{% url 'generadores:listado_residuos' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-scale"></em></a>
           </td>
       </tr>
   {% endfor %}

@@ -6,6 +6,11 @@
 
 {% block header-title %} Información del Cliente {% endblock %}
 
+{% block scripts %}
+  {{block.super}}
+  <script type="text/javascript" src="{% static 'js/jquery.mask.js' %}"></script>
+{% endblock %}
+
 {% block step-form %}
 
   <div class="form-section">
@@ -26,10 +31,18 @@
         <br>
         <label>(*)Cargo:</label>
         {{cliente_form.cargo|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo cargo es obligatorio"}}
-        <label>(*)Cuit/Cuil:</label>
-        {{cliente_form.cuit_cuil|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo CUIT/CUIL es obligatorio"}}
+        <label>(*)Cuit/Cuil (Sin Espacios):</label>
+        {{cliente_form.cuit_cuil|add_class:'form-control cuil'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo CUIT/CUIL es obligatorio"}}
       </div>
     </div>
+
+    <script>
+      //MASCARAS
+      $(document).ready(function(){
+        $('.cuil').mask('00-00000000-0');
+      });
+    </script>
+
   </div>
 
   {% include 'base/form_section_domicilio.html' %}

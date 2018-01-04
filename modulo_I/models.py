@@ -38,6 +38,7 @@ class Persona(models.Model):
     apellido = models.CharField(max_length=50)
     nombre = models.CharField(max_length=50)
     documento = models.CharField(max_length=50, unique=True)
+    #domicilio = models.ForeignKey('Domicilio', on_delete=models.CASCADE)
     telefono_fijo = models.CharField(max_length=50, null=True, blank=True)
     celular = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=50, null=True, blank=True)
@@ -192,7 +193,7 @@ class HojaRuta(models.Model):
     hora_programada = models.TimeField()
     hora_llegada = models.TimeField()
     hora_salida = models.TimeField()
-    volumen_retirado = models.CharField(max_length=15)
+    volumen_retirado = models.FloatField(default=0)
     nro_precinto = models.BigIntegerField(unique=True) #unico para el dia
     nro_balde_entrega = models.BigIntegerField(unique=True) #unico para el dia
     nro_balde_retiro = models.BigIntegerField(unique=True) #unico para el dia

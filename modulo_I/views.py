@@ -9,13 +9,15 @@ from django.forms import modelform_factory
 from django.http import HttpResponse
 from easy_pdf.views import PDFTemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.db import IntegrityError
+from mara_imp import factories
 '''
 PARA EL POP UP
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django_addanother.views import CreatePopupMixin
 from django.views.generic.edit import CreateView
 '''
-from django.forms import modelformset_factory
 import datetime
 
 # Create your views here.
@@ -27,6 +29,31 @@ PERSONAS
 @login_required
 def listado_personas(request):
     listado_personas = Persona.objects.all()
+
+    '''
+    #FACTORIES
+    for x in xrange(45):
+        personas = factories.PersonaFactory()
+
+    for x in xrange(8):
+        nacionalidad = factories.NacionalidadFactory()
+
+    for x in xrange(8):
+        provincia = factories.ProvinciaFactory()
+
+    for x in xrange(8):
+        localidad = factories.LocalidadFactory()
+
+    for x in xrange(10):
+        domicilio = factories.DomicilioFactory()
+
+    for x in xrange(10):
+        datoImpositivo = factories.DatoImpositivoFactory()
+
+    for x in xrange(10):
+        cliente = factories.ClienteFactory()
+    '''
+
     return render(request, 'persona/persona_listado.html', {'listado_personas': listado_personas})
 
 
@@ -213,6 +240,120 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
 
 
 '''
+HORARIOS DE ATENCIÓN
+'''
+
+
+@login_required
+def listado_horarios(request, nro_inscripcion):
+    listado_horarios = HorarioAtencion.objects.filter(establecimiento_generador__nro_inscripcion=nro_inscripcion)
+    return render(request, 'establecimiento/horario_atencion/horario_listado.html', {'listado_horarios': listado_horarios, 'nro_inscripcion':nro_inscripcion})
+
+
+@login_required
+def alta_horarios(request, nro_inscripcion):
+
+    if request.method == 'POST':
+        horario_form = HorarioAtencionForm(request.POST)
+
+        if horario_form.is_valid():
+            horario = horario_form.save(commit=False)
+            horario.establecimiento_generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+            try:
+                horario.save()
+                return redirect('generadores:listado_horarios', nro_inscripcion=nro_inscripcion)
+            except IntegrityError:
+                messages.add_message(request, messages.ERROR, 'Ya existe este día cargado.')
+
+    else:
+        horario_form = HorarioAtencionForm
+    return render(request, "establecimiento/horario_atencion/horario_form.html",{'horario_form':horario_form,'nro_inscripcion':nro_inscripcion})
+
+
+@login_required
+def baja_horarios(request):
+    horario_id = request.POST.get('horario_id')
+    horario = HorarioAtencion.objects.get(id=horario_id)
+    horario.delete()
+    response = {}
+    return JsonResponse(response)
+
+
+@login_required
+def modificar_horarios(request, nro_inscripcion, id_horario):
+
+    horario = HorarioAtencion.objects.get(id=id_horario)
+
+    if request.method == 'POST':
+        horario_form = HorarioAtencionForm(request.POST, instance=horario)
+
+        if horario_form.is_valid():
+            horario = horario_form.save(commit=False)
+            horario.establecimiento_generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+            horario.save()
+            return redirect('generadores:listado_horarios', nro_inscripcion=nro_inscripcion)
+
+    else:
+        horario_form = HorarioAtencionForm(instance=horario)
+        return render(request, "establecimiento/horario_atencion/horario_form.html",{'horario_form':horario_form,'nro_inscripcion':nro_inscripcion})
+
+
+'''
+RESIDUOS GENERADORES
+'''
+
+
+@login_required
+def listado_residuos(request, nro_inscripcion):
+    listado_residuos = ResiduoGenerador.objects.filter(establecimiento_generador__nro_inscripcion=nro_inscripcion)
+    return render(request, 'establecimiento/residuo_generador/residuo_listado.html', {'listado_residuos': listado_residuos, 'nro_inscripcion':nro_inscripcion})
+
+
+@login_required
+def alta_residuos(request, nro_inscripcion):
+
+    if request.method == 'POST':
+        residuo_form = ResiduoGeneradorForm(request.POST)
+
+        if residuo_form.is_valid():
+            residuo = residuo_form.save(commit=False)
+            residuo.establecimiento_generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+            residuo.save()
+            return redirect('generadores:listado_residuos', nro_inscripcion=nro_inscripcion)
+    else:
+        residuo_form = ResiduoGeneradorForm
+    return render(request, "establecimiento/residuo_generador/residuo_form.html",{'residuo_form':residuo_form,'nro_inscripcion':nro_inscripcion})
+
+
+@login_required
+def baja_residuos(request):
+    residuo_id = request.POST.get('residuo_id')
+    residuo = ResiduoGenerador.objects.get(id=residuo_id)
+    residuo.delete()
+    response = {}
+    return JsonResponse(response)
+
+
+@login_required
+def modificar_residuos(request, nro_inscripcion, id_residuo):
+
+    residuo = ResiduoGenerador.objects.get(id=id_residuo)
+
+    if request.method == 'POST':
+        residuo_form = ResiduoGeneradorForm(request.POST, instance=residuo)
+
+        if residuo_form.is_valid():
+            residuo = residuo_form.save(commit=False)
+            residuo.establecimiento_generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+            residuo.save()
+            return redirect('generadores:listado_residuos', nro_inscripcion=nro_inscripcion)
+
+    else:
+        residuo_form = ResiduoGeneradorForm(instance=residuo)
+        return render(request, "establecimiento/residuo_generador/residuo_form.html",{'residuo_form':residuo_form,'nro_inscripcion':nro_inscripcion})
+
+
+'''
 ESTABLECIMIENTOS GENERADORES
 '''
 
@@ -326,8 +467,6 @@ def modificar_generadores(request, nro_inscripcion):
     if request.method == 'POST':
         generador_form = GeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
-        horario_atencion_formset = HorarioAtencionFormSet(request.POST, instance=generador, prefix='fs1')
-        residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, instance=generador, prefix='fs2')
         acopio_transitorio_form = AcopioTransitorioForm(request.POST, instance=generador.via_acceso.acopio_transitorio)
         via_acceso_form = ViaAccesoSectorForm(request.POST, instance=generador.via_acceso)
         domicilio_form = DomicilioForm(request.POST, instance=generador.domicilio)
