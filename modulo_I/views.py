@@ -12,16 +12,36 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db import IntegrityError
 from mara_imp import factories
-'''
-PARA EL POP UP
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django_addanother.views import CreatePopupMixin
-from django.views.generic.edit import CreateView
-'''
 import datetime
-
+from django.utils.html import escape
 # Create your views here.
 
+'''
+OTRAS FUNCIONES
+'''
+
+
+def handlePopAdd(request, addForm, field):
+    form= None
+    if request.method == "POST":
+        form = addForm(request.POST)
+        if form.is_valid():
+            try:
+                newObject = form.save()
+            except forms.ValidationError:
+                newObject = None
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' % \
+                (escape(newObject._get_pk_val()), escape(newObject)))
+    else:
+        form = addForm()
+    pageContext = {'form': form, 'field': field}
+    return render_to_response("base/popadd.html", pageContext)
+
+
+@login_required
+def new_persona(request):
+    return handlePopAdd(request, PersonaForm, 'persona')
 '''
 PERSONAS
 '''

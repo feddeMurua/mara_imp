@@ -6,9 +6,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import *
 from .choices import *
 from functools import partial
-from django_addanother.widgets import AddAnotherWidgetWrapper
 from django.core.urlresolvers import reverse_lazy
 import re
+from django.template.loader import render_to_string
 
 DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 regex_alfabetico = re.compile(r"^[a-zñA-ZÑ]+((\s[a-zñA-ZÑ]+)+)?$") #expresiones regulares para control
@@ -17,6 +17,12 @@ regex_alfanumerico = re.compile(r"^[a-zñA-ZÑ0-9]+((\s[a-zñA-ZÑ0-9]+)+)?$")
 '''
 CLASES IMPORTANTES
 '''
+
+class SelectWithPop(forms.Select):
+    def render(self, name, *args, **kwargs):
+        html = super(SelectWithPop, self).render(name, *args, **kwargs)
+        popupplus = render_to_string("base/popupplus.html", {'field': name})
+        return html+popupplus
 
 
 class PersonaForm(forms.ModelForm):
@@ -83,7 +89,7 @@ class DatosImpositivosForm(forms.ModelForm):
 
 class ClienteForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
-
+    apoderado = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
     class Meta:
         model = Cliente
         exclude = ['domicilio_legal', 'fecha','dato_impositivo',]
