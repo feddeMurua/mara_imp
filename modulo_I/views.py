@@ -22,7 +22,6 @@ OTRAS FUNCIONES
 
 
 def handlePopAdd(request, addForm, field):
-    form= None
     if request.method == "POST":
         form = addForm(request.POST)
         if form.is_valid():
@@ -36,15 +35,18 @@ def handlePopAdd(request, addForm, field):
     else:
         form = addForm()
     pageContext = {'form': form, 'field': field}
-    return render_to_response("base/popadd.html", pageContext)
+    return render(request,"base/popadd.html", pageContext)
 
 
 @login_required
 def new_persona(request):
     return handlePopAdd(request, PersonaForm, 'persona')
+
+
 '''
 PERSONAS
 '''
+
 
 @login_required
 def listado_personas(request):

@@ -1,18 +1,39 @@
 {% load staticfiles %}
+{% load widget_tweaks %}
 <html>
   <head>
     <title>Add {{ field }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}"/>
     <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.init.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/RelatedObjectLookups.js' %}"></script>
   </head>
   <body>
-    <h1>Add {{ field }}</h1>
-    <form method="POST" action="/add/{{ field }}">
-      <table>
-      {{ form }}
-      </table>
-      <p><input type="submit"/> | <a href="javascript:window.close()">Cancel</a></p>
-    </form>
+    <div class="container container-form">
+      <h1>Agregar {{ field }}</h1>
+      <div class="panel panel-default">
+        <div class="panel-heading">DATOS</div>
+        <div class="panel-body">
+          <form method="post" action="{{ field }}">{% csrf_token %}
+            {% for field in form.visible_fields %}
+                <div class="form-group">
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                  {{ field|add_class:'form-control' }}
+                  {% for error in field.errors %}
+                    <span style="color:red;" class="help-block">{{ error }}</span>
+                  {% endfor %}
+                </div>
+            {% endfor %}
+            <p class="pull-right">
+              <button type="submit" class="btn btn-success pull" >
+                <span class="glyphicon glyphicon-ok"></span> Guardar
+              </button>
+              <a href="javascript:window.close()" class="btn btn-danger"><i  class="glyphicon glyphicon-remove"></i> Cancelar</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
