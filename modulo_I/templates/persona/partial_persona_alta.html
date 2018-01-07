@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<form method="post" action="{% url 'clientes:alta_personas' %}" class="js-alta-persona-form">
+<form method="post" action="{% url 'personas:alta_personas' %}" class="js-alta-persona-form">
   {% csrf_token %}
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

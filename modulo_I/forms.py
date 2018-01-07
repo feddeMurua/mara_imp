@@ -90,6 +90,7 @@ class DatosImpositivosForm(forms.ModelForm):
 class ClienteForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     apoderado = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
+    contacto_comercial = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
     class Meta:
         model = Cliente
         exclude = ['domicilio_legal', 'fecha','dato_impositivo',]
@@ -128,7 +129,10 @@ GENERADORES
 '''
 
 class GeneradorForm(forms.ModelForm):
-    fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
+    fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")    
+    responsable_residuos = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
+    responsable_suplente = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
+    responsable_tecnico = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
     class Meta:
         model = EstablecimientoGenerador
 

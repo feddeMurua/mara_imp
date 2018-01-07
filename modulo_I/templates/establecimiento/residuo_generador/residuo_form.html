@@ -12,6 +12,13 @@
     <div class="panel panel-default">
       <div class="panel-heading">DATOS RESIDUOS GENERADOR</div>
       <div class="panel-body">
+        {% if messages %}
+          {% for message in messages %}
+          <div align="center">
+            <div class="alert alert-danger {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+          </div>
+          {% endfor %}
+        {% endif %}
         {% for field in residuo_form.visible_fields %}
           <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>

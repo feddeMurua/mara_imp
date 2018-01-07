@@ -340,8 +340,11 @@ def alta_residuos(request, nro_inscripcion):
         if residuo_form.is_valid():
             residuo = residuo_form.save(commit=False)
             residuo.establecimiento_generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
-            residuo.save()
-            return redirect('generadores:listado_residuos', nro_inscripcion=nro_inscripcion)
+            try:
+                residuo.save()
+                return redirect('generadores:listado_horarios', nro_inscripcion=nro_inscripcion)
+            except IntegrityError:
+                messages.add_message(request, messages.ERROR, 'Ya existe este tipo de residuo cargado.')
     else:
         residuo_form = ResiduoGeneradorForm
     return render(request, "establecimiento/residuo_generador/residuo_form.html",{'residuo_form':residuo_form,'nro_inscripcion':nro_inscripcion})

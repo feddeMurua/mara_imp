@@ -8,7 +8,7 @@
 <script>
   $(".js-alta-persona").click(function () {
    $.ajax({
-     url: "{% url 'clientes:alta_personas' %}",
+     url: "{% url 'personas:alta_personas' %}",
      type: 'get',
      dataType: 'json',
      beforeSend: function () {

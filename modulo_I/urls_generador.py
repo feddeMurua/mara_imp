@@ -6,7 +6,7 @@ urlpatterns = [
     url(r'^detalle_generadores/(?P<nro_inscripcion>\d+)/$', detalle_generadores, name="detalle_generadores"),
     url(r'^alta_generadores/$', alta_generadores, name="alta_generadores"),
     url(r'^baja_generadores/$', baja_generadores, name="baja_generadores"),
-    url(r'^modificar_generadores/(?P<nro_inscripcion>\d+)/$', modificar_generadores, name="modificar_generadores"),
+    url(r'^modificar_generadores/(?P<nro_inscripcion>\d+)/$', modificar_generadores, name="modificar_generadores"),    
     #horarios del centro de generador
     url(r'^listado_horarios/(?P<nro_inscripcion>\d+)/$', listado_horarios, name="listado_horarios"),
     url(r'^alta_horarios/(?P<nro_inscripcion>\d+)/$', alta_horarios, name="alta_horarios"),
