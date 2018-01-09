@@ -529,6 +529,7 @@ def modificar_generadores(request, nro_inscripcion):
         ambito_dpcia_form = AmbitoDependenciaForm(instance=generador.ambito_dependencia)
         caract_generales_form = CaracteristicasGeneralesForm(instance=generador.caract_generales)
 
+    modificar = True # para poner el boton guardar antes del final del wizard
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,
                'persona_form':PersonaForm,
@@ -537,5 +538,6 @@ def modificar_generadores(request, nro_inscripcion):
                'caract_generales_form':caract_generales_form,
                'via_acceso_form':via_acceso_form,
                'acopio_transitorio_form':acopio_transitorio_form,
+               'modificar':modificar
     }
     return render(request, "establecimiento/generador_form.html", contexto)
