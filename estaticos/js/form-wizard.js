@@ -15,25 +15,7 @@ $(function () {
     var atTheEnd = index >= $sections.length - 1;
     $('.form-navigation .next').toggle(!atTheEnd);
     $('.form-navigation [type=submit]').toggle(atTheEnd);
-
-    //Indice del residuo generador
-    if ((curIndex() == 5) && (flag_r == 0))  {
-      $('#fieldset_residuo').formset({
-          prefix: 'fs2',
-          addText: 'Agregar otro residuo',
-          deleteText: 'Eliminar'
-      });
-      flag_r =1;
-      //Indice del horario
-    } else if ((curIndex() == 7) && (flag_h == 0)) {
-      $('#fieldset_horario').formset({
-          prefix: 'fs1',
-          addText: 'Agregar otro horario',
-          deleteText: 'Eliminar'
-      });
-      flag_h =1;
-    }
-
+    
   }
 
   function curIndex() {

@@ -116,32 +116,6 @@
   </div>
 
   <!-- SECTION 6 -->
-  <!-- OBS: LOGICA DEL FORMSET, EN FORM-WIZARD.JS -->
-  {% if residuo_generador_formset %}
-    <div class="form-section">
-     <div class="panel panel-default">
-       <div class="panel-heading">TIPO Y CANTIDAD DE RESIDUOS GENERADOR</div>
-       <div class="panel-body">
-         <fieldset id="fieldset_residuo">
-          {% for form in residuo_generador_formset.forms %}
-            {% for field in form.visible_fields %}
-              <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio" }}
-                {% for error in field.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% endfor %}
-          {% endfor %}
-         </fieldset>
-         {{ residuo_generador_formset.management_form }}
-       </div>
-     </div>
-    </div>
-  {% endif %}
-
-  <!-- SECTION 7 -->
   <div class="form-section">
    <div class="panel panel-default">
      <div class="panel-heading">SECTOR DE ACOPIO TRANSITORIO EN EL CENTRO GENERADOR</div>
@@ -170,68 +144,20 @@
    </div>
   </div>
 
-  <!-- SECTION 8 -->
-  {% if horario_atencion_formset %}
-    <div class="form-section">
+  <!-- SECTION 7 -->
+  <div class="form-section">
      <div class="panel panel-default">
-       <div class="panel-heading">HORARIO DE ATENCIÓN</div>
+       <div class="panel-heading">PASO FINAL</div>
        <div class="panel-body">
          <div class="panel panel-default">
            <div class="panel-body">
-             <fieldset id="fieldset_horario">
-              {% for form in horario_atencion_formset.forms %}
-                <label>(*)Día:</label>
-                {{form.dia|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo día es obligatorio" }}
-                {% for error in form.dia.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                {% endfor %}
-                <br>
-                <label>FORMATOS HORARIOS (HH:MM)</label>
-                <br>
-                <label>(*)Hora Desde (Mañana):</label>
-                <br>
-                {{form.hora_desde_m|add_class:'form-control hora' }}
-                {% for error in horario_form.hora_desde_m.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                {% endfor %}
-                <br>
-                <label>(*)Hora Hasta (Mañana):</label>
-                <br>
-                {{form.hora_hasta_m|add_class:'form-control hora' }}
-                {% for error in horario_form.hora_hasta_m.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                {% endfor %}
-                <br>
-                <label>(*)Hora Desde (Tarde):</label>
-                <br>
-                {{form.hora_desde_t|add_class:'form-control hora' }}
-                {% for error in horario_form.hora_desde_t.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                {% endfor %}
-                <br>
-                <label>(*)Hora Hasta (Tarde):</label>
-                <br>
-                {{form.hora_hasta_t|add_class:'form-control hora' }}
-                {% for error in horario_form.hora_hasta_t.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                {% endfor %}
-                <br>
-                <label>(*)Hora Retiro:</label>
-                <br>
-                {{form.horario_retiro|add_class:'form-control hora' }}
-                {% for error in horario_form.horario_retiro.errors %}
-                  <span style="color:red;" class="help-block">{{ error }}</span>
-                {% endfor %}
-                <br>
-              {% endfor %}
-             </fieldset>
-             {{ horario_atencion_formset.management_form }}
+             <h1 style="color:red;">ATENCIÓN!</h1>
+             <p><strong>Recordar cargar los horarios de atención y tipo de residuo generador en las opciones.</strong></p>
           </div>
         </div>
        </div>
      </div>
     </div>
-  {% endif %}
 
   <script type="text/javascript">
 

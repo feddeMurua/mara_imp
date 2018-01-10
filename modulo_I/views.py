@@ -397,10 +397,7 @@ def detalle_generadores(request, nro_inscripcion):
 
 @login_required
 def alta_generadores(request):
-
-    HorarioAtencionFormSet = formset_factory(HorarioAtencionForm, max_num=7, validate_max=True)
-    ResiduoGeneradorFormSet = formset_factory(ResiduoGeneradorForm, max_num=3, validate_max=True)
-
+    
     if request.method == 'POST':
 
         generador_form = GeneradorForm(request.POST)
@@ -410,13 +407,10 @@ def alta_generadores(request):
         caract_generales_form = CaracteristicasGeneralesForm(request.POST)
         via_acceso_form = ViaAccesoSectorForm(request.POST)
         acopio_transitorio_form = AcopioTransitorioForm(request.POST)
-        horario_atencion_formset = HorarioAtencionFormSet(request.POST, prefix='fs1')
-        residuo_generador_formset = ResiduoGeneradorFormSet(request.POST, prefix='fs2')
 
         if generador_form.is_valid() & actividades_form.is_valid() & domicilio_form.is_valid() \
             & ambito_dpcia_form.is_valid() & caract_generales_form.is_valid() \
-            & via_acceso_form.is_valid() & acopio_transitorio_form.is_valid()\
-            & horario_atencion_formset.is_valid() & residuo_generador_formset.is_valid():
+            & via_acceso_form.is_valid() & acopio_transitorio_form.is_valid():
 
             generador = generador_form.save(commit=False)
             generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
@@ -434,19 +428,6 @@ def alta_generadores(request):
 
             generador.save()
 
-            # Guardo el formset de horarios
-            for form in horario_atencion_formset.forms:
-                horario_atencion_item = form.save(commit=False)
-                horario_atencion_item.establecimiento_generador = generador
-                horario_atencion_item.save()
-
-            # Guardo el formset de residuos
-            for form in residuo_generador_formset.forms:
-                residuo_generador_item = form.save(commit=False)
-                residuo_generador_item.establecimiento_generador = generador
-                residuo_generador_item.save()
-
-
             return redirect('generadores:listado_generadores')
 
     else:
@@ -457,8 +438,6 @@ def alta_generadores(request):
         caract_generales_form = CaracteristicasGeneralesForm
         via_acceso_form = ViaAccesoSectorForm
         acopio_transitorio_form = AcopioTransitorioForm
-        horario_atencion_formset = HorarioAtencionFormSet(prefix='fs1')
-        residuo_generador_formset = ResiduoGeneradorFormSet(prefix='fs2')
 
 
     contexto= {'generador_form': generador_form,
@@ -468,8 +447,6 @@ def alta_generadores(request):
                'caract_generales_form': caract_generales_form,
                'via_acceso_form': via_acceso_form,
                'acopio_transitorio_form': acopio_transitorio_form,
-               'horario_atencion_formset': horario_atencion_formset,
-               'residuo_generador_formset': residuo_generador_formset,
     }
 
     return render(request, "establecimiento/generador_form.html",contexto)
