@@ -4,9 +4,7 @@ from django import forms
 from django.utils.translation import ugettext as _
 from django.contrib.auth.forms import AuthenticationForm
 from .models import *
-from .choices import *
 from functools import partial
-from django.core.urlresolvers import reverse_lazy
 import re
 from django.template.loader import render_to_string
 

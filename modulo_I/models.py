@@ -225,7 +225,7 @@ class Cliente(models.Model):
     cargo = models.CharField(max_length=50)
     dato_impositivo = models.OneToOneField('DatoImpositivo', on_delete=models.CASCADE)
     fecha = models.DateField(default=now) #fecha de hoy
-    fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
+    fecha_vinculo = models.DateField() #fecha del Vinculo que se confeccionó el formulario
     cuit_cuil = models.CharField(max_length=20)
 
     def __str__(self):
