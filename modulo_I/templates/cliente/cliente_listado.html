@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <a href="{% url 'clientes:alta_clientes' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Cliente</a>
+  <a href="{% url 'clientes:alta_modif_clientes' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Cliente</a>
 {% endblock %}
 
 {% block thead-tabla %}
@@ -44,8 +44,8 @@
             <td>-</td>
           {% endif %}
           <td align="center">
-             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'clientes:detalle_clientes' id_cliente=cliente.id%}"><em class="glyphicon glyphicon-eye-open"></em></a>
-             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'clientes:modificar_clientes' id_cliente=cliente.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
+             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'clientes:detalle_clientes' id_cliente=cliente.id %}"><em class="glyphicon glyphicon-eye-open"></em></a>
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'clientes:alta_modif_clientes' id_cliente=cliente.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
              <a id="cliente_id"class="btn btn-danger btn-baja" data-clienteid="{{cliente.id}}"  data-clienterazonsocial="{{cliente.razon_social}}" data-clientenombre="{{cliente.apoderado.nombre}}" data-clienteapellido="{{cliente.apoderado.apellido}}"data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
           </td>
       </tr>

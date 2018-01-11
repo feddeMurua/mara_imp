@@ -20,7 +20,7 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <a href="{% url 'generadores:alta_horarios' nro_inscripcion=nro_inscripcion %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Horario</a>
+      <a href="{% url 'generadores:alta_modif_horarios' nro_inscripcion=nro_inscripcion %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Horario</a>
     </div>
     <div class="panel-body" style="background:OldLace">
       <div class="panel panel-default">
@@ -62,7 +62,7 @@
                   {% endif %}
                   <td>{{ horario.horario_retiro }} hs.</td>
                   <td align="center">
-                    <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modificar_horarios' nro_inscripcion=nro_inscripcion id_horario=horario.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
+                    <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:alta_modif_horarios' nro_inscripcion=nro_inscripcion id_horario=horario.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
                     <a id="horario_id"class="btn btn-danger btn-baja"  data-horariodia="{{horario.dia}}" data-horarioid="{{horario.id}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
                   </td>
               </tr>

@@ -18,7 +18,7 @@
       <div class="panel-heading">DATOS APODERADO/RESPONSABLE</div>
       <div class="panel-body">
         <label>(*)Apoderado:</label>
-        {{cliente_form.apoderado|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo apoderado es obligatorio"}}        
+        {{cliente_form.apoderado|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo apoderado es obligatorio"}}
         <br>
         <label>(*)Contacto Comercial:</label>
         {{cliente_form.contacto_comercial|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo contacto comercial es obligatorio"}}
@@ -66,9 +66,7 @@
         </div>
     </div>
   </div>
-
 {% endblock %}
-
 
 {% block url-cancelar %}
   {% url 'clientes:listado_clientes' %}

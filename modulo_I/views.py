@@ -20,7 +20,6 @@ from django.utils.html import escape
 OTRAS FUNCIONES
 '''
 
-
 def handlePopAdd(request, addForm, field):
     if request.method == "POST":
         form = addForm(request.POST)
@@ -148,11 +147,19 @@ def detalle_clientes(request, id_cliente):
 
 
 @login_required
-def alta_clientes(request):
+def alta_modif_clientes(request, id_cliente=None):
+    try:
+        cliente = Cliente.objects.get(id=id_cliente)
+        domicilio = cliente.domicilio_legal
+        dato_impositivo = cliente.dato_impositivo
+    except:
+        cliente = None
+        domicilio = None
+        dato_impositivo = None
     if request.method == 'POST':
-        cliente_form = ClienteForm(request.POST)
-        domicilio_form = DomicilioForm(request.POST)
-        datos_impositivos_form = DatosImpositivosForm(request.POST)
+        cliente_form = ClienteForm(request.POST, instance=cliente)
+        domicilio_form = DomicilioForm(request.POST,instance= domicilio)
+        datos_impositivos_form = DatosImpositivosForm(request.POST, instance=dato_impositivo)
         if cliente_form.is_valid() & domicilio_form.is_valid() & datos_impositivos_form.is_valid():
             cliente = cliente_form.save(commit=False)
             cliente.domicilio_legal = domicilio_form.save()
@@ -160,13 +167,14 @@ def alta_clientes(request):
             cliente.save()
             return redirect('clientes:listado_clientes')
     else:
-        cliente_form = ClienteForm
-        domicilio_form = DomicilioForm
-        datos_impositivos_form = DatosImpositivosForm
+        cliente_form = ClienteForm(instance=cliente)
+        domicilio_form = DomicilioForm(instance=domicilio)
+        datos_impositivos_form = DatosImpositivosForm(instance=dato_impositivo)
 
-    contexto= {'cliente_form': cliente_form,
-                'domicilio_form': domicilio_form,
-                'datos_impositivos_form':datos_impositivos_form,
+    contexto = {
+            'cliente_form': cliente_form,
+            'domicilio_form': domicilio_form,
+            'datos_impositivos_form':datos_impositivos_form,
     }
 
     return render(request, "cliente/cliente_form.html", contexto)
@@ -179,25 +187,6 @@ def baja_clientes(request):
     cliente.delete()
     response = {}
     return JsonResponse(response)
-
-
-@login_required
-def modificar_clientes(request, id_cliente):
-    cliente = Cliente.objects.get(id=id_cliente)
-    if request.method == 'POST':
-        cliente_form = ClienteForm(request.POST, instance=cliente)
-        domicilio_form = DomicilioForm(request.POST,instance=cliente.domicilio_legal)
-        datos_impositivos_form = DatosImpositivosForm(request.POST, instance=cliente.dato_impositivo)
-        if cliente_form.is_valid() & domicilio_form.is_valid() & datos_impositivos_form.is_valid():
-            domicilio_form.save()
-            cliente_form.save()
-            datos_impositivos_form.save()
-            return redirect('clientes:listado_clientes')
-    else:
-        cliente_form = ClienteForm(instance=cliente)
-        domicilio_form = DomicilioForm(instance=cliente.domicilio_legal)
-        datos_impositivos_form = DatosImpositivosForm(instance=cliente.dato_impositivo)
-    return render(request, "cliente/cliente_form.html", {'cliente_form': cliente_form, 'domicilio_form': domicilio_form, 'datos_impositivos_form':datos_impositivos_form})
 
 
 '''
@@ -273,10 +262,13 @@ def listado_horarios(request, nro_inscripcion):
 
 
 @login_required
-def alta_horarios(request, nro_inscripcion):
-
+def alta_modif_horarios(request, nro_inscripcion=None, id_horario=None):
+    try:
+        horario = HorarioAtencion.objects.get(id=id_horario)
+    except:
+        horario = None
     if request.method == 'POST':
-        horario_form = HorarioAtencionForm(request.POST)
+        horario_form = HorarioAtencionForm(request.POST, instance=horario)
 
         if horario_form.is_valid():
             horario = horario_form.save(commit=False)
@@ -286,9 +278,8 @@ def alta_horarios(request, nro_inscripcion):
                 return redirect('generadores:listado_horarios', nro_inscripcion=nro_inscripcion)
             except IntegrityError:
                 messages.add_message(request, messages.ERROR, 'Ya existe este día cargado.')
-
     else:
-        horario_form = HorarioAtencionForm
+        horario_form = HorarioAtencionForm(instance=horario)
     return render(request, "establecimiento/horario_atencion/horario_form.html",{'horario_form':horario_form,'nro_inscripcion':nro_inscripcion})
 
 
@@ -299,25 +290,6 @@ def baja_horarios(request):
     horario.delete()
     response = {}
     return JsonResponse(response)
-
-
-@login_required
-def modificar_horarios(request, nro_inscripcion, id_horario):
-
-    horario = HorarioAtencion.objects.get(id=id_horario)
-
-    if request.method == 'POST':
-        horario_form = HorarioAtencionForm(request.POST, instance=horario)
-
-        if horario_form.is_valid():
-            horario = horario_form.save(commit=False)
-            horario.establecimiento_generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
-            horario.save()
-            return redirect('generadores:listado_horarios', nro_inscripcion=nro_inscripcion)
-
-    else:
-        horario_form = HorarioAtencionForm(instance=horario)
-        return render(request, "establecimiento/horario_atencion/horario_form.html",{'horario_form':horario_form,'nro_inscripcion':nro_inscripcion})
 
 
 '''
@@ -332,21 +304,24 @@ def listado_residuos(request, nro_inscripcion):
 
 
 @login_required
-def alta_residuos(request, nro_inscripcion):
-
+def alta_modif_residuos(request, nro_inscripcion=None, id_residuo=None):
+    try:
+        residuo = ResiduoGenerador.objects.get(id=id_residuo)
+    except:
+        residuo = None
     if request.method == 'POST':
-        residuo_form = ResiduoGeneradorForm(request.POST)
+        residuo_form = ResiduoGeneradorForm(request.POST, instance=residuo)
 
         if residuo_form.is_valid():
             residuo = residuo_form.save(commit=False)
             residuo.establecimiento_generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
             try:
                 residuo.save()
-                return redirect('generadores:listado_horarios', nro_inscripcion=nro_inscripcion)
+                return redirect('generadores:listado_residuos', nro_inscripcion=nro_inscripcion)
             except IntegrityError:
                 messages.add_message(request, messages.ERROR, 'Ya existe este tipo de residuo cargado.')
     else:
-        residuo_form = ResiduoGeneradorForm
+        residuo_form = ResiduoGeneradorForm(instance=residuo)
     return render(request, "establecimiento/residuo_generador/residuo_form.html",{'residuo_form':residuo_form,'nro_inscripcion':nro_inscripcion})
 
 
@@ -357,25 +332,6 @@ def baja_residuos(request):
     residuo.delete()
     response = {}
     return JsonResponse(response)
-
-
-@login_required
-def modificar_residuos(request, nro_inscripcion, id_residuo):
-
-    residuo = ResiduoGenerador.objects.get(id=id_residuo)
-
-    if request.method == 'POST':
-        residuo_form = ResiduoGeneradorForm(request.POST, instance=residuo)
-
-        if residuo_form.is_valid():
-            residuo = residuo_form.save(commit=False)
-            residuo.establecimiento_generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
-            residuo.save()
-            return redirect('generadores:listado_residuos', nro_inscripcion=nro_inscripcion)
-
-    else:
-        residuo_form = ResiduoGeneradorForm(instance=residuo)
-        return render(request, "establecimiento/residuo_generador/residuo_form.html",{'residuo_form':residuo_form,'nro_inscripcion':nro_inscripcion})
 
 
 '''
@@ -397,7 +353,7 @@ def detalle_generadores(request, nro_inscripcion):
 
 @login_required
 def alta_generadores(request):
-    
+
     if request.method == 'POST':
 
         generador_form = GeneradorForm(request.POST)
