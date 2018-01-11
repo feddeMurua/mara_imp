@@ -1,11 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import *
 from .forms import *
 from django.template.loader import render_to_string
-from django.forms.formsets import formset_factory, BaseFormSet
-from django.forms import modelform_factory
 from django.http import HttpResponse
 from easy_pdf.views import PDFTemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -352,84 +350,33 @@ def detalle_generadores(request, nro_inscripcion):
 
 
 @login_required
-def alta_generadores(request):
+def alta_modif_generadores(request, nro_inscripcion=None):
 
-    if request.method == 'POST':
-
-        generador_form = GeneradorForm(request.POST)
-        actividades_form = ActividadesForm(request.POST)
-        domicilio_form = DomicilioForm(request.POST)
-        ambito_dpcia_form = AmbitoDependenciaForm(request.POST)
-        caract_generales_form = CaracteristicasGeneralesForm(request.POST)
-        via_acceso_form = ViaAccesoSectorForm(request.POST)
-        acopio_transitorio_form = AcopioTransitorioForm(request.POST)
-
-        if generador_form.is_valid() & actividades_form.is_valid() & domicilio_form.is_valid() \
-            & ambito_dpcia_form.is_valid() & caract_generales_form.is_valid() \
-            & via_acceso_form.is_valid() & acopio_transitorio_form.is_valid():
-
-            generador = generador_form.save(commit=False)
-            generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
-
-            acopio = acopio_transitorio_form.save()
-            via_acceso = ViaAccesoSector() # se crea objeto via_acceso para asignarle sector acopio
-            via_acceso.acopio_transitorio = acopio
-            via_acceso.tipo = via_acceso_form.cleaned_data.get('tipo')
-            via_acceso.save()
-
-            generador.via_acceso = via_acceso
-            generador.domicilio = domicilio_form.save()
-            generador.ambito_dependencia = ambito_dpcia_form.save()
-            generador.caract_generales = caract_generales_form.save()
-
-            generador.save()
-
-            return redirect('generadores:listado_generadores')
-
-    else:
-        generador_form = GeneradorForm
-        actividades_form = ActividadesForm
-        domicilio_form = DomicilioForm
-        ambito_dpcia_form = AmbitoDependenciaForm
-        caract_generales_form = CaracteristicasGeneralesForm
-        via_acceso_form = ViaAccesoSectorForm
-        acopio_transitorio_form = AcopioTransitorioForm
-
-
-    contexto= {'generador_form': generador_form,
-               'actividades_form': actividades_form,
-               'domicilio_form': domicilio_form,
-               'ambito_dpcia_form': ambito_dpcia_form,
-               'caract_generales_form': caract_generales_form,
-               'via_acceso_form': via_acceso_form,
-               'acopio_transitorio_form': acopio_transitorio_form,
-    }
-
-    return render(request, "establecimiento/generador_form.html",contexto)
-
-
-@login_required
-def baja_generadores(request):
-    nro_inscripcion = request.POST.get('generador_id')
-    generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
-    generador.delete()
-    response = {}
-    return JsonResponse(response)
-
-
-@login_required
-def modificar_generadores(request, nro_inscripcion):
-
-    generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+    try:
+        generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+        acopio_transitorio = generador.via_acceso.acopio_transitorio
+        via_acceso = generador.via_acceso
+        domicilio = generador.domicilio
+        ambito_dependencia = generador.ambito_dependencia
+        caract_generales = generador.caract_generales
+        modificar = True # para poner el boton guardar antes del final del wizard
+    except:
+        generador = None
+        acopio_transitorio = None
+        via_acceso = None
+        domicilio = None
+        ambito_dependencia = None
+        caract_generales = None
+        modificar = False
 
     if request.method == 'POST':
         generador_form = GeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
-        acopio_transitorio_form = AcopioTransitorioForm(request.POST, instance=generador.via_acceso.acopio_transitorio)
-        via_acceso_form = ViaAccesoSectorForm(request.POST, instance=generador.via_acceso)
-        domicilio_form = DomicilioForm(request.POST, instance=generador.domicilio)
-        ambito_dpcia_form = AmbitoDependenciaForm(request.POST, instance=generador.ambito_dependencia)
-        caract_generales_form = CaracteristicasGeneralesForm(request.POST,instance=generador.caract_generales)
+        acopio_transitorio_form = AcopioTransitorioForm(request.POST, instance=acopio_transitorio)
+        via_acceso_form = ViaAccesoSectorForm(request.POST, instance=via_acceso)
+        domicilio_form = DomicilioForm(request.POST, instance=domicilio)
+        ambito_dpcia_form = AmbitoDependenciaForm(request.POST, instance=ambito_dependencia)
+        caract_generales_form = CaracteristicasGeneralesForm(request.POST,instance=caract_generales)
 
         if generador_form.is_valid() & actividades_form.is_valid() & domicilio_form.is_valid() \
             & ambito_dpcia_form.is_valid() & caract_generales_form.is_valid() \
@@ -456,13 +403,12 @@ def modificar_generadores(request, nro_inscripcion):
 
         generador_form = GeneradorForm(instance=generador)
         actividades_form = ActividadesForm(instance=generador)
-        acopio_transitorio_form = AcopioTransitorioForm(instance=generador.via_acceso.acopio_transitorio)
-        via_acceso_form = ViaAccesoSectorForm(instance=generador.via_acceso)
-        domicilio_form = DomicilioForm(instance=generador.domicilio)
-        ambito_dpcia_form = AmbitoDependenciaForm(instance=generador.ambito_dependencia)
-        caract_generales_form = CaracteristicasGeneralesForm(instance=generador.caract_generales)
+        acopio_transitorio_form = AcopioTransitorioForm(instance=acopio_transitorio)
+        via_acceso_form = ViaAccesoSectorForm(instance=via_acceso)
+        domicilio_form = DomicilioForm(instance=domicilio)
+        ambito_dpcia_form = AmbitoDependenciaForm(instance=ambito_dependencia)
+        caract_generales_form = CaracteristicasGeneralesForm(instance=caract_generales)
 
-    modificar = True # para poner el boton guardar antes del final del wizard
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,
                'persona_form':PersonaForm,
@@ -474,3 +420,12 @@ def modificar_generadores(request, nro_inscripcion):
                'modificar':modificar
     }
     return render(request, "establecimiento/generador_form.html", contexto)
+
+
+@login_required
+def baja_generadores(request):
+    nro_inscripcion = request.POST.get('generador_id')
+    generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+    generador.delete()
+    response = {}
+    return JsonResponse(response)
