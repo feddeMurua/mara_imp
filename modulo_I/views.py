@@ -150,10 +150,12 @@ def alta_modif_clientes(request, id_cliente=None):
         cliente = Cliente.objects.get(id=id_cliente)
         domicilio = cliente.domicilio_legal
         dato_impositivo = cliente.dato_impositivo
+        modificar = True
     except:
         cliente = None
         domicilio = None
         dato_impositivo = None
+        modificar = False
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST, instance=cliente)
         domicilio_form = DomicilioForm(request.POST,instance= domicilio)
@@ -173,6 +175,7 @@ def alta_modif_clientes(request, id_cliente=None):
             'cliente_form': cliente_form,
             'domicilio_form': domicilio_form,
             'datos_impositivos_form':datos_impositivos_form,
+            'modificar':modificar
     }
 
     return render(request, "cliente/cliente_form.html", contexto)
@@ -198,16 +201,35 @@ def listado_hojas_de_ruta(request):
 
 
 @login_required
-def alta_hoja_ruta(request):
+def detalle_hojas_de_ruta(request, id_hoja):
+    hoja_ruta = HojaRuta.objects.get(id=id_hoja)
+    return render(request, 'hojaRuta/hoja_ruta_detalle.html', {'hoja_ruta': hoja_ruta})
+
+
+@login_required
+def alta_modif_hoja_ruta(request, id_hoja=None):
+    try:
+        hoja_ruta = HojaRuta.objects.get(id=id_hoja)
+    except:
+        hoja_ruta = None
     if request.method == 'POST':
-        hojaruta_form = HojaRutaForm(request.POST)
+        hojaruta_form = HojaRutaForm(request.POST, instance=hoja_ruta)
         if hojaruta_form.is_valid():
             hoja_ruta = hojaruta_form.save()
             return redirect('hojaRuta:listado_hojas_de_ruta')
     else:
-        hojaruta_form = HojaRutaForm
+        hojaruta_form = HojaRutaForm(instance=hoja_ruta)
 
     return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form})
+
+
+@login_required
+def baja_hoja_ruta(request):
+    hoja_ruta_id = request.POST.get('hoja_ruta_id')
+    hoja_ruta = HojaRuta.objects.get(id=hoja_ruta_id)
+    hoja_ruta.delete()
+    response = {}
+    return JsonResponse(response)
 
 
 @login_required
@@ -305,6 +327,7 @@ def listado_residuos(request, nro_inscripcion):
 def alta_modif_residuos(request, nro_inscripcion=None, id_residuo=None):
     try:
         residuo = ResiduoGenerador.objects.get(id=id_residuo)
+
     except:
         residuo = None
     if request.method == 'POST':

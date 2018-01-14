@@ -181,15 +181,10 @@ class EstablecimientoGenerador(models.Model):
 Hoja de Ruta
 '''
 
-'''
-REQUIERIMENTO INFORMAL:
--el sistema debera:
-* el operadorar seleccionara el dia y el sistema devolvera los establecimientos correspondientes
-contemplar los feriados. (elegir dia excepcional que plantee el generador, de forma manual)
-'''
 
 class HojaRuta(models.Model):
-    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', on_delete=models.CASCADE)
+    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
+    fecha_impresion = models.DateField() #fecha del dia que se imprimió la hoja de ruta
     hora_programada = models.TimeField()
     hora_llegada = models.TimeField()
     hora_salida = models.TimeField()

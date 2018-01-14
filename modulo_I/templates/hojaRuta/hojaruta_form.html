@@ -26,6 +26,9 @@
         <label>(*)Establecimiento Generador:</label>
         {{hojaruta_form.establecimiento_generador|add_class:'select-2'|attr:"required:"}}
         <br>
+        <label>(*)Fecha Impresión:</label>
+        {{hojaruta_form.fecha_impresion|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha impresión es obligatorio"}}
+        <br>
         <label>(*)Volumen Retirado:</label>
         {{hojaruta_form.volumen_retirado|add_class:'form-control'|attr:"required:"}}
         <br>

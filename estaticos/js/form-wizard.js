@@ -15,7 +15,7 @@ $(function () {
     var atTheEnd = index >= $sections.length - 1;
     $('.form-navigation .next').toggle(!atTheEnd);
     $('.form-navigation [type=submit]').toggle(atTheEnd);
-    
+
   }
 
   function curIndex() {
@@ -42,6 +42,7 @@ $(function () {
     $(section).find(':input').attr('data-parsley-group', 'block-' + index);
   });
   navigateTo(0); // Start at the beginning
+  $('.form-wizard').parsley()
 
 
 });

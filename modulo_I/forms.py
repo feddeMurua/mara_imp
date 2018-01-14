@@ -116,7 +116,7 @@ HOJAS DE RUTA
 '''
 
 class HojaRutaForm(forms.ModelForm):
-
+    fecha_impresion = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     class Meta:
         model = HojaRuta
         fields = '__all__'
@@ -127,7 +127,7 @@ GENERADORES
 '''
 
 class GeneradorForm(forms.ModelForm):
-    fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")    
+    fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     responsable_residuos = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
     responsable_suplente = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
     responsable_tecnico = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
@@ -183,7 +183,7 @@ class HorarioAtencionForm(forms.ModelForm):
 
     class Meta:
         model = HorarioAtencion
-        exclude = ['establecimiento_generador',]
+        exclude = ['establecimiento_generador','fecha',]
 
 
 class ResiduoGeneradorForm(forms.ModelForm):

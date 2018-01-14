@@ -184,15 +184,6 @@
   </script>
 {% endblock %}
 
-{% block modificar-form-save %}
-  {% if modificar %}
-    <br>
-    <button type="submit" class="btn btn-success pull-right" >
-      <span class="glyphicon glyphicon-ok"></span> Guardar
-    </button>
-  {% endif %}
-{% endblock %}
-
 {% block url-cancelar %}
   {% url 'generadores:listado_generadores' %}
 {% endblock %}

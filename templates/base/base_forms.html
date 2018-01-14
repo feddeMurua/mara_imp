@@ -28,26 +28,35 @@
           {% csrf_token %}
           <div class="panel panel-primary">
             <div class="panel-heading">FORMULARIO DE REGISTRO</div>
-              <div class="panel-body" style="background:OldLace;">
-                <!-- secciones de cada formulario -->
-                {% block step-form %}{% endblock %}
-                <!-- navegación de cada formulario -->
-                <div class="form-navigation">
-                  <button type="button" class="previous btn btn-info pull-left">&lt; Anterior</button>
-                  <button id="btn-siguiente" type="button" class="next btn btn-info pull-right">Siguiente &gt;</button>
-                  <button type="submit" class="btn btn-success pull-right" >
+            <div class="panel-body" style="background:OldLace;">
+              <!-- secciones de cada formulario -->
+              {% block step-form %}{% endblock %}
+              <!-- navegación de cada formulario -->
+              <div class="form-navigation form-inline">
+                <button type="button" class="previous btn btn-info pull-left">&lt; Anterior</button>
+                <button id="btn-siguiente" type="button" class="next btn btn-info pull-right">Siguiente &gt;</button>
+                <!-- Solo si es alta lo muestra, para que no aparezca repetido -->
+                {% if not modificar %}
+                  <button type="submit" class="btn btn-success pull-right">
                     <span class="glyphicon glyphicon-ok"></span> Guardar
                   </button>
-                  <span class="clearfix"></span>
-                </div>
-                {% block modificar-form-save %}{% endblock %}
+                {% endif %}
+                <span class="clearfix"></span>
               </div>
-              <div class="panel-footer text-right">
-                <a class="btn btn-danger btn-cancelar" href= "{% block url-cancelar %}{% endblock %}" >Cancelar</a>
-              </div>
+              <!-- Para guardar antes de llegar al step final -->
+              {% if modificar %}
+                <br>
+                <button type="submit" class="btn btn-success pull-right">
+                  <span class="glyphicon glyphicon-ok"></span> Guardar
+                </button>
+              {% endif %}
             </div>
-        </form>
-  </div>
+            <div class="panel-footer text-right">
+              <a class="btn btn-danger btn-cancelar" href= "{% block url-cancelar %}{% endblock %}" >Cancelar</a>
+            </div>
+          </div>
+      </form>
+    </div>
 
   {% block more-scripts %}
 

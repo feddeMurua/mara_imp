@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <a href="{% url 'hojaRuta:alta_hoja_ruta' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Registrar Hoja de Ruta </a>
+  <a href="{% url 'hojaRuta:alta_modif_hoja_ruta' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Registrar Hoja de Ruta </a>
   <a href="{% url 'hojaRuta:generar_hoja_ruta' %}" class="btn btn-info"><i class="fa fa-file-text"></i> Generar Hoja de Ruta </a>
 {% endblock %}
 
@@ -38,9 +38,9 @@
             <td>{{ hoja_ruta.establecimiento_generador }}</td>
             <td>{{ hoja_ruta.nro_precinto}}</td>
             <td align="center">
-               <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="#"><em class="glyphicon glyphicon-eye-open"></em></a>
-               <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="#"><em class="glyphicon glyphicon-pencil"></em></a>
-               <a class="btn btn-danger btn-baja" data-toggle="tooltip" title="Eliminar"href="#"><em class="glyphicon glyphicon-trash"></em></a>
+               <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'hojaRuta:detalle_hojas_de_ruta' id_hoja=hoja_ruta.id %}"><em class="glyphicon glyphicon-eye-open"></em></a>
+               <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:alta_modif_hoja_ruta' id_hoja=hoja_ruta.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
+               <a id="hoja_ruta_id"class="btn btn-danger btn-baja" data-hojarutaid="{{hoja_ruta.id}}" data-hojarutaest="{{hoja_ruta.establecimiento_generador}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
             </td>
         </tr>
     {% endfor %}
@@ -48,9 +48,46 @@
 {% endblock %}
 
 {% block modal-btn-eliminar%}
-
+  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarHojaRuta(value)">Eliminar</button>
 {% endblock %}
 
 {% block modal-scripts %}
+  <script>
+    //codigo para cambiar los datos del modal y para dar de baja
+    $(document).ready(function () {
+      $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var hoja_ruta_est = button.data('hojarutaest')
+        var hoja_ruta_id = button.data('hojarutaid')
 
+        var title = 'Atención!'
+        var content = '¿Está seguro que quiere eliminar esta hoja de ruta del establecimiento: '+ hoja_ruta_est +'?'
+
+
+        // actualiza el contenido del manual
+        var modal = $(this)
+        modal.find('.modal-title').text(title)
+        modal.find('.modal-body').text(content)
+
+        // se le pasa el valor del documento al boton de confirmar
+        modal.find('button.btn-danger').val(hoja_ruta_id)
+      })
+    })
+
+    function eliminarHojaRuta(hoja_ruta_id) {
+      var request = $.ajax({
+          type: "POST",
+          url: "{% url 'hojaRuta:baja_hoja_ruta' %}",
+          data: {
+              "csrfmiddlewaretoken": "{{ csrf_token }}",
+              "hoja_ruta_id": hoja_ruta_id
+          },
+      });
+    }
+
+    //para actualizar cuando se da de baja.
+    $('#modal_baja').on('hidden.bs.modal', function () {
+      window.location.reload(true);
+    })
+  </script>
 {% endblock %}
