@@ -172,15 +172,27 @@ class EstablecimientoGenerador(models.Model):
     via_acceso = models.ForeignKey('ViaAccesoSector', on_delete=models.CASCADE)
     tipo_actividad = MultiSelectField(choices=Actividades)
     sector = models.IntegerField() # cuadrante que pertenece a la ciudad el generador
-
+    '''
+    AGREGAR orden dentro de sector para la hoja de ruta (puede ser null)
+    '''
     def __str__(self):
         return "%s" % (self.razon_social)
 
 
 '''
 Hoja de Ruta
+
+*obs
+volumen retirado: cantidad de balde y capacidad de cada uno (adjunto en el correo para modificar)
+cambiar: nro de precinto es POR BALDE con el requerimiento de arriba.
+n° de balde mismo, cambia el precinto
+asociar n° balde al tamaño -> ej balde 1 20dm3 para seguridad (por el retiro)
+Agregar clase balde.
 '''
 
+
+class Balde(models.Model):
+    capacidad = models.FloatField()
 
 class HojaRuta(models.Model):
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
