@@ -256,8 +256,9 @@ def detalle_horario_atencion(request, id_horario):
 
 class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
 
-    template_name = 'hojaRuta/hoja_ruta_pdf.html'
-    title = "Planilla de Hoja de Ruta del dia: " + datetime.datetime.now().strftime("%x")
+    template_name = 'hojaRuta/hoja_ruta_pdf.html'    
+    title = "Planilla de Hoja de Ruta del dia: " + f"{datetime.datetime.now():%d/%m/%y}"
+
     login_url = '/accounts/login/'
     redirect_field_name = 'next'
 

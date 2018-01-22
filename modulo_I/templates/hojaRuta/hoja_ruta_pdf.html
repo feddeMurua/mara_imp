@@ -32,19 +32,18 @@
           }
       }
       table{
-        background-color: #ffffff;
         text-align: center;
         border-collapse: collapse;
         border: 1px solid black;
-      }
-      th {
         padding-top: 2px;
-        padding-bottom: 1px;
+        padding-left: 2px;
       }
-      td {
-        padding-top: 2px;
-        padding-bottom: 1px;
+      td{
+        width:150;
+        white-space:nowrap;
+        padding-right: 1px;
       }
+
   </style>
 
 {%endblock%}
@@ -56,138 +55,54 @@
           <h2>{{ view.title }}</h2>
             <!-- Table with irregular header -->
             <table class="table">
-              <tr>
-                <td rowspan="2"><strong>Generador</strong></td>
-                <td rowspan="2"><strong>Hora Programada</strong></td>
-                <td rowspan="2"><strong>Hora Llegada</strong></td>
-                <td rowspan="2"><strong>Hora Salida</strong></td>
-                <td rowspan="2"><strong>Volumen Retirado</strong></td>
-                <th colspan="5" scope="colgroup">Cantidad de Baldes de:</th>
-                <th rowspan="2" scope="colgroup">Balde
-                  <table>
-                    <tr>
-                      <td>N°</td>
-                      <td>E</td>
-                      <td>S</td>
-                      <td>N° Precinto</td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  </table>
-                </th>
-                <td rowspan="2"><strong>Sector Asociado</strong></td>
-              </tr>
-              <tr>
-                <th scope="col">10 dm3</th>
-                <th scope="col">20 dm3</th>
-                <th scope="col">50 dm3</th>
-                <th scope="col">120 dm3</th>
-                <th scope="col">240 dm3</th>
-              </tr>
-              <tr>
-                <td>Hospital</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+              {% for establecimiento in establecimientos %}
+                <tr>
+                  <!--
+                  colspan: n° de columnas dentro de la fila
+                  rowspan: n° de filas dentro de la fila
+                  -->
+                  <td rowspan="2"><strong>Hora Progr.</strong></td>
+                  <td rowspan="2"><strong>Hora Lleg.</strong></td>
+                  <td rowspan="2"><strong>Hora Sal.</strong></td>
+                  <td rowspan="2"><strong>Vol. Retirado</strong></td>
+                  <th colspan="5" scope="colgroup">Cant. de Baldes de:</th>
+                  <td colspan="1"rowspan="1">Establecimiento: <strong>{{establecimiento.establecimiento_generador|upper}}</strong></td>
+                  <td rowspan="2"><strong>Sector</strong></td>
+                </tr>
+                <tr>
+                  <th scope="col">10 dm3</th>
+                  <th scope="col">20 dm3</th>
+                  <th scope="col">50 dm3</th>
+                  <th scope="col">120 dm3</th>
+                  <th scope="col">240 dm3</th>
+                  <th scope="col">Baldes:</th>
+                </tr>
+                <tr>
+                  <td>{{establecimiento.horario_retiro}}</td>
+                  <td></td><td></td>
+                  <td></td><td></td>
+                  <td></td><td></td>
+                  <td></td><td></td>
+                  <td colspan="1">
+                    {% for i in "xxxx" %}
+                    <table>
+                      <tr>
+                        <td>N°</td>
+                        <td>E/S</td>
+                        <td>N° Precinto</td>
+                      </tr>
+                      <tr>
+                        <td>&nbsp</td>
+                        <td>&nbsp</td>
+                        <td>&nbsp</td>
+                      </tr>
+                    </table>
+                    {% endfor %}
+                  </td>
+                  <td></td>
+                </tr>
+              {% endfor %}
             </table>
-
-            <!--
-            <col>
-            <colgroup span="2"></colgroup>
-            <colgroup span="2"></colgroup>
-            <tr>
-              <td rowspan="2"></td>
-              <th colspan="2" scope="colgroup">Mars</th>
-              <th colspan="2" scope="colgroup">Venus</th>
-            </tr>
-            <tr>
-              <th scope="col">Produced</th>
-              <th scope="col">Sold</th>
-              <th scope="col">Produced</th>
-              <th scope="col">Sold</th>
-            </tr>
-            <tr>
-              <th scope="row">Teddy Bears</th>
-              <td>50,000</td>
-              <td>30,000</td>
-              <td>100,000</td>
-              <td>80,000</td>
-            </tr>
-            <tr>
-              <th scope="row">Board Games</th>
-              <td>10,000</td>
-              <td>5,000</td>
-              <td>12,000</td>
-              <td>9,000</td>
-            </tr>
-            -->
-
-
-
-
-
-            <!--
-            <table class="table">
-              <thead>
-              <tr>
-                  <th>Establecimiento Generador</th>
-                  <th>Hora Programada</th>
-                  <th>Hora Llegada</th>
-                  <th>Hora Salida</th>
-                  <th>Volumen Retirado</th>
-                  <th>N° Precinto</th>
-                  <th>N° Balde de Entrega</th>
-                  <th>N° Balde de Retiro</th>
-                  <th>Sector</th>
-              </tr>
-              </thead>
-              <tbody>
-                {% for establecimiento in establecimientos %}
-                  <tr>
-                      <td style="width: 300px;">{{establecimiento.establecimiento_generador}}</td>
-                      <td>{{establecimiento.horario_retiro}}</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>{{establecimiento.establecimiento_generador.sector}}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-            -->
         </div>
     </div>
 {% endblock %}
