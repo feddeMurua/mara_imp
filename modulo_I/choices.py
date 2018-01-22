@@ -88,3 +88,16 @@ Ingresos_Brutos = (
     ('Pasible de Retención/Percepción', _("Pasible de Retención/Percepción")),
 
 )
+
+E_S = (
+    ('Entrada', _("Entrada")),
+    ('Salida', _("Salida")),
+)
+
+Capacidad_balde = (
+    ('10', _("10")),
+    ('20', _("20")),
+    ('50', _("50")),
+    ('120', _("120")),
+    ('240', _("240")),
+)

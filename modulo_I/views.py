@@ -191,6 +191,45 @@ def baja_clientes(request):
 
 
 '''
+BALDES
+'''
+
+@login_required
+def listado_baldes(request, id_hoja):
+    listado_baldes = BaldeUtilizado.objects.filter(hoja_ruta__id=id_hoja)
+    return render(request, 'hojaRuta/balde/balde_listado.html', {'listado_baldes': listado_baldes, 'id_hoja':id_hoja})
+
+
+
+@login_required
+def alta_modif_balde(request, id_hoja=None, id_balde=None):
+    try:
+        balde = BaldeUtilizado.objects.get(id=id_balde)
+    except:
+        balde = None
+    if request.method == 'POST':
+        balde_form = BaldeUtilizadoForm(request.POST, instance=balde)
+        if balde_form.is_valid():
+            balde = balde_form.save(commit=False)
+            balde.hoja_ruta = HojaRuta.objects.get(id=id_hoja)
+            balde.save()
+            return redirect('hojaRuta:listado_baldes', id_hoja=id_hoja)
+    else:
+        balde_form = BaldeUtilizadoForm(instance=balde)
+
+    return render(request, "hojaRuta/balde/balde_form.html", {'balde_form': balde_form, 'id_hoja':id_hoja})
+
+
+@login_required
+def baja_balde(request):
+    balde_id = request.POST.get('balde_id')
+    balde = BaldeUtilizado.objects.get(id=balde_id)
+    balde.delete()
+    response = {}
+    return JsonResponse(response)
+
+
+'''
 HOJAS DE RUTA
 '''
 
@@ -256,7 +295,7 @@ def detalle_horario_atencion(request, id_horario):
 
 class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
 
-    template_name = 'hojaRuta/hoja_ruta_pdf.html'    
+    template_name = 'hojaRuta/hoja_ruta_pdf.html'
     title = "Planilla de Hoja de Ruta del dia: " + f"{datetime.datetime.now():%d/%m/%y}"
 
     login_url = '/accounts/login/'

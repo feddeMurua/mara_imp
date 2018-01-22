@@ -112,6 +112,16 @@ class LocalidadForm(forms.ModelForm):
 
 
 '''
+BALDES
+'''
+
+class BaldeUtilizadoForm(forms.ModelForm):
+    class Meta:
+        model = BaldeUtilizado
+        exclude = ['hoja_ruta',]
+
+
+'''
 HOJAS DE RUTA
 '''
 

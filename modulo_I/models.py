@@ -192,7 +192,20 @@ Agregar clase balde.
 
 
 class Balde(models.Model):
-    capacidad = models.FloatField()
+    nro_balde = models.BigIntegerField(primary_key=True) #identificador
+    capacidad = models.CharField(max_length=5, choices=Capacidad_balde) # en dm3
+
+    def __str__(self):
+        return "N°: %s || Capacidad: %s dm3" % (self.nro_balde, self.capacidad)
+
+class BaldeUtilizado(models.Model):
+    '''
+    Clase compuesta por balde utilizado en la hoja de ruta.
+    '''
+    balde = models.ForeignKey('Balde', on_delete=models.CASCADE) #balde_entrega
+    hoja_ruta = models.ForeignKey('HojaRuta')
+    nro_precinto = models.BigIntegerField()    
+    tipo = models.CharField(max_length=15, choices=E_S) # tipo entrada/salida
 
 class HojaRuta(models.Model):
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
@@ -201,9 +214,8 @@ class HojaRuta(models.Model):
     hora_llegada = models.TimeField()
     hora_salida = models.TimeField()
     volumen_retirado = models.FloatField(default=0)
-    nro_precinto = models.BigIntegerField(unique=True) #unico para el dia
-    nro_balde_entrega = models.BigIntegerField(unique=True) #unico para el dia
-    nro_balde_retiro = models.BigIntegerField(unique=True) #unico para el dia
+
+
 
     def __str__(self):
         return "%s || N° precinto: %s " % (self.establecimiento_generador, self.nro_precinto)

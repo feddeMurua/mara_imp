@@ -29,24 +29,6 @@
         <label>(*)Fecha Impresión:</label>
         {{hojaruta_form.fecha_impresion|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha impresión es obligatorio"}}
         <br>
-        <label>(*)Volumen Retirado:</label>
-        {{hojaruta_form.volumen_retirado|add_class:'form-control'|attr:"required:"}}
-        <br>
-        <label>(*)Número de Precinto:</label>
-        {{hojaruta_form.nro_precinto|add_class:'form-control'|attr:"required:"}}
-        <br>
-        <label>(*)Número de balde de entrega:</label>
-        {{hojaruta_form.nro_balde_entrega|add_class:'form-control'|attr:"required:"}}
-        {% for error in hojaruta_form.nro_balde_entrega.errors %}
-          <span style="color:red;" class="help-block">{{ error }}</span>
-        {% endfor %}
-        <br>
-        <label>(*)Número de balde de retiro:</label>
-        {{hojaruta_form.nro_balde_retiro|add_class:'form-control'|attr:"required:"}}
-        {% for error in hojaruta_form.nro_balde_retiro.errors %}
-          <span style="color:red;" class="help-block">{{ error }}</span>
-        {% endfor %}
-        <br>
         <label>(*)Hora Programada:</label>
         <br>
         {{hojaruta_form.hora_programada|add_class:'form-control hora'}}
@@ -58,11 +40,28 @@
         <label>(*)Hora Salida:</label>
         <br>
         {{hojaruta_form.hora_salida|add_class:'form-control hora'}}
-
+        <br>
+        <label>(*)Volumen Retirado:</label>
+        {{hojaruta_form.volumen_retirado|add_class:'form-control'|attr:"required:"}}
         <br>
       </div>
     </div>
   </div>
+
+  <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">PASO FINAL</div>
+       <div class="panel-body">
+         <div class="panel panel-default">
+           <div class="panel-body">
+             <h1 style="color:red;">ATENCIÓN!</h1>
+             <p><strong>Recordar cargar los baldes utilizados en el menú de opciones.</strong></p>
+          </div>
+        </div>
+       </div>
+     </div>
+    </div>
+
 
   <script type="text/javascript">
     //MASCARAS

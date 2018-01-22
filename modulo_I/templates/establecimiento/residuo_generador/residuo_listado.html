@@ -37,7 +37,7 @@
           {% for residuo in listado_residuos %}
               <tr>
                   <td>{{ residuo.tipo }}</td>
-                  <td>{{ residuo.volumen_mensual_estimado }}</td>
+                  <td>{{ residuo.volumen_mensual_estimado }} dm3</td>
                   <td>{{ residuo.kgs_mensual_estimado }}</td>
                   <td align="center">
                     <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:alta_modif_residuos' nro_inscripcion=nro_inscripcion id_residuo=residuo.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
