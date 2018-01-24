@@ -73,10 +73,10 @@
             {% for key, value in establecimientos.items %}
               <tr>
                 <td align="left">{{key}}</td>
-                {% for k, v in value.items %}
+                {% for k, v in value.0.items %} <!-- posicion donde estan los baldes -->
                   <td>{{v}}</td> <!--Segunda posición de la tupla de baldes utilizado (no es necesario la clave del diccionario) -->
                 {% endfor %}
-                <td>-</td>
+                <td>{{value.1}}</td> <!-- posicion totales -->
               </tr>
             {% endfor %}
         </table>

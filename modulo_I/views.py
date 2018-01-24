@@ -512,11 +512,14 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
         establecimientos = {}
         for hoja in HojaRuta.objects.filter(fecha_impresion__month=mes):
             baldes_utilizados = {}
+            total_envases = 0
             for c in Capacidad_balde: #Capacidad_balde: tupla del choices.py
-                baldes_utilizados[c[0]] = BaldeUtilizado.objects.filter(hoja_ruta__id=hoja.id, balde__capacidad=c[0], tipo="Salida").count() #baldes en cada hoja
-            establecimientos[hoja.establecimiento_generador.razon_social] = baldes_utilizados
-
+                cant_envases = BaldeUtilizado.objects.filter(hoja_ruta__id=hoja.id, balde__capacidad=c[0], tipo="Salida").count() #baldes en cada hoja
+                baldes_utilizados[c[0]] = cant_envases
+                total_envases+=cant_envases #acumulador por cada tipo de balde
+            establecimientos[hoja.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases)
+        
         return super(LiquidacionPdf, self).get_context_data(
             pagesize="A4",
-            establecimientos=establecimientos            
+            establecimientos=establecimientos
         )
