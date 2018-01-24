@@ -204,8 +204,12 @@ class BaldeUtilizado(models.Model):
     '''
     balde = models.ForeignKey('Balde', on_delete=models.CASCADE) #balde_entrega
     hoja_ruta = models.ForeignKey('HojaRuta')
-    nro_precinto = models.BigIntegerField()    
+    nro_precinto = models.BigIntegerField()
     tipo = models.CharField(max_length=15, choices=E_S) # tipo entrada/salida
+
+    def __str__(self):
+        return "%s || N° precinto: %s" % (self.balde, self.nro_precinto)
+
 
 class HojaRuta(models.Model):
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
@@ -215,10 +219,8 @@ class HojaRuta(models.Model):
     hora_salida = models.TimeField()
     volumen_retirado = models.FloatField(default=0)
 
-
-
     def __str__(self):
-        return "%s || N° precinto: %s " % (self.establecimiento_generador, self.nro_precinto)
+        return "Generador: %s || Fecha: %s " % (self.establecimiento_generador, self.fecha_impresion)
 
 
 '''

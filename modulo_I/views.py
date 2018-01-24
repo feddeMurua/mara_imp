@@ -12,6 +12,7 @@ from django.db import IntegrityError
 from mara_imp import factories
 import datetime
 from django.utils.html import escape
+from .choices import Capacidad_balde
 # Create your views here.
 
 '''
@@ -492,3 +493,30 @@ def baja_generadores(request):
     generador.delete()
     response = {}
     return JsonResponse(response)
+
+
+'''
+LIQUIDACIONES MENSUALES
+'''
+
+
+class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
+
+    template_name = 'hojaRuta/liquidacion_mensual_pdf.html'
+    title = "LIQUIDACIÓN MENSUAL DE RETIROS"
+
+    login_url = '/accounts/login/'
+    redirect_field_name = 'next'
+
+    def get_context_data(self, mes):
+        establecimientos = {}
+        for hoja in HojaRuta.objects.filter(fecha_impresion__month=mes):
+            baldes_utilizados = {}
+            for c in Capacidad_balde: #Capacidad_balde: tupla del choices.py
+                baldes_utilizados[c[0]] = BaldeUtilizado.objects.filter(hoja_ruta__id=hoja.id, balde__capacidad=c[0], tipo="Salida").count() #baldes en cada hoja
+            establecimientos[hoja.establecimiento_generador.razon_social] = baldes_utilizados
+
+        return super(LiquidacionPdf, self).get_context_data(
+            pagesize="A4",
+            establecimientos=establecimientos            
+        )
