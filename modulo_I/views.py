@@ -250,8 +250,10 @@ def detalle_hojas_de_ruta(request, id_hoja):
 def alta_modif_hoja_ruta(request, id_hoja=None):
     try:
         hoja_ruta = HojaRuta.objects.get(id=id_hoja)
+        modificar = True
     except:
         hoja_ruta = None
+        modificar = False
     if request.method == 'POST':
         hojaruta_form = HojaRutaForm(request.POST, instance=hoja_ruta)
         if hojaruta_form.is_valid():
@@ -260,7 +262,7 @@ def alta_modif_hoja_ruta(request, id_hoja=None):
     else:
         hojaruta_form = HojaRutaForm(instance=hoja_ruta)
 
-    return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form})
+    return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form,'modificar':modificar})
 
 
 @login_required
@@ -368,7 +370,6 @@ def listado_residuos(request, nro_inscripcion):
 def alta_modif_residuos(request, nro_inscripcion=None, id_residuo=None):
     try:
         residuo = ResiduoGenerador.objects.get(id=id_residuo)
-
     except:
         residuo = None
     if request.method == 'POST':
@@ -510,15 +511,27 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
     def get_context_data(self, mes):
         establecimientos = {}
+
         for hoja in HojaRuta.objects.filter(fecha_impresion__month=mes):
+
             baldes_utilizados = {}
             total_envases = 0
+
             for c in Capacidad_balde: #Capacidad_balde: tupla del choices.py
+
                 cant_envases = BaldeUtilizado.objects.filter(hoja_ruta__id=hoja.id, balde__capacidad=c[0], tipo="Salida").count() #baldes en cada hoja
                 baldes_utilizados[c[0]] = cant_envases
                 total_envases+=cant_envases #acumulador por cada tipo de balde
-            establecimientos[hoja.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases)
-        
+
+                c_envases = BaldeUtilizado.objects.filter(hoja_ruta__id=hoja.id, tipo='Salida').values_list('balde__capacidad')
+                acumu = 0
+
+                for env in c_envases:
+                    acumu += int(env[0])
+
+            establecimientos[hoja.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
+
+
         return super(LiquidacionPdf, self).get_context_data(
             pagesize="A4",
             establecimientos=establecimientos

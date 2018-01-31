@@ -61,7 +61,8 @@
               -->
               <td rowspan="2"><strong>Establecimiento Generador</strong></td>
               <th colspan="5" scope="colgroup">Cantidad de Envases</th>
-              <td rowspan="2"><strong>Total</strong></td>
+              <td rowspan="2"><strong>Total de Envases Utilizados</strong></td>
+              <td rowspan="2"><strong>Total de dm3</strong></td>
             </tr>
             <tr>
               <th scope="col">10 dm3</th>
@@ -77,6 +78,7 @@
                   <td>{{v}}</td> <!--Segunda posición de la tupla de baldes utilizado (no es necesario la clave del diccionario) -->
                 {% endfor %}
                 <td>{{value.1}}</td> <!-- posicion totales -->
+                <td>{{value.2}}</td>
               </tr>
             {% endfor %}
         </table>

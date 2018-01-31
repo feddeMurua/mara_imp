@@ -48,20 +48,21 @@
     </div>
   </div>
 
-  <div class="form-section">
-     <div class="panel panel-default">
-       <div class="panel-heading">PASO FINAL</div>
-       <div class="panel-body">
-         <div class="panel panel-default">
-           <div class="panel-body">
-             <h1 style="color:red;">ATENCIÓN!</h1>
-             <p><strong>Recordar cargar los baldes utilizados en el menú de opciones.</strong></p>
+  {% if not modificar %}
+    <div class="form-section">
+       <div class="panel panel-default">
+         <div class="panel-heading">PASO FINAL</div>
+         <div class="panel-body">
+           <div class="panel panel-default">
+             <div class="panel-body">
+               <h1 style="color:red;">ATENCIÓN!</h1>
+               <p><strong>Recordar cargar los baldes utilizados en el menú de opciones.</strong></p>
+            </div>
           </div>
-        </div>
+         </div>
        </div>
-     </div>
     </div>
-
+  {% endif %}
 
   <script type="text/javascript">
     //MASCARAS
