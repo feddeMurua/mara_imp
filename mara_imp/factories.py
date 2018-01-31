@@ -4,6 +4,31 @@ import factory.fuzzy
 import datetime
 
 
+'''
+#FACTORIES
+for x in xrange(45):
+    personas = factories.PersonaFactory()
+
+for x in xrange(8):
+    nacionalidad = factories.NacionalidadFactory()
+
+for x in xrange(8):
+    provincia = factories.ProvinciaFactory()
+
+for x in xrange(8):
+    localidad = factories.LocalidadFactory()
+
+for x in xrange(10):
+    domicilio = factories.DomicilioFactory()
+
+for x in xrange(10):
+    datoImpositivo = factories.DatoImpositivoFactory()
+
+for x in xrange(10):
+    cliente = factories.ClienteFactory()
+'''
+
+
 class PersonaFactory(factory.django.DjangoModelFactory):
     apellido = factory.fuzzy.FuzzyText(length=20)
     nombre = factory.fuzzy.FuzzyText(length=25)
