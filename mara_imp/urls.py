@@ -23,8 +23,9 @@ urlpatterns = [
     url(r'^logout/$', logout_usuario, name="logout"),
     url(r'^signup/$', signup_usuario, name="signup"),
     url(r'^password/$', cambiar_ctr, name="cambiar_contraseña"),
-    url(r'^clientes/', include('modulo_I.urls_cliente', namespace='clientes')),
-    url(r'^personas/', include('modulo_I.urls_persona', namespace='personas')),
-    url(r'^generadores/', include('modulo_I.urls_generador', namespace='generadores')),
+    url(r'^Clientes/', include('modulo_I.urls_cliente', namespace='clientes')),
+    url(r'^Personas/', include('modulo_I.urls_persona', namespace='personas')),
+    url(r'^Generadores/', include('modulo_I.urls_generador', namespace='generadores')),
     url(r'^Hojas-de-Ruta/', include('modulo_I.urls_hojaRuta', namespace='hojaRuta')),
+    url(r'^Baldes/', include('modulo_I.urls_balde', namespace='baldes')),
 ]

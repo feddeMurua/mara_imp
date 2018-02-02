@@ -170,36 +170,36 @@ def baja_clientes(request):
 BALDES
 '''
 
-@login_required
-def listado_baldes(request, id_hoja):
-    listado_baldes = BaldeUtilizado.objects.filter(hoja_ruta__id=id_hoja)
-    return render(request, 'hojaRuta/balde/balde_listado.html', {'listado_baldes': listado_baldes, 'id_hoja':id_hoja})
-
-
 
 @login_required
-def alta_modif_balde(request, id_hoja=None, id_balde=None):
+def listado_baldes(request):
+    listado_baldes = Balde.objects.all()
+    return render(request, 'balde/balde_listado.html', {'listado_baldes': listado_baldes})
+
+
+@login_required
+def alta_modif_balde(request, nro_balde=None):
     try:
-        balde = BaldeUtilizado.objects.get(id=id_balde)
+        balde = Balde.objects.get(nro_balde=nro_balde)
     except:
         balde = None
     if request.method == 'POST':
-        balde_form = BaldeUtilizadoForm(request.POST, instance=balde)
+        balde_form = BaldeForm(request.POST, instance=balde)
         if balde_form.is_valid():
             balde = balde_form.save(commit=False)
-            balde.hoja_ruta = HojaRuta.objects.get(id=id_hoja)
             balde.save()
-            return redirect('hojaRuta:listado_baldes', id_hoja=id_hoja)
+            return redirect('baldes:listado_baldes')
     else:
-        balde_form = BaldeUtilizadoForm(instance=balde)
+        balde_form = BaldeForm(instance=balde)
+        balde.delete() #Para que en el modificar no haya duplicado el balde actualizado
 
-    return render(request, "hojaRuta/balde/balde_form.html", {'balde_form': balde_form, 'id_hoja':id_hoja})
+    return render(request, "balde/balde_form.html", {'balde_form': balde_form})
 
 
 @login_required
 def baja_balde(request):
-    balde_id = request.POST.get('balde_id')
-    balde = BaldeUtilizado.objects.get(id=balde_id)
+    balde_nro = request.POST.get('balde_nro')
+    balde = Balde.objects.get(nro_balde=balde_nro)
     balde.delete()
     response = {}
     return JsonResponse(response)
@@ -212,6 +212,8 @@ HOJAS DE RUTA
 @login_required
 def listado_hojas_de_ruta(request):
     listado_hojas_de_ruta = HojaRuta.objects.all()
+    establecimientos = BaldeUtilizado.objects.filter(hoja_ruta__in = listado_hojas_de_ruta)
+    print(establecimientos)
     return render(request, 'hojaRuta/hojaruta_listado.html', {'listado_hojas_de_ruta': listado_hojas_de_ruta})
 
 
@@ -237,7 +239,8 @@ def alta_modif_hoja_ruta(request, id_hoja=None):
     else:
         hojaruta_form = HojaRutaForm(instance=hoja_ruta)
 
-    return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form,'modificar':modificar})
+    baldes_asociados = Balde.objects.all()
+    return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form, 'baldes_asociados':baldes_asociados, 'modificar':modificar})
 
 
 @login_required

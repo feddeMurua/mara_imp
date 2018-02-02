@@ -61,21 +61,32 @@
                 colspan: n° de columnas dentro de la fila
                 rowspan: n° de filas dentro de la fila
                 -->
-                <td rowspan="2"><strong>Hora Progr.</strong></td>
-                <td rowspan="2"><strong>Hora Lleg.</strong></td>
-                <td rowspan="2"><strong>Hora Sal.</strong></td>
-                <td rowspan="2"><strong>Vol. Retirado</strong></td>
-                <th colspan="5" scope="colgroup">Cant. de Baldes de:</th>
-                <td colspan="1"rowspan="1">Establecimiento: <strong>{{establecimiento.establecimiento_generador|upper}}</strong></td>
-                <td rowspan="2"><strong>Sector</strong></td>
+                <td colspan="1" rowspan="2"><strong>Hora Progr.</strong></td>
+                <td colspan="1" rowspan="2"><strong>Hora Lleg.</strong></td>
+                <td colspan="1" rowspan="2"><strong>Hora Sal.</strong></td>
+                <td colspan="1" rowspan="2"><strong>Vol. Retirado</strong></td>
+                <th colspan="12" scope="colgroup" align="left" >Establecimiento: {{establecimiento.establecimiento_generador|upper}}, Domicilio: {{establecimiento.establecimiento_generador.domicilio}} </th>
+                <td colspan="1" rowspan="2"><strong>Sector</strong></td>
               </tr>
               <tr>
-                <th scope="col">10 dm3</th>
-                <th scope="col">20 dm3</th>
-                <th scope="col">50 dm3</th>
-                <th scope="col">120 dm3</th>
-                <th scope="col">240 dm3</th>
-                <th scope="col">Baldes:</th>
+                <td align="left"colspan="1" scope="colgroup">N° Balde
+                  <td align="left" colspan="1">Precinto</td>
+                </td>
+                <td align="left"colspan="1" scope="colgroup">N° Balde
+                  <td align="left" colspan="1">Precinto</td>
+                </td>
+                <td align="left"colspan="1" scope="colgroup">N° Balde
+                  <td align="left" colspan="1">Precinto</td>
+                </td>
+                <td align="left"colspan="1" scope="colgroup">N° Balde
+                  <td align="left" colspan="1">Precinto</td>
+                </td>
+                <td align="left"colspan="1" scope="colgroup">N° Balde
+                  <td align="left" colspan="1">Precinto</td>
+                </td>
+                <td align="left"colspan="1" scope="colgroup">N° Balde
+                  <td align="left" colspan="1">Precinto</td>
+                </td>
               </tr>
               <tr>
                 <td>{{establecimiento.horario_retiro}}</td>
@@ -83,22 +94,10 @@
                 <td></td><td></td>
                 <td></td><td></td>
                 <td></td><td></td>
-                <td colspan="1">
-                  {% for i in "xxxx" %}
-                  <table>
-                    <tr>
-                      <td>N°</td>
-                      <td>E/S</td>
-                      <td>N° Precinto</td>
-                    </tr>
-                    <tr>
-                      <td>&nbsp</td>
-                      <td>&nbsp</td>
-                      <td>&nbsp</td>
-                    </tr>
-                  </table>
-                  {% endfor %}
-                </td>
+                <td></td><td></td>
+                <td></td><td></td>
+                <td></td><td></td>
+                <td></td>
                 <td>{{establecimiento.establecimiento_generador.sector}}</td>
               </tr>
             {% endfor %}
@@ -106,3 +105,55 @@
       </div>
   </div>
 {% endblock %}
+
+
+
+<table class="table">
+  {% for establecimiento in establecimientos %}
+    <tr>
+      <!--
+      colspan: n° de columnas dentro de la fila
+      rowspan: n° de filas dentro de la fila
+      -->
+      <td rowspan="2"><strong>Hora Progr.</strong></td>
+      <td rowspan="2"><strong>Hora Lleg.</strong></td>
+      <td rowspan="2"><strong>Hora Sal.</strong></td>
+      <td rowspan="2"><strong>Vol. Retirado</strong></td>
+      <th colspan="5" scope="colgroup">Cant. de Baldes de:</th>
+      <td colspan="1"rowspan="1">Establecimiento: <strong>{{establecimiento.establecimiento_generador|upper}}</strong></td>
+      <td rowspan="2"><strong>Sector</strong></td>
+    </tr>
+    <tr>
+      <th scope="col">10 dm3</th>
+      <th scope="col">20 dm3</th>
+      <th scope="col">50 dm3</th>
+      <th scope="col">120 dm3</th>
+      <th scope="col">240 dm3</th>
+      <th scope="col">Baldes:</th>
+    </tr>
+    <tr>
+      <td>{{establecimiento.horario_retiro}}</td>
+      <td></td><td></td>
+      <td></td><td></td>
+      <td></td><td></td>
+      <td></td><td></td>
+      <td colspan="1">
+        {% for i in "xxxx" %}
+        <table>
+          <tr>
+            <td>N°</td>
+            <td>E/S</td>
+            <td>N° Precinto</td>
+          </tr>
+          <tr>
+            <td>&nbsp</td>
+            <td>&nbsp</td>
+            <td>&nbsp</td>
+          </tr>
+        </table>
+        {% endfor %}
+      </td>
+      <td>{{establecimiento.establecimiento_generador.sector}}</td>
+    </tr>
+  {% endfor %}
+</table>

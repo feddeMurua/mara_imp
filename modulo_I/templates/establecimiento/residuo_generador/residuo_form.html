@@ -19,18 +19,27 @@
           </div>
           {% endfor %}
         {% endif %}
-        {% for field in residuo_form.visible_fields %}
-          <div class="form-group">
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)Este campo es obligatorio" }}
-            {% for error in field.errors %}
-              <span style="color:red;" class="help-block">{{ error }}</span>
-            {% endfor %}
-          </div>
-        {% endfor %}
+        <label>(*)Tipo:</label>
+        {{residuo_form.tipo|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo tipo es obligatorio"}}
+        <br>
+        <label>Vol. Mensual Estimado:</label>
+        {{residuo_form.volumen_mensual_estimado|add_class:'form-control'|attr:"id:vol"|attr:"onfocusout:dmtokgs()"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo vol. es obligatorio"}}
+        <br>
+        <label>Kgs. Mensual Estimado:</label>
+        {{residuo_form.kgs_mensual_estimado|add_class:'form-control'|attr:"required:"|attr:"id:kgs"|attr:"onfocusout:kgstodm()"|attr:"data-parsley-error-message:(*)El campo kgs. es obligatorio"}}
+        <br>
       </div>
     </div>
   </div>
+
+  <script>
+    function dmtokgs() {
+    var x = document.getElementById("kgs");    
+    }
+    function kgstodm() {
+    var x = document.getElementById("vol");
+    }
+  </script>
 
 {% endblock %}
 

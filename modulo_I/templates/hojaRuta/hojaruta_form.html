@@ -3,11 +3,6 @@
 {% load staticfiles bootstrap3 %}
 {% load widget_tweaks %}
 
-{% block stylesheets %}
-  {{block.super}}
-  <link rel="stylesheet" href="{% static 'css/bootstrap-timepicker.min.css' %}"/>
-{% endblock %}
-
 {% block scripts %}
   {{block.super}}
   <script type="text/javascript" src="{% static 'js/jquery.mask.js' %}"></script>
@@ -23,27 +18,17 @@
     <div class="panel panel-default">
       <div class="panel-heading">DATOS HOJA DE RUTA</div>
       <div class="panel-body">
-        <label>(*)Establecimiento Generador:</label>
-        {{hojaruta_form.establecimiento_generador|add_class:'select-2'|attr:"required:"}}
-        <br>
-        <label>(*)Fecha Impresión:</label>
-        {{hojaruta_form.fecha_impresion|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha impresión es obligatorio"}}
-        <br>
-        <label>(*)Hora Programada:</label>
-        <br>
-        {{hojaruta_form.hora_programada|add_class:'form-control hora'}}
+          <label>(*)Fecha Recorrido:</label>
+        {{hojaruta_form.fecha_recorrido|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha impresión es obligatorio"}}
         <br>
         <label>(*)Hora Llegada:</label>
         <br>
-        {{hojaruta_form.hora_llegada|add_class:'form-control hora'}}
+        {{hojaruta_form.hora_llegada|add_class:'form-control hora'|attr:"required:"}}
         <br>
         <label>(*)Hora Salida:</label>
         <br>
-        {{hojaruta_form.hora_salida|add_class:'form-control hora'}}
-        <br>
-        <label>(*)Volumen Retirado:</label>
-        {{hojaruta_form.volumen_retirado|add_class:'form-control'|attr:"required:"}}
-        <br>
+        {{hojaruta_form.hora_salida|add_class:'form-control hora'|attr:"required:"}}
+        <br>        
       </div>
     </div>
   </div>

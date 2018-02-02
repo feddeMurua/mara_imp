@@ -2,12 +2,11 @@
 {% load staticfiles %}
 
 {% block panel-heading %}
-  LISTADO DE BALDES DE LA HOJA DE RUTA
+  LISTADO DE BALDES
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <a href="{% url 'hojaRuta:alta_modif_balde' id_hoja=id_hoja %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Balde </a>
-  <a href="{% url 'hojaRuta:listado_hojas_de_ruta' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;"></i></a>
+  <a href="{% url 'baldes:alta_modif_balde' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Balde </a>
 {% endblock %}
 
 
@@ -15,8 +14,8 @@
   <thead>
   <tr style="background:#6495ED;">
       <th>N° Balde</th>
-      <th>Precinto</th>
-      <th>Tipo</th>
+      <th>Capacidad</th>
+      <th>Establecimiento</th>
       <th>Acciones</th>
   </tr>
   </thead>
@@ -26,8 +25,8 @@
   <tfoot >
      <tr>
        <th>N° Balde</th>
-       <th>Precinto</th>
-       <th>Tipo</th>
+       <th>Capacidad</th>
+       <th>Establecimiento</th>
        <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
     </tr>
   </tfoot>
@@ -37,12 +36,12 @@
   <tbody>
     {% for balde in listado_baldes %}
         <tr>
-            <td>{{ balde.balde.nro_balde }}</td>
-            <td>{{ balde.nro_precinto}}</td>
-            <td>{{ balde.tipo}}</td>
+            <td>{{ balde.nro_balde }}</td>
+            <td>{{ balde.capacidad}}</td>
+            <td>{{ balde.establecimiento_generador}}</td>
             <td align="center">
-               <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:alta_modif_balde' id_balde=balde.id id_hoja=id_hoja %}"><em class="glyphicon glyphicon-pencil"></em></a>
-               <a id="balde_id"class="btn btn-danger btn-baja"  data-baldeid="{{balde.id}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+               <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'baldes:alta_modif_balde' nro_balde=balde.nro_balde %}"><em class="glyphicon glyphicon-pencil"></em></a>
+               <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.nro_balde}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
             </td>
         </tr>
     {% endfor %}
@@ -59,7 +58,7 @@
     $(document).ready(function () {
       $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var balde_id = button.data('baldeid')
+        var balde_nro = button.data('baldenro')
 
         var title = 'Atención!'
         var content = '¿Está seguro que quiere eliminar este balde?'
@@ -71,17 +70,17 @@
         modal.find('.modal-body').text(content)
 
         // se le pasa el valor del documento al boton de confirmar
-        modal.find('button.btn-danger').val(balde_id)
+        modal.find('button.btn-danger').val(balde_nro)
       })
     })
 
-    function eliminarBalde(balde_id) {
+    function eliminarBalde(balde_nro) {
       var request = $.ajax({
           type: "POST",
-          url: "{% url 'hojaRuta:baja_balde' %}",
+          url: "{% url 'baldes:baja_balde' %}",
           data: {
               "csrfmiddlewaretoken": "{{ csrf_token }}",
-              "balde_id": balde_id
+              "balde_nro": balde_nro
           },
       });
     }

@@ -89,12 +89,13 @@ Ingresos_Brutos = (
 
 )
 
-E_S = (
-    ('Entrada', _("Entrada")),
-    ('Salida', _("Salida")),
+Entrega_Retiro = (
+    ('Entrega', _("Entrega")),
+    ('Retiro', _("Retiro")),
 )
 
 Capacidad_balde = (
+    ('5', _("5")),
     ('10', _("10")),
     ('20', _("20")),
     ('50', _("50")),

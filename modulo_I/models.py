@@ -194,9 +194,14 @@ Agregar clase balde.
 class Balde(models.Model):
     nro_balde = models.BigIntegerField(primary_key=True) #identificador
     capacidad = models.CharField(max_length=5, choices=Capacidad_balde) # en dm3
+    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
+
+    class Meta:
+        unique_together = ('nro_balde', 'establecimiento_generador')
 
     def __str__(self):
-        return "N°: %s || Capacidad: %s dm3" % (self.nro_balde, self.capacidad)
+        return "N°: %s || Cap. %s dm3 || Generador: %" % (self.nro_balde, self.capacidad, self.establecimiento_generador)
+
 
 class BaldeUtilizado(models.Model):
     '''
@@ -205,22 +210,19 @@ class BaldeUtilizado(models.Model):
     balde = models.ForeignKey('Balde', on_delete=models.CASCADE) #balde_entrega
     hoja_ruta = models.ForeignKey('HojaRuta')
     nro_precinto = models.BigIntegerField()
-    tipo = models.CharField(max_length=15, choices=E_S) # tipo entrada/salida
+    tipo = models.CharField(max_length=15, choices=Entrega_Retiro)
 
     def __str__(self):
         return "%s || N° precinto: %s" % (self.balde, self.nro_precinto)
 
 
 class HojaRuta(models.Model):
-    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
-    fecha_impresion = models.DateField() #fecha del dia que se imprimió la hoja de ruta
-    hora_programada = models.TimeField()
+    fecha_recorrido = models.DateField() #fecha del dia que se imprimió la hoja de ruta
     hora_llegada = models.TimeField()
     hora_salida = models.TimeField()
-    volumen_retirado = models.FloatField(default=0)
 
     def __str__(self):
-        return "Generador: %s || Fecha: %s " % (self.establecimiento_generador, self.fecha_impresion)
+        return "Fecha Recorrido: %s" % (self.fecha_recorrido)
 
 
 '''

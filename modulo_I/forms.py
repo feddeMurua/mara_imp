@@ -115,10 +115,11 @@ class LocalidadForm(forms.ModelForm):
 BALDES
 '''
 
-class BaldeUtilizadoForm(forms.ModelForm):
+
+class BaldeForm(forms.ModelForm):
     class Meta:
-        model = BaldeUtilizado
-        exclude = ['hoja_ruta',]
+        model = Balde
+        fields = '__all__'
 
 
 '''
@@ -126,7 +127,7 @@ HOJAS DE RUTA
 '''
 
 class HojaRutaForm(forms.ModelForm):
-    fecha_impresion = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
+    fecha_recorrido = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     class Meta:
         model = HojaRuta
         fields = '__all__'
