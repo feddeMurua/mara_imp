@@ -1,0 +1,53 @@
+{% extends "balde/balde_listado.html" %}
+{% load staticfiles %}
+
+{% block panel-heading %}
+  LISTADO DE BALDES DE LA HOJA DE RUTA
+{% endblock %}
+
+{% block panel-heading-tabla %}
+  <a href="{% url 'hojaRuta:alta_modif_balde_utilizado' id_hoja=id_hoja %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Balde </a>
+  <a href="{% url 'hojaRuta:listado_hojas_de_ruta' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;"></i></a>
+{% endblock %}
+
+{% block thead-tabla %}
+  <thead>
+  <tr style="background:#6495ED;">
+      <th>N° Balde</th>
+      <th>N° Precinto</th>
+      <th>Tipo</th>
+      <th>Acciones</th>
+  </tr>
+  </thead>
+{% endblock %}
+
+{% block tfoot-tabla %}
+  <tfoot >
+     <tr>
+       <th>N° Balde</th>
+       <th>N° Precinto</th>
+       <th>Tipo</th>
+       <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
+    </tr>
+  </tfoot>
+{% endblock %}
+
+{% block tbody-tabla %}
+<tbody>
+  {% for balde in listado_baldes %}
+      <tr>
+        <td>{{ balde.balde.nro_balde }}</td>
+        <td>{{ balde.nro_precinto}}</td>
+        <td>{{ balde.tipo}}</td>
+        <td align="center">
+           <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:alta_modif_balde_utilizado' id_balde=balde.id id_hoja=id_hoja %}"><em class="glyphicon glyphicon-pencil"></em></a>
+           <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.balde.nro_balde}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+{% endblock %}
+
+{%block url-baja-balde%}
+  "{% url 'hojaRuta:baja_balde_utilizado' %}"
+{% endblock %}

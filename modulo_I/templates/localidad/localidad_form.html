@@ -1,0 +1,32 @@
+{% extends "base/base_forms.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}Localidad{% endblock %}
+
+{% block header-title %} Información de la Localidad {% endblock %}
+
+{% block step-form %}
+
+  <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">DATOS LOCALIDAD</div>
+      <div class="panel-body">
+        <label>(*)Nombre:</label>
+        {{localidad_form.nombre|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
+        <br>
+        <label>(*)CP:</label>
+        {{localidad_form.cp|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo CP es obligatorio"}}
+        <br>
+        <label>(*)Provincia:</label>
+        {{localidad_form.provincia|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo provincia es obligatorio"}}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+
+{% block url-cancelar %}
+  {% url 'localidades:listado_localidades' %}
+{% endblock %}

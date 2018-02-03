@@ -1,0 +1,101 @@
+{% extends "base/base_listado.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+
+{% block panel-heading %}
+  LISTADO DE LOCALIDADES
+{% endblock %}
+
+{% block panel-heading-tabla %}
+  <a class="btn btn-primary js-alta-localidad"><i class="fa fa-plus"></i> Nueva Localidad</a>
+{% endblock %}
+
+{% block thead-tabla %}
+  <thead>
+  <tr style="background:#6495ED;">
+      <th>Nombre</th>
+      <th>CP</th>
+      <th>Provincia</th>
+      <th>Nacionalidad</th>
+      <th>Acciones</th>
+  </tr>
+  </thead>
+{% endblock %}
+
+{% block tfoot-tabla %}
+  <tfoot >
+     <tr>
+       <th>Nombre</th>
+       <th>CP</th>
+       <th>Provincia</th>
+       <th>Nacionalidad</th>
+       <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
+    </tr>
+  </tfoot>
+{% endblock %}
+
+{% block tbody-tabla %}
+  <tbody>
+  {% for localidad in listado_localidades %}
+      <tr>
+          <td>{{ localidad.nombre }}</td>
+          <td>{{ localidad.cp }}</td>
+          <td>{{ localidad.provincia.nombre }}</td>
+          <td>{{ localidad.provincia.nacionalidad }}</td>
+          <td align="center">
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'localidades:modificar_localidades' id_localidad=localidad.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
+             <a id="localidad_id"class="btn btn-danger btn-baja" data-localidadid="{{localidad.id}}" data-localidadnombre="{{localidad.nombre}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+          </td>
+      </tr>
+  {% endfor %}
+  </tbody>
+{% endblock %}
+
+{% block more-datos %}
+  {% include "localidad/localidad_alta.html" %}
+{% endblock %}
+
+{% block modal-btn-eliminar%}
+  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarLocalidad(value)">Eliminar</button>
+{% endblock %}
+
+{% block modal-scripts %}
+  <script>
+    //codigo para cambiar los datos del modal y para dar de baja
+    $(document).ready(function () {
+      $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var localidad_nombre = button.data('localidadnombre')
+        var localidad_id = button.data('localidadid') // id localidad.
+
+        var title = 'localidad: ' + localidad_nombre
+        var content = '¿Está seguro que quiere eliminar la localidad ?'
+
+
+        // actualiza el contenido del manual
+        var modal = $(this)
+        modal.find('.modal-title').text(title)
+        modal.find('.modal-body').text(content)
+
+        // se le pasa el valor del documento al boton de confirmar
+        modal.find('button.btn-danger').val(localidad_id)
+      })
+    })
+
+    function eliminarLocalidad(localidad_id) {
+      var request = $.ajax({
+          type: "POST",
+          url: "{% url 'localidades:baja_localidades' %}",
+          data: {
+              "csrfmiddlewaretoken": "{{ csrf_token }}",
+              "localidad_id": localidad_id
+          },
+      });
+    }
+
+    //para actualizar cuando se da de baja.
+    $('#modal_baja').on('hidden.bs.modal', function () {
+      window.location.reload(true);
+    })
+  </script>
+{% endblock %}

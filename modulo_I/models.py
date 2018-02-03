@@ -12,7 +12,7 @@ CLASES IMPORTANTES
 
 class Localidad(models.Model):
     nombre = models.CharField(max_length=25)
-    cp = models.IntegerField(validators=[MinValueValidator(1)])
+    cp = models.IntegerField(validators=[MinValueValidator(1)], unique=True)
     provincia = models.ForeignKey('Provincia', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -200,14 +200,14 @@ class Balde(models.Model):
         unique_together = ('nro_balde', 'establecimiento_generador')
 
     def __str__(self):
-        return "N°: %s || Cap. %s dm3 || Generador: %" % (self.nro_balde, self.capacidad, self.establecimiento_generador)
+        return "N°: %s || Cap. %s dm3 || Generador: %s" % (self.nro_balde, self.capacidad, self.establecimiento_generador)
 
 
 class BaldeUtilizado(models.Model):
     '''
     Clase compuesta por balde utilizado en la hoja de ruta.
     '''
-    balde = models.ForeignKey('Balde', on_delete=models.CASCADE) #balde_entrega
+    balde = models.OneToOneField('Balde') #balde_entrega
     hoja_ruta = models.ForeignKey('HojaRuta')
     nro_precinto = models.BigIntegerField()
     tipo = models.CharField(max_length=15, choices=Entrega_Retiro)

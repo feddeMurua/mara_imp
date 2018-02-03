@@ -77,7 +77,7 @@
     function eliminarBalde(balde_nro) {
       var request = $.ajax({
           type: "POST",
-          url: "{% url 'baldes:baja_balde' %}",
+          url: {% block url-baja-balde %} "{% url 'baldes:baja_balde' %}" {% endblock %},
           data: {
               "csrfmiddlewaretoken": "{{ csrf_token }}",
               "balde_nro": balde_nro

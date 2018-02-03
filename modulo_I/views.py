@@ -40,6 +40,10 @@ def handlePopAdd(request, addForm, field):
 def new_persona(request):
     return handlePopAdd(request, PersonaForm, 'persona')
 
+@login_required
+def new_localidad(request):
+    return handlePopAdd(request, LocalidadForm, 'localidad')
+
 
 '''
 PERSONAS
@@ -102,6 +106,62 @@ def modificar_personas(request, id_persona):
         persona_form = PersonaForm(instance=persona)
 
     return render(request, "persona/persona_form.html", {'persona_form': persona_form})
+
+
+'''
+LOCALIDADES
+'''
+
+@login_required
+def listado_localidades(request):
+    listado_localidades = Localidad.objects.all()
+    return render(request, 'localidad/localidad_listado.html', {'listado_localidades': listado_localidades})
+
+
+@login_required
+def alta_localidades(request):
+    data = dict()
+
+    if request.method == 'POST':
+        form = LocalidadForm(request.POST)
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = LocalidadForm()
+
+    context = {'form': form}
+    data['html_form'] = render_to_string('localidad/partial_localidad_alta.html',
+        context,
+        request=request
+    )
+    return JsonResponse(data)
+
+
+@login_required
+def baja_localidades(request):
+    localidad_id = request.POST.get('localidad_id')
+    localidad = Localidad.objects.get(id=localidad_id)
+    localidad.delete()
+    response = {}
+    return JsonResponse(response)
+
+
+@login_required
+def modificar_localidades(request, id_localidad):
+    localidad = Localidad.objects.get(id=id_localidad)
+    if request.method == 'POST':
+        localidad_form = LocalidadForm(request.POST, instance=localidad)
+
+        if localidad_form.is_valid():
+            localidad_form.save()
+            return redirect('localidades:listado_localidades')
+    else:
+        localidad_form = LocalidadForm(instance=localidad)
+
+    return render(request, "localidad/localidad_form.html", {'localidad_form': localidad_form})
 
 
 '''
@@ -191,8 +251,10 @@ def alta_modif_balde(request, nro_balde=None):
             return redirect('baldes:listado_baldes')
     else:
         balde_form = BaldeForm(instance=balde)
+    try:
         balde.delete() #Para que en el modificar no haya duplicado el balde actualizado
-
+    except:
+        pass
     return render(request, "balde/balde_form.html", {'balde_form': balde_form})
 
 
@@ -289,6 +351,44 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
             pagesize="A4",
             establecimientos=establecimientos
         )
+
+
+'''
+BALDES UTILIZADOS
+'''
+
+@login_required
+def listado_baldes_utilizados(request, id_hoja):
+    listado_baldes = BaldeUtilizado.objects.filter(hoja_ruta__id=id_hoja)
+    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes, 'id_hoja':id_hoja})
+
+
+@login_required
+def alta_modif_balde_utilizado(request, id_hoja=None, id_balde=None):
+    try:
+        balde = BaldeUtilizado.objects.get(id=id_balde)
+    except:
+        balde = None
+    if request.method == 'POST':
+        balde_form = BaldeUtilizadoForm(request.POST, instance=balde)
+        if balde_form.is_valid():
+            balde = balde_form.save(commit=False)
+            balde.hoja_ruta = HojaRuta.objects.get(id=id_hoja)
+            balde.save()
+            return redirect('hojaRuta:listado_baldes_utilizados', id_hoja=id_hoja)
+    else:
+        balde_form = BaldeUtilizadoForm(instance=balde)
+
+    return render(request, "hojaRuta/baldes_utilizados/baldeutilizado_form.html", {'balde_form': balde_form, 'id_hoja':id_hoja})
+
+
+@login_required
+def baja_balde_utilizado(request):
+    balde_nro = request.POST.get('balde_nro')
+    balde = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro)
+    balde.delete()
+    response = {}
+    return JsonResponse(response)
 
 
 '''
@@ -490,7 +590,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
     def get_context_data(self, mes):
         establecimientos = {}
 
-        for hoja in HojaRuta.objects.filter(fecha_impresion__month=mes):
+        for hoja in HojaRuta.objects.filter(fecha_recorrido__month=mes):
 
             baldes_utilizados = {}
             total_envases = 0
@@ -507,7 +607,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
                 for env in c_envases:
                     acumu += int(env[0])
 
-            establecimientos[hoja.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
+            establecimientos[hoja.fecha_recorrido] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
 
 
         return super(LiquidacionPdf, self).get_context_data(

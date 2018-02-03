@@ -16,10 +16,17 @@ regex_alfanumerico = re.compile(r"^[a-zñA-ZÑ0-9]+((\s[a-zñA-ZÑ0-9]+)+)?$")
 CLASES IMPORTANTES
 '''
 
-class SelectWithPop(forms.Select):
+class SelectPersonaWithPop(forms.Select):
     def render(self, name, *args, **kwargs):
-        html = super(SelectWithPop, self).render(name, *args, **kwargs)
-        popupplus = render_to_string("base/popupplus.html", {'field': name})
+        html = super(SelectPersonaWithPop, self).render(name, *args, **kwargs)
+        popupplus = render_to_string("base/popupplus_persona.html", {'field': name})
+        return html+popupplus
+
+
+class SelectLocalidadWithPop(forms.Select):
+    def render(self, name, *args, **kwargs):
+        html = super(SelectLocalidadWithPop, self).render(name, *args, **kwargs)
+        popupplus = render_to_string("base/popupplus_localidad.html", {'field': name})
         return html+popupplus
 
 
@@ -75,6 +82,29 @@ class FormularioUsuario(AuthenticationForm):
 
 
 '''
+LOCALIDADES
+'''
+
+
+class NacionalidadForm(forms.ModelForm):
+    class Meta:
+        model = Nacionalidad
+        fields = '__all__'
+
+
+class ProvinciaForm(forms.ModelForm):
+    class Meta:
+        model = Provincia
+        fields = '__all__'
+
+
+class LocalidadForm(forms.ModelForm):
+    class Meta:
+        model = Localidad
+        fields = '__all__'
+
+
+'''
 CLIENTES
 '''
 
@@ -87,15 +117,16 @@ class DatosImpositivosForm(forms.ModelForm):
 
 class ClienteForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
-    apoderado = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
-    contacto_comercial = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
+    apoderado = forms.ModelChoiceField(Persona.objects, widget=SelectPersonaWithPop)
+    contacto_comercial = forms.ModelChoiceField(Persona.objects, widget=SelectPersonaWithPop)
+
     class Meta:
         model = Cliente
         exclude = ['domicilio_legal', 'fecha','dato_impositivo',]
 
 
 class DomicilioForm(forms.ModelForm):
-
+    localidad = forms.ModelChoiceField(Localidad.objects, widget=SelectLocalidadWithPop)
     class Meta:
         model = Domicilio
         fields = '__all__'
@@ -114,6 +145,12 @@ class LocalidadForm(forms.ModelForm):
 '''
 BALDES
 '''
+
+
+class BaldeUtilizadoForm(forms.ModelForm):
+    class Meta:
+        model = BaldeUtilizado
+        exclude = ['hoja_ruta',]
 
 
 class BaldeForm(forms.ModelForm):
@@ -139,9 +176,9 @@ GENERADORES
 
 class GeneradorForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
-    responsable_residuos = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
-    responsable_suplente = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
-    responsable_tecnico = forms.ModelChoiceField(Persona.objects, widget=SelectWithPop)
+    responsable_residuos = forms.ModelChoiceField(Persona.objects, widget=SelectPersonaWithPop)
+    responsable_suplente = forms.ModelChoiceField(Persona.objects, widget=SelectPersonaWithPop)
+    responsable_tecnico = forms.ModelChoiceField(Persona.objects, widget=SelectPersonaWithPop)
     class Meta:
         model = EstablecimientoGenerador
 

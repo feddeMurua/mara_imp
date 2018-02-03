@@ -1,0 +1,26 @@
+{% extends "balde/balde_form.html" %}
+{% load widget_tweaks %}
+
+{% block step-form %}
+
+  <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">DATOS BALDE</div>
+         <div class="panel-body">
+           <label>(*)Balde:</label>
+           {{balde_form.balde|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo balde es obligatorio"}}
+           <br>
+           <label>(*)Número de Precinto:</label>
+           {{balde_form.nro_precinto|add_class:'form-control'|attr:"required:"}}
+           <br>
+           <label>(*)Tipo:</label>
+           {{balde_form.tipo|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo tipo es obligatorio"}}
+         </div>
+     </div>
+   </div>
+
+{% endblock %}
+
+{% block url-cancelar %}
+  {% url 'hojaRuta:listado_baldes_utilizados' id_hoja=id_hoja %}
+{% endblock %}
