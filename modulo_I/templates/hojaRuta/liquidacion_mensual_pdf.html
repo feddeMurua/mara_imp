@@ -49,39 +49,40 @@
 {%endblock%}
 
 {% block content %}
-  <div id="content">
-      <div class="main">
-        <h1 style="background-color: lightblue; padding-top:5px;">IMPEESA S.A ambiental</h1>
-        <h2>{{ view.title }}</h2>
-        <table class="table">
+<div id="content">
+    <div class="main">
+      <h1 style="background-color: lightblue; padding-top:5px;">IMPEESA S.A ambiental</h1>
+      <h2>{{ view.title }}</h2>
+      <table class="table">
+          <tr>
+            <!--
+            colspan: n° de columnas dentro de la fila
+            rowspan: n° de filas dentro de la fila
+            -->
+            <td rowspan="2"><strong>Establecimiento Generador</strong></td>
+            <th colspan="6" scope="colgroup">Cantidad de Envases</th>
+            <td rowspan="2"><strong>Total de Envases Utilizados</strong></td>
+            <td rowspan="2"><strong>Total de dm3</strong></td>
+          </tr>
+          <tr>
+            <th scope="col">5 dm3</th>
+            <th scope="col">10 dm3</th>
+            <th scope="col">20 dm3</th>
+            <th scope="col">50 dm3</th>
+            <th scope="col">120 dm3</th>
+            <th scope="col">240 dm3</th>
+          </tr>
+          {% for key, value in establecimientos.items %}
             <tr>
-              <!--
-              colspan: n° de columnas dentro de la fila
-              rowspan: n° de filas dentro de la fila
-              -->
-              <td rowspan="2"><strong>Establecimiento Generador</strong></td>
-              <th colspan="5" scope="colgroup">Cantidad de Envases</th>
-              <td rowspan="2"><strong>Total de Envases Utilizados</strong></td>
-              <td rowspan="2"><strong>Total de dm3</strong></td>
+              <td align="left">{{key}}</td>
+              {% for k, v in value.0.items %} <!-- posicion donde estan los baldes -->
+                <td>{{v}}</td> <!--Segunda posición de la tupla de baldes utilizado (no es necesario la clave del diccionario) -->
+              {% endfor %}
+              <td>{{value.1}}</td> <!-- posicion totales -->
+              <td>{{value.2}}</td>
             </tr>
-            <tr>
-              <th scope="col">10 dm3</th>
-              <th scope="col">20 dm3</th>
-              <th scope="col">50 dm3</th>
-              <th scope="col">120 dm3</th>
-              <th scope="col">240 dm3</th>
-            </tr>
-            {% for key, value in establecimientos.items %}
-              <tr>
-                <td align="left">{{key}}</td>
-                {% for k, v in value.0.items %} <!-- posicion donde estan los baldes -->
-                  <td>{{v}}</td> <!--Segunda posición de la tupla de baldes utilizado (no es necesario la clave del diccionario) -->
-                {% endfor %}
-                <td>{{value.1}}</td> <!-- posicion totales -->
-                <td>{{value.2}}</td>
-              </tr>
-            {% endfor %}
-        </table>
-      </div>
-  </div>
+          {% endfor %}
+      </table>
+    </div>
+</div>
 {% endblock %}

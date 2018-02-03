@@ -3,11 +3,11 @@
 {% load staticfiles bootstrap3 %}
 
 {% block panel-heading %}
-  LISTADO DE PERSONAS
+  LISTADO DE PERSONAS REGISTRADAS EN EL SISTEMA
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <a class="btn btn-primary js-alta-persona"><i class="fa fa-plus"></i> Nueva Persona</a>
+  <a href="{% url 'clientes:alta_modif_clientes' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Cliente</a>
 {% endblock %}
 
 {% block thead-tabla %}
@@ -47,6 +47,24 @@
              <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'personas:detalle_personas' id_persona=persona.id%}"><em class="glyphicon glyphicon-eye-open"></em></a>
              <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'personas:modificar_personas' id_persona=persona.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
              <a id="persona_id"class="btn btn-danger btn-baja" data-personaid="{{persona.id}}" data-personanombre="{{persona.nombre}}" data-personaapellido="{{persona.apellido}}"data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+          </td>
+      </tr>
+  {% endfor %}
+  {% for cliente in listado_clientes %}
+      <tr>
+          <td>{{ cliente.apoderado.apellido }}</td>
+          <td>{{ cliente.apoderado.nombre }}</td>
+          {% if cliente.apoderado.telefono_fijo %}
+            <td>{{ cliente.apoderado.telefono_fijo }}</td>
+          {% else %}
+            <td>-</td>
+          {% endif %}
+          <td align="center">
+             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'clientes:detalle_clientes' id_cliente=cliente.id %}"><em class="glyphicon glyphicon-eye-open"></em></a>
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar Cliente" href="{% url 'clientes:alta_modif_clientes' id_cliente=cliente.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
+             <a id="cliente_id"class="btn btn-danger btn-baja" data-clienteid="{{cliente.id}}"  data-clienterazonsocial="{{cliente.razon_social}}" data-clientenombre="{{cliente.apoderado.nombre}}" data-clienteapellido="{{cliente.apoderado.apellido}}"data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+             <a class="btn btn-primary" data-toggle="tooltip" title="Ver Datos" href="{% url 'personas:detalle_personas' id_persona=cliente.apoderado.id%}"><em class="glyphicon glyphicon-user"></em></a>
+             <a class="btn btn-success" data-toggle="tooltip" title="Datos Personales" href="{% url 'personas:modificar_personas' id_persona=cliente.apoderado.id%}"><em class="glyphicon glyphicon-exclamation-sign"></em></a>
           </td>
       </tr>
   {% endfor %}

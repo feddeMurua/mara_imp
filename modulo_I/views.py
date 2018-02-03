@@ -13,6 +13,7 @@ from mara_imp import factories
 import datetime
 from django.utils.html import escape
 from .choices import Capacidad_balde
+import collections
 # Create your views here.
 
 '''
@@ -52,8 +53,9 @@ PERSONAS
 
 @login_required
 def listado_personas(request):
-    listado_personas = Persona.objects.all()
-    return render(request, 'persona/persona_listado.html', {'listado_personas': listado_personas})
+    listado_clientes = Cliente.objects.all()
+    listado_personas= Persona.objects.exclude(id__in =listado_clientes.values_list('apoderado__id', flat=True))
+    return render(request, 'persona/persona_listado.html', {'listado_personas': listado_personas, 'listado_clientes':listado_clientes})
 
 
 @login_required
@@ -201,7 +203,7 @@ def alta_modif_clientes(request, id_cliente=None):
             cliente.domicilio_legal = domicilio_form.save()
             cliente.dato_impositivo= datos_impositivos_form.save()
             cliente.save()
-            return redirect('clientes:listado_clientes')
+            return redirect('personas:listado_personas')
     else:
         cliente_form = ClienteForm(instance=cliente)
         domicilio_form = DomicilioForm(instance=domicilio)
@@ -251,10 +253,6 @@ def alta_modif_balde(request, nro_balde=None):
             return redirect('baldes:listado_baldes')
     else:
         balde_form = BaldeForm(instance=balde)
-    try:
-        balde.delete() #Para que en el modificar no haya duplicado el balde actualizado
-    except:
-        pass
     return render(request, "balde/balde_form.html", {'balde_form': balde_form})
 
 
@@ -588,26 +586,29 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
     redirect_field_name = 'next'
 
     def get_context_data(self, mes):
+
         establecimientos = {}
 
-        for hoja in HojaRuta.objects.filter(fecha_recorrido__month=mes):
+        total_baldes = BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido__month=mes)
+
+        for b in total_baldes:
 
             baldes_utilizados = {}
             total_envases = 0
 
             for c in Capacidad_balde: #Capacidad_balde: tupla del choices.py
 
-                cant_envases = BaldeUtilizado.objects.filter(hoja_ruta__id=hoja.id, balde__capacidad=c[0], tipo="Salida").count() #baldes en cada hoja
+                cant_envases = BaldeUtilizado.objects.filter(balde__establecimiento_generador__nro_inscripcion=b.balde.establecimiento_generador.nro_inscripcion, hoja_ruta__id=b.hoja_ruta.id, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
                 baldes_utilizados[c[0]] = cant_envases
                 total_envases+=cant_envases #acumulador por cada tipo de balde
 
-                c_envases = BaldeUtilizado.objects.filter(hoja_ruta__id=hoja.id, tipo='Salida').values_list('balde__capacidad')
+                c_envases = BaldeUtilizado.objects.filter(balde__establecimiento_generador__nro_inscripcion=b.balde.establecimiento_generador.nro_inscripcion, hoja_ruta__id=b.hoja_ruta.id, tipo='Retiro').values_list('balde__capacidad')
                 acumu = 0
 
                 for env in c_envases:
                     acumu += int(env[0])
 
-            establecimientos[hoja.fecha_recorrido] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
+            establecimientos[b.balde.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
 
 
         return super(LiquidacionPdf, self).get_context_data(
