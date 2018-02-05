@@ -194,22 +194,20 @@ Agregar clase balde.
 class Balde(models.Model):
     nro_balde = models.BigIntegerField(primary_key=True) #identificador
     capacidad = models.CharField(max_length=5, choices=Capacidad_balde) # en dm3
-    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
-
-    class Meta:
-        unique_together = ('nro_balde', 'establecimiento_generador')
+    estado = models.CharField(max_length=15, choices=Estado, default='En Planta')
 
     def __str__(self):
-        return "N°: %s || Cap. %s dm3 || Generador: %s" % (self.nro_balde, self.capacidad, self.establecimiento_generador)
+        return "N°: %s" % (self.nro_balde)
 
 
 class BaldeUtilizado(models.Model):
     '''
     Clase compuesta por balde utilizado en la hoja de ruta.
     '''
-    balde = models.OneToOneField('Balde') #balde_entrega
+    balde = models.OneToOneField('Balde', primary_key=True) #balde_entrega
+    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
     hoja_ruta = models.ForeignKey('HojaRuta')
-    nro_precinto = models.BigIntegerField()
+    nro_precinto = models.BigIntegerField(unique=True)
     tipo = models.CharField(max_length=15, choices=Entrega_Retiro)
 
     def __str__(self):

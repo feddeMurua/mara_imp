@@ -7,11 +7,22 @@
      <div class="panel panel-default">
        <div class="panel-heading">DATOS BALDE</div>
          <div class="panel-body">
+           <label>(*)Establecimiento Generador:</label>
+           {{balde_form.establecimiento_generador|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Establecimiento es obligatorio"}}
+           <br>
            <label>(*)Balde:</label>
            {{balde_form.balde|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo balde es obligatorio"}}
            <br>
+           {% for error in balde_form.balde.errors %}
+               <span style="color:red;" class="help-block">{{error}}</span>
+             {% endfor %}
+           <br>
            <label>(*)Número de Precinto:</label>
            {{balde_form.nro_precinto|add_class:'form-control'|attr:"required:"}}
+           <br>
+           {% for error in balde_form.nro_precinto.errors %}
+               <span style="color:red;" class="help-block">{{error}}</span>
+             {% endfor %}
            <br>
            <label>(*)Tipo:</label>
            {{balde_form.tipo|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo tipo es obligatorio"}}

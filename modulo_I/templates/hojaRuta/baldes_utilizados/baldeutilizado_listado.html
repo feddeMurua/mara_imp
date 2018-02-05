@@ -13,6 +13,7 @@
 {% block thead-tabla %}
   <thead>
   <tr style="background:#6495ED;">
+      <th>Establecimiento</th>
       <th>N° Balde</th>
       <th>N° Precinto</th>
       <th>Tipo</th>
@@ -22,8 +23,9 @@
 {% endblock %}
 
 {% block tfoot-tabla %}
-  <tfoot >
+  <tfoot>
      <tr>
+       <th>Establecimiento</th>
        <th>N° Balde</th>
        <th>N° Precinto</th>
        <th>Tipo</th>
@@ -36,11 +38,12 @@
 <tbody>
   {% for balde in listado_baldes %}
       <tr>
+        <td>{{ balde.establecimiento_generador}}</td>
         <td>{{ balde.balde.nro_balde }}</td>
         <td>{{ balde.nro_precinto}}</td>
         <td>{{ balde.tipo}}</td>
         <td align="center">
-           <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:alta_modif_balde_utilizado' id_balde=balde.id id_hoja=id_hoja %}"><em class="glyphicon glyphicon-pencil"></em></a>
+           <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:alta_modif_balde_utilizado' id_balde=balde.balde.nro_balde id_hoja=id_hoja %}"><em class="glyphicon glyphicon-pencil"></em></a>
            <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.balde.nro_balde}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
         </td>
       </tr>

@@ -170,11 +170,6 @@ def modificar_localidades(request, id_localidad):
 CLIENTES
 '''
 
-@login_required
-def listado_clientes(request):
-    listado_clientes = Cliente.objects.all()
-    return render(request, 'cliente/cliente_listado.html', {'listado_clientes': listado_clientes})
-
 
 @login_required
 def detalle_clientes(request, id_cliente):
@@ -235,8 +230,10 @@ BALDES
 
 @login_required
 def listado_baldes(request):
-    listado_baldes = Balde.objects.all()
-    return render(request, 'balde/balde_listado.html', {'listado_baldes': listado_baldes})
+    listado_baldes_utilizados = BaldeUtilizado.objects.all().order_by('balde__nro_balde')
+    listado_baldes = Balde.objects.exclude(nro_balde__in =listado_baldes_utilizados.values_list('balde__nro_balde', flat=True))
+    #listado_baldes = Balde.objects.all()
+    return render(request, 'balde/balde_listado.html', {'listado_baldes_utilizados': listado_baldes_utilizados, 'listado_baldes': listado_baldes})
 
 
 @login_required
@@ -364,7 +361,7 @@ def listado_baldes_utilizados(request, id_hoja):
 @login_required
 def alta_modif_balde_utilizado(request, id_hoja=None, id_balde=None):
     try:
-        balde = BaldeUtilizado.objects.get(id=id_balde)
+        balde = BaldeUtilizado.objects.get(balde__nro_balde=id_balde)
     except:
         balde = None
     if request.method == 'POST':
@@ -372,6 +369,11 @@ def alta_modif_balde_utilizado(request, id_hoja=None, id_balde=None):
         if balde_form.is_valid():
             balde = balde_form.save(commit=False)
             balde.hoja_ruta = HojaRuta.objects.get(id=id_hoja)
+            if balde.tipo =="Entrega":
+                balde.balde.estado = "Ocupado"
+            else:
+                balde.balde.estado = "En Planta"
+            balde.balde.save()
             balde.save()
             return redirect('hojaRuta:listado_baldes_utilizados', id_hoja=id_hoja)
     else:
@@ -598,17 +600,17 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
             for c in Capacidad_balde: #Capacidad_balde: tupla del choices.py
 
-                cant_envases = BaldeUtilizado.objects.filter(balde__establecimiento_generador__nro_inscripcion=b.balde.establecimiento_generador.nro_inscripcion, hoja_ruta__id=b.hoja_ruta.id, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
+                cant_envases = BaldeUtilizado.objects.filter(establecimiento_generador__nro_inscripcion=b.establecimiento_generador.nro_inscripcion, hoja_ruta__id=b.hoja_ruta.id, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
                 baldes_utilizados[c[0]] = cant_envases
                 total_envases+=cant_envases #acumulador por cada tipo de balde
 
-                c_envases = BaldeUtilizado.objects.filter(balde__establecimiento_generador__nro_inscripcion=b.balde.establecimiento_generador.nro_inscripcion, hoja_ruta__id=b.hoja_ruta.id, tipo='Retiro').values_list('balde__capacidad')
+                c_envases = BaldeUtilizado.objects.filter(establecimiento_generador__nro_inscripcion=b.establecimiento_generador.nro_inscripcion, hoja_ruta__id=b.hoja_ruta.id, tipo='Retiro').values_list('balde__capacidad')
                 acumu = 0
 
                 for env in c_envases:
                     acumu += int(env[0])
 
-            establecimientos[b.balde.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
+            establecimientos[b.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
 
 
         return super(LiquidacionPdf, self).get_context_data(

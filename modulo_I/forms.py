@@ -156,7 +156,7 @@ class BaldeUtilizadoForm(forms.ModelForm):
 class BaldeForm(forms.ModelForm):
     class Meta:
         model = Balde
-        fields = '__all__'
+        exclude = ['estado',]
 
 
 '''

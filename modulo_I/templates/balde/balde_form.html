@@ -16,11 +16,12 @@
            <label>(*)Número de Balde:</label>
            {{balde_form.nro_balde|add_class:'form-control'|attr:"required:"}}
            <br>
+           {% for error in balde_form.nro_balde.errors %}
+               <span style="color:red;" class="help-block"> Ya Existe un Balde con este número.</span>
+             {% endfor %}
+           <br>
            <label>(*)Capacidad:</label>
            {{balde_form.capacidad|add_class:'form-control'|attr:"required:"}}
-           <br>
-           <label>(*)Establecimiento Generador:</label>
-           {{balde_form.establecimiento_generador|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Establecimiento es obligatorio"}}
            <br>
          </div>
      </div>
