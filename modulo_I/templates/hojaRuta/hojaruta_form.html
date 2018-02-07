@@ -28,45 +28,136 @@
         <label>(*)Hora Salida:</label>
         <br>
         {{hojaruta_form.hora_salida|add_class:'form-control hora'|attr:"required:"}}
-        <br>        
+        <br>
       </div>
     </div>
   </div>
 
-  {% if not modificar %}
-    <div class="form-section">
-       <div class="panel panel-default">
-         <div class="panel-heading">PASO FINAL</div>
-         <div class="panel-body">
-           <div class="panel panel-default">
-             <div class="panel-body">
-               <h1 style="color:red;">ATENCIÓN!</h1>
-               <p><strong>Recordar cargar los baldes utilizados en el menú de opciones.</strong></p>
-            </div>
+  <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">
+         <div class="row">
+          <div class="col-xs-4 col-md-4">
+              <h3 class="panel-title">BALDES UTILIZADOS</h3>
           </div>
-         </div>
+          <div class="col-xs-8 col-md-8 text-right">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-backdrop="false" data-target="#agregar_baldeutilizado">Agregar Balde</button>
+          </div>
+        </div>
        </div>
-    </div>
-  {% endif %}
+       <div class="panel-body">
+         <div class="panel panel-default">
+           <div class="panel-body">
+             <div class="container-fluid container-table">
+                <table class="table table-list table-bordered table-striped" id="table-list">
+                    <thead>
+                        <tr align="center">
+                          <th>Establecimiento</th>
+                          <th>N° Balde</th>
+                          <th>N° Precinto</th>
+                          <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+              </div>
+          </div>
+        </div>
+       </div>
+     </div>
+  </div>
 
   <script type="text/javascript">
-    //MASCARAS
-    $(document).ready(function(){
-      $('.hora').mask('00:00', {placeholder: "__:__"});
-    });
+      //MASCARAS
+      $(document).ready(function(){
+        $('.hora').mask('00:00', {placeholder: "__:__"});
+
+      });
+
+      $(document).ready(function(){
+             $("#baldeForm").submit(function(e) {
+                 e.preventDefault();
+                 $.post($(this).data('url'), $(this).serialize())
+                     .done(function(data) {
+                         if(data['success']) {
+                             $('#agregar_baldeutilizado').modal('hide');
+                             refresh_table(data['baldes_utilizados']);
+                             document.getElementById("baldeForm").reset();
+                         } else {
+                             alert("Este balde ya se encuentra cargado");
+                         }
+                     });
+             });
+         });
+
+     function refresh_table(baldes_utilizados){
+             var $tbody = $("table tbody");
+             $tbody.children().remove();
+             for(var i = 0; i < baldes_utilizados.length; i++){
+                 var establecimiento = baldes_utilizados[i]['establecimiento_generador']['razon_social']
+                 var balde = baldes_utilizados[i]['balde']['nro_balde']
+                 var row = "<tr align='center'>" +
+                 "<td>" + establecimiento + "</td>" +
+                 "<td>" + balde + "</td>" +
+                 "<td>" + baldes_utilizados[i]['nro_precinto'] + "</td>" +
+                 "<td>" + baldes_utilizados[i]['tipo'] + "</td>" +
+                 "</tr>";
+                 $tbody.append(row);
+             }
+      }
   </script>
 
 
 {% endblock %}
 
-<!-- para no mostrar step domicilio -->
-{% block no-domicilio-step-form%}
-{% endblock %}
 
 {% block url-cancelar %}
   {% url 'hojaRuta:listado_hojas_de_ruta' %}
 {% endblock %}
 
-<!-- no incluye alta de las personas -->
-{% block non-alta-persona%}
+
+{% block modal-baldeutilizado %}
+  <div id="agregar_baldeutilizado" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Nuevo Balde Utilizado</h4>
+            </div>
+            <div class="modal-body">
+              <form action="" id="baldeForm" data-url="{% url 'hojaRuta:alta_balde_utilizado' %}">
+                 {% csrf_token %}
+                 {{ baldeutilizado_form.media }}
+                 <div class="form-group">
+                   <label>(*)Establecimiento Generador:</label>
+                   {{baldeutilizado_form.establecimiento_generador|add_class:"select-2"}}
+                 </div>
+                 <div class="form-group">
+                   <label>(*)Balde:</label>
+                   {{baldeutilizado_form.balde|add_class:"select-2"}}
+                   <br>
+                   {% for error in baldeutilizado_form.balde.errors %}
+                       <span style="color:red;" class="help-block">{{error}}</span>
+                     {% endfor %}
+                 </div>
+                 <div class="form-group">
+                   <label>(*)Número de Precinto:</label>
+                   {{baldeutilizado_form.nro_precinto|add_class:'form-control'}}
+                   <br>
+                   {% for error in baldeutilizado_form.nro_precinto.errors %}
+                       <span style="color:red;" class="help-block">{{error}}</span>
+                     {% endfor %}
+                 </div>
+                 <div class="form-group">
+                   <label>(*)Tipo:</label>
+                   {{baldeutilizado_form.tipo|add_class:"select-2"}}
+                 </div>
+                 <input type="submit" class="btn btn-default" id="btn-confirmar" value="Confirmar"/>
+                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
+               </form>
+            </div>
+        </div>
+    </div>
+  </div>
 {% endblock %}

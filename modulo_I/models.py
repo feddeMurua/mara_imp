@@ -178,6 +178,9 @@ class EstablecimientoGenerador(models.Model):
     def __str__(self):
         return "%s" % (self.razon_social)
 
+    def to_json(self):
+        return {'razon_social': self.razon_social}
+
 
 '''
 Hoja de Ruta
@@ -199,6 +202,9 @@ class Balde(models.Model):
     def __str__(self):
         return "N°: %s" % (self.nro_balde)
 
+    def to_json(self):
+        return {'nro_balde': self.nro_balde}
+
 
 class BaldeUtilizado(models.Model):
     '''
@@ -212,6 +218,15 @@ class BaldeUtilizado(models.Model):
 
     def __str__(self):
         return "%s || N° precinto: %s" % (self.balde, self.nro_precinto)
+
+    def to_json(self):
+        return {
+            'balde': {'nro_balde': self.balde.nro_balde},
+            'establecimiento_generador': {'razon_social': self.establecimiento_generador.razon_social},
+            'nro_precinto': self.nro_precinto,
+            'tipo': self.tipo,
+        }
+
 
 
 class HojaRuta(models.Model):

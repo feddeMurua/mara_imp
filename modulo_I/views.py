@@ -232,7 +232,42 @@ BALDES
 def listado_baldes(request):
     listado_baldes_utilizados = BaldeUtilizado.objects.all().order_by('balde__nro_balde')
     listado_baldes = Balde.objects.exclude(nro_balde__in =listado_baldes_utilizados.values_list('balde__nro_balde', flat=True))
-    #listado_baldes = Balde.objects.all()
+
+    '''
+    for i in range (54):
+        balde = Balde(nro_balde=(i+1), capacidad=10)
+        balde.save()
+    '''
+    '''
+    for i in range(55,111):
+        balde = Balde(nro_balde=(i), capacidad=20)
+        balde.save()
+    '''
+    '''
+    for i in range(111,141):
+        balde = Balde(nro_balde=(i), capacidad=50)
+        balde.save()
+    '''
+    '''
+    for i in range(141,153):
+        balde = Balde(nro_balde=(i), capacidad=120)
+        balde.save()
+    '''
+    '''
+    for i in range(153,167):
+        balde = Balde(nro_balde=(i), capacidad=240)
+        balde.save()
+    '''
+    '''
+    for i in range(167,349):
+        balde = Balde(nro_balde=(i), capacidad=10)
+        balde.save()
+    '''
+    '''
+    for i in range(349,451):
+        balde = Balde(nro_balde=(i), capacidad=20)
+        balde.save()
+    '''
     return render(request, 'balde/balde_listado.html', {'listado_baldes_utilizados': listado_baldes_utilizados, 'listado_baldes': listado_baldes})
 
 
@@ -269,8 +304,6 @@ HOJAS DE RUTA
 @login_required
 def listado_hojas_de_ruta(request):
     listado_hojas_de_ruta = HojaRuta.objects.all()
-    establecimientos = BaldeUtilizado.objects.filter(hoja_ruta__in = listado_hojas_de_ruta)
-    print(establecimientos)
     return render(request, 'hojaRuta/hojaruta_listado.html', {'listado_hojas_de_ruta': listado_hojas_de_ruta})
 
 
@@ -282,6 +315,7 @@ def detalle_hojas_de_ruta(request, id_hoja):
 
 @login_required
 def alta_modif_hoja_ruta(request, id_hoja=None):
+    baldeutilizado_form = BaldeUtilizadoForm()
     try:
         hoja_ruta = HojaRuta.objects.get(id=id_hoja)
         modificar = True
@@ -292,12 +326,62 @@ def alta_modif_hoja_ruta(request, id_hoja=None):
         hojaruta_form = HojaRutaForm(request.POST, instance=hoja_ruta)
         if hojaruta_form.is_valid():
             hoja_ruta = hojaruta_form.save()
+            carga_baldes(request, hoja_ruta)
             return redirect('hojaRuta:listado_hojas_de_ruta')
     else:
+        if 'baldes_utilizados' in request.session:
+            del request.session['baldes_utilizados']
+        request.session['baldes_utilizados'] = []
         hojaruta_form = HojaRutaForm(instance=hoja_ruta)
-
     baldes_asociados = Balde.objects.all()
-    return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form, 'baldes_asociados':baldes_asociados, 'modificar':modificar})
+    return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form, 'baldeutilizado_form':baldeutilizado_form, 'baldes_asociados':baldes_asociados, 'modificar':modificar})
+
+
+'''
+BALDES UTILIZADOS
+'''
+
+
+@login_required(login_url='login')
+def alta_balde_utilizado(request):
+    form = BaldeUtilizadoForm(request.POST)
+    success = True
+    if form.is_valid():
+        balde_utilizado = form.save(commit=False)
+        if existe_balde(request, balde_utilizado):
+            success = False
+        else:
+            request.session['baldes_utilizados'].append(balde_utilizado.to_json())
+            request.session.modified = True
+    return JsonResponse({'success': success, 'baldes_utilizados': request.session['baldes_utilizados']})
+
+
+def existe_balde(request, balde_utilizado):
+    for item in request.session['baldes_utilizados']:
+        try:
+            if item['balde']['nro_balde'] == balde_utilizado.balde.nro_balde or item['nro_precinto'] == balde_utilizado.balde.nro_precinto:
+                return True
+        except:
+            pass
+    return False
+
+
+def carga_baldes(request, hoja_ruta):
+    for b_utilizado in request.session['baldes_utilizados']:
+        balde = Balde.objects.get(nro_balde=b_utilizado['balde']['nro_balde'])
+        establecimiento_generador = EstablecimientoGenerador.objects.get(razon_social=b_utilizado['establecimiento_generador']['razon_social'])
+        item = BaldeUtilizado(balde=balde, establecimiento_generador=establecimiento_generador, hoja_ruta=hoja_ruta,
+                              nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
+        item.save()
+
+
+@login_required
+def baja_balde_utilizado(request):
+    balde_nro = request.POST.get('balde_nro')
+    balde = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro)
+    balde.delete()
+    response = {}
+    return JsonResponse(response)
 
 
 @login_required
@@ -346,49 +430,6 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
             pagesize="A4",
             establecimientos=establecimientos
         )
-
-
-'''
-BALDES UTILIZADOS
-'''
-
-@login_required
-def listado_baldes_utilizados(request, id_hoja):
-    listado_baldes = BaldeUtilizado.objects.filter(hoja_ruta__id=id_hoja)
-    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes, 'id_hoja':id_hoja})
-
-
-@login_required
-def alta_modif_balde_utilizado(request, id_hoja=None, id_balde=None):
-    try:
-        balde = BaldeUtilizado.objects.get(balde__nro_balde=id_balde)
-    except:
-        balde = None
-    if request.method == 'POST':
-        balde_form = BaldeUtilizadoForm(request.POST, instance=balde)
-        if balde_form.is_valid():
-            balde = balde_form.save(commit=False)
-            balde.hoja_ruta = HojaRuta.objects.get(id=id_hoja)
-            if balde.tipo =="Entrega":
-                balde.balde.estado = "Ocupado"
-            else:
-                balde.balde.estado = "En Planta"
-            balde.balde.save()
-            balde.save()
-            return redirect('hojaRuta:listado_baldes_utilizados', id_hoja=id_hoja)
-    else:
-        balde_form = BaldeUtilizadoForm(instance=balde)
-
-    return render(request, "hojaRuta/baldes_utilizados/baldeutilizado_form.html", {'balde_form': balde_form, 'id_hoja':id_hoja})
-
-
-@login_required
-def baja_balde_utilizado(request):
-    balde_nro = request.POST.get('balde_nro')
-    balde = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro)
-    balde.delete()
-    response = {}
-    return JsonResponse(response)
 
 
 '''
