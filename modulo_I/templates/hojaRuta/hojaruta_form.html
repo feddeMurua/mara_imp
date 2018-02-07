@@ -53,9 +53,9 @@
                     <thead>
                         <tr align="center">
                           <th>Establecimiento</th>
-                          <th>N° Balde</th>
-                          <th>N° Precinto</th>
-                          <th>Tipo</th>
+                          <th style="text-align:center;">N° Balde</th>
+                          <th style="text-align:center;">N° Precinto</th>
+                          <th style="text-align:center;">Tipo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,48 +67,6 @@
        </div>
      </div>
   </div>
-
-  <script type="text/javascript">
-      //MASCARAS
-      $(document).ready(function(){
-        $('.hora').mask('00:00', {placeholder: "__:__"});
-
-      });
-
-      $(document).ready(function(){
-             $("#baldeForm").submit(function(e) {
-                 e.preventDefault();
-                 $.post($(this).data('url'), $(this).serialize())
-                     .done(function(data) {
-                         if(data['success']) {
-                             $('#agregar_baldeutilizado').modal('hide');
-                             refresh_table(data['baldes_utilizados']);
-                             document.getElementById("baldeForm").reset();
-                         } else {
-                             alert("Este balde ya se encuentra cargado");
-                         }
-                     });
-             });
-         });
-
-     function refresh_table(baldes_utilizados){
-             var $tbody = $("table tbody");
-             $tbody.children().remove();
-             for(var i = 0; i < baldes_utilizados.length; i++){
-                 var establecimiento = baldes_utilizados[i]['establecimiento_generador']['razon_social']
-                 var balde = baldes_utilizados[i]['balde']['nro_balde']
-                 var row = "<tr align='center'>" +
-                 "<td>" + establecimiento + "</td>" +
-                 "<td>" + balde + "</td>" +
-                 "<td>" + baldes_utilizados[i]['nro_precinto'] + "</td>" +
-                 "<td>" + baldes_utilizados[i]['tipo'] + "</td>" +
-                 "</tr>";
-                 $tbody.append(row);
-             }
-      }
-  </script>
-
-
 {% endblock %}
 
 
@@ -160,4 +118,45 @@
         </div>
     </div>
   </div>
+{% endblock %}
+
+{% block more-scripts %}
+  {{ block.super }}
+  <script type="text/javascript">
+      //MASCARAS
+      $(document).ready(function(){
+        $('.hora').mask('00:00', {placeholder: "__:__"});
+
+      });
+
+      $(document).ready(function(){
+             $("#baldeForm").submit(function(e) {
+                 e.preventDefault();
+                 $.post($(this).data('url'), $(this).serialize()).done(function(data) {
+                   if(data['success']) {
+                       $('#agregar_baldeutilizado').modal('hide');
+                       refresh_table(data['baldes_utilizados']);
+                   } else {
+                       alert("El N° Balde o N° Precinto ya se encuentran cargados");
+                   }
+                });
+             });
+         });
+
+     function refresh_table(baldes_utilizados){
+             var $tbody = $("table tbody");
+             $tbody.children().remove();
+             for(var i = 0; i < baldes_utilizados.length; i++){
+                 var establecimiento = baldes_utilizados[i]['establecimiento_generador']['razon_social']
+                 var balde = baldes_utilizados[i]['balde']['nro_balde']
+                 var row = "<tr align='center'>" +
+                 "<td align="+"left"+">" + establecimiento + "</td>" +
+                 "<td>" + balde + "</td>" +
+                 "<td>" + baldes_utilizados[i]['nro_precinto'] + "</td>" +
+                 "<td>" + baldes_utilizados[i]['tipo'] + "</td>" +
+                 "</tr>";
+                 $tbody.append(row);
+             }
+      }
+  </script>
 {% endblock %}

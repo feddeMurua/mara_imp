@@ -342,6 +342,37 @@ BALDES UTILIZADOS
 '''
 
 
+@login_required
+def listado_baldes_utilizados(request, id_hoja):
+    listado_baldes = BaldeUtilizado.objects.filter(hoja_ruta__id=id_hoja)
+    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes, 'id_hoja':id_hoja})
+
+
+#MODIFICACION EN EL LISTADO DE BALDES
+@login_required
+def alta_modif_balde_utilizado(request, id_hoja=None, id_balde=None):
+    try:
+        balde = BaldeUtilizado.objects.get(balde__nro_balde=id_balde)
+    except:
+        balde = None
+    if request.method == 'POST':
+        balde_form = BaldeUtilizadoForm(request.POST, instance=balde)
+        if balde_form.is_valid():
+            balde = balde_form.save(commit=False)
+            balde.hoja_ruta = HojaRuta.objects.get(id=id_hoja)
+            if balde.tipo =="Entrega":
+                balde.balde.estado = "Ocupado"
+            else:
+                balde.balde.estado = "En Planta"
+            balde.balde.save()
+            balde.save()
+            return redirect('hojaRuta:listado_baldes_utilizados', id_hoja=id_hoja)
+    else:
+        balde_form = BaldeUtilizadoForm(instance=balde)
+
+    return render(request, "hojaRuta/baldes_utilizados/baldeutilizado_form.html", {'balde_form': balde_form, 'id_hoja':id_hoja})
+
+
 @login_required(login_url='login')
 def alta_balde_utilizado(request):
     form = BaldeUtilizadoForm(request.POST)
@@ -358,17 +389,19 @@ def alta_balde_utilizado(request):
 
 def existe_balde(request, balde_utilizado):
     for item in request.session['baldes_utilizados']:
-        try:
-            if item['balde']['nro_balde'] == balde_utilizado.balde.nro_balde or item['nro_precinto'] == balde_utilizado.balde.nro_precinto:
-                return True
-        except:
-            pass
+        if ((item['nro_precinto'] == balde_utilizado.nro_precinto) or (item['balde']['nro_balde'] == balde_utilizado.balde.nro_balde)):
+            return True
     return False
 
 
 def carga_baldes(request, hoja_ruta):
     for b_utilizado in request.session['baldes_utilizados']:
         balde = Balde.objects.get(nro_balde=b_utilizado['balde']['nro_balde'])
+        if b_utilizado['tipo'] =="Entrega":
+            balde.estado = "Ocupado"
+        else:
+            balde.estado = "En Planta"
+        balde.save()
         establecimiento_generador = EstablecimientoGenerador.objects.get(razon_social=b_utilizado['establecimiento_generador']['razon_social'])
         item = BaldeUtilizado(balde=balde, establecimiento_generador=establecimiento_generador, hoja_ruta=hoja_ruta,
                               nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
@@ -388,6 +421,12 @@ def baja_balde_utilizado(request):
 def baja_hoja_ruta(request):
     hoja_ruta_id = request.POST.get('hoja_ruta_id')
     hoja_ruta = HojaRuta.objects.get(id=hoja_ruta_id)
+    baldes = BaldeUtilizado.objects.filter(hoja_ruta=hoja_ruta)
+    #por cada balde en la hoja de ruta, setear en Planta
+    for b in baldes:
+        balde = Balde.objects.get(nro_balde=b.balde.nro_balde)
+        balde.estado = "En Planta"
+        balde.save()
     hoja_ruta.delete()
     response = {}
     return JsonResponse(response)

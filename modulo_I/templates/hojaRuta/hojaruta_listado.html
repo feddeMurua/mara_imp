@@ -30,7 +30,8 @@
             <td align="center">
                <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'hojaRuta:detalle_hojas_de_ruta' id_hoja=hoja_ruta.id %}"><em class="glyphicon glyphicon-eye-open"></em></a>
                <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:alta_modif_hoja_ruta' id_hoja=hoja_ruta.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
-               <a id="hoja_ruta_id"class="btn btn-danger btn-baja" data-hojarutaid="{{hoja_ruta.id}}" data-hojarutaest="{{hoja_ruta.establecimiento_generador}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>               
+               <a id="hoja_ruta_id"class="btn btn-danger btn-baja" data-hojarutaid="{{hoja_ruta.id}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+               <a class="btn btn-success" data-toggle="tooltip" title="Baldes" href="{% url 'hojaRuta:listado_baldes_utilizados' id_hoja=hoja_ruta.id %}"><em class="fa fa-recycle"></em></a>
             </td>
         </tr>
     {% endfor %}
@@ -47,11 +48,10 @@
     $(document).ready(function () {
       $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var hoja_ruta_est = button.data('hojarutaest')
         var hoja_ruta_id = button.data('hojarutaid')
 
         var title = 'Atención!'
-        var content = '¿Está seguro que quiere eliminar esta hoja de ruta del establecimiento: '+ hoja_ruta_est +'?'
+        var content = '¿Está seguro que quiere eliminar esta hoja de ruta?'
 
 
         // actualiza el contenido del manual

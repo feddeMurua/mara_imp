@@ -37,7 +37,7 @@
                 <button id="btn-siguiente" type="button" class="next btn btn-info pull-right">Siguiente &gt;</button>
                 <!-- Solo si es alta lo muestra, para que no aparezca repetido -->
                 {% if not modificar %}
-                  <button type="submit" class="btn btn-success pull-right">
+                  <button type="submit" class="save btn btn-success pull-right">
                     <span class="glyphicon glyphicon-ok"></span> Guardar
                   </button>
                 {% endif %}
@@ -46,7 +46,7 @@
               <!-- Para guardar antes de llegar al step final -->
               {% if modificar %}
                 <br>
-                <button type="submit" class="btn btn-success pull-right">
+                <button type="submit" class="save btn btn-success pull-right">
                   <span class="glyphicon glyphicon-ok"></span> Guardar
                 </button>
               {% endif %}
