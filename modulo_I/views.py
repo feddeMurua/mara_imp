@@ -232,7 +232,7 @@ BALDES
 def listado_baldes(request):
     listado_baldes_utilizados = BaldeUtilizado.objects.all().order_by('balde__nro_balde')
     listado_baldes = Balde.objects.exclude(nro_balde__in =listado_baldes_utilizados.values_list('balde__nro_balde', flat=True))
-
+    
     '''
     for i in range (54):
         balde = Balde(nro_balde=(i+1), capacidad=10)

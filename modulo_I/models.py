@@ -210,7 +210,7 @@ class BaldeUtilizado(models.Model):
     '''
     Clase compuesta por balde utilizado en la hoja de ruta.
     '''
-    balde = models.OneToOneField('Balde', primary_key=True) #balde_entrega
+    balde = models.ForeignKey('Balde') #balde_entrega
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
     hoja_ruta = models.ForeignKey('HojaRuta')
     nro_precinto = models.BigIntegerField(unique=True)
