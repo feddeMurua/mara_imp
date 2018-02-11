@@ -198,6 +198,7 @@ class Balde(models.Model):
     nro_balde = models.BigIntegerField(primary_key=True) #identificador
     capacidad = models.CharField(max_length=5, choices=Capacidad_balde) # en dm3
     estado = models.CharField(max_length=15, choices=Estado, default='En Planta')
+    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', blank=True, null=True, default=None)
 
     def __str__(self):
         return "N°: %s" % (self.nro_balde)

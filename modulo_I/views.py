@@ -230,9 +230,8 @@ BALDES
 
 @login_required
 def listado_baldes(request):
-    listado_baldes_utilizados = BaldeUtilizado.objects.all().order_by('balde__nro_balde')
-    listado_baldes = Balde.objects.exclude(nro_balde__in =listado_baldes_utilizados.values_list('balde__nro_balde', flat=True))
-    
+    listado_baldes = Balde.objects.all().order_by('nro_balde')
+
     '''
     for i in range (54):
         balde = Balde(nro_balde=(i+1), capacidad=10)
@@ -268,7 +267,7 @@ def listado_baldes(request):
         balde = Balde(nro_balde=(i), capacidad=20)
         balde.save()
     '''
-    return render(request, 'balde/balde_listado.html', {'listado_baldes_utilizados': listado_baldes_utilizados, 'listado_baldes': listado_baldes})
+    return render(request, 'balde/balde_listado.html', {'listado_baldes': listado_baldes})
 
 
 @login_required
@@ -352,7 +351,7 @@ def listado_baldes_utilizados(request, id_hoja):
 @login_required
 def alta_modif_balde_utilizado(request, id_hoja=None, id_balde=None):
     try:
-        balde = BaldeUtilizado.objects.get(balde__nro_balde=id_balde)
+        balde = BaldeUtilizado.objects.get(balde__nro_balde=id_balde, hoja_ruta__id=id_hoja)
     except:
         balde = None
     if request.method == 'POST':
@@ -403,15 +402,17 @@ def carga_baldes(request, hoja_ruta):
             balde.estado = "En Planta"
         balde.save()
         establecimiento_generador = EstablecimientoGenerador.objects.get(razon_social=b_utilizado['establecimiento_generador']['razon_social'])
+        balde.establecimiento_generador = establecimiento_generador
+        balde.save()
         item = BaldeUtilizado(balde=balde, establecimiento_generador=establecimiento_generador, hoja_ruta=hoja_ruta,
                               nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
         item.save()
 
 
 @login_required
-def baja_balde_utilizado(request):
+def baja_balde_utilizado(request, id_hoja=None):
     balde_nro = request.POST.get('balde_nro')
-    balde = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro)
+    balde = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro, hoja_ruta__id=id_hoja)
     balde.delete()
     response = {}
     return JsonResponse(response)

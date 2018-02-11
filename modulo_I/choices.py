@@ -104,6 +104,6 @@ Capacidad_balde = (
 )
 
 Estado = (
-    ('Planta', _("En Planta")),
+    ('En Planta', _("En Planta")),
     ('Ocupado', _("Ocupado")),
 )
