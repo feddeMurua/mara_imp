@@ -307,22 +307,11 @@ def listado_hojas_de_ruta(request):
 
 
 @login_required
-def detalle_hojas_de_ruta(request, id_hoja):
-    hoja_ruta = HojaRuta.objects.get(id=id_hoja)
-    return render(request, 'hojaRuta/hoja_ruta_detalle.html', {'hoja_ruta': hoja_ruta})
-
-
-@login_required
-def alta_modif_hoja_ruta(request, id_hoja=None):
+def alta_modif_hoja_ruta(request):
     baldeutilizado_form = BaldeUtilizadoForm()
-    try:
-        hoja_ruta = HojaRuta.objects.get(id=id_hoja)
-        modificar = True
-    except:
-        hoja_ruta = None
-        modificar = False
+
     if request.method == 'POST':
-        hojaruta_form = HojaRutaForm(request.POST, instance=hoja_ruta)
+        hojaruta_form = HojaRutaForm(request.POST)
         if hojaruta_form.is_valid():
             hoja_ruta = hojaruta_form.save()
             carga_baldes(request, hoja_ruta)
@@ -331,9 +320,9 @@ def alta_modif_hoja_ruta(request, id_hoja=None):
         if 'baldes_utilizados' in request.session:
             del request.session['baldes_utilizados']
         request.session['baldes_utilizados'] = []
-        hojaruta_form = HojaRutaForm(instance=hoja_ruta)
-    baldes_asociados = Balde.objects.all()
-    return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form, 'baldeutilizado_form':baldeutilizado_form, 'baldes_asociados':baldes_asociados, 'modificar':modificar})
+        hojaruta_form = HojaRutaForm()
+
+    return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form, 'baldeutilizado_form':baldeutilizado_form})
 
 
 '''
@@ -355,19 +344,21 @@ def alta_modif_balde_utilizado(request, id_hoja=None, id_balde=None):
     except:
         balde = None
     if request.method == 'POST':
-        balde_form = BaldeUtilizadoForm(request.POST, instance=balde)
+        balde_form = ActualizarBaldeUtilizadoForm(request.POST, instance=balde)
         if balde_form.is_valid():
             balde = balde_form.save(commit=False)
             balde.hoja_ruta = HojaRuta.objects.get(id=id_hoja)
-            if balde.tipo =="Entrega":
-                balde.balde.estado = "Ocupado"
+            balde_generado = Balde.objects.get(nro_balde=id_balde)
+            if balde.tipo == "Entrega":
+                balde_generado.estado = "Ocupado"
             else:
-                balde.balde.estado = "En Planta"
-            balde.balde.save()
+                balde_generado.estado = "En Planta"
+            balde_generado.save()
+            balde.balde = balde_generado
             balde.save()
             return redirect('hojaRuta:listado_baldes_utilizados', id_hoja=id_hoja)
     else:
-        balde_form = BaldeUtilizadoForm(instance=balde)
+        balde_form = ActualizarBaldeUtilizadoForm(instance=balde)
 
     return render(request, "hojaRuta/baldes_utilizados/baldeutilizado_form.html", {'balde_form': balde_form, 'id_hoja':id_hoja})
 

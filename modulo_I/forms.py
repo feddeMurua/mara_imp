@@ -153,6 +153,12 @@ class BaldeUtilizadoForm(forms.ModelForm):
         exclude = ['hoja_ruta',]
 
 
+class ActualizarBaldeUtilizadoForm(forms.ModelForm):
+    class Meta:
+        model = BaldeUtilizado
+        exclude = ['hoja_ruta','balde',]
+
+
 class BaldeForm(forms.ModelForm):
     class Meta:
         model = Balde
