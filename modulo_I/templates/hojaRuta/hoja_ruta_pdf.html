@@ -85,7 +85,11 @@
                 <td></td><td></td>
                 <td></td><td></td>
                 <td></td><td></td>
-                <td>{{establecimiento.establecimiento_generador.sector}}</td>
+                {% if establecimiento.establecimiento_generador.sector %}
+                  <td>{{ establecimiento.establecimiento_generador.sector }}</td>
+                {% else %}
+                  <td style="text-align: center;"> - </td>
+                {% endif %}
               </tr>
             {% endfor %}
           </table>

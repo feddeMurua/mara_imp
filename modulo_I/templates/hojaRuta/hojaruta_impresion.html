@@ -46,7 +46,11 @@
   {% for establecimiento in establecimientos %}
       <tr>
           <td>{{ establecimiento.establecimiento_generador }}</td>
-          <td>{{ establecimiento.establecimiento_generador.sector }}</td>
+          {% if establecimiento.establecimiento_generador.sector %}
+            <td>{{ establecimiento.establecimiento_generador.sector }}</td>
+          {% else %}
+            <td style="text-align: center;"> - </td>
+          {% endif %}
           <td>{{ establecimiento.horario_retiro }}</td>
           <td align="center">
              <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'hojaRuta:detalle_horario_atencion' id_horario=establecimiento.id%}"><em class="glyphicon glyphicon-eye-open"></em></a>
