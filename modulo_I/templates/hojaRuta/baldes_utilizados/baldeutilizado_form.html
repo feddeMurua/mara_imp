@@ -26,5 +26,5 @@
 {% endblock %}
 
 {% block url-cancelar %}
-  {% url 'hojaRuta:listado_baldes_utilizados' id_hoja=id_hoja %}
+  {% url 'hojaRuta:listado_baldes_utilizados' anio=hoja_ruta.fecha_recorrido.year mes=hoja_ruta.fecha_recorrido.month dia=hoja_ruta.fecha_recorrido.day %}
 {% endblock %}

@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <a href="{% url 'hojaRuta:listado_hojas_de_ruta' hoja_ruta.year hoja_ruta.month hoja_ruta.day %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;padding-right:2px;"></i></a>
+  <a href="{% url 'hojaRuta:listado_general' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;padding-right:2px;"></i></a>
 {% endblock %}
 
 {% block thead-tabla %}
@@ -42,14 +42,10 @@
         <td>{{ balde.nro_precinto}}</td>
         <td>{{ balde.tipo}}</td>
         <td align="center">
-           <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:alta_modif_balde_utilizado' id_balde=balde.balde.nro_balde id_hoja=id_hoja %}"><em class="glyphicon glyphicon-pencil"></em></a>
-           <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.balde.nro_balde}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+            <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:alta_modif_balde_utilizado' id_balde=balde.balde.nro_balde id_hoja=balde.hoja_ruta.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
+            <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.balde.nro_balde}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
         </td>
       </tr>
     {% endfor %}
   </tbody>
-{% endblock %}
-
-{%block url-baja-balde%}
-  "{% url 'hojaRuta:baja_balde_utilizado' id_hoja=id_hoja %}"
 {% endblock %}

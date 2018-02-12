@@ -22,13 +22,22 @@
   </thead>
 {% endblock %}
 
+{% block tfoot-tabla %}
+  <tfoot >
+     <tr>
+       <th >Fecha Recorrido</th>
+       <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
+    </tr>
+  </tfoot>
+{% endblock %}
+
 {% block tbody-tabla %}
   <tbody>
     {% for hoja_ruta in listado_general %}
         <tr>
             <td style="padding-left:15px;">{{ hoja_ruta.fecha_recorrido }}</td>
             <td align="center">
-               <a class="btn btn-success" data-toggle="tooltip" title="Registros" href="{% url 'hojaRuta:listado_hojas_de_ruta' hoja_ruta.fecha_recorrido.year hoja_ruta.fecha_recorrido.month hoja_ruta.fecha_recorrido.day %}"><em class="fa fa-list"></em></a>
+               <a class="btn btn-success" data-toggle="tooltip" title="Registros" href="{% url 'hojaRuta:listado_baldes_utilizados' hoja_ruta.fecha_recorrido.year hoja_ruta.fecha_recorrido.month hoja_ruta.fecha_recorrido.day %}"><em class="fa fa-list"></em></a>
             </td>
         </tr>
     {% endfor %}

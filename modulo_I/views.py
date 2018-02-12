@@ -308,13 +308,6 @@ def listado_general_hojas_de_ruta(request):
 
 
 @login_required
-def listado_hojas_de_ruta(request, anio, mes, dia):
-    fecha_recorrido = datetime.date(int(anio), int(mes), int(dia))
-    listado_hojas_de_ruta = HojaRuta.objects.filter(fecha_recorrido=fecha_recorrido)
-    return render(request, 'hojaRuta/hojaruta_listado.html', {'listado_hojas_de_ruta': listado_hojas_de_ruta})
-
-
-@login_required
 def alta_modif_hoja_ruta(request):
     baldeutilizado_form = BaldeUtilizadoForm()
 
@@ -333,17 +326,50 @@ def alta_modif_hoja_ruta(request):
     return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form, 'baldeutilizado_form':baldeutilizado_form})
 
 
+@login_required
+def baja_hoja_ruta(request):
+    print(request.POST.get('fecha_day'))
+
+    '''
+    hoja_ruta = HojaRuta.objects.get(id=hoja_ruta_id)
+    baldes = BaldeUtilizado.objects.filter(hoja_ruta=hoja_ruta)
+    #por cada balde en la hoja de ruta, setear en Planta
+    for b in baldes:
+        balde = Balde.objects.get(nro_balde=b.balde.nro_balde)
+        balde.estado = "En Planta"
+        balde.save()
+    hoja_ruta.delete()
+    '''
+    response = {}
+    return JsonResponse(response)
+
+
+@login_required
+def generar_hoja_ruta(request):
+    dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
+
+    #informacion de los establecimientos que atienden un dia en particular
+    establecimientos = HorarioAtencion.objects.filter(dia=dia_actual).order_by('establecimiento_generador__sector').order_by('horario_retiro')
+
+    dia_nombre = ""
+    if establecimientos:
+        dia_nombre = (establecimientos[0].get_dia_display()).upper()
+
+    #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
+    return render(request, "hojaRuta/hojaruta_impresion.html", {'establecimientos': establecimientos, 'dia':dia_nombre,'dia_nro':dia_actual})
+
+
 '''
 BALDES UTILIZADOS
 '''
 
 
 @login_required
-def listado_baldes_utilizados(request, id_hoja):
-    listado_baldes = BaldeUtilizado.objects.filter(hoja_ruta__id=id_hoja)
-    balde_utilizado = listado_baldes.first()
-    hoja_ruta = datetime.date(balde_utilizado.hoja_ruta.fecha_recorrido.year,balde_utilizado.hoja_ruta.fecha_recorrido.month,balde_utilizado.hoja_ruta.fecha_recorrido.day) # solo importa la fecha de recorrido (todas son iguales)
-    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes, 'id_hoja':id_hoja, 'hoja_ruta':hoja_ruta})
+def listado_baldes_utilizados(request, anio, mes, dia):
+    fecha_recorrido = datetime.date(int(anio), int(mes), int(dia))
+    hoja_de_ruta = HojaRuta.objects.filter(fecha_recorrido=fecha_recorrido).first() #Solo importa el primero, para obtener la fecha.
+    listado_baldes = BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido=hoja_de_ruta.fecha_recorrido)
+    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes})
 
 
 
@@ -367,11 +393,15 @@ def alta_modif_balde_utilizado(request, id_hoja=None, id_balde=None):
             balde_generado.save()
             balde.balde = balde_generado
             balde.save()
-            return redirect('hojaRuta:listado_baldes_utilizados', id_hoja=id_hoja)
+            fecha_recorrido = balde.hoja_ruta.fecha_recorrido
+            anio = fecha_recorrido.year
+            mes = fecha_recorrido.month
+            dia = fecha_recorrido.day
+            return redirect('hojaRuta:listado_baldes_utilizados', anio=anio, mes=mes, dia=dia)
     else:
         balde_form = ActualizarBaldeUtilizadoForm(instance=balde)
-
-    return render(request, "hojaRuta/baldes_utilizados/baldeutilizado_form.html", {'balde_form': balde_form, 'id_hoja':id_hoja})
+    hoja_ruta = HojaRuta.objects.get(id=id_hoja) # Para obtener la fecha recorrido
+    return render(request, "hojaRuta/baldes_utilizados/baldeutilizado_form.html", {'balde_form': balde_form, 'hoja_ruta':hoja_ruta})
 
 
 @login_required(login_url='login')
@@ -412,49 +442,12 @@ def carga_baldes(request, hoja_ruta):
 
 
 @login_required
-def baja_balde_utilizado(request, id_hoja=None):
+def baja_balde_utilizado(request):
     balde_nro = request.POST.get('balde_nro')
-    balde = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro, hoja_ruta__id=id_hoja)
+    balde = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro)
     balde.delete()
     response = {}
     return JsonResponse(response)
-
-
-@login_required
-def baja_hoja_ruta(request):
-    hoja_ruta_id = request.POST.get('hoja_ruta_id')
-    hoja_ruta = HojaRuta.objects.get(id=hoja_ruta_id)
-    baldes = BaldeUtilizado.objects.filter(hoja_ruta=hoja_ruta)
-    #por cada balde en la hoja de ruta, setear en Planta
-    for b in baldes:
-        balde = Balde.objects.get(nro_balde=b.balde.nro_balde)
-        balde.estado = "En Planta"
-        balde.save()
-    hoja_ruta.delete()
-    response = {}
-    return JsonResponse(response)
-
-
-@login_required
-def generar_hoja_ruta(request):
-    dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
-
-    #informacion de los establecimientos que atienden un dia en particular
-    establecimientos = HorarioAtencion.objects.filter(dia=dia_actual).order_by('establecimiento_generador__sector').order_by('horario_retiro')
-
-    dia_nombre = ""
-    if establecimientos:
-        dia_nombre = (establecimientos[0].get_dia_display()).upper()
-
-    #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
-    return render(request, "hojaRuta/hojaruta_impresion.html", {'establecimientos': establecimientos, 'dia':dia_nombre,'dia_nro':dia_actual})
-
-
-
-@login_required
-def detalle_horario_atencion(request, id_horario):
-    horario_atencion = HorarioAtencion.objects.get(id=id_horario)
-    return render(request, 'hojaRuta/horarioatencion_detalle.html', {'horario_atencion': horario_atencion})
 
 
 class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
@@ -483,6 +476,12 @@ HORARIOS DE ATENCIÓN
 def listado_horarios(request, nro_inscripcion):
     listado_horarios = HorarioAtencion.objects.filter(establecimiento_generador__nro_inscripcion=nro_inscripcion)
     return render(request, 'establecimiento/horario_atencion/horario_listado.html', {'listado_horarios': listado_horarios, 'nro_inscripcion':nro_inscripcion})
+
+
+@login_required
+def detalle_horario_atencion(request, id_horario):
+    horario_atencion = HorarioAtencion.objects.get(id=id_horario)
+    return render(request, 'hojaRuta/horarioatencion_detalle.html', {'horario_atencion': horario_atencion})
 
 
 @login_required
