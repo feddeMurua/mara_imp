@@ -6,8 +6,7 @@ urlpatterns = [
     url(r'^listado/general/hojas_de_ruta/$', listado_general_hojas_de_ruta, name="listado_general"),
     url(r'^alta/hoja_ruta/$', alta_modif_hoja_ruta, name="alta_modif_hoja_ruta"),
     url(r'^baja/hoja_ruta/$', baja_hoja_ruta, name="baja_hoja_ruta"),
-    url(r'^generar/hoja_ruta/$', generar_hoja_ruta, name="generar_hoja_ruta"),
-    url(r'^detalle/horario_atencion/(?P<id_horario>\d+)/$', detalle_horario_atencion, name="detalle_horario_atencion"),
+    url(r'^generar/hoja_ruta/$', generar_hoja_ruta, name="generar_hoja_ruta"),    
     url(r'^hoja_ruta/PDF/(?P<dia>\d+)/$', HojaRutaPdf.as_view(), name= 'hoja_ruta_pdf'),
     #BALDES UTILIZADOS
     url(r'^listado/hoja_de_ruta/(?P<anio>\d+)/(?P<mes>\d+)/(?P<dia>\d+)/$', listado_baldes_utilizados, name="listado_baldes_utilizados"),

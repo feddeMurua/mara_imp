@@ -22,7 +22,7 @@ def login_usuario(request):
         if form.is_valid():
             usuario= User.objects.get(username=form.cleaned_data['username'])
             login(request, usuario)
-            return redirect('personas:listado_personas')
+            return redirect('generadores:listado_generadores')
     else:
         form = FormularioUsuario()
     return render(request, 'registration/login.html', {'form': form})
@@ -49,7 +49,7 @@ def signup_usuario(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('personas:listado_personas')
+            return redirect('generadores:listado_generadores')
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
@@ -69,7 +69,7 @@ def cambiar_ctr(request):
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'La contraseña fue actualizada correctamente')
-            return redirect('personas:listado_personas')
+            return redirect('generadores:listado_generadores')
         else:
             messages.error(request, 'Por favor corrija los errores señalados')
     else:
