@@ -24,35 +24,17 @@
             <label>(*)Director Responsable:</label>
             {{generador_form.director_responsable|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo director responsable es obligatorio"}}
             <br>
-            <label>(*)Responsable Residuos:</label>
-            {{generador_form.responsable_residuos|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo responsable de residuos es obligatorio"}}
-            <br>
-            <label>(*)Responsable Suplentes Residuos:</label>
-            {{generador_form.responsable_suplente|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo director responsable suplente de residuos es obligatorio"}}
-            <br>
-            <label>(*)Responsable Técnico:</label>
-            {{generador_form.responsable_tecnico|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo responsable técnico es obligatorio"}}
-            <br>
             <label>(*)Fecha vínculo:</label>
             {{generador_form.fecha_vinculo|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha vínculo es obligatorio"}}
-            <br>
-            <label>(*)Número de Inscripción en el Registro de Generadores Provincia del Chubut:</label>
-            {{generador_form.nro_inscripcion|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo N° inscripción es obligatorio"}}
             <br>
             <label>(*)Razón Social:</label>
             {{generador_form.razon_social|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo razón social es obligatorio"}}
             <br>
-            <label>(*)Teléfono:</label>
-            {{generador_form.telefono|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo teléfono es obligatorio"}}
+            <label>(*)Número de Inscripción en el Registro de Generadores Provincia del Chubut:</label>
+            {{generador_form.nro_inscripcion|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo N° inscripción es obligatorio"}}
             <br>
-            <label>Correo Electrónico:</label>
-            {{generador_form.email|add_class:'form-control'|attr:"type:email"|attr:"data-parsley-type=email"|attr:"data-parsley-error-message:(*)Formato de correo incorrecto"}}
-            <br>
-            <label>Observaciones/Comentarios:</label>
-            {{generador_form.observaciones_comentarios|add_class:'form-control'}}
-            <br>
-            <label>(*)Número de Sector Asociado (Cuadrante):</label>
-            {{generador_form.sector|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo sector es obligatorio"}}
+            <label>Número de Sector Asociado (Cuadrante):</label>
+            {{generador_form.sector|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
             <br>
           </div>
         </div>
@@ -62,7 +44,7 @@
   <!-- SECTION 2 -->
   {% include 'base/form_section_domicilio.html' %}
 
-  <!-- SECTION 3 -->
+  <!--
   <div class="form-section">
      <div class="panel panel-default">
        <div class="panel-heading">ÁMBITO/DEPENDENCIA</div>
@@ -79,7 +61,7 @@
      </div>
    </div>
 
-   <!-- SECTION 4 -->
+
    <div class="form-section">
      <div class="panel panel-default">
        <div class="panel-heading">TIPO DE ACTIVIDAD</div>
@@ -91,7 +73,7 @@
      </div>
    </div>
 
-  <!-- SECTION 5 -->
+
   <div class="form-section">
      <div class="panel panel-default">
        <div class="panel-heading">CARACTERÍSTICAS GENERALES DEL CENTRO DE ATENCIÓN</div>
@@ -115,7 +97,6 @@
      </div>
   </div>
 
-  <!-- SECTION 6 -->
   <div class="form-section">
    <div class="panel panel-default">
      <div class="panel-heading">SECTOR DE ACOPIO TRANSITORIO EN EL CENTRO GENERADOR</div>
@@ -143,8 +124,8 @@
        </div>
    </div>
   </div>
+  -->
 
-  <!-- SECTION 7 -->
   <div class="form-section">
    <div class="panel panel-default">
      <div class="panel-heading">PASO FINAL</div>
@@ -162,6 +143,8 @@
   <script type="text/javascript">
 
     // Función para el checkbox del formulario de sector de acopio transitorio
+
+    /*
     function valueChanged()
     {
         if($('.camara_frio').is(":checked"))
@@ -174,6 +157,7 @@
         else
             $(".dimension_sector_interno").hide();
     }
+    */
 
     //MASCARAS
 

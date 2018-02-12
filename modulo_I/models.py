@@ -48,7 +48,7 @@ class Persona(models.Model):
 
 
 class Domicilio(models.Model):
-    barrio = models.CharField(max_length=50)
+    barrio = models.CharField(max_length=50, null=True, blank=True)
     calle = models.CharField(max_length=50)
     calle_entre1 = models.CharField(max_length=50, null=True, blank=True)
     calle_entre2 = models.CharField(max_length=50, null=True, blank=True)
@@ -59,7 +59,10 @@ class Domicilio(models.Model):
     comarca = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return "B° %s, %s  N° %s" % (self.barrio, self.calle, self.nro)
+        if self.barrio:
+            return "B° %s, %s  N° %s" % (self.barrio, self.calle, self.nro)
+        else:
+            return "%s  N° %s" % (self.calle, self.nro)
 
 
 '''
@@ -154,6 +157,38 @@ class HorarioAtencion(models.Model):
 
 
 class EstablecimientoGenerador(models.Model):
+    tipo_actividad = MultiSelectField(choices=Actividades, blank=True, null=True)
+    nro_inscripcion = models.BigIntegerField(primary_key=True) # N° inscripcion registro de generadores provincia del chubut
+    razon_social = models.CharField(max_length=50)
+    telefono = models.CharField(max_length=50, blank=True, null=True)
+    email = models.EmailField(max_length=50, blank=True, null=True)
+    director_responsable = models.ForeignKey('Cliente', related_name='director_responsable', on_delete=models.CASCADE, blank=True, null=True)
+    responsable_residuos = models.ForeignKey('Persona', related_name='responsable_residuos', on_delete=models.CASCADE, blank=True, null=True)
+    responsable_suplente = models.ForeignKey('Persona', related_name='responsable_suplente', on_delete=models.CASCADE, blank=True, null=True)
+    responsable_tecnico = models.ForeignKey('Persona', related_name='responsable_tecnico', on_delete=models.CASCADE, blank=True, null=True)
+    fecha_vinculo = models.DateField() #fecha deL Vinculo que se confeccionó el formulario
+    fecha = models.DateField(default=now)
+    observaciones_comentarios = models.TextField(max_length=200, default='', blank=True, null=True)
+    caract_generales = models.ForeignKey('CaracteristicasGenerales', on_delete=models.CASCADE, blank=True, null=True)
+    domicilio = models.ForeignKey('Domicilio', on_delete=models.CASCADE)
+    ambito_dependencia = models.ForeignKey('AmbitoDependencia', on_delete=models.CASCADE, blank=True, null=True)
+    via_acceso = models.ForeignKey('ViaAccesoSector', on_delete=models.CASCADE, blank=True, null=True)
+    tipo_actividad = MultiSelectField(choices=Actividades, blank=True, null=True)
+    sector = models.IntegerField(blank=True, null=True) # cuadrante que pertenece a la ciudad el generador
+
+    #AGREGAR orden dentro de sector para la hoja de ruta (puede ser null)
+
+    def __str__(self):
+        return "%s" % (self.razon_social)
+
+    def to_json(self):
+        return {'razon_social': self.razon_social}
+
+
+
+'''
+#ESTABLECIMIENTO GENERADOR, ORIGINAL
+class EstablecimientoGenerador(models.Model):
     tipo_actividad = MultiSelectField(choices=Actividades)
     nro_inscripcion = models.BigIntegerField(primary_key=True) # N° inscripcion registro de generadores provincia del chubut
     razon_social = models.CharField(max_length=50)
@@ -172,15 +207,16 @@ class EstablecimientoGenerador(models.Model):
     via_acceso = models.ForeignKey('ViaAccesoSector', on_delete=models.CASCADE)
     tipo_actividad = MultiSelectField(choices=Actividades)
     sector = models.IntegerField() # cuadrante que pertenece a la ciudad el generador
-    '''
-    AGREGAR orden dentro de sector para la hoja de ruta (puede ser null)
-    '''
+
+    #AGREGAR orden dentro de sector para la hoja de ruta (puede ser null)
+
     def __str__(self):
         return "%s" % (self.razon_social)
 
     def to_json(self):
         return {'razon_social': self.razon_social}
 
+'''
 
 '''
 Hoja de Ruta
@@ -258,12 +294,12 @@ class Cliente(models.Model):
     razon_social = models.CharField(max_length=50) # puede ser distinta de la del generador
     domicilio_legal = models.ForeignKey('Domicilio', on_delete=models.CASCADE) # (para facturacion)
     apoderado = models.ForeignKey('Persona', related_name='apoderado', on_delete=models.CASCADE)
-    contacto_comercial = models.ForeignKey('Persona', related_name='contact_comercial', on_delete=models.CASCADE)
-    cargo = models.CharField(max_length=50)
-    dato_impositivo = models.OneToOneField('DatoImpositivo', on_delete=models.CASCADE)
+    contacto_comercial = models.ForeignKey('Persona', related_name='contact_comercial', on_delete=models.CASCADE, blank=True, null=True)
+    cargo = models.CharField(max_length=50, blank=True, null=True)
+    dato_impositivo = models.OneToOneField('DatoImpositivo', on_delete=models.CASCADE, blank=True, null=True)
     fecha = models.DateField(default=now) #fecha de hoy
     fecha_vinculo = models.DateField() #fecha del Vinculo que se confeccionó el formulario
-    cuit_cuil = models.CharField(max_length=20)
+    cuit_cuil = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
         return "%s, %s - %s" % (self.apoderado.apellido, self.apoderado.nombre, self.apoderado.documento)

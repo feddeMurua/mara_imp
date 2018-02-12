@@ -41,7 +41,11 @@
           <td>{{ generador.nro_inscripcion }}</td>
           <td>{{ generador.razon_social }}</td>
           <td>{{ generador.domicilio }}</td>
-          <td style="text-align:center;">{{ generador.sector }}</td>
+          {% if generador.sector %}
+            <td style="text-align:center;">{{ generador.sector }}</td>
+          {% else %}
+            <td style="text-align:center;">-</td>
+          {% endif %}
           <td align="center">
             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'generadores:detalle_generadores' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-eye-open"></em></a>
             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:alta_modif_generadores' nro_inscripcion=generador.nro_inscripcion%}"><em class="glyphicon glyphicon-pencil"></em></a>

@@ -115,10 +115,22 @@ class DatosImpositivosForm(forms.ModelForm):
         fields = '__all__'
 
 
+'''
 class ClienteForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     apoderado = forms.ModelChoiceField(Persona.objects, widget=SelectPersonaWithPop)
     contacto_comercial = forms.ModelChoiceField(Persona.objects, widget=SelectPersonaWithPop)
+
+    class Meta:
+        model = Cliente
+        exclude = ['domicilio_legal', 'fecha','dato_impositivo',]
+'''
+
+
+class ClienteForm(forms.ModelForm):
+    fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
+    apoderado = forms.ModelChoiceField(Persona.objects, widget=SelectPersonaWithPop)
+    #contacto_comercial = forms.ModelChoiceField(Persona.objects, widget=SelectPersonaWithPop)
 
     class Meta:
         model = Cliente
@@ -180,6 +192,7 @@ class HojaRutaForm(forms.ModelForm):
 GENERADORES
 '''
 
+'''
 class GeneradorForm(forms.ModelForm):
     fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     responsable_residuos = forms.ModelChoiceField(Persona.objects, widget=SelectPersonaWithPop)
@@ -195,6 +208,13 @@ class GeneradorForm(forms.ModelForm):
         widgets = {
             'observaciones_comentarios': forms.Textarea(attrs={'rows': 4, 'cols': 10}),
         }
+'''
+
+class GeneradorForm(forms.ModelForm):
+    fecha_vinculo = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
+    class Meta:
+        model = EstablecimientoGenerador
+        exclude = ['domicilio','fecha' ]
 
 
 class ActividadesForm(forms.ModelForm):

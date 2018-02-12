@@ -17,10 +17,12 @@
               <th>Documento:</th>
               <td> {{cliente.apoderado.documento}}</td>
           </tr>
-          <tr>
-              <th>Cargo:</th>
-              <td> {{cliente.cargo}}</td>
-          </tr>
+          {% if cliente.cargo %}
+            <tr>
+                <th>Cargo:</th>
+                <td> {{cliente.cargo}}</td>
+            </tr>
+          {% endif %}
           {% if cliente.apoderado.telefono_fijo %}
             <tr>
                 <th>Teléfono:</th>
@@ -57,14 +59,18 @@
               <th>Fecha Vínculo:</th>
               <td> {{cliente.fecha_vinculo}}</td>
           </tr>
-          <tr>
-              <th>Datos Impositivos:</th>
-              <td> {{cliente.dato_impositivo}}</td>
-          </tr>
-          <tr>
-              <th>Cuit/Cuil:</th>
-              <td>{{ cliente.cuit_cuil }}</td>
-          </tr>
+          {% if cliente.dato_impositivo %}
+            <tr>
+                <th>Datos Impositivos:</th>
+                <td> {{cliente.dato_impositivo}}</td>
+            </tr>
+          {% endif %}
+          {% if cliente.cuit_cuil %}
+            <tr>
+                <th>Cuit/Cuil:</th>
+                <td>{{ cliente.cuit_cuil }}</td>
+            </tr>
+          {% endif %}
       </tbody>
   </table>
 {% endblock %}

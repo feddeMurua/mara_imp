@@ -182,32 +182,32 @@ def alta_modif_clientes(request, id_cliente=None):
     try:
         cliente = Cliente.objects.get(id=id_cliente)
         domicilio = cliente.domicilio_legal
-        dato_impositivo = cliente.dato_impositivo
+        #dato_impositivo = cliente.dato_impositivo
         modificar = True
     except:
         cliente = None
         domicilio = None
-        dato_impositivo = None
+        #dato_impositivo = None
         modificar = False
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST, instance=cliente)
         domicilio_form = DomicilioForm(request.POST,instance= domicilio)
-        datos_impositivos_form = DatosImpositivosForm(request.POST, instance=dato_impositivo)
-        if cliente_form.is_valid() & domicilio_form.is_valid() & datos_impositivos_form.is_valid():
+        #datos_impositivos_form = DatosImpositivosForm(request.POST, instance=dato_impositivo)
+        if cliente_form.is_valid() & domicilio_form.is_valid(): #& datos_impositivos_form.is_valid():
             cliente = cliente_form.save(commit=False)
             cliente.domicilio_legal = domicilio_form.save()
-            cliente.dato_impositivo= datos_impositivos_form.save()
+            #cliente.dato_impositivo= datos_impositivos_form.save()
             cliente.save()
             return redirect('personas:listado_personas')
     else:
         cliente_form = ClienteForm(instance=cliente)
         domicilio_form = DomicilioForm(instance=domicilio)
-        datos_impositivos_form = DatosImpositivosForm(instance=dato_impositivo)
+        #datos_impositivos_form = DatosImpositivosForm(instance=dato_impositivo)
 
     contexto = {
             'cliente_form': cliente_form,
             'domicilio_form': domicilio_form,
-            'datos_impositivos_form':datos_impositivos_form,
+            #'datos_impositivos_form':datos_impositivos_form,
             'modificar':modificar
     }
 
@@ -236,33 +236,26 @@ def listado_baldes(request):
     for i in range (54):
         balde = Balde(nro_balde=(i+1), capacidad=10)
         balde.save()
-    '''
-    '''
+
     for i in range(55,111):
         balde = Balde(nro_balde=(i), capacidad=20)
         balde.save()
-    '''
-    '''
+
     for i in range(111,141):
         balde = Balde(nro_balde=(i), capacidad=50)
         balde.save()
-    '''
-    '''
+
     for i in range(141,153):
         balde = Balde(nro_balde=(i), capacidad=120)
         balde.save()
-    '''
-    '''
+
     for i in range(153,167):
         balde = Balde(nro_balde=(i), capacidad=240)
         balde.save()
-    '''
-    '''
+
     for i in range(167,349):
         balde = Balde(nro_balde=(i), capacidad=10)
         balde.save()
-    '''
-    '''
     for i in range(349,451):
         balde = Balde(nro_balde=(i), capacidad=20)
         balde.save()
@@ -574,6 +567,7 @@ def detalle_generadores(request, nro_inscripcion):
     return render(request, 'establecimiento/generador_detalle.html', {'generador': generador})
 
 
+'''
 @login_required
 def alta_modif_generadores(request, nro_inscripcion=None):
 
@@ -642,6 +636,41 @@ def alta_modif_generadores(request, nro_inscripcion=None):
                'caract_generales_form':caract_generales_form,
                'via_acceso_form':via_acceso_form,
                'acopio_transitorio_form':acopio_transitorio_form,
+               'modificar':modificar
+    }
+    return render(request, "establecimiento/generador_form.html", contexto)
+'''
+
+
+@login_required
+def alta_modif_generadores(request, nro_inscripcion=None):
+
+    try:
+        generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+        domicilio = generador.domicilio
+        modificar = True # para poner el boton guardar antes del final del wizard
+    except:
+        generador = None
+        domicilio = None
+        modificar = False
+
+    if request.method == 'POST':
+        generador_form = GeneradorForm(request.POST, instance=generador)
+        domicilio_form = DomicilioForm(request.POST, instance=domicilio)
+
+        if generador_form.is_valid() & domicilio_form.is_valid():
+
+            generador = generador_form.save(commit=False)
+            generador.domicilio = domicilio_form.save()
+            generador.save()
+            return redirect('generadores:listado_generadores')
+    else:
+
+        generador_form = GeneradorForm(instance=generador)
+        domicilio_form = DomicilioForm(instance=domicilio)
+
+    contexto= {'generador_form': generador_form,
+               'domicilio_form':domicilio_form,
                'modificar':modificar
     }
     return render(request, "establecimiento/generador_form.html", contexto)

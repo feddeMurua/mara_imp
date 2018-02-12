@@ -20,19 +20,17 @@
         <label>(*)Apoderado:</label>
         {{cliente_form.apoderado|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo apoderado es obligatorio"}}
         <br>
-        <label>(*)Contacto Comercial:</label>
-        {{cliente_form.contacto_comercial|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo contacto comercial es obligatorio"}}
-        <br>
         <label>(*)Fecha vínculo:</label>
         {{cliente_form.fecha_vinculo|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha vínculo es obligatorio"}}
         <br>
         <label>(*)Razón Social:</label>
         {{cliente_form.razon_social|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo razón social es obligatorio"}}
         <br>
-        <label>(*)Cargo:</label>
-        {{cliente_form.cargo|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo cargo es obligatorio"}}
-        <label>(*)Cuit/Cuil (Sin Espacios):</label>
-        {{cliente_form.cuit_cuil|add_class:'form-control cuil'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo CUIT/CUIL es obligatorio"}}
+        <label>Cargo:</label>
+        {{cliente_form.cargo|add_class:'form-control'|attr:"data-parsley-error-message:(*)El campo cargo es obligatorio"}}
+        <br>
+        <label>Cuit/Cuil (Sin Espacios):</label>
+        {{cliente_form.cuit_cuil|add_class:'form-control cuil'}}
       </div>
     </div>
 
@@ -47,6 +45,7 @@
 
   {% include 'base/form_section_domicilio.html' %}
 
+  <!--
   <div class="form-section">
     <div class="panel panel-default">
       <div class="panel-heading">DATOS IMPOSITIVOS</div>
@@ -66,6 +65,7 @@
         </div>
     </div>
   </div>
+  -->
 {% endblock %}
 
 {% block url-cancelar %}
