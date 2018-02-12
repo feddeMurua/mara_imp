@@ -35,11 +35,55 @@
   <tbody>
     {% for hoja_ruta in listado_general %}
         <tr>
-            <td style="padding-left:15px;">{{ hoja_ruta.fecha_recorrido }}</td>
+            <td style="padding-left:15px;">{{ hoja_ruta.fecha_recorrido|date:"d M Y" }}</td>
             <td align="center">
                <a class="btn btn-success" data-toggle="tooltip" title="Registros" href="{% url 'hojaRuta:listado_baldes_utilizados' hoja_ruta.fecha_recorrido.year hoja_ruta.fecha_recorrido.month hoja_ruta.fecha_recorrido.day %}"><em class="fa fa-list"></em></a>
+               <a id="fecha_id"class="btn btn-danger btn-baja"  data-fecha="{{ hoja_ruta.fecha_recorrido }}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
             </td>
         </tr>
     {% endfor %}
   </tbody>
+{% endblock %}
+
+{% block modal-btn-eliminar%}
+  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarHoja(value)">Eliminar</button>
+{% endblock %}
+
+{% block modal-scripts %}
+  <script>
+    //codigo para cambiar los datos del modal y para dar de baja
+    $(document).ready(function () {
+      $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var fecha = button.data('fecha') // Extract info from data-* attributes
+
+        var title = 'Hoja de Ruta'
+        var content = '¿Está seguro que quiere eliminar la hoja de ruta?'
+
+        // actualiza el contenido del manual
+        var modal = $(this)
+        modal.find('.modal-title').text(title)
+        modal.find('.modal-body').text(content)
+
+        // se le pasa el valor del documento al boton de confirmar
+        modal.find('button.btn-danger').val(fecha)
+      })
+    })
+
+    function eliminarHoja(fecha) {
+      var request = $.ajax({
+          type: "POST",
+          url: "{% url 'hojaRuta:baja_hoja_ruta' %}",
+          data: {
+              "csrfmiddlewaretoken": "{{ csrf_token }}",
+              "fecha": fecha
+          },
+      });
+    }
+
+    //para actualizar cuando se da de baja.
+    $('#modal_baja').on('hidden.bs.modal', function () {
+      window.location.reload(true);
+    })
+  </script>
 {% endblock %}

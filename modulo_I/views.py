@@ -321,18 +321,18 @@ def alta_modif_hoja_ruta(request):
 
 @login_required
 def baja_hoja_ruta(request):
-    print(request.POST.get('fecha_day'))
+    fecha = datetime.datetime.strptime(request.POST.get('fecha'), '%d %b. %Y')
+    hoja_ruta = HojaRuta.objects.filter(fecha_recorrido=fecha)
+    for registro in hoja_ruta:
+        baldes = BaldeUtilizado.objects.filter(hoja_ruta=registro)
+        #por cada balde en la hoja de ruta, setear en Planta
+        for b in baldes:
+            balde = Balde.objects.get(nro_balde=b.balde.nro_balde)
+            if balde.estado == 'Ocupado':
+                balde.estado = "En Planta"
+                balde.save()
 
-    '''
-    hoja_ruta = HojaRuta.objects.get(id=hoja_ruta_id)
-    baldes = BaldeUtilizado.objects.filter(hoja_ruta=hoja_ruta)
-    #por cada balde en la hoja de ruta, setear en Planta
-    for b in baldes:
-        balde = Balde.objects.get(nro_balde=b.balde.nro_balde)
-        balde.estado = "En Planta"
-        balde.save()
-    hoja_ruta.delete()
-    '''
+        registro.delete()
     response = {}
     return JsonResponse(response)
 
