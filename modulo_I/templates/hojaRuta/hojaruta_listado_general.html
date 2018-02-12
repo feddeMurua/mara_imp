@@ -1,0 +1,36 @@
+{% extends "base/base_listado.html" %}
+{% load staticfiles %}
+
+{% block panel-heading %}
+  LISTADO DE HOJAS DE RUTA
+{% endblock %}
+
+{% block panel-heading-tabla %}
+  <a href="{% url 'hojaRuta:alta_modif_hoja_ruta' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Recepción Hoja de Ruta </a>
+  <a href="{% url 'hojaRuta:generar_hoja_ruta' %}" class="btn btn-info"><i class="fa fa-file-text"></i> Generar Hoja de Ruta </a>
+  {% now "m" as numero_mes %}
+  <a href="{% url 'hojaRuta:liquidacion_pdf' mes=numero_mes %}" class="btn btn-warning" target="_blank"><i class="fa fa-book"></i> Liquidación Mensual de Retiros </a>
+{% endblock %}
+
+
+{% block thead-tabla %}
+  <thead>
+  <tr style="background:#6495ED;">
+      <th >Fecha Recorrido</th>
+      <th>Acciones</th>
+  </tr>
+  </thead>
+{% endblock %}
+
+{% block tbody-tabla %}
+  <tbody>
+    {% for hoja_ruta in listado_general %}
+        <tr>
+            <td style="padding-left:15px;">{{ hoja_ruta.fecha_recorrido }}</td>
+            <td align="center">
+               <a class="btn btn-success" data-toggle="tooltip" title="Registros" href="{% url 'hojaRuta:listado_hojas_de_ruta' hoja_ruta.fecha_recorrido.year hoja_ruta.fecha_recorrido.month hoja_ruta.fecha_recorrido.day %}"><em class="fa fa-list"></em></a>
+            </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+{% endblock %}

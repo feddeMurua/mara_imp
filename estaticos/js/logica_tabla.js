@@ -9,6 +9,7 @@ $(document).ready(function() {
 
   //DataTable
   var table = $('#table-list').DataTable({
+    "bSearchable":true,
     "language": {
     	"sProcessing":     "Procesando...",
     	"sLengthMenu":     "Mostrar _MENU_ registros",
@@ -40,9 +41,7 @@ $(document).ready(function() {
      var that = this;
      $( 'input', this.footer() ).on( 'keyup change', function () {
          if ( that.search() !== this.value ) {
-             that
-                 .search( this.value )
-                 .draw();
+             that.search( this.value ).draw();
          }
   } );
  } );

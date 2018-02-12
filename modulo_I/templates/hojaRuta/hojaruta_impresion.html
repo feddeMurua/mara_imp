@@ -2,19 +2,6 @@
 {% load staticfiles %}
 {% load staticfiles bootstrap3 %}
 
-<!--
-{% block stylesheets %}
-  {{block.super}}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/parsley.css' %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/select2.css' %}"/>
-{% endblock %}
-
-{% block scripts %}
-  {{block.super}}
-  <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
-{% endblock %}
--->
-
 {% block panel-heading %}
   Generar hoja de ruta del día: {{dia}}
 {% endblock %}
@@ -29,7 +16,7 @@
   </form>
   -->
   <a target="_blank" href="{% url 'hojaRuta:hoja_ruta_pdf' dia=dia_nro %}" class="btn btn-success"><i class="fa fa-print"></i> imprimir </a>
-  <a href="{% url 'hojaRuta:listado_hojas_de_ruta' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;"></i></a>
+  <a href="{% url 'hojaRuta:listado_general' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;"></i></a>
 {% endblock %}
 
 {% block thead-tabla %}

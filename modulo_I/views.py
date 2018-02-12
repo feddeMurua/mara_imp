@@ -300,9 +300,17 @@ def baja_balde(request):
 HOJAS DE RUTA
 '''
 
+
 @login_required
-def listado_hojas_de_ruta(request):
-    listado_hojas_de_ruta = HojaRuta.objects.all()
+def listado_general_hojas_de_ruta(request):
+    listado_general = HojaRuta.objects.values('fecha_recorrido').distinct()
+    return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general})
+
+
+@login_required
+def listado_hojas_de_ruta(request, anio, mes, dia):
+    fecha_recorrido = datetime.date(int(anio), int(mes), int(dia))
+    listado_hojas_de_ruta = HojaRuta.objects.filter(fecha_recorrido=fecha_recorrido)
     return render(request, 'hojaRuta/hojaruta_listado.html', {'listado_hojas_de_ruta': listado_hojas_de_ruta})
 
 
@@ -315,7 +323,7 @@ def alta_modif_hoja_ruta(request):
         if hojaruta_form.is_valid():
             hoja_ruta = hojaruta_form.save()
             carga_baldes(request, hoja_ruta)
-            return redirect('hojaRuta:listado_hojas_de_ruta')
+            return redirect('hojaRuta:listado_general')
     else:
         if 'baldes_utilizados' in request.session:
             del request.session['baldes_utilizados']
@@ -333,7 +341,10 @@ BALDES UTILIZADOS
 @login_required
 def listado_baldes_utilizados(request, id_hoja):
     listado_baldes = BaldeUtilizado.objects.filter(hoja_ruta__id=id_hoja)
-    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes, 'id_hoja':id_hoja})
+    balde_utilizado = listado_baldes.first()
+    hoja_ruta = datetime.date(balde_utilizado.hoja_ruta.fecha_recorrido.year,balde_utilizado.hoja_ruta.fecha_recorrido.month,balde_utilizado.hoja_ruta.fecha_recorrido.day) # solo importa la fecha de recorrido (todas son iguales)
+    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes, 'id_hoja':id_hoja, 'hoja_ruta':hoja_ruta})
+
 
 
 #MODIFICACION EN EL LISTADO DE BALDES
