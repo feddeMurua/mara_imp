@@ -21,7 +21,7 @@ class Localidad(models.Model):
 
 class Provincia(models.Model):
     nombre = models.CharField(max_length=25)
-    
+
     def __str__(self):
         return "%s" % (self.nombre)
 
@@ -37,7 +37,7 @@ class EstablecimientoGenerador(models.Model):
     recoleccion = MultiSelectField(choices=Dias, blank=True, null=True)
     localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
     telefono = models.CharField(max_length=50, blank=True, null=True)
-    email = models.EmailField(max_length=50, blank=True, null=True)
+    email = models.CharField(max_length=50, blank=True, null=True)
     responsable_ambiental = models.CharField(max_length=50, blank=True, null=True)
     cuit = models.CharField(max_length=20, blank=True, null=True)
     sector = models.IntegerField(blank=True, null=True) # cuadrante que pertenece a la ciudad el generador

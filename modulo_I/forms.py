@@ -95,7 +95,7 @@ GENERADORES
 
 
 class GeneradorForm(forms.ModelForm):
-
+    localidad = forms.ModelChoiceField(Localidad.objects, widget=SelectLocalidadWithPop)
     class Meta:
         model = EstablecimientoGenerador
         exclude = ['domicilio','fecha' ]

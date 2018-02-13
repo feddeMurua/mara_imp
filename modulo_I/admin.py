@@ -9,7 +9,7 @@ class BuscarHojaRuta(admin.ModelAdmin):
     search_fields = ['establecimiento_generador__razon_social','nro_precinto']
 
 class BuscarEstablecimiento(admin.ModelAdmin):
-    search_fields = ['razon_social','responsable_ambiental','localidad','cuit']
+    search_fields = ['razon_social','responsable_ambiental','localidad__nombre','cuit']
 
 # Register your models here.
 admin.site.register(HojaRuta,BuscarHojaRuta)

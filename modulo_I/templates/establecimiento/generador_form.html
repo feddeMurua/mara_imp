@@ -5,7 +5,6 @@
 
 {% block scripts %}
   {{block.super}}
-  <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/jquery.mask.js' %}"></script>
 {% endblock %}
 
@@ -20,18 +19,27 @@
     <div class="panel panel-default">
       <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
         <div class="panel-body">
-          <div class="form-group">
-            <label>(*)Director Responsable:</label>
-            {{generador_form.director_responsable|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo director responsable es obligatorio"}}
-            <br>
-            <label>(*)Fecha vínculo:</label>
-            {{generador_form.fecha_vinculo|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha vínculo es obligatorio"}}
-            <br>
+          <div class="form-group">            
             <label>(*)Razón Social:</label>
             {{generador_form.razon_social|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo razón social es obligatorio"}}
             <br>
-            <label>(*)Número de Inscripción en el Registro de Generadores Provincia del Chubut:</label>
-            {{generador_form.nro_inscripcion|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo N° inscripción es obligatorio"}}
+            <label>(*)Dirección:</label>
+            {{generador_form.direccion|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo dirección es obligatorio"}}
+            <br>
+            <label>(*)Localidad:</label>
+            {{generador_form.localidad|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
+            <br>
+            <label>Teléfono:</label>
+            {{generador_form.telefono|add_class:'form-control'}}
+            <br>
+            <label>Email:</label>
+            {{generador_form.email|add_class:'form-control'}}
+            <br>
+            <label>Responsable Ambiental:</label>
+            {{generador_form.responsable_ambiental|add_class:'form-control'}}
+            <br>
+            <label>Cuit/Cuil (Sin Espacios):</label>
+            {{generador_form.cuit|add_class:'form-control cuil'}}
             <br>
             <label>Número de Sector Asociado (Cuadrante):</label>
             {{generador_form.sector|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
@@ -39,29 +47,17 @@
           </div>
         </div>
       </div>
+
+      <script>
+        //MASCARAS
+        $(document).ready(function(){
+         $('.cuil').mask('00-00000000-0');
+        });
+      </script>
+
   </div>
 
-  <!-- SECTION 2 -->
-  {% include 'base/form_section_domicilio.html' %}
-
-  <!--
-  <div class="form-section">
-     <div class="panel panel-default">
-       <div class="panel-heading">ÁMBITO/DEPENDENCIA</div>
-         <div class="panel-body">
-           <label>(*)Categoría:</label>
-           {{ambito_dpcia_form.categoria|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Categoría es obligatorio"}}
-           <br>
-           <label>Municipalidad:</label>
-           {{ambito_dpcia_form.municipalidad|add_class:'form-control'}}
-           <br>
-           <label>Nombre del centro del que depende:</label>
-           {{ambito_dpcia_form.centro_que_depende|add_class:'form-control'}}
-       </div>
-     </div>
-   </div>
-
-
+   <!-- SECTION 2 -->
    <div class="form-section">
      <div class="panel panel-default">
        <div class="panel-heading">TIPO DE ACTIVIDAD</div>
@@ -73,99 +69,18 @@
      </div>
    </div>
 
-
-  <div class="form-section">
+   <!-- SECTION 3 -->
+   <div class="form-section">
      <div class="panel panel-default">
-       <div class="panel-heading">CARACTERÍSTICAS GENERALES DEL CENTRO DE ATENCIÓN</div>
+       <div class="panel-heading">DIAS DE ATENCIÓN</div>
          <div class="panel-body">
-           <label>(*)Cantidad de Quirófanos:</label>
-           {{caract_generales_form.cant_quirofanos|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Cantidad de quirófanos es obligatorio"}}
+           <label>Dias:</label>
+           {{dias_form.recoleccion}}
            <br>
-           <label>(*)N° de camas:</label>
-           {{caract_generales_form.nro_camas|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo N° de camas es obligatorio"}}
-           <br>
-           <label>(*)Población promedio antendida (al mes):</label>
-           {{caract_generales_form.poblacion_promedio_atendida|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Población promedio atendido es obligatorio"}}
-           <br>
-           <label>(*)Población promedio antendida (al año):</label>
-           {{caract_generales_form.poblacion_promedio_atendida_365|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Población promedio atendido al año es obligatorio"}}
-           <br>
-           <label>(*)Vía de Acceso al centro generador:</label>
-           {{caract_generales_form.via_acceso|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una vía de acceso al centro generador"}}
-           <br>
-       </div>
-     </div>
-  </div>
-
-  <div class="form-section">
-   <div class="panel panel-default">
-     <div class="panel-heading">SECTOR DE ACOPIO TRANSITORIO EN EL CENTRO GENERADOR</div>
-       <div class="panel-body">
-         <div class="form-group">
-           {{ acopio_transitorio_form.camara_frio|attr:"class:camara_frio"|attr:"name:camara_frio"|attr:"onchange:valueChanged()"}}
-           <label>Cámara de Frío</label>
-           <br>
-           <div class="dimension_camara_frio" style="display:none">
-             <label>Dimensión cámara de frío</label>
-             {{ acopio_transitorio_form.dimension_camara_frio|add_class:'form-control'}}
-             <br><br>
-           </div>
-           {{ acopio_transitorio_form.sector_interno_p_estacionar|attr:"class:sector_interno"|attr:"name:sector_interno"|attr:"onchange:valueChanged()"}}
-           <label>Sector interno p/estacionar</label>
-           <br>
-           <div class="dimension_sector_interno" style="display:none">
-             <label>Dimensión del sector de acopio</label>
-             {{ acopio_transitorio_form.dimension_sector|add_class:'form-control'}}
-             <br>
-           </div>
          </div>
-         <label>(*)Vía de Acceso al sector de acopio:</label>
-         {{via_acceso_form.tipo|attr:"required:"|attr:"data-parsley-error-message:(*)Seleccione al menos una vía de acceso al sector de acopio"}}
-       </div>
-   </div>
-  </div>
-  -->
-
-  <div class="form-section">
-   <div class="panel panel-default">
-     <div class="panel-heading">PASO FINAL</div>
-     <div class="panel-body">
-       <div class="panel panel-default">
-         <div class="panel-body">
-           <h1 style="color:red;">ATENCIÓN!</h1>
-           <p><strong>Recordar cargar los horarios de atención y tipo de residuo generador en el menú de opciones.</strong></p>
-        </div>
-      </div>
      </div>
    </div>
-  </div>
 
-  <script type="text/javascript">
-
-    // Función para el checkbox del formulario de sector de acopio transitorio
-
-    /*
-    function valueChanged()
-    {
-        if($('.camara_frio').is(":checked"))
-            $(".dimension_camara_frio").show();
-        else
-            $(".dimension_camara_frio").hide();
-
-        if($('.sector_interno').is(":checked"))
-            $(".dimension_sector_interno").show();
-        else
-            $(".dimension_sector_interno").hide();
-    }
-    */
-
-    //MASCARAS
-
-    $(document).ready(function(){
-      $('.hora').mask('00:00', {placeholder: "__:__"});
-    });
-
-  </script>
 {% endblock %}
 
 {% block url-cancelar %}

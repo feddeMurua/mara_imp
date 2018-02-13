@@ -346,16 +346,16 @@ def listado_generadores(request):
 
 
 @login_required
-def detalle_generadores(request, nro_inscripcion):
-    generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+def detalle_generadores(request, nro_generador):
+    generador = EstablecimientoGenerador.objects.get(id=nro_generador)
     return render(request, 'establecimiento/generador_detalle.html', {'generador': generador})
 
 
 @login_required
-def alta_modif_generadores(request, nro_inscripcion=None):
+def alta_modif_generadores(request, nro_generador=None):
 
     try:
-        generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+        generador = EstablecimientoGenerador.objects.get(id=nro_generador)
         modificar = True # para poner el boton guardar antes del final del wizard
     except:
         generador = None
@@ -364,11 +364,13 @@ def alta_modif_generadores(request, nro_inscripcion=None):
     if request.method == 'POST':
         generador_form = GeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
+        dias_form = RecoleccionForm(request.POST)
 
-        if generador_form.is_valid() & actividades_form.is_valid():
+        if generador_form.is_valid() & actividades_form.is_valid() & dias_form.is_valid():
 
             generador = generador_form.save(commit=False)
             generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
+            generador.recoleccion = dias_form.cleaned_data.get('recoleccion')
 
             generador.save()
 
@@ -377,9 +379,11 @@ def alta_modif_generadores(request, nro_inscripcion=None):
 
         generador_form = GeneradorForm(instance=generador)
         actividades_form = ActividadesForm(instance=generador)
+        dias_form = RecoleccionForm(instance=generador)
 
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,
+               'dias_form': dias_form,
                'modificar':modificar
     }
     return render(request, "establecimiento/generador_form.html", contexto)
@@ -388,7 +392,7 @@ def alta_modif_generadores(request, nro_inscripcion=None):
 @login_required
 def baja_generadores(request):
     nro_inscripcion = request.POST.get('generador_id')
-    generador = EstablecimientoGenerador.objects.get(nro_inscripcion=nro_inscripcion)
+    generador = EstablecimientoGenerador.objects.get(id=nro_inscripcion)
     generador.delete()
     response = {}
     return JsonResponse(response)

@@ -1,0 +1,454 @@
+id,nombre,direccion,tipo_actividad,recoleccion,telefono,email,responsable_ambiente,cuit,sector,localidad_id
+1,ALMA TATTOO,Av. Roca 297 ,Tatuajes,3 X SEMANA,154563399,s/d, Villavicencio Sergio,,,2
+2,ALPHA MEDICINA OCUPACIONAL ,25 de Mayo 125 P. B.,Consultorio médico,3 X SEMANA,4472252,alphamedoc@live.com.ar,Lorea Nestor Francisco ,,,2
+3,ANAKAINOSIS,M.T. Alvear 395,Hogar de ancianos,3 X SEMANA,4454185,s/d,Cadagan Viviana,,,2
+4,ASESORIA MEDICA DEL TRABAJO SH,Belgrano 359,Consultorio médico,3 X SEMANA,4451410,cemelab@speedy.com.ar,Roitberg Victor- Panigadi Guillermo,,,2
+5,ASOCIACIÓN ARGENTINA DE CAPITANES Y PATRONES DE PESCA (Farmacia C Pesca),Roque S. Peña 386,farmacia,3 X SEMANA,4450315,s/d,Nicosia Elvecia Pilar Elizabeth,,,2
+6,ASOCIACIÓN CIVIL CIUDADANOS COMPROMETIDOS CON LA SOCIEDAD,Mendoza 950,Consultorio médico,3 X SEMANA,154363357,s/d,Campos Aldo R.,,,2
+7,ASOCIACION DE OBRAS SOCIALES DE TRELEW - ADOS,Mitre 476,Farmacia,3 X SEMANA,4470366,farmaciaadospm@hotmail.com,Tirador Milagros,,,2
+8,BANCO DE SANGRE DE PUERTO MADRYN ,Estivariz 260,Laboratorio de análisis clínicos,DIARIA,4456000,s/d,Manera Guillermo Oscar ,,,2
+9,BIOMAD S.R.L.,Belgrano 198 - Of. 7,Laboratorio de análisis clínicos,DIARIA,154604101,s/d,Heck Graciela Alicia ,,,2
+10,BRANDO NORBERTO,Av. Roca 353. 1º Piso,Consultorio médico,3 X SEMANA,4451638,s/d,Brando Norberto ,,,2
+11,BUSTAMANTE HERNAN CARLOS,28 de julio 570,Consultorio odontológico,3 X SEMANA,154620355 - 4458795,herbus@speddy.com.ar,Bustamante Hernan Carlos,,,2
+12,CABRAL EDA,Av. Roca 353. 5to Piso. Ofic. 2,Consultorio odontológico,3 X SEMANA,4475883,consultoriomoz@yahoo.com,Cabral Eda,,,2
+13,CARDIAL PUERTO MADRYN S.A.,Marcos A. Zar 646,Centro de hemodiálisis,DIARIA,4457548 - 4458669,cardialmadryn@speedy.com.ar,Tartaglione Julio Cesar,,,2
+14,CATALAN LUIS ALBERTO,Los Aromos - Quintas el Mirador,Hogar de ancianos,3 X SEMANA,4474316 - 154590430,s/d,Catalan Luis Alberto,,,2
+15,CECVA S/H,Av. Roca 353 - 4º Piso - Ed. Roca II - Dto 6,Consultorio médico,3 X SEMANA,4455892,s/d,Bauk Lucas - Costa Hector A.,,,2
+16,CEDIM,Gales 148,Centro de diagnostico por imágenes,3 X SEMANA,4456357,info@cedimdigital.com.ar,Tempesta Rodrigo,,,2
+17,CENTRO DE LA VISIÓN ,Marcos A. Zar 537,Consultorio médico,DIARIA,4455500,centrodelavision@infovia.com.ar,Federico Luis,,,2
+18,CENTRO DE ORTODONCIA: Reule,25 de Mayo 364 1º Piso. Of. 3,Consultorio odontológico,3 X SEMANA,4455539,centrodeortodonciacr@gmail.com,Reule María Carolina ,,,2
+19,CENTRO DE REHABILITACION PEDIATRICO,San Martin 720,Consultorio médico,3 X SEMANA,s/d,amparo_ledesma@hotmail.com,Ledesma Lozano Maria Amparo,,,2
+20,CENTRO DIAGNOSTICO SAN JORGE S.R.L.,Gob. Maiz 830,Centro de diagnóstico,DIARIA,,ecodoppler@yahoo.com.ar.,Schonfeld Daniel,,,2
+21,CENTRO MEDICO DE LA AVENIDA,Av. Gales 246,Consultorio médico,DIARIA,4471737 - 4471682,graprovidencia@yahoo.com.ar,Perez Maria Graciela,,,2
+22,CENTRO ODONTOLOGICO PUERTO MADRYN,Roque S. Peña 399,Consultorio odontológico,3 X SEMANA,4454774,s/d,Etcharran Ricardo Julio,,,2
+23,CENTRO OFTALMOLOGICO PUERTO MADRYN,Mitre 770,Consultorio médico,DIARIA,4475088,jlinaresdelacal@hotmail.com,Linares de la Cal Jorge A.,,,2
+24,CENTRO ONCOLOGICO PUERTO MADRYN,Moreno 165,Consultorio médico,DIARIA,4456699,s/d,Gallina Nanni Carlos Roman,,,2
+25,CEVET SUR,Av. Roca 1488,Veterinaria,3 X SEMANA,4474783,martinez gonzalesluis@hotmail.com,Martinez Gonzalez Luis Alberto ,,,2
+26,CHICHI MAGDALENA,San Martin 286,Consultorio médico,3 X SEMANA,154600170,magdalenachichi@hotmail.com,Chichi Magdalena,,,2
+27,CHP,Rivadavia 257,Consultorio médico,3 X SEMANA,4455254,marboero@speedy.com.ar,Boeno Marta Sara,,,2
+28,CIK,25 de Mayo 566,Consultorio de kinesiologia,3 X SEMANA,154604653,cik_puertomadryn@yahoo.com.ar,Basilico Sonia Beatriz  ,,,2
+29,CITEN,Mitre 483,Consultorio médico,3 X SEMANA,154457064,s/d,Meternicht Marisa,,,2
+30,CLINICA ADOS,Mitre 472,Consultorio médico,DIARIA,4472548,santamaria-pm@hotmail.com,Nuñez Guillermo ,,,2
+31,CLINICA MEDICA VITANGELO DANIELE,España 215,Consultorio médico,3 X SEMANA,154342664,s/d,Vitangelo Daniele,,,2
+32,CLINICA ODONTOLOGICA MONICA GIL ,Juan Muzzio 886,Consultorio odontológico,3 X SEMANA,154303727,s/d,Gil Monica ,,,2
+33,CLINICA VETERINARIA HUELLA,Sarmiento 858,Veterinaria,3 X SEMANA,154518400,s/d,Sylwan Diego Jorge,,,2
+34,CLINICA VETERINARIA PATAGONICA,Mitre 2310,Veterinaria,3 X SEMANA,154407295,silvinarode@infovia.com.ar,Rodriguez Silvina Vanesa,,,2
+35,CLINICA Y MATERNIDAD SANTA MARIA ,Mitre 651,Clínica,DIARIA,4458726 - 4472548,santamaria-pm@hotmail.com,Nuñez Guillermo Federico ,,,2
+36,COE,Yrigoyen 650,Consultorio odontológico,3 X SEMANA,4470423,s/d,Koenig  Diego Martin David,,,2
+37,COGUAI YENU,Tierra del Fuego y Estivariz,Veterinaria,3 X SEMANA,154402968,s/d,D´Aragona Estefania,,,2
+38,CONSALUD S.H,Mitre 696,Consultorio médico,3 X SEMANA,4452020,consultoioconsalud@gmail.com,Castillo Gisela Vanesa,,,2
+39,CONSULTORIO CARDIOLOGIA: Soumolou,ed. Roca II piso 8 of. 3,Consultorio médico,3 X SEMANA,4482872 - 154673088,s/d,Soumoulou Juan ,,,2
+40,CONSULTORIO DE FONOAUDIOLOGIA: Dominguez,Av. Roca 353 - 4º Piso - Ed. Roca II - Dto 4,Consultorio médico,3 X SEMANA,154567311,s/d,Dominguez Laura Daniela ,,,2
+41,CONSULTORIO De KINESIOLOGIA SUR,Av. Roca 1639,Consultorio de kinesiologia,3 X SEMANA,4474437,jazminpeñaloza@hotmail.com,Peñalozo Veronica,,,2
+42,CONSULTORIO DE KLOGIA,Sarmiento  427,Kinesiología,3 X SEMANA,4474799,s/d,Allende Maxwell Cecilia,,,2
+43,CONSULTORIO DE LA COSTA,España 4,Consultorio médico,3 X SEMANA,4456699,s/d,Vacarezza Viviana,,,2
+44,CONSULTORIO DE MADRYN,San Martin 596,Consultorio médico,3 X SEMANA,154273282,s/d,Arguelles Ana A.,,,2
+45,CONSULTORIO DE PODOLOGIA: Munar,Av. Gales 246,Consultorio médico,3 X SEMANA,154670805,s/d,Munar Monasterio Cristian,,,2
+46,CONSULTORIO GINECOLOGICO MONICA BLUM,Estivariz 233,Consultorio médico,3 X SEMANA,4472223,aymblum@yahoo.com.ar,Dyksztein de Blum Monica,,,2
+47,CONSULTORIO MEDICO,Av. Roca 353 6º piso. Of. B,Consultorio médico,3 X SEMANA,4458868,s/d,Juarez Manuel Sebastian,,,2
+48,CONSULTORIO MEDICO DE LA MUJER,28 de Julio 348,Consultorio médico,3 X SEMANA,4450136,njgambande@hotmail.com,Gambande Nelida Josefina,,,2
+49,CONSULTORIO MEDICO DR. ARCE,Estivariz 197,Consultorio médico,3 X SEMANA,154507777,drfla@yahoo.com,Arce Fernando Luís,,,2
+50,CONSULTORIO MEDICO FERNANDEZ,Belgrano 198,Consultorio médico,3 X SEMANA,4457579,s/d,Fernández Ana Maria ,,,2
+51,Consultorio Médico LLapemn,H. Yrigoyen 673. 1piso. Of. 2,Consultorio Médico,3 X SEMANA,4475692 - 154292477,hcorbalanc2@hotmail.com,Corbalan Hugo ,,,2
+52,CONSULTORIO MEDICO: ABRANY,Mitre 107 - 5º Piso,Consultorio médico,3 X SEMANA,4472627,s/d,Abrany Fortunato,,,2
+53,CONSULTORIO MEDICO: ALEJANDRO BLUM ,Av. Roca 353. Piso 7,Consultorio médico,3 X SEMANA,4472223 - 4474344,aymblum@yahoo.com.ar,Blum Alejandro ,,,2
+54,CONSULTORIO MEDICO: FARJA,s/d,Consultorio médico,3 X SEMANA,s/d,s/d,Farja Carlos ,,,2
+55,CONSULTORIO NEUROREHABILITACION,Villarino 250,Consultorio médico,3 X SEMANA,154585142,pauslu@hotmail.com.ar,Slucinse Paula,,,2
+56,CONSULTORIO ODONTOLOGICO,Sarmiento 181,Consultorio odontológico,3 X SEMANA,s/d,s/d,Santano Matias ,,,2
+57,CONSULTORIO ODONTOLOGICO ARRECHEA,Roque S. Peña 399,Consultorio odontológico,3 X SEMANA,4454774,s/d,Arrechea Ismael Lisandro ,,,2
+58,CONSULTORIO ODONTOLOGICO COSENTINO,Agustin Pujol 706,Consultorio odontológico,3 X SEMANA,154455539,centrodeortodonciacr@gmail.com,Cosentino Lorena Andrea ,,,2
+59,CONSULTORIO ODONTOLOGICO CRISTINA ALCUAZ ,Sarmiento 181,Consultorio odontológico,3 X SEMANA,4456324,s/d,Alcuaz Maria  ,,,2
+60,CONSULTORIO ODONTOLOGICO GIORDANO,Roque S. Peña 399,Consultorio odontológico,3 X SEMANA,s/d,s/d,Giordano Silvina ,,,2
+61,CONSULTORIO ODONTOLOGICO GONZALEZ PUNTER,Roque S. Peña 399,Consultorio odontológico,3 X SEMANA,4454774,s/d,Gonzalez Punter Mauricio,,,2
+62,CONSULTORIO ODONTOLOGICO HIGUERA,Roque S. peña 399,Consultorio odontológico,3 X SEMANA,154418505,s/d,Higuera Magdalena,,,2
+63,CONSULTORIO ODONTOLOGICO LAURA GUERRERO ,Sarmiento 181,Consultorio odontológico,3 X SEMANA,4456324,s/d,Guerrero Laura ,,,2
+64,CONSULTORIO ODONTOLOGICO LAZARO,Agustin Pujol 706,Consultorio odontológico,3 X SEMANA,154360418 - 4457974,s/d,Lazaro Andrea Laura ,,,2
+65,CONSULTORIO ODONTOLOGICO MACCIONE,25 de Mayo 1254,Consultorio odontológico,3 X SEMANA,4457630,madryndent@yahoo.com, Macchione Victorio,,,2
+66,CONSULTORIO ODONTOLOGICO MARIO MARIN ,Sarmiento 181,Consultorio odontológico,3 X SEMANA,4456324,s/d,Marin Mario ,,,2
+67,CONSULTORIO ODONTOLOGICO MILANESIO,25 de Mayo 484,Consultorio odontológico,3 X SEMANA,s/d,s/d,Milanesio Natalia,,,2
+68,CONSULTORIO ODONTOLOGICO MONICA SEGOVIA,Av. Roca 353 entrepiso oficina 11,Consultorio odontológico,3 X SEMANA,4452072,dramonicasegovia@yahoo.com.ar,Segovia Mónica ,,,2
+69,CONSULTORIO ODONTOLOGICO QUAINTENNE,25 de Mayo 1254,Consultorio odontológico,3 X SEMANA,4457630,s/d,Quaintenne Pablo R. ,,,2
+70,CONSULTORIO ODONTOLOGICO REDONDO,28 de Julio 247 1ºB,Consultorio odontológico,3 X SEMANA,4456192,consultorioesteticadental@hotmail.com,Redondo Carlos Alcides,,,2
+71,CONSULTORIO ODONTOLOGICO SANTANO,Mitre 477,Consultorio odontológico,3 X SEMANA,154946432,s/d,Santano Matias Ezequiel,,,2
+72,CONSULTORIO ODONTOLOGICO SEMPER NATALIA,Triunvirato 286,Consultorio odontológico,3 X SEMANA,154600340,dra.nataliasemper@yahoo.com.ar,Semper Natalia,,,2
+73,CONSULTORIO ODONTOLOGICO: Baggio,Love Parry 109,Consultorio odontológico,3 X SEMANA,4458428,maferbaggio@yahoo.com.ar,Baggio Maria Fernanda,,,2
+74,CONSULTORIO ODONTOLOGICO: Kfuri,Love Parry 109,Consultorio odontológico,3 X SEMANA,4458428,s/d,Kfuri Natalia ,,,2
+75,CONSULTORIO ODONTOLÓGICO: LOPEZ GERARDO,Av. Roca 353 Entrepiso A,Consultorio odontológico,3 X SEMANA,154577931,gerarlopez@hotmail.com,Lopez Gerardo,,,2
+76,CONSULTORIO ODONTOLOGICO: Ruiz,Love Parry 109,Consultorio odontológico,3 X SEMANA,4458428,s/d,Ruiz Daniel C.,,,2
+77,CONSULTORIO ODONTOLOGICO: Savachuck,28 de julio 348,Consultorio odontológico,3 X SEMANA,4450135,s/d,Savachuck Marcio ,,,2
+78,CONSULTORIO ODONTOLOGICO: Vera,Av. Roca 353 - entrepiso - Dto. A,Consultorio odontológico,3 X SEMANA,4456026,verapablo@gmail.com,Vera Pablo ,,,2
+79,CONSULTORIO ODONTOLOGICO: Ziegenbalg,s/d,Consultorio odontológico,3 X SEMANA,s/d,s/d,Ziegenbalg Carina,,,2
+80,CONSULTORIO OFTALMOLOGICO DE ALTA COMPLEJIDAD,25 de mayo 560,Consultorio médico,DIARIA,4471282,s/d,Mazzeo Maria Gabriela,,,2
+81,CONSULTORIO ORTODONCIA: Monsalve,Av. Roca 353. Piso 8. Of. 3,Consultorio odontológico,3 X SEMANA,4472872,s/d,Monsalve Miriam Zulli ,,,2
+82,CONSULTORIO PILAR,España 125,Consultorio médico,3 X SEMANA,4455821,s/d,Garcia Perez Fernando,,,2
+83,CONSULTORIO PRIVADO: Calandra,Av. Roca 353 4º piso dpto 4,Consultorio odontológico,DIARIA,4475566,alfredocalandra@speedy.com.ar,Calandra Alfredo,,,2
+84,CONSULTORIO PSICOLOGICO,San Martin 286,Consultorio psicologico,3 X SEMANA,154205483,s/d,Vera Maria Agustina Marta ,,,2
+85,CONSULTORIO PSICOLOGICO ,Belgrano 198,Consultorio psicologico,3 X SEMANA,154613102,s/d,Medici Analia,,,2
+86,CONSULTORIO PSICOLOGICO: Guañabens,Av. Roca 353 Piso Nº 3 Ofic. 2,Consultorio médico,3 X SEMANA,154666527,s/d,Guañabens Pablo,,,2
+87,CONSULTORIO PSICOLOGICO: Medici,Belgrano 198 oficina 9,Consultorio médico,3 X SEMANA,154613102,s/d,Medici Analía Verónica,,,2
+88,CONSULTORIO REY ,Albarracin 264,Consultorio odontológico,3 X SEMANA,154722514,s/d,Rey Alberto Sebastián,,,2
+89,CONSULTORIO TRAUMATOLOGÍA: Barbosa,25 de Mayo 1094,Consultorio médico,3 X SEMANA,4457333,s/d,Barbosa Lucas Martin ,,,2
+90,CONSULTORIO: IRIARTE,Sarmiento 79,Consultorio médico,3 X SEMANA,4451657,s/d,Iriarte Juan Carlos  ,,,2
+91,CONSULTORIOS BAROS,Av. Gales 486,Consultorio médico,3 X SEMANA,154546862,s/d,Taiariol Maria Teresa,,,2
+92,CONSULTORIOS DEL CENTRO ,28 de Julio 329,Consultorio médico,3 X SEMANA,4474118,consul.centro@hotmail.com,Saenz Hernan Jose,,,2
+93,CONSULTORIOS DEL MAR,Roca 791,Consultorio odontológico,3 X SEMANA,***,malcuaz@hotmail.com,Alcuaz Maria Cristina,,,2
+94,CONSULTORIOS DEL PILAR,España 125,Consultorio médico,3 X SEMANA,4455821,s/d,Garcia Perez Fernando,,,2
+95,CONSULTORIOS DEL SOL,Av. Roca 2506,Consultorio médico,3 X SEMANA,154633318,consdelsol@gmail.com,Duscher Paola,,,2
+96,CONSULTORIOS MEDICOS DE HERNANDEZ Y TOYPELLA,Av. Roca 353. 1º Piso. Dto 4,Consultorio médico,3 X SEMANA,4472626,s/d,Hernandez Rodolfo y Toypella Mabel,,,2
+97,CONSULTORIOS MEDICOS: Pajariño,s/d,Consultorio médico,3 X SEMANA,s/d,s/d,Pajariño Susana Beatriz,,,2
+98,CONSULTORIOS MITRE,Mitre 143 locales 5-6-9,Consultorio médico,3 X SEMANA,4476262,s/d,Gomez Anibal Gabriel ,,,2
+99,CONSULTORIOS SUR,Mitre 536,Consultorio odontológico,3 X SEMANA,154511367,monicaplano@hotmail.com.ar,Plano Mónica Mariana,,,2
+100,CRUZ AZUL S.H.,Sarmiento 79,Consultorio médico,DIARIA,4451657,s/d,Iriarte Juan Carlos  ,,,2
+101,CUARTA DIMENSIÓN TATTO 1,9 de Julio 52,Tatuajes,3 X SEMANA,154656556,s/d,León Gustavo Felipe y León Laura,,,2
+102,CUARTA DIMENSIÓN TATTO 2,9 de Julio 52,Tatuajes,3 X SEMANA,154656556,s/d,León Marcelo y León Gabriela,,,2
+103,DE ANNA OFELIA DELFINA,Marcos A. Zar 253,Consultorio médico,3 X SEMANA,4471821,ofelia.de.anna@gmail.com,De Anna Ofelia Delfina,,,2
+104,DESCUBREPUENTES SRL,Rawson 1241,Consultorio médico,3 X SEMANA,154564069,s/d,Gonzalo Puntillo,,,2
+105,DIOGENES,28 de julio 457,Veterinaria,3 X SEMANA,154411024,mascomadryn@hotmail.com,Gallego Maria  Beatriz,,,2
+106,ENTRELAZADAS CONSULTORIOS,Av. Gales 545,Consultorio médico,3 X SEMANA,154564333 - 154606042,entrelazadas@live.com.ar,Lopez Romina,,,2
+107,ENTRELAZADAS CONSULTORIOS,Av. Gales 545,Consultorio médico,3 X SEMANA,154606042,entrelazadas@live.com.ar,Bellorini Mariana,,,2
+108,ENTRELAZADAS CONSULTORIOS,Av. Gales 546,Consultorio médico,3 X SEMANA,154381320,s/d,Santos Maria Nelida,,,2
+109,ENTRELAZADAS CONSULTORIOS,Av. Gales 547,Consultorio médico,3 X SEMANA,154573613,s/d,Altube Mara Lia,,,2
+110,ESTANCIA MADRYN ,Rosales 541,Hogar de ancianos,DIARIA,4472744,estanciamadryn@arnet.com.ar,Estancia Madryn S.A,,,2
+111,ESTUDIO ECO ,Gob. Maiz 225 Of. 1,Consultorio médico,3 X SEMANA,154344117,maryottoclaps@hotmail.com,Claps Maria Sol- Bares Conrado,,,2
+112,FARMA SRL - FARMACIAS PATAGONICAS,San Martin y 28 de julio ,Farmacia,3 X SEMANA,4453708,pedidos28dejulio@farmaciaspatagonicas.com,Amoroso Sergio,,,2
+113,FARMA SRL - FARMACIAS PATAGONICAS,Av. Roca 315,Farmacia,3 X SEMANA,4474555,costanera@farmaciaspatagonicas.com,Querol Fernandez Pablo,,,2
+114,FARMA SRL - FARMACIAS PATAGONICAS,Av. Roca 315,Farmacia,3 X SEMANA,4474555,costanera@farmaciaspatagonicas.com,Querol Fernandez Pablo,,,2
+115,FARMACIA ALZA,Villarino 746,Farmacia,3 X SEMANA,0291-154271532,ezealza@hotmail.com,Alza Roberto Ezequiel,,,2
+116,FARMACIA AMPAL,Uruguay 211,Farmacia,3 X SEMANA,2804457927,farmacia@ampal.org.ar,Filippini Silvina P.,,,2
+117,FARMACIA CENTRAL,25 de Mayo 272,Farmacia,3 X SEMANA,4454804,grujana@farcentral.com.ar,Rujana Gerardo,,,2
+118,FARMACIA CENTRAL Y PERFUMERIA PM S.R.L,Av.Gales 701,Farmacia,3 X SEMANA,4473124,sucursalatlantica@farcentral.com.ar,Irrazabal Cintia,,,2
+119,FARMACIA CURCIO,Av. Juan Muzzio 412,Farmacia,3 X SEMANA,154689449,s/d,Curcio Adrian Ulises,,,2
+120,FARMACIA DASU,Marcos A. Zar 297,Farmacia,3 X SEMANA,4470247,s/d,Morbidoni Gabriela,,,2
+121,FARMACIA DEL GOLFO,Pedro Derbes 480,Farmacia,3 X SEMANA,154456383,farmaciadelgolfo@gmail.com,Galar Maria Eugenia,,,2
+122,FARMACIA DOMECQ GARCIA,Domecq García 401,Farmacia,3 X SEMANA,4457771,farmadomecq@hotmail.com,Julio Aldo Ruben,,,2
+123,FARMACIA EVA SH,España 1530,Farmacia,3 X SEMANA,154209707 - 4470361,leslietomasroberts@gmail.com,Roberts Leslie Tomás,,,2
+124,FARMACIA GALES,Av. Roca 2438,Farmacia,3 X SEMANA,4456288,farmaciagales@speedy.com.ar,Grassl Ana Maria,,,2
+125,FARMACIA GLOBAL,Av. Gales 1310,Farmacia,3 X SEMANA,s/d,mlanz@farmaciasglobal.com.ar,Lanz Mauro,,,2
+126,FARMACIA GLOBAL,Mitre 357,Farmacia,3 X SEMANA,4458254,madrynmitre357efarmavasglobal.com.ar,Casimano Georgina,,,2
+127,FARMACIA LA GUARDIA,H.Yrigoyen 802,Farmacia,3 X SEMANA,4455825,s/d,Grzeszuk Elena Nieves,,,2
+128,FARMACIA MENDEZ,Domecq Garcia 356,Farmacia,3 X SEMANA,154416946,gladys@hotmail.com,Mendez Beatriz,,,2
+129,FARMACIA MODERNA,Mitre 502,Farmacia,3 X SEMANA,4473788,s/d,Ada Manuela Sassi,,,2
+130,FARMACIA OESTE,25 de Mayo 59,Farmacia,3 X SEMANA,4451119,farmacia.oeste@speedy.com.ar,Demasi Gustavo,,,2
+131,FARMACIA PROSALUD,Mitre 719,Farmacia,3 X SEMANA,4473895,amatinleiva@hotmail.com,Leiva Angel Martin,,,2
+132,FARMACIA SAN CAYETANO,Pedro Derbes 480,Farmacia,3 X SEMANA,154377401,jmtortola@hotmail.com,Tortola Jorge M.,,,2
+133,FERNANDEZ GISELA EDITH ,Av. Roca 353 Piso 7 Of. 4,Consultorio odontologico,3 X SEMANA,154006624,s/d,Fernandez Gisela Edith,,,2
+134,FKT PATAGONIA,Alem 255,Kinesiología,3 X SEMANA,154593374,fktpatagonia@gmail.com,Williams Erica,,,2
+135,FUNDACION EL SOLAR,Marcos A. Zar 243,Hogar de ancianos,DIARIA,154551182,patriciae@hotmail.com.ar,Barac Patricia ,,,2
+136,GABINETE DE KINESIOLOGIA,Marcos A. Zar 24,Consultorio médico,3 X SEMANA,154572722,s/d, Garcia Gustavo Marcelo,,,2
+137,GATICA PAOLA,Av. Gales 246,Consultorio odontológico,3 X SEMANA,s/d,s/d,Gatica Paola,,,2
+138,IDECH S.R.L.,Juan B. Justo 496,Centro de diagnóstico,DIARIA,4474338 - 4450548,idechpmsrl@speedy.com.ar,Massenzio Alejandro,,,2
+139,IKAP,Paulina Escardo 177,Consultorio médico,3 X SEMANA,154314265,williams_mariela@hotmail.com,Williams Nilda Mariela,,,2
+140,INSTITUTO PRIVADO DE ANALISIS CLINICOS,25 de Mayo 408,Laboratorio de análisis clínicos,DIARIA,4454777,pedrolodes@gmail.com,Lodes Pedro Alfredo ,,,2
+141,IPAMER S.R.L.,25 de mayo 969,Consultorios Médicos y Laboratorio ,DIARIA,154313663,marcela0103@yahoo.com.ar,Iglesias Nelida Marcela,,,2
+142,IPRO SRL,Albarracin 336,Consultorio odontológico,3 X SEMANA,4471226 - 4476138,ipro@speedy.com.ar,Barrientos Ermes Rene,,,2
+143,IPRO SRL,Albarracin 357,Servicios de diagnosticos por imágenes,3 X SEMANA,4471226 - 4451184,administracion@ipromadryn.com.ar,Barrientos Ermes Rene,,,2
+144,IREZUMI TATOO,Marcos A. Zar 705,Tatuajes,3 X SEMANA,154604005,s/d,Castel Juan Ignacio,,,2
+145,JURE LUIS CESAR,Villarino 297,Consultorio odontológico,3 X SEMANA,4454610,consultoriojure@yahoo.com.ar,Jure Luis Cesar,,,2
+146,KIAK,H. Yrigoyen 820,Consultorio médico,3 X SEMANA,154565572,s/d,Francisquelo Mariana Elisa,,,2
+147,KIDET,Av. Gales 24,Kinesiología,3 X SEMANA,s/d,s/d,Monochio Nicolas,,,2
+148,KINAR,Newbery 609 esquina Alvear,Consultorio médico,3 X SEMANA,154664870,kinasur@yahoo.com.ar,Sosa Gerardo Fabian,,,2
+149,KINEA ,España  1242,Kinesiología,3 X SEMANA,154607217,s/d,Arce Elizabeth del Carmen,,,2
+150,KINESIOLOGIA ,25 de Mayo 1094,Consultorio médico,3 X SEMANA,4457333,cesarhar@hotmail.com,Harguimteguy Cesar,,,2
+151,KINESIS,Av. Roca 2573,Consultorio de kinesiologia,3 X SEMANA,154563150,s/d,Nudelman Matias,,,2
+152,KINETIC,San Martin 286,Consultorio médico,3 X SEMANA,154513001,agustinadelrio@hotmail.com,Del Río Maria Agustina ,,,2
+153,LABOR AUSTRAL,Laprida 42,Consultorio médico,DIARIA,4457378 - 4475789,gerencialabaustral@speedy.com.ar,Kanter Beatriz May ,,,2
+154,LABORAL MADRYN S.H.,Albarracin 335,Consultorio médico,3 X SEMANA,4475721,laboralmadryn@hotmail.com,Stenti Beatriz,,,2
+155,LABORATORIO BIOMADRYN,25 de Mayo 125. 1º Piso,Laboratorio de análisis clínicos,DIARIA,4471116 - 154454505,lbearzi@biomadryn.com.ar,Bearzi Wargon Liliana ,,,2
+156,LABORATORIO BIOSUD DE VALERIA KOWALJOW,Laprida 42,Laboratorio de análisis clínicos,DIARIA,4470163,biosud@speedy.com.ar,Kowaljow Valeria ,,,2
+157,LABORATORIO BRIVEL,Sarmiento 676,Laboratorio de análisis clínicos,DIARIA,154621937,labritos@yahoo.com,Britos Manriquez Lucas Federico,,,2
+158,LABORATORIO CLINICO DE PUERTO MADRYN ,Estivariz 260,Laboratorio de análisis clínicos,DIARIA,154369903,mcpretell@gmail.com, Pretell Mariana,,,2
+159,LABORATORIO DE ANALISIS CLINICOS,Gob. Maiz 830,Laboratorio de analisis clinicos,DIARIA,4454505,s/d,Beazzi Liliana,,,2
+160,LABORATORIO DE ANALISIS CLINICOS,Mitre 476 PB,Laboratorio de análisis clínicos,DIARIA,4456291,quiros.gustavo@gmail.com,Quiros Gustavo  ,,,2
+161,LABORATORIO DE ANALISIS CLINICOS ,Sarmiento 125,Laboratorio de análisis clínicos,DIARIA,4450709,labruiz-heck@hotmail.com,Ruiz Ana Maria,,,2
+162,LABORATORIO DEL CENTRO,28 de Julio 329,Laboratorio de análisis clínicos,DIARIA,4456398,lbearzi@biomadryn.com.ar,Bearzi Wargon Liliana,,,2
+163,LABORATORIO SAN JOSE,Juan B. Justo 799,Laboratorio de analisis clinicos,DIARIA,154001174,s/d,Rodriguez Calvo Vilma - Veliz Oscar Enrique,,,2
+164,LACyB SH,9 de Julio 458,Laboratorio de análisis clínicos,DIARIA,4471082,lacybsh@speedy.com.ar,Santamaría Emilio,,,2
+165,LOPEZ MARIA LAURA,25 de Mayo 364. 1º Piso. Of. 3,Consultorio odontológico,3 X SEMANA,2262610990,mlaura_164@hotmail.com,Lopez Maria Laura,,,2
+166,LOS CHARITOS,Juan B. Justo 1366,Veterinaria,3 X SEMANA,4475638,s/d,Melchi Marcelo ,,,2
+167,LOS PARAISOS,Los Olmos 2225,Hogar de ancianos,DIARIA,44533851,crisjuulzbogado@hotmail.com,Bogado Cristina,,,2
+168,LUCKY TATTOO ESTUDIO,Av. Roca 904 local 2,Tatuajes,3 X SEMANA,154636049,laureano@gmail.com,Ortega Laureano,,,2
+169,LUCKY TATTOO STUDIO,Av. Roca 904 ,Tatuajes,3 X SEMANA,154636049,laureanoo@gmail.com,Ortega Laureano,,,2
+170,LUZ DE ESPERANZA,Arrayanes 3925,Hogar de ancianos,DIARIA,154027668,s/d,Zappella Roberto Daniel,,,2
+171,MANUEL VILLEGAS,Av. Gales 246,Consultorio odontológico,3 X SEMANA,4456611,manuvillegas@hotmail.com,Villegas Manuel,,,2
+172,MARIA BELEN MATTEO,Av. Roca 353 Piso Nº 1,Consultorio odontológico,3 X SEMANA,381154012318,s/d,Matteo Maria Belen,,,2
+173,MATICES,Villegas 507,Consultorio médico,3 X SEMANA,4455372 -154720451,msaborit@hotmail.com, Saborit Calvo Maria Belen,,,2
+174,MEC,Mendoza 950,Consultorio Medico,3 X SEMANA,4453774,s/d,Campos Aldo Ruben,,,2
+175,MEDICINA LABORAL SAN CAMILO,Mitre 650,Consultorio médico,3 X SEMANA,4472291,federicoditata@hotmail.com,Buschittari Viviana,,,2
+176,MEDICINA LABORAL SAN CAMILO,Mitre 650,Laboratorio de análisis clínicos,DIARIA,4472117,bioclin@speedy.com.ar,Buschittari Viviana,,,2
+177,MEDISUR  MUTUAL,Mosconi 187,Farmacia,3 X SEMANA,4457260,s/d,Fortunato Abrany,,,2
+178,MEDLAB,B.Mitre 632,Laboratorio de análisis clínicos,DIARIA,154341451,buschittari@hotmail.com,Buschittari Viviana,,,2
+179,MONTAÑO MARCELA,Mitre 880,Consultorio médico,3 X SEMANA,154562404,s/d,Montaño Marcela,,,2
+180,N Y K ODONTOLOGIA,Mitre 675,Consultorio odontológico,3 X SEMANA,154696126,kv_martin@hotmail.com,Martin Karina,,,2
+181,NEXO MEDICINA LABORAL S.H.,Domecq García Norte 37,Consultorio médico,3 X SEMANA,4454298,s/d,Cuello Gustavo ,,,2
+182,ODONTAR,Av. Roca 353 local 4 Piso 7,Consultorio odontológico,3 X SEMANA,4470124,s/d,Fernandez Gisela Edith,,,2
+183,ODONTOLOGIA ADRIAN GARCIA,Estivariz 245,Consultorio odontológico,3 X SEMANA,4455645,s/d,Garcia José Adrian ,,,2
+184,ODONTOLOGIA GALES ,Av. Roca 791,Consultorio odontológico,3 X SEMANA,154653202,ivinf@yahoo.com.ar,Fernandez Ivana Noemi ,,,2
+185,ODONTOLOGIA GENERAL,Av. Roca 353. Piso 2. Cons. 3,Consultorio médico,3 X SEMANA,4455328,magdamadryn@hotmail.com,Ellert Magda Ingrid,,,2
+186,ODONTOLOGIA MADRYN,25 de Mayo 786,Consultorio odontológico,3 X SEMANA,154402289,s/d,Ortiz Gonzalo,,,2
+187,ODONTOLOGIA MADRYN,25 de Mayo 786,Consultorio odontológico,3 X SEMANA,4457407,odontologiamadryn1@gmail.com,Ortiz Gonzalo,,,2
+188,OFTALMOMADRYN ,25 de Mayo 560,Consultorio médico oftalmologico,DIARIA,4471282,kagringuita@yahoo.com.ar,Chavez Raraz Quiniano,,,2
+189,PCM KINESIOLOGIA PISCIUM s.r.l,Sarmiento 151,Kinesiología,3 X SEMANA,154503868,s/d,Moretta Gustavo,,,2
+190,QUINTAS DEL MIRADOR,Los Aromos 2525,Hogar de ancianos,3 X SEMANA,154022578,s/d,Liranzo Peralta Ana Julia,,,2
+191,RADIOLOGIA DIGITAL,25 de Mayo 364. 1ºPiso. Of. 3,Centro de diagnóstico,3 X SEMANA,4455539,s/d,Reule Carolina,,,2
+192,RAZA TATTOO AND PIERCING,Roque S. Peña 172 Local 5,Tatuajes,3 X SEMANA,154613838,s/d,Muñoz Victor Antonio,,,2
+193,RUIZ - HECK LABORATORIO DE ANALISIS CLINICO,España 6,Laboratorio de análisis clínicos,DIARIA,4450709,labruiz-heck@hotmail.com,Ruiz Ana Maria,,,2
+194,SALK S.R.L,Marcos A. Zar 398,Farmacia,3 X SEMANA,154450857,s/d,Cecchi Ponzi Carolina,,,2
+195,SALUD ODONTOLOGIA,Juan B. Justo 834,Consultorio odontológico,3 X SEMANA,154190352,drmereles@hotmail.com,Mereles Cristian Rubén,,,2
+196,SAN IGNACIO S.R.L.,Reconquista 651,Psiquiatría,3 X SEMANA,4471661 - 154661824,san-ignacio@speedy.com.ar,Cogliandro Roberto ,,,2
+197,SANATORIO DE LA CIUDAD SRL ,Laprida 42,Clínica,DIARIA,4451270 - 154406526,gerenciasnciudad@speedy.com.ar - snciudad@speedy.com.ar,Kanter Marcelo Luis ,,,2
+198,SEP SRL,Sarmiento 125,Consultorio médico,DIARIA,154660895,marcelovaccaro2000@yahoo.com.ar,Vaccaro Marcelo Fabian,,,2
+199,SERFARMA,España 914,Farmacia,3 X SEMANA,4458515,serfarmapm@gmail.com,Pritchard Esteban Marcos,,,2
+200,SERVICIO RADIOLOGICO SEP,Sarmiento 125,Servicios radiológicos,3 X SEMANA,154649629,s/d,Arballo Fabian,,,2
+201,SINDICATO DE EMPLEADOS DE COMERCIO ,Fuerte San Jose 346,Consultorio médico,DIARIA,4470344- 4472423,robertocasanoba58@hotmail.com,Smit Guillermo Luis,,,2
+202,TALIERCIO THELMA NATALIA,Av.Roca 353 PB Of. 8,Consultorio odontológico,3 X SEMANA,154196266,s/d,Taliercio Thelma Natalia,,,2
+203,TEMPESTA - FIORENZA,28 de Julio 173 PB,Consultorio odontológico,3 X SEMANA,221-155628581,s/d,Tempesta Rodrigo,,,2
+204,UTHAGRA,Gob. Maiz 516,Consultorio Médico,3 X SEMANA,4452893,s/d,Rosales Patricio - Dignoti Maria Belen,,,2
+205,VALLE SOL,Quintas del Mirador - Calafate 3980,Hogar de ancianos,DIARIA,154882208,s/d,Liranzo Peralta Ana Julia,,,2
+206,VERA AGUSTINA MARCIA,San Martín 286,Psicología,3 X SEMANA,154205483,s/d,Vera Agustina Marcia,,,2
+207,VETERINARIA DR. MIÑONES,Mitre 463,Veterinaria,3 X SEMANA,4472410,s/d,Miñones Jose Alberto ,,,2
+208,VETERINARIA EL QUEBRACHO ,Domecq Garcia 317,Veterinaria,3 X SEMANA,154416679,gparodi@speedy.com.ar,Parodi Guillermo ,,,2
+209,VETERINARIA HOCICOS Y BIGOTES,Juan B. Justo 1576,Veterinaria,3 X SEMANA,154563353,4470656,Bracchi Daniel ,,,2
+210,VETERINARIA HOCICOS Y BIGOTES 2,Albarracin 375,Veterinaria,3 X SEMANA,154563353,s/d,Bracchi  Daniel,,,2
+211,VETERINARIA LUAN,H. Yrigoyen 925,Veterinaria,3 X SEMANA,154580309,s/d,Escobar Milner Sol Ena,,,2
+212,VETERINARIA PASTEUR,Fournier 1385,Veterinaria,3 X SEMANA,154351869,s/d,Fernandez Malvina Brenda,,,2
+213,VETERINARIA PEUMAYEN,Zampa 2385,Veterinaria,3 X SEMANA,154583472,s/d,Wolawsky Marina,,,2
+214,VETERINARIA SAN CARLOS,Albarracin 375,Veterinaria,3 X SEMANA,154606841,silviacabezon@yahoo.com.ar,Cabezon Silvia Josefina,,,2
+215,VETERINARIA VIDAL,San Martin 998,Veterinaria,3 X SEMANA,4471790,jhonyvidal@yahoo.com.ar,Vidal Davila Jhony Riderth,,,2
+216,VETERNIARIA VIDAL,Av. Roca 1143,Veterinaria,3 X SEMANA,4471790,s/d,Ortiz Lorena Vanesa,,,2
+217,VIRTUAL,25 de Mayo 725,Consultorio médico,DIARIA,4471498,dravizcay@hotmail.com,Vizcay Vivian,,,2
+218,VITALIS PUERTO MADRYN,Av. Roca 1024 lc. 2,Consultorio odontologico,3 X SEMANA,4453644,s/d,Amieva Mariela Soledad,,,2
+219,ZOO VITAL,s/d,Veterinaria,3 X SEMANA,s/d,s/d,Alemán Mayra ,,,2
+220,SERVICIOS VETERINARIOS,25 DE MAYO Nº 1588,VETERINARIA,3 X SEMANA,,,,,,1
+221,FARMACIA CENTRAL,25 DE MAYO Nº1116,FARMACIAS,3 X SEMANA,,,,,,1
+222,FARMACIA QUEROL,25 DE MAYO Nº401,FARMACIAS,3 X SEMANA,,,,,,1
+223,PERIF. ABEL AMAYA,25 DE MAYO Y GASTRE NORTE,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+224,ARCADIA,28 DE JULIO 371,EMERGENCIAS MED.,3 X SEMANA,,,,,,1
+225,EVANS OSVALDO JAVIER,28 DE JULIO 484,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+226,SONEYRA RAUL,28 DE JULIO 527,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+227,LLOYD CRISTIAN,28 DE JULIO 548,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+228,ALTUNA MARIO,28 DE JULIO 548 (CENTRO ESTETICA ODONTOLOGICA),ODONTÓLOGOS,3 X SEMANA,,,,,,1
+229,PFISTER FABIANA,28 DE JULIO 553,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+230,LADIAC,28 DE JULIO 613,LABORATORIO,DIARIA,,,,,,1
+231,VILLANI CARLOS ANGEL,28 DE JULIO 623,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+232,VILLANI MARCELO-BOTELA CECILIA,28 DE JULIO 629,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+233,STICCO ABEL,28 DE JULIO 708,EMERGENCIAS MED.,3 X SEMANA,,,,,,1
+234,DENTO IMAGEN S.H.,28 DE JULIO 708,EMERGENCIAS MED.,3 X SEMANA,,,,,,1
+235,ARCE AIDA ESTER,28 DE JULIO 784,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+236,PEREZ PATRICIA,28 DE JULIO 793,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+237,HOSPITAL ZONAL TRELEW,28 DE JULIO Nº 140,HOSPITAL,DIARIA,,,,,,1
+238,COOP. ELECTRICA DE TW. (SEPELIO),28 DE JULIO Nº 1860,VARIOS,3 X SEMANA,,,,,,1
+239,CONSULTORIOS EXTERNOS (H.Z.T.),28 DE JULIO Nº 434,HOSPITAL,DIARIA,,,,,,1
+240,STAGNITTA GRACIELA,28 DE JULIO Nº 527,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+241,FARMACIA YRIGOYEN,28 DE JULIO Nº 660,FARMACIAS,3 X SEMANA,,,,,,1
+242,DE MORENO MARISA,28 DE JULIO Nº 702,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+243,CARDOSO CRISTINA,28 DE JULIO Nº 708,VARIOS,3 X SEMANA,,,,,,1
+244,LEYRIA FERNANDO,28 DE JULIO Nº 784,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+245,ROBERTO MARTINEZ,28 DE JULIO Nº 831,LABORATORIO,DIARIA,,,,,,1
+246,QUIROGA LILIANA,28 DE JULIO Nº527,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+247,CONTINI HECTOR,28 DE JULIO Nº553,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+248,FARMACIA ADOS,28 DE JULIO Nº722,FARMACIAS,3 X SEMANA,,,,,,1
+249,ENFERMERIA FLEMING,9 DE JULIO 427,ENFERMERÍAS,3 X SEMANA,,,,,,1
+250,LOSTRA OSCAR,9 DE JULIO 742,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+251,SANCHEZ CORDI MARIANO,9 DE JULIO 742,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+252,DA FONSECA PABLO,9 DE JULIO 772,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+253,CUART ORLANDO GABRIEL,9 DE JULIO 772,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+254,CEMOD,9 DE JULIO Nº 128-LOC 2,VARIOS,3 X SEMANA,,,,,,1
+255,CLINICA VETERINARIA DEL SUR GUSTAVO TALAVERA,9 DE JULIO Nº 138,VETERINARIA,3 X SEMANA,,,,,,1
+256,CUERPO MEDICO FORENSE (ZARATE),9 DE JULIO Nº 261,VARIOS,3 X SEMANA,,,,,,1
+257,ADMINISTRACION JUDICIAL TRELEW (SECUESTROS),9 DE JULIO Nº 261 2º PISO,VARIOS,3 X SEMANA,,,,,,1
+258,MINIST.PUB.FISCAL(SECUESTROS BIOLOGICOS),9 DE JULIO Nº 261 2º PISO,VARIOS,3 X SEMANA,,,,,,1
+259,BALUL LEILA,9 DE JULIO Nº 772,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+260,FARMACIA ANIKA,9 DE JULIO Y MITRE,FARMACIAS,3 X SEMANA,,,,,,1
+261,TENOVSKI MONICA,A P BELL 655,VARIOS,3 X SEMANA,,,,,,1
+262,LIMA CRISTIAN,A.P.BELL Nº 702,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+263,CENTRO DE ESPEC. MEDICAS Y ODONTOLOGICAS,ALBERDI Nº 466,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+264,LUXOR S.R.L.,ALEM Nº 325,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+265,COLANTONIO LEANDRO,ALEM Nº 825 (ENTRE CARRASCO Y MUZIO),ODONTÓLOGOS,3 X SEMANA,,,,,,1
+266,PERIF. VILLA ITALIA,ALEM Y LOVE PARRI,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+267,DIAGNÓSTICO CARDIOVASCULAR,AMEGHINO N°264,EMERGENCIAS MED.,3 X SEMANA,,,,,,1
+268,FRACASSO AMELA,AMEGHINO N°275,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+269,DAYLOPLAS DE JOSE LUIS SUAREZ,AMEGHINO N°375,PODOLOGOS,3 X SEMANA,,,,,,1
+270,S.A.P.P. S.R.L.,AMEGHINO N°447,EMERGENCIAS MED.,3 X SEMANA,,,,,,1
+271,AUSTRAL,AMEGHINO N°447,LABORATORIO,DIARIA,,,,,,1
+272,VETERINARIA CANTO,AMEGHINO N°473,VETERINARIA,3 X SEMANA,,,,,,1
+273,MEDICINA NUCLEAR S.R.L.,AMEGHINO N°474 1º PISO,ENFERMERÍAS,3 X SEMANA,,,,,,1
+274,NATIVUS S.R.L,AMEGHINO N°902 ESQ. LIBERTAD,CLINICAS Y SANAT.,DIARIA,,,,,,1
+275,PERIF. ETCHEPARE,ARTIGAS Y CAMBRIN,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+276,BIANCOTTI-BONAFINA,AV. GALES 323,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+277,FARMACIA CHANGO MAS (WALMART S.R.L),AVDA. EVA PERÓN Nº719,FARMACIAS,3 X SEMANA,,,,,,1
+278,LOPEZ JULIAN MARINO,AVENIDA RAWSON Nº 423,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+279,SOLIVELLA MARIA SILVIA,Bª LOS MIMBRES-CHACRA 86,PODOLOGOS,3 X SEMANA,,,,,,1
+280,KRISTOFIS CLAUDIA,BELGRANO N° 240 2° B,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+281,GIL GUERRERO FRANCISCO,"BELGRANO N° 240 2º ""A""",ODONTÓLOGOS,3 X SEMANA,,,,,,1
+282,CASTAN PABLO,BELGRANO N° 525,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+283,FESTA ROBERTO,BELGRANO N° 558,PODOLOGOS,3 X SEMANA,,,,,,1
+284,CICCIA ADRIAN,BELGRANO N° 586,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+285,MAIRAL EDUARDO,BELGRANO N° 618,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+286,NEUROCIENCIA S.A,BELGRANO N°1008 ESQ      RONDEAU,CLINICAS Y SANAT.,DIARIA,,,,,,1
+287,CONSULTORIOS CABOT DE CALANDRIA JOSÉ,BELGRANO N°1097,CLINICAS Y SANAT.,DIARIA,,,,,,1
+288,NAZAR MARIA CRISTINA,BOLIVIA 662 EX 30,OTALMOLOGOS,3 X SEMANA,,,,,,1
+289,PERIF. CORRADI,BURMEISTER Y PASCUAL DALEOSO,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+290,VALENCIA ELISA,CABOT 410,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+291,CIMADEVILLA MARIANA,CABOT 684,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+292,VETERINARIA YOPPEN,CABOT Nº 680,VETERINARIA,3 X SEMANA,,,,,,1
+293,GALIANO DANIEL,CAMBRIN 1562,VARIOS,3 X SEMANA,,,,,,1
+294,ORBUJ ALDO,CAMBRYN Y BELGRANO,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+295,PERIF. SAN MARTIN,CARLOS GARDEL Y SOLDADO ORTEGA,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+296,LOCATELLI  NICOLAS LUCIANO,CENTENARIO 51,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+297,PEREYRA PABLO,CENTENARIO 51,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+298,SALUD MENTAL Y ADICCIONES DEL HOSPITAL ZONAL TW,CHILE 37,CLINICAS Y SANAT.,DIARIA,,,,,,1
+299,VETERINARIA DIAGNOVET S.R.L.,CHILE 73,VETERINARIA,3 X SEMANA,,,,,,1
+300,MARTINEZ HAYDEE,CHILE Nº 173,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+301,GODOY ELSA,CONDARCO Y BROWN,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+302,ARANEDA GUSTAVO,DON BOSCO N° 194,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+303,LOPEZ RUIZ DIAZ JULIO,DON BOSCO N° 291,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+304,BARTELS SERGIO,DON BOSCO N° 291,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+305,BRAMUGLIA BETINA,DON BOSCO N° 291,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+306,BISCONTI LAURA ANTONELLA,DON BOSCO N° 291,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+307,PEREZ ANNA JOSE MAXIMILIANO,DON BOSCO N° 370,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+308,PERIF. LA LOMA,ECUADOR Y RAMON Y CAJAL,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+309,S.E.C. TRELEW,EDISON 330,VARIOS,3 X SEMANA,,,,,,1
+310,GÉNESIS S.H,EDISON N° 430,CLINICAS Y SANAT.,DIARIA,,,,,,1
+311,FARMACIA SALK,EDISON Y SAN MARTIN,FARMACIAS,3 X SEMANA,,,,,,1
+312,RENTERIA BELTRAN RUBEN,ESPAÑA 270,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+313,PERIF. CONSTITUCION,ESTADOS ARABES Y AV.LA PLATA,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+314,ACOSTA MONICA,FONTANA 494 ESQ.DON BOSCO,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+315,INST.DEL DIAG.DEL ESTE DEL CH.,GALINA 650,EMERGENCIAS MED.,3 X SEMANA,,,,,,1
+316,PRC CHUBUT,GALO LOBATO Nº 5003-PARQUE INDUSTRIAL,VARIOS,3 X SEMANA,,,,,,1
+317,PERIF. PLANTA DE GAS,HERNANDEZ Y JOSE BARRETA S/N,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+318,PAMI,INMIGRANTES N° 122,CLINICAS Y SANAT.,DIARIA,,,,,,1
+319,ORIVE STELLA MARIS,INMIGRANTES N° 428,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+320,LLARGUES JAVIER,INMIGRANTES N° 490,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+321,INSTITUTO DEL CORAZÓN DEL RÍO DE LA PLATA S.A,INMIGRANTES N° 50,CLINICAS Y SANAT.,DIARIA,,,,,,1
+322,TREMED S.R.L.,INMIGRANTES N° 50,EMERGENCIAS MED.,3 X SEMANA,,,,,,1
+323,PUGH RICARDO,INMIGRANTES N° 53,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+324,CARDIAL TRELEW S.R.L,INMIGRANTES N° 567,CTRO. HEMAT. Y HEMODIALISIS,DIARIA,,,,,,1
+325,LABORATORIO DE ANATOMÍA PATOLÓGICA,ITALIA,LABORATORIO,DIARIA,,,,,,1
+326,LOPEZ BERTA,ITALIA 170,PODOLOGOS,3 X SEMANA,,,,,,1
+327,PROSATE S.S,ITALIA Y MORENO,CLINICAS Y SANAT.,DIARIA,,,,,,1
+328,AREA PROGRAMATICA TRELEW,ITALIA Y MORENO,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+329,ADOS TRELEW,ITALIA Y PJE.JUJUY,VARIOS,3 X SEMANA,,,,,,1
+330,ROMBYS NOEMI,JUAN MANUEL DE ROSAS 1639,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+331,ZARO PAULA,JULIO A. ROCA 255 OF 4 E/MITRE Y RIVADAVIA-TW,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+332,SCHULMAN ALBERTO,JULIO A. ROCA N° 123,LABORATORIO,DIARIA,,,,,,1
+333,GOLDARACENA EDUARDO,JULIO A. ROCA N° 204,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+334,KRAUS MAURICIO,JULIO A. ROCA N° 253,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+335,FALCON MARIA LAURA,JULIO A. ROCA N° 505,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+336,CETHA CARDIOVASCULAR S.R.L.,JULIO A. ROCA N° 850,EMERGENCIAS MED.,3 X SEMANA,,,,,,1
+337,VETERINARIA PATAGÓNICA-TRELEW,JULIO A. ROCA Nº 1239 (E/URUGUAY Y ENTRE RÍOS),VETERINARIA,3 X SEMANA,,,,,,1
+338,RODRIGUEZ SILVIO,JULIO A. ROCA Nº 607,OTALMOLOGOS,3 X SEMANA,,,,,,1
+339,UNIVERSIDAD SAN JUAN,JULIO A. ROCA Y BELGRANO,VARIOS,3 X SEMANA,,,,,,1
+340,PERIF. DON BOSCO,LOS ANDES NORTE Nº410,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+341,RES.GER. PEWEN KUKU S.R.L.,LOTE 2-CHACRA 93 SUR,GERIATRICOS Y ASILOS,3 X SEMANA,,,,,,1
+342,VETERINARIA PATAS,MARCONI (N) N° 118,VETERINARIA,3 X SEMANA,,,,,,1
+343,FELDMAN SERGIO,MARCONI N° 144,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+344,MASSONI NILDA,MARCONI N° 374,LABORATORIO,DIARIA,,,,,,1
+345,GOMEZ OSCAR,MARCONI N° 374 Y AMEGHINO 503,CTRO. HEMAT. Y HEMODIALISIS,DIARIA,,,,,,1
+346,CLÍNICA SAN PABLO,MARCONI N° 438,CLINICAS Y SANAT.,DIARIA,,,,,,1
+347,BOVCON FERNANDO,MARCONI N° 508,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+348,BRUNT MAURICIO FABIAN,MARCONI N° 594,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+349,SAHAGUN GARCIA,MITRE 604,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+350,VETERINARIA LAGO-ARAUJO,MITRE Nº 1131,VETERINARIA,3 X SEMANA,,,,,,1
+351,CORIA CAROLINA YOLANDA,MITRE Nº 183,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+352,FARMA S.R.L (PATAGÓNICA),MITRE Nº 598,FARMACIAS,3 X SEMANA,,,,,,1
+353,VETERINARIA DEL SOL,MITRE Nº 674,VETERINARIA,3 X SEMANA,,,,,,1
+354,ISSS,MITRE Y RAWSON,VARIOS,3 X SEMANA,,,,,,1
+355,CENTRO VETERINARIO TRELEW,MORENO N° 1479 (ENTRE GALINA Y ARON JENKIS),VETERINARIA,3 X SEMANA,,,,,,1
+356,LAC TRELEW S.RL,MORENO N° 326Y CABOT Y BE,LABORATORIO,DIARIA,,,,,,1
+357,INSTITUTO MÉDICO DEL SUR,MORENO N° 333,CLINICAS Y SANAT.,DIARIA,,,,,,1
+358,ALVAREZ RICARDO,MORENO N° 473,EMERGENCIAS MED.,3 X SEMANA,,,,,,1
+359,GRACI GISEL,MORENO N° 473,VARIOS,3 X SEMANA,,,,,,1
+360,CENTRO DE DIA,PARAGUAY N° 237,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+361,CEMIT S.R.L.,PARAGUAY N° 25,EMERGENCIAS MED.,3 X SEMANA,,,,,,1
+362,EMSA SA (SUC TRELEW),PARAGUAY N° 37,VARIOS,3 X SEMANA,,,,,,1
+363,ASOCIACIÓN DE SANATORIOS,PARAGUAY N° 74,CLINICAS Y SANAT.,DIARIA,,,,,,1
+364,HAMZE JOSE LUIS,PARAGUAY N° 749,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+365,ELIAS GUSTAVO ENRIQUE,PARAGUAY N° 749-ROCA 1865-PTO MADRYN,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+366,LUNA VICTOR,PECORARO N° 314,VARIOS,3 X SEMANA,,,,,,1
+367,SANATORIO TRELEW S.R.L,PECORARO N° 460,CLINICAS Y SANAT.,DIARIA,,,,,,1
+368,CAPORALINI   S.A,PECORARO N° 480,LABORATORIO,DIARIA,,,,,,1
+369,CENTRO DE PEDICURIA,PECORARO N° 567,PODOLOGOS,3 X SEMANA,,,,,,1
+370,VETERINARIA SAN JORGE DE ROXANA GIOVENALE,PECORARO NORTE N° 183,VETERINARIA,3 X SEMANA,,,,,,1
+371,FERNANDEZ  ALBERTO  EMILIO,PECORARO Y 9 DE JULIO,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+372,FERNANDEZ  ALBERTO  EMILIO,PECORARO Y 9 DE JULIO,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+373,TATOO MAX´S TRELEW,PELLEGRINI N° 1326,TATUAJES,3 X SEMANA,,,,,,1
+374,FARMACIAS PELLEGRINI,PELLEGRINI N° 1632,FARMACIAS,3 X SEMANA,,,,,,1
+375,VETERINARIA CHUBUT,PELLEGRINI N° 1896,VETERINARIA,3 X SEMANA,,,,,,1
+376,OSDE BINARIO,PELLEGRINI N° 262,VARIOS,3 X SEMANA,,,,,,1
+377,ALANIZ MARIA LAURA,PELLEGRINI N° 278 OFICINA 3,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+378,NEW MEDIC S.R.L.,PELLEGRINI N° 504,CLINICAS Y SANAT.,DIARIA,,,,,,1
+379,TAC S.A.,PELLEGRINI N° 590,VARIOS,3 X SEMANA,,,,,,1
+380,CLÍNICA MÉDICA DEL VALLE,PELLEGRINI N° 631,CLINICAS Y SANAT.,DIARIA,,,,,,1
+381,ANTONENA PATRICIA,PELLEGRINI N° 631,CLINICAS Y SANAT.,DIARIA,,,,,,1
+382,SCOZZINA JOSE DANIEL,PELLEGRINI N° 631,LABORATORIO,DIARIA,,,,,,1
+383,ARAMAYO VALERIA,PELLEGRINI N° 655 ESQUINA PARAGUAY,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+384,SEIMANDI LAURA,PELLEGRINI N° 93,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+385,SEIMANDI RAUL,PELLEGRINI N° 93,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+386,VERWAY JOHANNA,PELLEGRINI N° 93,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+387,SPINOSA MARCELA,PERÚ N° 59 CASI SARMIENTO,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+388,ALTA COMPLEJIDAD MÉDICA,PJE. CÓRDOBA 479,CLINICAS Y SANAT.,DIARIA,,,,,,1
+389,DROGUERIA BRIO S.R.L,PJE. SAN JUAN N° 454,FARMACIAS,3 X SEMANA,,,,,,1
+390,ASOC.ODONTOLOGICA DEL N.E.CH.,PJE. SAN LUIS N° 455,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+391,FERNANDEZ MARIELA,PJE.SAN JUAN N° 320 2º PISO,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+392,28 DE JULIO Nº 702,PJE.SAN JUAN N° 383,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+393,"RES. GERIATRICO""LA FAMILIA""",PJE.SAN LUIS NORTE Nº 704 CASA 267,GERIATRICOS Y ASILOS,3 X SEMANA,,,,,,1
+394,MOYA CARLOS,PJE.SANTA CRUZ Nº 420,VARIOS,3 X SEMANA,,,,,,1
+395,ARANO PATRICIA GRACIELA,RAMON Y CAJAL Nº 795,VETERINARIA,3 X SEMANA,,,,,,1
+396,MENDEZ MANUEL MARCELO,"RAWSON Nº 437 1º ""B""",ODONTÓLOGOS,3 X SEMANA,,,,,,1
+397,ABDALA ALBERTO,RAWSON Nº 580,VARIOS,3 X SEMANA,,,,,,1
+398,MUNICIPALIDAD DE TRELEW,RIVADAVIA N°  390,VARIOS,3 X SEMANA,,,,,,1
+399,CAPACCIONI SUSANA,RIVADAVIA N°  668 1º PISO,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+400,SCHEMBARI JORGE,RIVADAVIA N° 1005 ESQUINA RONDEAU,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+401,FARMACIA PLAZA,RIVADAVIA N° 348,FARMACIAS,3 X SEMANA,,,,,,1
+402,CLINICA VETERINARIA DR.GARZON MARIO,RIVADAVIA N° 553,VETERINARIA,3 X SEMANA,,,,,,1
+403,VILA NATHALIA,RIVADAVIA N° 866,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+404,BASE AERONAVAL ALMIRANTE ZAR,Ruta 3 S/N,ENFERMERÍAS,3 X SEMANA,,,,,,1
+405,PERIF. TIRO FEDERAL,SAAVEDRA Y LEZANA NORTE,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+406,CENTRO MÉDICO GAIMAN S.R.L,SAN MARTÍN N° 1251,CLINICAS Y SANAT.,DIARIA,,,,,,1
+407,MOLINA MARIANO,SAN MARTIN N° 1579,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+408,YUNES JOSE FRANCISCO,SAN MARTIN N° 306- 1 PISO OF 4,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+409,CARBONE ANA LUCIA,SAN MARTIN N° 541,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+410,GANDOLFO GUSTAVO,SAN MARTIN N° 549,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+411,ERASO EDGARDO,SAN MARTÍN N° 549,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+412,SANATORIO SAN MARTIN,SAN MARTÍN N° 696,CLINICAS Y SANAT.,DIARIA,,,,,,1
+413,MATERNO INFANTIL,SAN MARTÍN N° 696,CLINICAS Y SANAT.,DIARIA,,,,,,1
+414,DE MARZO SANDRA NOEMI,SAN MARTÍN N° 697,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+415,ENFERMERIA INTEGRAL,SAN MARTIN N° 815,ENFERMERÍAS,3 X SEMANA,,,,,,1
+416,DOLHEGUY BRAVO FLORENCIA,SAN MARTIN N° 875,CLINICAS Y SANAT.,DIARIA,,,,,,1
+417,CLINICA SAN MIGUEL (MERKER SERGIO),SAN MARTÍN N° 898,CLINICAS Y SANAT.,DIARIA,,,,,,1
+418,SOFIMED S.R.L,SAN MARTÍN N° 898,CLINICAS Y SANAT.,DIARIA,,,,,,1
+419,TERAPIA INTENSIVA NATIVUS S.R.L,SAN MARTÍN N° 899 1° PISO,CLINICAS Y SANAT.,DIARIA,,,,,,1
+420,DROGUERIA MEDICAL TOOLS S.R.L,SAN MARTIN Nº 1182,LABORATORIO,DIARIA,,,,,,1
+421,CAORSI LUIS FRANCISCO,SAN MARTIN Nº 624,CLINICAS Y SANAT.,DIARIA,,,,,,1
+422,ROSTAGNO JIUDICI LUCIANO MARIO,SAN MARTIN Nº 624,CLINICAS Y SANAT.,DIARIA,,,,,,1
+423,DI.B.A.C   S. R. L,SAN MARTIN Nº 856,LABORATORIO,DIARIA,,,,,,1
+424,CARRIZO LIDIA,SAN MARTIN Nº 898,LABORATORIO,DIARIA,,,,,,1
+425,MEDIVEN S.A,SAN MARTIN Nº 971,LABORATORIO,DIARIA,,,,,,1
+426,SOSA CABALLERO,SAN MARTIN Y PECORARO,VARIOS,3 X SEMANA,,,,,,1
+427,FARMACIA DASU,SARMIENTO N° 325,FARMACIAS,3 X SEMANA,,,,,,1
+428,D.A.S.U.(CONSULT.ODONTOLÓGICO),SARMIENTO N° 340,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+429,MARIGUAL JORGE,SARMIENTO N° 595,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+430,MOHR EDGARDO,SARMIENTO Nº 268,PODOLOGOS,3 X SEMANA,,,,,,1
+431,WHITE TRASH TATOO,SARMIENTO Nº 523,TATUAJES,3 X SEMANA,,,,,,1
+432,RITUAL TATOO & PIERCING,SARMIENTO Nº 584,TATUAJES,3 X SEMANA,,,,,,1
+433,WILLIAMS DIANA KARINA,SARMIENTO Nº 594 (ENTRE PERÚ Y HONDURAS),ODONTÓLOGOS,3 X SEMANA,,,,,,1
+434,MARIGUAL CARLOS,SARMIENTO Nº 595,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+435,HOGAR “LOS NONOS”,SCALABRINI ORTIZ Y MAIPÚ,GERIATRICOS Y ASILOS,3 X SEMANA,,,,,,1
+436,ALCAIDIA POLICIAL-CENTRO DE DETENCIÓN,SOB. NAC. Y CUBA-LOBATO Y PATRICIAS ARG.,ENFERMERÍAS,3 X SEMANA,,,,,,1
+437,VETERINARIA LOS CENCERROS,SOB.NACIONAL Y PELLEGRINI,VETERINARIA,3 X SEMANA,,,,,,1
+438,"HOG.DE ANCIANOS""PEDRO DETTORI""",SOBERANÍA NACIONAL 2000,GERIATRICOS Y ASILOS,3 X SEMANA,,,,,,1
+439,CAMPOS ANTONIO,SOBERANÍA NACIONAL N° 410(CONS. DR CAMPOS),ODONTÓLOGOS,3 X SEMANA,,,,,,1
+440,BUGALLO SEBASTIAN PABLO,SOBERANÍA NACIONAL N° 801(ESQ.MARCONI),ODONTÓLOGOS,3 X SEMANA,,,,,,1
+441,GONZALEZ PUNTER ANDREA,SOBERANÍA NACIONAL N° 96,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+442,POLANCO HÉCTOR,SOBERANÍA NACIONAL N° 99,ODONTÓLOGOS,3 X SEMANA,,,,,,1
+443,CENTRO ESPECIALIDADES OFTALMOLÓGICAS (CEO),SOBERANÍA NACIONAL Nº 284,OTALMOLOGOS,3 X SEMANA,,,,,,1
+444,"HOGAR DE ADULTOS MAYORES"" LA CASA DE LILI""",SOBERANÍA NACIONAL Nº 3440,GERIATRICOS Y ASILOS,3 X SEMANA,,,,,,1
+445,VETERINARIA DIOGENES,SOBERANÍA NACIONAL Y BELGRANO,VETERINARIA,3 X SEMANA,,,,,,1
+446,VETERINARIA SURVET,URQUIZA Nº 1041,VETERINARIA,3 X SEMANA,,,,,,1
+447,OBRA SOCIAL DE COND. CAMIONEROS,URQUIZA Nº 255,VARIOS,3 X SEMANA,,,,,,1
+448,PERIF. SARMIENTO,VEGWYN ENTRE BS.AS Y URUGUAY,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+449,NICADPI,VELERO MIMOSA Y ALEM,CENTROS DE SALUD,3 X SEMANA,,,,,,1
+450,VETERINARIA BRYN GWYN,YRIGOYEN N° 1580,VETERINARIA,3 X SEMANA,,,,,,1
+451,VETERINARIA ANIMAL,YRIGOYEN N° 2013,VETERINARIA,3 X SEMANA,,,,,,1
+452,ATHENEA S.A.,YRIGOYEN N° 2315,CLINICAS Y SANAT.,DIARIA,,,,,,1
+453,CLINICA VETERINARIA INTEGRAL,YRIGOYEN Nº 846,VETERINARIA,3 X SEMANA,,,,,,1
