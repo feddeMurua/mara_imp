@@ -1,5 +1,6 @@
 {% extends "base/base_listado.html" %}
 {% load staticfiles %}
+{% load widget_tweaks %}
 
 {% block panel-heading %}
   LISTADO DE HOJAS DE RUTA
@@ -38,19 +39,69 @@
             <td style="padding-left:15px;">{{ hoja_ruta.fecha_recorrido|date:"d M Y" }}</td>
             <td align="center">
                <a class="btn btn-success" data-toggle="tooltip" title="Registros" href="{% url 'hojaRuta:listado_baldes_utilizados' hoja_ruta.fecha_recorrido.year hoja_ruta.fecha_recorrido.month hoja_ruta.fecha_recorrido.day %}"><em class="fa fa-list"></em></a>
-               <a id="fecha_id"class="btn btn-danger btn-baja"  data-fecha="{{ hoja_ruta.fecha_recorrido }}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+               <a disabled id="fecha_id"class="btn btn-danger btn-baja"  data-fecha="{{ hoja_ruta.fecha_recorrido }}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
             </td>
         </tr>
     {% endfor %}
   </tbody>
 {% endblock %}
 
+
+{% block more-datos %}
+  <div id="liq_mensual" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Mes de Liquidación Mensual</h4>
+            </div>
+            <div class="modal-body">
+              <form id="liq_mensual_form" action="">
+                 {% csrf_token %}
+                 {{ form_liq_mensual.media }}
+                 <div class="form-group">
+                   <label>(*)Mes:</label>
+                   {{form_liq_mensual.mes|add_class:'form-control'}}
+                 </div>
+                 <input type="submit" class="btn btn-default" id="btn-confirmar" value="Confirmar"/>
+                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
+               </form>
+            </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}
+
 {% block modal-btn-eliminar%}
   <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarHoja(value)">Eliminar</button>
 {% endblock %}
 
+
+
 {% block modal-scripts %}
+
   <script>
+
+    /*
+    $(function(){
+      $('#liq_mensual_form').on('submit', function(e){
+        e.preventDefault();
+        var url = ""
+        var win = window.open(url, '_blank'); // para abrir en otra pestaña
+        win.focus();
+        $("#liq_mensual").modal('hide');
+        $.ajax({
+            url: url ,
+            type: 'GET',
+            data: {
+                'mes': $('#liq_mensual_form').find('input[name="mes"]').val()
+            }
+        });
+
+      });
+    });
+    */
+
     //codigo para cambiar los datos del modal y para dar de baja
     $(document).ready(function () {
       $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event

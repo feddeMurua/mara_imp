@@ -16,84 +16,84 @@
           {% if generador.responsable_ambiental %}
           <tr>
             <th>Responsable Ambiental:</th>
-            <td style="text-align:justify; direction:rtl;"> {{generador.responsable_ambiental}}</td>
+            <td style="text-align:right;"> {{generador.responsable_ambiental}}</td>
           </tr>
           {% else %}
             <tr>
               <th>Responsable Ambiental:</th>
-              <td style="text-align:justify; direction:rtl;"> - </td>
+              <td style="text-align:right;"> - </td>
             </tr>
           {% endif %}
 
           {% if generador.telefono %}
           <tr>
             <th>Teléfono:</th>
-            <td style="text-align:justify; direction:rtl;"> {{generador.telefono}}</td>
+            <td style="text-align:right;"> {{generador.telefono}}</td>
           </tr>
           {% else %}
             <tr>
               <th>Teléfono:</th>
-              <td style="text-align:justify; direction:rtl;"> - </td>
+              <td style="text-align:right;"> - </td>
             </tr>
           {% endif %}
 
           {% if generador.email %}
           <tr>
               <th>Email:</th>
-              <td style="text-align:justify; direction:rtl;"> {{generador.email}}</td>
+              <td style="text-align:right;"> {{generador.email}}</td>
           </tr>
           {% else %}
             <tr>
               <th>Email:</th>
-              <td style="text-align:justify; direction:rtl;"> - </td>
+              <td style="text-align:right;"> - </td>
             </tr>
           {% endif %}
 
           {% if generador.cuit %}
           <tr>
               <th>Cuit/Cuil:</th>
-              <td style="text-align:justify; direction:rtl;"> {{generador.cuit}}</td>
+              <td style="text-align:right;"> {{generador.cuit}}</td>
           </tr>
           {% else %}
             <tr>
               <th>Cuit/Cuil:</th>
-              <td style="text-align:justify; direction:rtl;"> - </td>
+              <td style="text-align:right;"> - </td>
             </tr>
           {% endif %}
 
           {% if generador.tipo_actividad %}
           <tr>
               <th>Actividades:</th>
-              <td style="text-align:justify; direction:rtl;"> {{generador.tipo_actividad}}</td>
+              <td style="text-align:right;"> {{generador.get_tipo_actividad_display}}</td>
           </tr>
           {% else %}
             <tr>
               <th>Actividades:</th>
-              <td style="text-align:justify; direction:rtl;"> - </td>
+              <td style="text-align:right;"> - </td>
             </tr>
           {% endif %}
 
           {% if generador.recoleccion %}
           <tr>
               <th>Días:</th>
-              <td style="text-align:justify; direction:rtl;"> {{generador.get_recoleccion_display}}</td>
+              <td style="text-align:right;"> {{generador.get_recoleccion_display}}</td>
           </tr>
           {% else %}
             <tr>
               <th>Días:</th>
-              <td style="text-align:justify; direction:rtl;"> - </td>
+              <td style="text-align:right;"> - </td>
             </tr>
           {% endif %}
 
           {% if generador.sector %}
           <tr>
               <th>Sector Asociado en el Cuadrante:</th>
-              <td style="text-align:justify; direction:rtl;"> {{generador.sector}}</td>
+              <td style="text-align:right;"> {{generador.sector}}</td>
           </tr>
           {% else %}
             <tr>
               <th>Sector Asociado en el Cuadrante:</th>
-              <td style="text-align:justify; direction:rtl;"> - </td>
+              <td style="text-align:right;"> - </td>
             </tr>
           {% endif %}
 

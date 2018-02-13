@@ -171,7 +171,9 @@ HOJAS DE RUTA
 
 @login_required
 def listado_general_hojas_de_ruta(request):
+    #form_liq_mensual = LiqMensualForm()
     listado_general = HojaRuta.objects.values('fecha_recorrido').distinct()
+    #return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'form_liq_mensual':form_liq_mensual})
     return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general})
 
 
@@ -216,11 +218,24 @@ def generar_hoja_ruta(request):
     dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
 
     #informacion de los establecimientos que atienden un dia en particular
-    establecimientos = HorarioAtencion.objects.filter(dia=dia_actual).order_by('establecimiento_generador__sector').order_by('horario_retiro')
+    establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual).order_by('sector')
 
     dia_nombre = ""
     if establecimientos:
-        dia_nombre = (establecimientos[0].get_dia_display()).upper()
+        if dia_actual == "0":
+            dia_nombre = "Domingo"
+        elif dia_actual == "1":
+            dia_nombre = "Lunes"
+        elif dia_actual == "2":
+            dia_nombre = "Martes"
+        elif dia_actual == "3":
+            dia_nombre = "Miercoles"
+        elif dia_actual == "4":
+            dia_nombre = "Jueves"
+        elif dia_actual == "5":
+            dia_nombre = "Viernes"
+        elif dia_actual == "6":
+            dia_nombre = "Sábado"
 
     #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
     return render(request, "hojaRuta/hojaruta_impresion.html", {'establecimientos': establecimientos, 'dia':dia_nombre,'dia_nro':dia_actual})
@@ -326,7 +341,7 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
     redirect_field_name = 'next'
 
     def get_context_data(self, dia):
-        establecimientos = HorarioAtencion.objects.filter(dia=dia).order_by('establecimiento_generador__sector').order_by('horario_retiro')
+        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia).order_by('sector')
 
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
@@ -424,11 +439,11 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
             for c in Capacidad_balde: #Capacidad_balde: tupla del choices.py
 
-                cant_envases = BaldeUtilizado.objects.filter(establecimiento_generador__nro_inscripcion=b.establecimiento_generador.nro_inscripcion, hoja_ruta__id=b.hoja_ruta.id, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
+                cant_envases = BaldeUtilizado.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__id=b.hoja_ruta.id, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
                 baldes_utilizados[c[0]] = cant_envases
                 total_envases+=cant_envases #acumulador por cada tipo de balde
 
-                c_envases = BaldeUtilizado.objects.filter(establecimiento_generador__nro_inscripcion=b.establecimiento_generador.nro_inscripcion, hoja_ruta__id=b.hoja_ruta.id, tipo='Retiro').values_list('balde__capacidad')
+                c_envases = BaldeUtilizado.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__id=b.hoja_ruta.id, tipo='Retiro').values_list('balde__capacidad')
                 acumu = 0
 
                 for env in c_envases:

@@ -65,7 +65,7 @@
                 <td colspan="1" rowspan="2"><strong>Hora Lleg.</strong></td>
                 <td colspan="1" rowspan="2"><strong>Hora Sal.</strong></td>
                 <td colspan="1" rowspan="2"><strong>Vol. Retirado</strong></td>
-                <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.establecimiento_generador|upper}}, Domicilio: {{establecimiento.establecimiento_generador.domicilio}} </th>
+                <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}} </th>
                 <td colspan="1" rowspan="2"><strong>Sector</strong></td>
               </tr>
               <tr>
@@ -76,7 +76,7 @@
                 {% endfor %}
               </tr>
               <tr>
-                <td>{{establecimiento.horario_retiro}}</td>
+                <td></td>
                 <td></td><td></td>
                 <td></td><td align="left">Entregas</td>
                 <td></td><td></td>
@@ -85,8 +85,8 @@
                 <td></td><td></td>
                 <td></td><td></td>
                 <td></td><td></td>
-                {% if establecimiento.establecimiento_generador.sector %}
-                  <td>{{ establecimiento.establecimiento_generador.sector }}</td>
+                {% if establecimiento.sector %}
+                  <td>{{ establecimiento.sector }}</td>
                 {% else %}
                   <td style="text-align: center;"> - </td>
                 {% endif %}

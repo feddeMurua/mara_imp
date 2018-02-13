@@ -88,6 +88,10 @@ class HojaRutaForm(forms.ModelForm):
         model = HojaRuta
         fields = '__all__'
 
+'''
+class LiqMensualForm(forms.Form):
+    mes = forms.IntegerField()
+'''
 
 '''
 GENERADORES
