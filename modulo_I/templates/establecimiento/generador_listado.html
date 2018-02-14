@@ -7,7 +7,9 @@
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <a href="{% url 'generadores:alta_modif_generadores' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Generador</a>
+  <div style="padding-top:0.1%; padding-left:0.1%;">
+    <a href="{% url 'generadores:alta_modif_generadores' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Generador</a>
+  </div>
 {% endblock %}
 
 {% block thead-tabla %}

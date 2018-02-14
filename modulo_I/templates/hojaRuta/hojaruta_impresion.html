@@ -23,7 +23,7 @@
   <thead>
   <tr style="background:#6495ED;">
     <th>Establecimiento Generador</th>
-    <th style="text-align: center;">Sector Establecimiento Generador</th>    
+    <th style="text-align: center;">Sector Establecimiento Generador</th>
     <th>Acciones</th>
   </tr>
   </thead>
@@ -45,7 +45,7 @@
       <tr>
           <td>{{ establecimiento.razon_social }}</td>
           {% if establecimiento.sector %}
-            <td>{{ establecimiento.sector }}</td>
+            <td style="text-align: center;">{{ establecimiento.sector }}</td>
           {% else %}
             <td style="text-align: center;"> - </td>
           {% endif %}

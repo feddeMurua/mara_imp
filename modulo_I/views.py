@@ -218,24 +218,24 @@ def generar_hoja_ruta(request):
     dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
 
     #informacion de los establecimientos que atienden un dia en particular
-    establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual).order_by('sector')
+    establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True).order_by('sector')
 
     dia_nombre = ""
-    if establecimientos:
-        if dia_actual == "0":
-            dia_nombre = "Domingo"
-        elif dia_actual == "1":
-            dia_nombre = "Lunes"
-        elif dia_actual == "2":
-            dia_nombre = "Martes"
-        elif dia_actual == "3":
-            dia_nombre = "Miercoles"
-        elif dia_actual == "4":
-            dia_nombre = "Jueves"
-        elif dia_actual == "5":
-            dia_nombre = "Viernes"
-        elif dia_actual == "6":
-            dia_nombre = "Sábado"
+    
+    if dia_actual == "0":
+        dia_nombre = "Domingo"
+    elif dia_actual == "1":
+        dia_nombre = "Lunes"
+    elif dia_actual == "2":
+        dia_nombre = "Martes"
+    elif dia_actual == "3":
+        dia_nombre = "Miercoles"
+    elif dia_actual == "4":
+        dia_nombre = "Jueves"
+    elif dia_actual == "5":
+        dia_nombre = "Viernes"
+    elif dia_actual == "6":
+        dia_nombre = "Sábado"
 
     #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
     return render(request, "hojaRuta/hojaruta_impresion.html", {'establecimientos': establecimientos, 'dia':dia_nombre,'dia_nro':dia_actual})
@@ -341,7 +341,7 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
     redirect_field_name = 'next'
 
     def get_context_data(self, dia):
-        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia).order_by('sector')
+        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True).order_by('sector')
 
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
@@ -430,7 +430,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
         establecimientos = {}
 
-        total_baldes = BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido__month=mes)
+        total_baldes = BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido__month=mes, establecimiento_generador__activo=True)
 
         for b in total_baldes:
 

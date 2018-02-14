@@ -31,6 +31,8 @@ GENERADOR RESIDUOS
 '''
 
 class EstablecimientoGenerador(models.Model):
+    nro_inscripcion = models.BigIntegerField(unique=True, blank=True, null=True, default=None) # N° inscripcion registro de generadores provincia del chubut
+    activo = models.BooleanField(default=False)
     razon_social = models.CharField(max_length=50)
     direccion = models.CharField(max_length=100)
     tipo_actividad = MultiSelectField(choices=Actividades)

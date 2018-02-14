@@ -29,20 +29,11 @@
             <label>(*)Localidad:</label>
             {{generador_form.localidad|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
             <br>
-            <label>Teléfono:</label>
-            {{generador_form.telefono|add_class:'form-control'}}
-            <br>
-            <label>Email:</label>
-            {{generador_form.email|add_class:'form-control'}}
-            <br>
-            <label>Responsable Ambiental:</label>
-            {{generador_form.responsable_ambiental|add_class:'form-control'}}
-            <br>
-            <label>Cuit/Cuil (Sin Espacios):</label>
-            {{generador_form.cuit|add_class:'form-control cuil'}}
-            <br>
             <label>Número de Sector Asociado (Cuadrante):</label>
             {{generador_form.sector|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+            <br>
+            <label>Activo:</label>
+            {{generador_form.activo|add_class:'form-control'}}
             <br>
           </div>
         </div>
@@ -57,7 +48,32 @@
 
   </div>
 
-   <!-- SECTION 2 -->
+  <!-- SECTION 2 -->
+  <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
+        <div class="panel-body">
+          <label>Número de Inscripción en el Registro de Generadores Provincia del Chubut:</label>
+          {{generador_form.nro_inscripcion|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+          <br>
+          <label>Responsable Ambiental:</label>
+          {{generador_form.responsable_ambiental|add_class:'form-control'}}
+          <br>
+          <label>Cuit/Cuil (Sin Espacios):</label>
+          {{generador_form.cuit|add_class:'form-control cuil'}}
+          <br>
+          <label>Teléfono:</label>
+          {{generador_form.telefono|add_class:'form-control'}}
+          <br>
+          <label>Email:</label>
+          {{generador_form.email|add_class:'form-control'}}
+          <br>
+        </div>
+    </div>
+  </div>
+
+
+   <!-- SECTION 3 -->
    <div class="form-section">
      <div class="panel panel-default">
        <div class="panel-heading">TIPO DE ACTIVIDAD</div>
@@ -69,7 +85,7 @@
      </div>
    </div>
 
-   <!-- SECTION 3 -->
+   <!-- SECTION 4 -->
    <div class="form-section">
      <div class="panel panel-default">
        <div class="panel-heading">DIAS DE ATENCIÓN</div>
