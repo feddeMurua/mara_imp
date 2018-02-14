@@ -21,13 +21,17 @@
           <label>(*)Fecha Recorrido:</label>
         {{hojaruta_form.fecha_recorrido|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha impresión es obligatorio"}}
         <br>
-        <label>(*)Hora Llegada:</label>
+        <label>Hora Programada:</label>
         <br>
-        {{hojaruta_form.hora_llegada|add_class:'form-control hora'|attr:"required:"}}
+        {{hojaruta_form.hora_programada|add_class:'form-control hora'}}
         <br>
-        <label>(*)Hora Salida:</label>
+        <label>Hora Llegada:</label>
         <br>
-        {{hojaruta_form.hora_salida|add_class:'form-control hora'|attr:"required:"}}
+        {{hojaruta_form.hora_llegada|add_class:'form-control hora'}}
+        <br>
+        <label>Hora Salida:</label>
+        <br>
+        {{hojaruta_form.hora_salida|add_class:'form-control hora'}}
         <br>
       </div>
     </div>

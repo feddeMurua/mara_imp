@@ -101,8 +101,9 @@ class BaldeUtilizado(models.Model):
 
 class HojaRuta(models.Model):
     fecha_recorrido = models.DateField() #fecha del dia que se imprimió la hoja de ruta
-    hora_llegada = models.TimeField()
-    hora_salida = models.TimeField()
+    hora_programada = models.TimeField(blank=True, null=True)
+    hora_llegada = models.TimeField(blank=True, null=True)
+    hora_salida = models.TimeField(blank=True, null=True)
 
     def __str__(self):
         return "Fecha Recorrido: %s" % (self.fecha_recorrido)

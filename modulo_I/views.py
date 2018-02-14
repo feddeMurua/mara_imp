@@ -106,9 +106,8 @@ BALDES
 @login_required
 def listado_baldes(request):
     listado_baldes = Balde.objects.all().order_by('nro_balde')
-
     '''
-    for i in range (54):
+    for i in range (55):
         balde = Balde(nro_balde=(i+1), capacidad=10)
         balde.save()
 
@@ -221,7 +220,7 @@ def generar_hoja_ruta(request):
     establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True).order_by('sector')
 
     dia_nombre = ""
-    
+
     if dia_actual == "0":
         dia_nombre = "Domingo"
     elif dia_actual == "1":
