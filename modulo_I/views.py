@@ -185,7 +185,10 @@ def alta_modif_hoja_ruta(request):
         if hojaruta_form.is_valid():
             hoja_ruta = hojaruta_form.save()
             carga_baldes(request, hoja_ruta)
-            return redirect('hojaRuta:listado_general')
+            if 'btn-guardar' in request.POST:
+                return redirect('hojaRuta:listado_general')
+            else:
+                return redirect('hojaRuta:alta_modif_hoja_ruta')
     else:
         if 'baldes_utilizados' in request.session:
             del request.session['baldes_utilizados']
@@ -250,8 +253,7 @@ def listado_baldes_utilizados(request, anio, mes, dia):
     fecha_recorrido = datetime.date(int(anio), int(mes), int(dia))
     hoja_de_ruta = HojaRuta.objects.filter(fecha_recorrido=fecha_recorrido).first() #Solo importa el primero, para obtener la fecha.
     listado_baldes = BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido=hoja_de_ruta.fecha_recorrido)
-    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes})
-
+    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes, 'hoja_ruta':hoja_de_ruta})
 
 
 #MODIFICACION EN EL LISTADO DE BALDES
@@ -317,16 +319,15 @@ def carga_baldes(request, hoja_ruta):
         establecimiento_generador = EstablecimientoGenerador.objects.get(razon_social=b_utilizado['establecimiento_generador']['razon_social'])
         balde.establecimiento_generador = establecimiento_generador
         balde.save()
-        item = BaldeUtilizado(balde=balde, establecimiento_generador=establecimiento_generador, hoja_ruta=hoja_ruta,
-                              nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
+        item = BaldeUtilizado(balde=balde, establecimiento_generador=establecimiento_generador,hoja_ruta=hoja_ruta,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
         item.save()
 
 
 @login_required
 def baja_balde_utilizado(request):
     balde_nro = request.POST.get('balde_nro')
-    balde = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro)
-    balde.delete()
+    balde_utilizado = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro)
+    balde_utilizado.delete()
     response = {}
     return JsonResponse(response)
 

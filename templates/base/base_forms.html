@@ -24,7 +24,7 @@
 {%block content%}
 
   <div class="container container-form">
-      <form class="form-wizard" method="post">
+      <form name="generico" class="form-wizard" method="post">
           {% csrf_token %}
           <div class="panel panel-primary">
             <div class="panel-heading">FORMULARIO DE REGISTRO</div>
@@ -36,11 +36,14 @@
                 <button type="button" class="previous btn btn-info pull-left">&lt; Anterior</button>
                 <button id="btn-siguiente" type="button" class="next btn btn-info pull-right">Siguiente &gt;</button>
                 <!-- Solo si es alta lo muestra, para que no aparezca repetido -->
-                {% if not modificar %}
-                  <button type="submit" class="save btn btn-success pull-right">
-                    <span class="glyphicon glyphicon-ok"></span> Guardar
-                  </button>
-                {% endif %}
+                <div class="pull-right">
+                  {% if not modificar %}
+                      <button name="btn-guardar" type="submit" class="save btn btn-success">
+                        <span class="glyphicon glyphicon-ok"></span> Guardar
+                      </button>
+                      {% block guardar-seguir %}{% endblock %}
+                  {% endif %}
+                </div>
                 <span class="clearfix"></span>
               </div>
               <!-- Para guardar antes de llegar al step final -->
@@ -57,6 +60,7 @@
           </div>
       </form>
     </div>
+
   {% block modal-baldeutilizado %} {% endblock %}
 
   {% block more-scripts %}

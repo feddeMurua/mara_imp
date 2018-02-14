@@ -11,10 +11,13 @@ class BuscarHojaRuta(admin.ModelAdmin):
 class BuscarEstablecimiento(admin.ModelAdmin):
     search_fields = ['razon_social','responsable_ambiental','localidad__nombre','cuit']
 
+class BuscarBalde(admin.ModelAdmin):
+    search_fields = ['nro_balde']
+
 # Register your models here.
 admin.site.register(HojaRuta,BuscarHojaRuta)
 admin.site.register(EstablecimientoGenerador, BuscarEstablecimiento)
-admin.site.register(Balde)
+admin.site.register(Balde, BuscarBalde)
 admin.site.register(BaldeUtilizado)
 admin.site.register(Localidad)
 admin.site.register(Provincia)
