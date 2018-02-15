@@ -1,5 +1,6 @@
 {% extends "base/base_listado.html" %}
 {% load staticfiles %}
+{% load hoja_ruta_extras %}
 {% load widget_tweaks %}
 
 {% block panel-heading %}
@@ -41,7 +42,9 @@
             <td style="padding-left:15px;">{{ hoja_ruta.fecha_recorrido|date:"d M Y" }}</td>
             <td align="center">
                <a class="btn btn-success" data-toggle="tooltip" title="Registros" href="{% url 'hojaRuta:listado_baldes_utilizados' hoja_ruta.fecha_recorrido.year hoja_ruta.fecha_recorrido.month hoja_ruta.fecha_recorrido.day %}"><em class="fa fa-list"></em></a>
-               <a disabled id="fecha_id"class="btn btn-danger btn-baja"  data-fecha="{{ hoja_ruta.fecha_recorrido }}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+               {% if hoja_ruta.fecha_recorrido|hojas_validas %}
+                <a id="fecha_id"class="btn btn-danger btn-baja"  data-fecha="{{ hoja_ruta.fecha_recorrido }}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+               {% endif %}
             </td>
         </tr>
     {% endfor %}
@@ -77,7 +80,6 @@
 {% block modal-btn-eliminar%}
   <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarHoja(value)">Eliminar</button>
 {% endblock %}
-
 
 
 {% block modal-scripts %}

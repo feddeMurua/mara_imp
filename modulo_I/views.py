@@ -206,16 +206,11 @@ def alta_modif_hoja_ruta(request):
 @login_required
 def baja_hoja_ruta(request):
     fecha = datetime.datetime.strptime(request.POST.get('fecha'), '%d %b. %Y')
-    hoja_ruta = HojaRuta.objects.filter(fecha_recorrido=fecha)
-    for registro in hoja_ruta:
-        baldes = BaldeUtilizado.objects.filter(hoja_ruta=registro)
-        #por cada balde en la hoja de ruta, setear en Planta
-        for b in baldes:
-            balde = Balde.objects.get(nro_balde=b.balde.nro_balde)
-            if balde.estado == 'Ocupado':
-                balde.estado = "En Planta"
-                balde.save()
-        registro.delete()
+    hoja_rutas = HojaRuta.objects.filter(fecha_recorrido=fecha)
+    for h in hoja_rutas:
+        baldes = BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido=fecha)
+        if (len(baldes)) == 0 :
+            h.delete()
     response = {}
     return JsonResponse(response)
 
@@ -323,7 +318,7 @@ def carga_baldes(request, hoja_ruta):
         balde.save()
         establecimiento_generador = EstablecimientoGenerador.objects.get(razon_social=b_utilizado['establecimiento_generador']['razon_social'])
         balde.establecimiento_generador = establecimiento_generador
-        balde.save()        
+        balde.save()
         if not BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido=request.session['fecha'], balde=balde): # No tiene qe existir el nro balde cargado ese dia en otro lugar
             item = BaldeUtilizado(balde=balde, establecimiento_generador=establecimiento_generador,hoja_ruta=hoja_ruta,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
             item.save()
@@ -334,6 +329,9 @@ def carga_baldes(request, hoja_ruta):
 def baja_balde_utilizado(request):
     balde_nro = request.POST.get('balde_nro')
     balde_utilizado = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro)
+    balde = Balde.objects.get(nro_balde=balde_nro)
+    balde.estado = "En Planta"
+    balde.save()
     balde_utilizado.delete()
     response = {}
     return JsonResponse(response)
