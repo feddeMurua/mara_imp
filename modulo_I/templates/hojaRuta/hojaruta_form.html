@@ -19,7 +19,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">DATOS HOJA DE RUTA</div>
       <div class="panel-body">
-          <label>(*)Fecha Recorrido:</label>
+        <label>(*)Fecha Recorrido:</label>
         {{hojaruta_form.fecha_recorrido|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha impresión es obligatorio"}}
         <br>
         <label>Hora Programada:</label>
@@ -76,7 +76,7 @@
 {% endblock %}
 
 {% block guardar-seguir %}
-    <button type="submit" class="save btn btn-primary">
+    <button type="submit" class="save btn btn-warning">
       <span class="glyphicon glyphicon-plus"></span> Guardar y Agregar Otro
     </button>
 {% endblock %}
@@ -93,7 +93,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Nuevo Balde Utilizado</h4>
-                <h5 style="color:red;">(*)Atencion! si no se crea el registro en la tabla, es porque viola la llave de seguridad del N° Precinto</h5>
+                <h5 style="color:red;">(*)Atencion! si no se crea el registro en la tabla, es porque viola la llave de seguridad del N° Precinto en otra Hoja de Ruta</h5>
             </div>
             <div class="modal-body">
               <form action="" id="baldeForm" data-url="{% url 'hojaRuta:alta_balde_utilizado' %}">
@@ -142,6 +142,7 @@
       });
 
       $(document).ready(function(){
+
              $("#baldeForm").submit(function(e) {
                  e.preventDefault();
                  $.post($(this).data('url'), $(this).serialize()).done(function(data) {

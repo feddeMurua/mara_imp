@@ -14,6 +14,7 @@ import datetime
 from django.utils.html import escape
 from .choices import Capacidad_balde
 import collections
+from django.contrib import messages
 # Create your views here.
 
 '''
@@ -170,9 +171,15 @@ HOJAS DE RUTA
 
 @login_required
 def listado_general_hojas_de_ruta(request):
+
     #form_liq_mensual = LiqMensualForm()
     listado_general = HojaRuta.objects.values('fecha_recorrido').distinct()
     #return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'form_liq_mensual':form_liq_mensual})
+
+    if 'baldes_utilizados' in request.session:
+        del request.session['baldes_utilizados']
+    request.session['baldes_utilizados'] = []
+
     return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general})
 
 
@@ -184,15 +191,13 @@ def alta_modif_hoja_ruta(request):
         hojaruta_form = HojaRutaForm(request.POST)
         if hojaruta_form.is_valid():
             hoja_ruta = hojaruta_form.save()
+            request.session['fecha'] = str(hojaruta_form.cleaned_data.get('fecha_recorrido')) # Para controlar que no haya un balde repetido en mas de un generador
             carga_baldes(request, hoja_ruta)
             if 'btn-guardar' in request.POST:
                 return redirect('hojaRuta:listado_general')
             else:
                 return redirect('hojaRuta:alta_modif_hoja_ruta')
     else:
-        if 'baldes_utilizados' in request.session:
-            del request.session['baldes_utilizados']
-        request.session['baldes_utilizados'] = []
         hojaruta_form = HojaRutaForm()
 
     return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form, 'baldeutilizado_form':baldeutilizado_form})
@@ -318,9 +323,11 @@ def carga_baldes(request, hoja_ruta):
         balde.save()
         establecimiento_generador = EstablecimientoGenerador.objects.get(razon_social=b_utilizado['establecimiento_generador']['razon_social'])
         balde.establecimiento_generador = establecimiento_generador
-        balde.save()
-        item = BaldeUtilizado(balde=balde, establecimiento_generador=establecimiento_generador,hoja_ruta=hoja_ruta,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
-        item.save()
+        balde.save()        
+        if not BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido=request.session['fecha'], balde=balde): # No tiene qe existir el nro balde cargado ese dia en otro lugar
+            item = BaldeUtilizado(balde=balde, establecimiento_generador=establecimiento_generador,hoja_ruta=hoja_ruta,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
+            item.save()
+
 
 
 @login_required
