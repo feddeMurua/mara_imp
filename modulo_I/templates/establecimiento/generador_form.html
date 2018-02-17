@@ -17,7 +17,8 @@
   <!-- SECTION 1 -->
   <div class="form-section">
     <div class="panel panel-default">
-      <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
+      <div class="panel-heading">DATOS DEL CENTRO GENERADOR        
+      </div>
         <div class="panel-body">
           <div class="form-group">
             <label>(*)Razón Social:</label>
@@ -28,9 +29,6 @@
             <br>
             <label>(*)Localidad:</label>
             {{generador_form.localidad|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
-            <br>
-            <label>Número de Sector Asociado (Cuadrante):</label>
-            {{generador_form.sector|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
             <br>
             <label>Activo:</label>
             {{generador_form.activo|add_class:'form-control'}}
@@ -92,6 +90,35 @@
          <div class="panel-body">
            <label>Dias:</label>
            {{dias_form.recoleccion}}
+           <br>
+         </div>
+     </div>
+   </div>
+
+   <!-- SECTION 5 -->
+   <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">CUADRANTE ASOCIADO</div>
+         <div class="panel-body">
+           {% if cuadrante_form.errors %}
+             {% for field in cuadrante_form %}
+                 {% for error in field.errors %}
+                     <div class="alert alert-danger">
+                         <strong>{{ error|escape }}</strong>
+                     </div>
+                 {% endfor %}
+             {% endfor %}
+             {% for error in cuadrante_form.non_field_errors %}
+                 <div class="alert alert-danger">
+                     <strong>{{ error|escape }}</strong>
+                 </div>
+             {% endfor %}
+           {% endif %}
+           <label>Número de Parada:</label>
+           {{cuadrante_form.nro_parada|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+           <br>
+           <label>Sector:</label>
+           {{cuadrante_form.sector|add_class:'select-2'}}
            <br>
          </div>
      </div>

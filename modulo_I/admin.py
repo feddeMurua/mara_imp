@@ -16,8 +16,10 @@ class BuscarBalde(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(HojaRuta,BuscarHojaRuta)
+admin.site.register(DetalleHojaRuta)
 admin.site.register(EstablecimientoGenerador, BuscarEstablecimiento)
 admin.site.register(Balde, BuscarBalde)
-admin.site.register(BaldeUtilizado)
 admin.site.register(Localidad)
 admin.site.register(Provincia)
+admin.site.register(Cuadrante)
+admin.site.register(Sector)

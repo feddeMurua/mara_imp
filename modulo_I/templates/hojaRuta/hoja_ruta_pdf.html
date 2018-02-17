@@ -66,7 +66,7 @@
                 <td colspan="1" rowspan="2"><strong>Hora Retiro</strong></td>
                 <td colspan="1" rowspan="2"><strong>Vol. Retirado</strong></td>
                 <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}} </th>
-                <td colspan="1" rowspan="2"><strong>Sector</strong></td>
+                <td colspan="1" rowspan="2"><strong>N° Inscripción</strong></td>
               </tr>
               <tr>
                 <td align="left"rowspan="1" scope="colgroup">Retiros</td>
@@ -85,11 +85,7 @@
                 <td></td><td></td>
                 <td></td><td></td>
                 <td></td><td></td>
-                {% if establecimiento.sector %}
-                  <td>{{ establecimiento.sector }}</td>
-                {% else %}
-                  <td style="text-align: center;"> - </td>
-                {% endif %}
+                <td></td>
               </tr>
             {% endfor %}
           </table>

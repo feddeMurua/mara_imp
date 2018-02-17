@@ -62,13 +62,13 @@ BALDES
 
 class BaldeUtilizadoForm(forms.ModelForm):
     class Meta:
-        model = BaldeUtilizado
+        model = DetalleHojaRuta
         exclude = ['hoja_ruta',]
 
 
 class ActualizarBaldeUtilizadoForm(forms.ModelForm):
     class Meta:
-        model = BaldeUtilizado
+        model = DetalleHojaRuta
         exclude = ['hoja_ruta','balde',]
 
 
@@ -96,6 +96,18 @@ class LiqMensualForm(forms.Form):
 '''
 GENERADORES
 '''
+
+
+class SectorForm(forms.ModelForm):
+    class Meta:
+        model = Sector
+        fields = '__all__'
+
+
+class CuadranteForm(forms.ModelForm):
+    class Meta:
+        model = Cuadrante
+        fields = '__all__'
 
 
 class GeneradorForm(forms.ModelForm):

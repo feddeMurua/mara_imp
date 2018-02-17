@@ -60,3 +60,8 @@ Estado = (
     ('En Planta', _("En Planta")),
     ('Ocupado', _("Ocupado")),
 )
+
+Color_precinto = (
+    ('Amarillo', _("Amarillo")),
+    ('Rojo', _("Rojo")),
+)

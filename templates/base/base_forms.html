@@ -22,8 +22,19 @@
 {% endblock %}
 
 {%block content%}
-
+  <!-- errores bootstrap: https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_alerts&stacked=h -->
   <div class="container container-form">
+
+      {% if messages %}
+        <div class="alert alert-danger">
+          <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
       <form name="generico" class="form-wizard" method="post">
           {% csrf_token %}
           <div class="panel panel-primary">
@@ -61,7 +72,7 @@
       </form>
     </div>
 
-  {% block modal-baldeutilizado %} {% endblock %}
+  {% block modal-DetalleHojaRuta %} {% endblock %}
 
   {% block more-scripts %}
 

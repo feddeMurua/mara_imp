@@ -27,23 +27,49 @@ class Provincia(models.Model):
 
 
 '''
-GENERADOR RESIDUOS
+ESTABLECIMIENTO GENERADOR
 '''
+
+
+class Sector(models.Model):
+    nombre_sector = models.CharField(max_length=50, unique=True)
+    localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "%s" % (self.nombre_sector)
+
+
+class Cuadrante(models.Model):
+    nro_parada = models.IntegerField(validators=[MinValueValidator(1)], blank=True, null=True)
+    sector = models.ForeignKey('Sector', on_delete=models.CASCADE, blank=True, null=True)
+
+    class Meta:
+        unique_together = (("nro_parada", "sector"),)
+
+    def __str__(self):
+        return "Sector: %s, N°: %s " % (self.sector, self.nro_parada)
+
+
+class BaldePactado(models.Model):
+    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', blank=True, null=True, default=None)
+    capacidad_balde = models.CharField(max_length=5, choices=Capacidad_balde) # en dm3
+    color_precinto = models.CharField(max_length=15, choices=Color_precinto) # en dm3
+    cantidad = models.IntegerField(validators=[MinValueValidator(1)], unique=True)
+
 
 class EstablecimientoGenerador(models.Model):
     nro_inscripcion = models.BigIntegerField(unique=True, blank=True, null=True, default=None) # N° inscripcion registro de generadores provincia del chubut
     activo = models.BooleanField(default=False)
     razon_social = models.CharField(max_length=50)
     direccion = models.CharField(max_length=100)
-    tipo_actividad = MultiSelectField(choices=Actividades)
+    tipo_actividad = MultiSelectField(choices=sorted(Actividades))
     recoleccion = MultiSelectField(choices=Dias, blank=True, null=True)
     localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
     telefono = models.CharField(max_length=50, blank=True, null=True)
-    email = models.CharField(max_length=50, blank=True, null=True)
+    email = models.CharField(max_length=200, blank=True, null=True)
     responsable_ambiental = models.CharField(max_length=50, blank=True, null=True)
     cuit = models.CharField(max_length=20, blank=True, null=True)
-    sector = models.IntegerField(blank=True, null=True) # cuadrante que pertenece a la ciudad el generador
-    #TENER EN CUENTA QUE PODRIA DARSE un orden dentro de sector para la hoja de ruta (puede ser null)
+    cuadrante = models.ForeignKey('Cuadrante',blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return "%s" % (self.razon_social)
@@ -52,16 +78,13 @@ class EstablecimientoGenerador(models.Model):
         return {'razon_social': self.razon_social}
 
 '''
-Hoja de Ruta
-
-*obs
-volumen retirado: cantidad de balde y capacidad de cada uno (adjunto en el correo para modificar)
-cambiar: nro de precinto es POR BALDE con el requerimiento de arriba.
-n° de balde mismo, cambia el precinto
-asociar n° balde al tamaño -> ej balde 1 20dm3 para seguridad (por el retiro)
-Agregar clase balde.
+HOJA DE RUTA
 '''
 
+'''
+Fuente: https://stackoverflow.com/questions/14844498/how-to-dynamically-create-a-ul-li-with-appended-text-from-input-with-jquery
+PARA GENERAR HOJA DE RUTA: http://jsfiddle.net/J5nCS/1/
+'''
 
 class Balde(models.Model):
     nro_balde = models.BigIntegerField(primary_key=True) #identificador
@@ -76,14 +99,13 @@ class Balde(models.Model):
         return {'nro_balde': self.nro_balde}
 
 
-class BaldeUtilizado(models.Model):
-    '''
-    Clase compuesta por balde utilizado en la hoja de ruta.
-    '''
-    balde = models.ForeignKey('Balde') #balde_entrega
-    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
+class DetalleHojaRuta(models.Model):
     hoja_ruta = models.ForeignKey('HojaRuta')
-    nro_precinto = models.BigIntegerField(unique=True)
+    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
+    hora_llegada = models.TimeField(blank=True, null=True)
+    hora_salida = models.TimeField(blank=True, null=True)
+    balde = models.ForeignKey('Balde') #balde_entrega
+    nro_precinto = models.BigIntegerField(unique=True, blank=True, null=True)
     tipo = models.CharField(max_length=15, choices=Entrega_Retiro)
 
     def __str__(self):
@@ -98,12 +120,8 @@ class BaldeUtilizado(models.Model):
         }
 
 
-
 class HojaRuta(models.Model):
     fecha_recorrido = models.DateField() #fecha del dia que se imprimió la hoja de ruta
-    hora_programada = models.TimeField(blank=True, null=True)
-    hora_llegada = models.TimeField(blank=True, null=True)
-    hora_salida = models.TimeField(blank=True, null=True)
 
     def __str__(self):
         return "Fecha Recorrido: %s" % (self.fecha_recorrido)

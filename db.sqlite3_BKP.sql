@@ -997,7 +997,7 @@ INSERT INTO `django_content_type` (id,app_label,model) VALUES (4,'auth','user');
 INSERT INTO `django_content_type` (id,app_label,model) VALUES (5,'contenttypes','contenttype');
 INSERT INTO `django_content_type` (id,app_label,model) VALUES (6,'sessions','session');
 INSERT INTO `django_content_type` (id,app_label,model) VALUES (7,'modulo_I','balde');
-INSERT INTO `django_content_type` (id,app_label,model) VALUES (8,'modulo_I','baldeutilizado');
+INSERT INTO `django_content_type` (id,app_label,model) VALUES (8,'modulo_I','DetalleHojaRuta');
 INSERT INTO `django_content_type` (id,app_label,model) VALUES (9,'modulo_I','establecimientogenerador');
 INSERT INTO `django_content_type` (id,app_label,model) VALUES (10,'modulo_I','hojaruta');
 INSERT INTO `django_content_type` (id,app_label,model) VALUES (11,'modulo_I','localidad');

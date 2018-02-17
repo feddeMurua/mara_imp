@@ -3,12 +3,12 @@
 {% load staticfiles bootstrap3 %}
 
 {% block panel-heading %}
-  LISTADO DE LOCALIDADES
+  LISTADO DE SECTORES
 {% endblock %}
 
 {% block panel-heading-tabla %}
   <div style="padding-top:0.3%; padding-left:0.1%;">
-    <a class="btn btn-primary js-alta-localidad"><i class="fa fa-plus"></i> Nueva Localidad</a>
+    <a class="btn btn-primary js-alta-sector"><i class="fa fa-plus"></i> Nuevo Sector</a>
   </div>
 {% endblock %}
 
@@ -16,8 +16,7 @@
   <thead>
   <tr style="background:#6495ED;">
       <th>Nombre</th>
-      <th>Código Postal</th>
-      <th>Provincia</th>
+      <th>Localidad</th>
       <th>Acciones</th>
   </tr>
   </thead>
@@ -27,8 +26,7 @@
   <tfoot >
      <tr>
        <th>Nombre</th>
-       <th>Código Postal</th>
-       <th>Provincia</th>
+       <th>Localidad</th>
        <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
     </tr>
   </tfoot>
@@ -36,14 +34,13 @@
 
 {% block tbody-tabla %}
   <tbody>
-  {% for localidad in listado_localidades %}
+  {% for sector in listado_sectores %}
       <tr>
-          <td>{{ localidad.nombre }}</td>
-          <td>{{ localidad.cp }}</td>
-          <td>{{ localidad.provincia.nombre }}</td>
+          <td>{{ sector.nombre_sector }}</td>
+          <td>{{ sector.localidad.nombre }}</td>
           <td align="center">
-             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'localidades:modificar_localidades' id_localidad=localidad.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
-             <a id="localidad_id"class="btn btn-danger btn-baja" data-localidadid="{{localidad.id}}" data-localidadnombre="{{localidad.nombre}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modificar_sectores' id_sector=sector.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
+             <a id="sector_id"class="btn btn-danger btn-baja" data-sectorid="{{sector.id}}" data-sectornombre="{{sector.nombre_sector}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
           </td>
       </tr>
   {% endfor %}
@@ -51,11 +48,11 @@
 {% endblock %}
 
 {% block more-datos %}
-  {% include "localidad/localidad_alta.html" %}
+  {% include "establecimiento/sector/sector_alta.html" %}
 {% endblock %}
 
 {% block modal-btn-eliminar%}
-  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarLocalidad(value)">Eliminar</button>
+  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarSector(value)">Eliminar</button>
 {% endblock %}
 
 {% block modal-scripts %}
@@ -64,11 +61,11 @@
     $(document).ready(function () {
       $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var localidad_nombre = button.data('localidadnombre')
-        var localidad_id = button.data('localidadid') // id localidad.
+        var sector_nombre = button.data('sectornombre')
+        var sector_id = button.data('sectorid') // id localidad.
 
-        var title = 'localidad: ' + localidad_nombre
-        var content = '¿Está seguro que quiere eliminar la localidad ?'
+        var title = 'sector: ' + sector_nombre
+        var content = '¿Está seguro que quiere eliminar el sector ?'
 
 
         // actualiza el contenido del manual
@@ -77,17 +74,17 @@
         modal.find('.modal-body').text(content)
 
         // se le pasa el valor del documento al boton de confirmar
-        modal.find('button.btn-danger').val(localidad_id)
+        modal.find('button.btn-danger').val(sector_id)
       })
     })
 
-    function eliminarLocalidad(localidad_id) {
+    function eliminarSector(sector_id) {
       var request = $.ajax({
           type: "POST",
-          url: "{% url 'localidades:baja_localidades' %}",
+          url: "{% url 'generadores:baja_sectores' %}",
           data: {
               "csrfmiddlewaretoken": "{{ csrf_token }}",
-              "localidad_id": localidad_id
+              "sector_id": sector_id
           },
       });
     }

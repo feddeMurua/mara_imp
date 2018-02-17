@@ -208,7 +208,7 @@ def baja_hoja_ruta(request):
     fecha = datetime.datetime.strptime(request.POST.get('fecha'), '%d %b. %Y')
     hoja_rutas = HojaRuta.objects.filter(fecha_recorrido=fecha)
     for h in hoja_rutas:
-        baldes = BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido=fecha)
+        baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido=fecha)
         if (len(baldes)) == 0 :
             h.delete()
     response = {}
@@ -220,7 +220,7 @@ def generar_hoja_ruta(request):
     dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
 
     #informacion de los establecimientos que atienden un dia en particular
-    establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True).order_by('sector')
+    establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True)
 
     dia_nombre = ""
 
@@ -252,7 +252,7 @@ BALDES UTILIZADOS
 def listado_baldes_utilizados(request, anio, mes, dia):
     fecha_recorrido = datetime.date(int(anio), int(mes), int(dia))
     hoja_de_ruta = HojaRuta.objects.filter(fecha_recorrido=fecha_recorrido).first() #Solo importa el primero, para obtener la fecha.
-    listado_baldes = BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido=hoja_de_ruta.fecha_recorrido)
+    listado_baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido=hoja_de_ruta.fecha_recorrido)
     return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes, 'hoja_ruta':hoja_de_ruta})
 
 
@@ -260,7 +260,7 @@ def listado_baldes_utilizados(request, anio, mes, dia):
 @login_required
 def alta_modif_balde_utilizado(request, id_hoja=None, id_balde=None):
     try:
-        balde = BaldeUtilizado.objects.get(balde__nro_balde=id_balde, hoja_ruta__id=id_hoja)
+        balde = DetalleHojaRuta.objects.get(balde__nro_balde=id_balde, hoja_ruta__id=id_hoja)
     except:
         balde = None
     if request.method == 'POST':
@@ -319,8 +319,8 @@ def carga_baldes(request, hoja_ruta):
         establecimiento_generador = EstablecimientoGenerador.objects.get(razon_social=b_utilizado['establecimiento_generador']['razon_social'])
         balde.establecimiento_generador = establecimiento_generador
         balde.save()
-        if not BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido=request.session['fecha'], balde=balde): # No tiene qe existir el nro balde cargado ese dia en otro lugar
-            item = BaldeUtilizado(balde=balde, establecimiento_generador=establecimiento_generador,hoja_ruta=hoja_ruta,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
+        if not DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido=request.session['fecha'], balde=balde): # No tiene qe existir el nro balde cargado ese dia en otro lugar
+            item = DetalleHojaRuta(balde=balde, establecimiento_generador=establecimiento_generador,hoja_ruta=hoja_ruta,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
             item.save()
 
 
@@ -328,7 +328,7 @@ def carga_baldes(request, hoja_ruta):
 @login_required
 def baja_balde_utilizado(request):
     balde_nro = request.POST.get('balde_nro')
-    balde_utilizado = BaldeUtilizado.objects.get(balde__nro_balde=balde_nro)
+    balde_utilizado = DetalleHojaRuta.objects.get(balde__nro_balde=balde_nro)
     balde = Balde.objects.get(nro_balde=balde_nro)
     balde.estado = "En Planta"
     balde.save()
@@ -346,12 +346,69 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
     redirect_field_name = 'next'
 
     def get_context_data(self, dia):
-        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True).order_by('sector')
+        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True)
 
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
             establecimientos=establecimientos
         )
+
+
+'''
+SECTOR
+'''
+
+
+@login_required
+def listado_sectores(request):
+    listado_sectores = Sector.objects.all()
+    return render(request, 'establecimiento/sector/sector_listado.html', {'listado_sectores': listado_sectores})
+
+
+@login_required
+def alta_sectores(request):
+    data = dict()
+
+    if request.method == 'POST':
+        form = SectorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = SectorForm()
+
+    context = {'form': form}
+    data['html_form'] = render_to_string('establecimiento/sector/partial_sector_alta.html',
+        context,
+        request=request
+    )
+    return JsonResponse(data)
+
+
+@login_required
+def modificar_sectores(request, id_sector):
+    sector = Sector.objects.get(id=id_sector)
+    if request.method == 'POST':
+        sector_form = SectorForm(request.POST, instance=sector)
+
+        if sector_form.is_valid():
+            sector_form.save()
+            return redirect('generadores:listado_sectores')
+    else:
+        sector_form = SectorForm(instance=sector)
+
+    return render(request, "establecimiento/sector/sector_form.html", {'sector_form': sector_form})
+
+
+@login_required
+def baja_sectores(request):
+    sector_id = request.POST.get('sector_id')
+    sector = Sector.objects.get(id=sector_id)
+    sector.delete()
+    response = {}
+    return JsonResponse(response)
 
 
 '''
@@ -385,25 +442,39 @@ def alta_modif_generadores(request, nro_generador=None):
         generador_form = GeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
         dias_form = RecoleccionForm(request.POST)
+        cuadrante_form = CuadranteForm(request.POST)
 
-        if generador_form.is_valid() & actividades_form.is_valid() & dias_form.is_valid():
+        if generador_form.is_valid() & actividades_form.is_valid() & dias_form.is_valid() & cuadrante_form.is_valid():
 
             generador = generador_form.save(commit=False)
             generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
             generador.recoleccion = dias_form.cleaned_data.get('recoleccion')
 
+            if cuadrante_form.cleaned_data.get('nro_parada') and cuadrante_form.cleaned_data.get('sector'):
+                nuevo_cuadrante = Cuadrante()
+                nuevo_cuadrante.nro_parada = cuadrante_form.cleaned_data.get('nro_parada')
+                nuevo_cuadrante.sector = cuadrante_form.cleaned_data.get('sector')
+                nuevo_cuadrante.save()
+                generador.cuadrante = nuevo_cuadrante
+
             generador.save()
 
             return redirect('generadores:listado_generadores')
+
+        else:
+            if cuadrante_form.cleaned_data.get('nro_parada') and cuadrante_form.cleaned_data.get('sector'):
+                messages.add_message(request, messages.ERROR, 'Se produjo un error, por favor, revise los datos ingresados.')
     else:
 
         generador_form = GeneradorForm(instance=generador)
         actividades_form = ActividadesForm(instance=generador)
         dias_form = RecoleccionForm(instance=generador)
+        cuadrante_form = CuadranteForm(instance=generador)
 
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,
                'dias_form': dias_form,
+               'cuadrante_form': cuadrante_form,
                'modificar':modificar
     }
     return render(request, "establecimiento/generador_form.html", contexto)
@@ -435,7 +506,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
         establecimientos = {}
 
-        total_baldes = BaldeUtilizado.objects.filter(hoja_ruta__fecha_recorrido__month=mes, establecimiento_generador__activo=True)
+        total_baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido__month=mes, establecimiento_generador__activo=True)
 
         for b in total_baldes:
 
@@ -444,11 +515,11 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
             for c in Capacidad_balde: #Capacidad_balde: tupla del choices.py
 
-                cant_envases = BaldeUtilizado.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__id=b.hoja_ruta.id, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
+                cant_envases = DetalleHojaRuta.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__id=b.hoja_ruta.id, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
                 baldes_utilizados[c[0]] = cant_envases
                 total_envases+=cant_envases #acumulador por cada tipo de balde
 
-                c_envases = BaldeUtilizado.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__id=b.hoja_ruta.id, tipo='Retiro').values_list('balde__capacidad')
+                c_envases = DetalleHojaRuta.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__id=b.hoja_ruta.id, tipo='Retiro').values_list('balde__capacidad')
                 acumu = 0
 
                 for env in c_envases:

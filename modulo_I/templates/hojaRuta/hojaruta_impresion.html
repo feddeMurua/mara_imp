@@ -7,16 +7,11 @@
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <!--
-  <form class="form-inline" method="post">
-    <p><strong>Filtro (Sector):</strong></p>
-    <input type="number" placeholder="Desde" name="desde" class="form-control">
-    <input type="number" placeholder="Hasta" name="hasta" class="form-control">
-    <a type="submit" target="_blank" href="{% url 'hojaRuta:hoja_ruta_pdf' dia=dia_nro %}" class="btn btn-success"><i class="fa fa-print"></i> imprimir </a>
-  </form>
-  -->
-  <a target="_blank" href="{% url 'hojaRuta:hoja_ruta_pdf' dia=dia_nro %}" class="btn btn-success"><i class="fa fa-print"></i> imprimir </a>
-  <a href="{% url 'hojaRuta:listado_general' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;"></i></a>
+  <div style="padding-top:0.3%; padding-left:0.1%;">
+    <a target="_blank" href="{% url 'hojaRuta:hoja_ruta_pdf' dia=dia_nro %}" class="btn btn-success"><i class="fa fa-print"></i> imprimir </a>
+    <a href="#" class="btn btn-warning" data-toggle="tooltip" title="Modificar" ><i class="fa fa-pencil"></i> Itinerario </a>
+    <a href="{% url 'hojaRuta:listado_general' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;"></i></a>
+  </div>
 {% endblock %}
 
 {% block thead-tabla %}
