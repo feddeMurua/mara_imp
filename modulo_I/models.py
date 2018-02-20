@@ -30,10 +30,14 @@ class Provincia(models.Model):
 ESTABLECIMIENTO GENERADOR
 '''
 
+class Itinerario(models.Model):
+    dia = models.CharField(max_length=50, primary_key=True, choices=Dias)
+
 
 class Sector(models.Model):
     nombre_sector = models.CharField(max_length=50, unique=True)
     localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
+    itinerario = models.ForeignKey('Itinerario', blank=True, null=True, default=None)
 
     def __str__(self):
         return "%s" % (self.nombre_sector)

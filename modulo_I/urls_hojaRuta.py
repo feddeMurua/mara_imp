@@ -15,4 +15,7 @@ urlpatterns = [
     url(r'^baja/balde/utilizado/hoja/$', baja_balde_utilizado, name="baja_balde_utilizado"),
     #liquidacion mensual
     url(r'^liquidacion/PDF/(?P<mes>\d+)/$', LiquidacionPdf.as_view(), name= 'liquidacion_pdf'),
+    #itinerario
+    url(r'^alta/itinerario/$', alta_itinerario, name="alta_itinerario"),
+
 ]

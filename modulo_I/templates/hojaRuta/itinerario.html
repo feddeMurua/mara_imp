@@ -1,0 +1,85 @@
+{% extends "base/base_forms.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+{% load widget_tweaks %}
+
+{% block scripts %}
+  {{block.super}}
+  <script type="text/javascript" src="{% static 'js/jquery.chained.js' %}"></script>
+{% endblock %}
+
+{% block title %}Itinerario{% endblock %}
+
+{% block header-title %} Información de Recorridos en la Hoja de Ruta{% endblock %}
+
+{% block step-form %}
+
+  <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">
+         <div class="row">
+          <div class="col-xs-4 col-md-4">
+              <h3 class="panel-title">LISTADO GENERAL</h3>
+          </div>
+        </div>
+       </div>
+       <div class="panel-body">
+         <div class="panel panel-default">
+           <div class="panel-body">
+             <label>(*)Sector:</label>
+             <select id="id_sector" name="sector" class="select-2">
+            	<option value="" selected="selected">---------</option>
+              {% for sector in listado_sectores%}
+                <option value="{{sector.id}}">{{sector}}</option>
+              {% endfor %}
+            </select>
+            <br>
+            <label>(*)Cuadrante:</label>
+            <select id="id_cuadrante" name="cuadrante" class="select-2">
+             <option value="" selected="selected">---------</option>
+             {% for cuadrante in listado_cuadrantes%}
+               <option value="{{cuadrante.id}}" class="{{cuadrante.sector.id}}">{{cuadrante}}</option>
+             {% endfor %}
+           </select>
+           <br>
+           <label>(*)Generador:</label>
+           <select id="id_generador" name="generador" class="select-2">
+            <option value="" selected="selected">---------</option>
+            {% for generador in listado_generadores%}
+              <option value="{{generador.id}}" class="{{generador.cuadrante.id}}">{{generador}}</option>
+            {% endfor %}
+          </select>
+             <!--
+             <div class="container-fluid container-table">
+                <table style="overflow:auto" class="table table-list table-bordered table-striped" id="table-list">
+                    <thead>
+                        <tr align="center">
+                          <th style="text-align:center;">Establecimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <ul class="lista_generadores"></ul>
+                      </tr>
+                    </tbody>
+                </table>
+              </div>
+              -->
+          </div>
+        </div>
+       </div>
+     </div>
+
+     <script>
+       $(function() {
+         $("#id_cuadrante").chained("#id_sector");
+         $("#id_generador").chained("#id_cuadrante");
+       });
+     </script>
+
+  </div>
+{% endblock %}
+
+{% block url-cancelar %}
+  {% url 'hojaRuta:generar_hoja_ruta' %}
+{% endblock %}

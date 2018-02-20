@@ -168,6 +168,13 @@ def baja_balde(request):
 HOJAS DE RUTA
 '''
 
+@login_required
+def alta_itinerario(request):
+    listado_sectores = Sector.objects.all()
+    listado_cuadrantes = Cuadrante.objects.all()
+    listado_generadores = EstablecimientoGenerador.objects.filter(activo=True)
+    return render(request, 'hojaRuta/itinerario.html', {'listado_sectores': listado_sectores,'listado_cuadrantes': listado_cuadrantes,'listado_generadores': listado_generadores})
+
 
 @login_required
 def listado_general_hojas_de_ruta(request):

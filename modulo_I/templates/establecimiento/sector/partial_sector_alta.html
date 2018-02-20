@@ -9,15 +9,18 @@
     <h4 class="modal-title">Alta de sector</h4>
   </div>
   <div class="modal-body">
-    {% for field in form %}
-      <div class="form-group{% if field.errors %} has-error{% endif %}">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {% render_field field class="form-control" %}
-        {% for error in field.errors %}
-          <p class="help-block">{{ error }}</p>
-        {% endfor %}
-      </div>
-    {% endfor %}
+    <label>(*)Nombre:</label>
+    {{form.nombre_sector|add_class:'form-control nombre_sector'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
+    <br>
+    <label>(*)Localidad:</label>
+    {{form.localidad|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
+    <script>
+      $('.nombre_sector').on('input', function(evt) {
+        $(this).val(function (_, val) {
+          return val.toUpperCase();
+        });
+      });
+    </script>
   </div>
   <div class="modal-footer">
     <button type="submit" class="btn btn-primary">Crear sector</button>

@@ -13,10 +13,17 @@
       <div class="panel-heading">DATOS SECTOR|</div>
       <div class="panel-body">
         <label>(*)Nombre:</label>
-        {{sector_form.nombre_sector|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
+        {{sector_form.nombre_sector|add_class:'form-control nombre_sector'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
         <br>
         <label>(*)Localidad:</label>
         {{sector_form.localidad|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
+        <script>
+          $('.nombre_sector').on('input', function(evt) {
+            $(this).val(function (_, val) {
+              return val.toUpperCase();
+            });
+          });
+        </script>
       </div>
     </div>
   </div>
@@ -25,5 +32,5 @@
 
 
 {% block url-cancelar %}
-  {% url 'localidades:listado_localidades' %}
+  {% url 'generadores:listado_sectores' %}
 {% endblock %}

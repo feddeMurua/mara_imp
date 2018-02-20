@@ -101,7 +101,7 @@ GENERADORES
 class SectorForm(forms.ModelForm):
     class Meta:
         model = Sector
-        fields = '__all__'
+        exclude = ['itinerario', ]
 
 
 class CuadranteForm(forms.ModelForm):
