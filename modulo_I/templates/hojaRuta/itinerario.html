@@ -3,9 +3,17 @@
 {% load staticfiles bootstrap3 %}
 {% load widget_tweaks %}
 
+{% block stylesheets %}
+  {{block.super}}
+  <link rel="stylesheet" href="{% static 'css/filtro_upHeader_tabla.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap.css' %}"/>
+{% endblock %}
+
 {% block scripts %}
   {{block.super}}
   <script type="text/javascript" src="{% static 'js/jquery.chained.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/dataTables.bootstrap.js' %}"></script>
 {% endblock %}
 
 {% block title %}Itinerario{% endblock %}
@@ -46,35 +54,71 @@
            <select id="id_generador" name="generador" class="select-2">
             <option value="" selected="selected">---------</option>
             {% for generador in listado_generadores%}
-              <option value="{{generador.id}}" class="{{generador.cuadrante.id}}">{{generador}}</option>
+              <option value="{{generador.razon_social}}" class="{{generador.cuadrante.id}}">{{generador}}</option>
             {% endfor %}
-          </select>
-             <!--
-             <div class="container-fluid container-table">
-                <table style="overflow:auto" class="table table-list table-bordered table-striped" id="table-list">
-                    <thead>
-                        <tr align="center">
-                          <th style="text-align:center;">Establecimiento</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <ul class="lista_generadores"></ul>
-                      </tr>
-                    </tbody>
-                </table>
-              </div>
-              -->
+           </select>
+           <br>
+           <button type=button id="agregar_generador">Agregar</button>
+           <br><br>
+            <form method="post" action="">
+             <table style="overflow:auto" class="table table-list table-bordered table-striped" id="table-list">
+                <thead>
+                    <tr align="center">
+                      <th style="text-align:center;">Establecimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <!--
+                  <td>
+                    <ul id="generadores_list" class="lista_generadores"></ul>
+                  </td>
+                  -->
+                  <td><input type="text" id="row-1-age" name="row-1-age" value="61"></td>
+                </tbody>
+             </table>
+           </form>
           </div>
         </div>
        </div>
      </div>
 
      <script>
+
+     $(document).ready(function() {
+       var table = $('#table-list').DataTable();
+
+       $('button').click( function() {
+           var data = table.$('input').serialize();
+
+           var request = $.ajax({
+               type: "POST",
+               url: "{% url 'hojaRuta:alta_itinerario' %}",
+               data: {
+                   "csrfmiddlewaretoken": "{{ csrf_token }}",
+                   "data": data
+               },
+           });
+
+       } );
+      } );
+
        $(function() {
          $("#id_cuadrante").chained("#id_sector");
          $("#id_generador").chained("#id_cuadrante");
        });
+
+       $('#agregar_generador').click(function(){
+         var text = $('#id_generador').val() + ' <button>x</button>';
+         if(text.length){
+          $('<li />', {html: text}).appendTo('ul.lista_generadores');
+        }
+
+       });
+
+      $('ul').on('click','button' , function(el){
+          $(this).parent().remove()
+      });
+
      </script>
 
   </div>

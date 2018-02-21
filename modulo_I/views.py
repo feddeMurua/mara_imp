@@ -170,9 +170,17 @@ HOJAS DE RUTA
 
 @login_required
 def alta_itinerario(request):
+
     listado_sectores = Sector.objects.all()
     listado_cuadrantes = Cuadrante.objects.all()
     listado_generadores = EstablecimientoGenerador.objects.filter(activo=True)
+
+
+    if request.method == 'POST':
+        print("-----------")
+        print(request.POST.get('data'))
+        print("-----------")
+
     return render(request, 'hojaRuta/itinerario.html', {'listado_sectores': listado_sectores,'listado_cuadrantes': listado_cuadrantes,'listado_generadores': listado_generadores})
 
 
@@ -449,21 +457,12 @@ def alta_modif_generadores(request, nro_generador=None):
         generador_form = GeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
         dias_form = RecoleccionForm(request.POST)
-        cuadrante_form = CuadranteForm(request.POST)
 
-        if generador_form.is_valid() & actividades_form.is_valid() & dias_form.is_valid() & cuadrante_form.is_valid():
+        if generador_form.is_valid() & actividades_form.is_valid() & dias_form.is_valid():
 
             generador = generador_form.save(commit=False)
             generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
             generador.recoleccion = dias_form.cleaned_data.get('recoleccion')
-
-            if cuadrante_form.cleaned_data.get('nro_parada') and cuadrante_form.cleaned_data.get('sector'):
-                nuevo_cuadrante = Cuadrante()
-                nuevo_cuadrante.nro_parada = cuadrante_form.cleaned_data.get('nro_parada')
-                nuevo_cuadrante.sector = cuadrante_form.cleaned_data.get('sector')
-                nuevo_cuadrante.save()
-                generador.cuadrante = nuevo_cuadrante
-
             generador.save()
 
             return redirect('generadores:listado_generadores')

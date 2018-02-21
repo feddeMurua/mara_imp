@@ -142,7 +142,6 @@
       });
 
       $(document).ready(function(){
-
              $("#baldeForm").submit(function(e) {
                  e.preventDefault();
                  $.post($(this).data('url'), $(this).serialize()).done(function(data) {

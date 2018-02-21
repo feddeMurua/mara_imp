@@ -44,14 +44,11 @@ class Sector(models.Model):
 
 
 class Cuadrante(models.Model):
-    nro_parada = models.IntegerField(validators=[MinValueValidator(1)], blank=True, null=True)
+    nombre_cuadrante = models.CharField(max_length=50, unique=True)
     sector = models.ForeignKey('Sector', on_delete=models.CASCADE, blank=True, null=True)
 
-    class Meta:
-        unique_together = (("nro_parada", "sector"),)
-
     def __str__(self):
-        return "Sector: %s, N°: %s " % (self.sector, self.nro_parada)
+        return "Sector: %s, N°: %s " % (self.sector, self.nombre_cuadrante)
 
 
 class BaldePactado(models.Model):
@@ -66,13 +63,14 @@ class EstablecimientoGenerador(models.Model):
     activo = models.BooleanField(default=False)
     razon_social = models.CharField(max_length=50)
     direccion = models.CharField(max_length=100)
-    tipo_actividad = MultiSelectField(choices=sorted(Actividades))
+    tipo_actividad = MultiSelectField(choices=sorted(Actividades), blank=True, null=True)
     recoleccion = MultiSelectField(choices=Dias, blank=True, null=True)
     localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
     telefono = models.CharField(max_length=50, blank=True, null=True)
     email = models.CharField(max_length=200, blank=True, null=True)
     responsable_ambiental = models.CharField(max_length=50, blank=True, null=True)
     cuit = models.CharField(max_length=20, blank=True, null=True)
+    nro_parada = models.IntegerField(validators=[MinValueValidator(1)], blank=True, null=True) # En el cuadrante
     cuadrante = models.ForeignKey('Cuadrante',blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
