@@ -11,5 +11,10 @@ urlpatterns = [
     url(r'^listado/sectores/$', listado_sectores, name="listado_sectores"),
     url(r'^alta/sector/$', alta_sectores, name="alta_sectores"),
     url(r'^modificar/sectores/(?P<id_sector>\d+)/$', modificar_sectores, name="modificar_sectores"),
-    url(r'^baja/sectores/$', baja_sectores, name="baja_sectores"),    
+    url(r'^baja/sectores/$', baja_sectores, name="baja_sectores"),
+    #Cuadrantes
+    url(r'^listado/cuadrantes/$', listado_cuadrantes, name="listado_cuadrantes"),
+    url(r'^alta/cuadrante/$', alta_cuadrantes, name="alta_cuadrantes"),
+    url(r'^modificar/cuadrantes/(?P<id_cuadrante>\d+)/$', modificar_cuadrantes, name="modificar_cuadrantes"),
+    url(r'^baja/cuadrantes/$', baja_cuadrantes, name="baja_cuadrantes"),
 ]

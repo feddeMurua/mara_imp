@@ -15,6 +15,8 @@ from django.utils.html import escape
 from .choices import Capacidad_balde
 import collections
 from django.contrib import messages
+import json
+import ast
 # Create your views here.
 
 '''
@@ -168,21 +170,6 @@ def baja_balde(request):
 HOJAS DE RUTA
 '''
 
-@login_required
-def alta_itinerario(request):
-
-    listado_sectores = Sector.objects.all()
-    listado_cuadrantes = Cuadrante.objects.all()
-    listado_generadores = EstablecimientoGenerador.objects.filter(activo=True)
-
-
-    if request.method == 'POST':
-        print("-----------")
-        print(request.POST.get('data'))
-        print("-----------")
-
-    return render(request, 'hojaRuta/itinerario.html', {'listado_sectores': listado_sectores,'listado_cuadrantes': listado_cuadrantes,'listado_generadores': listado_generadores})
-
 
 @login_required
 def listado_general_hojas_de_ruta(request):
@@ -235,7 +222,7 @@ def generar_hoja_ruta(request):
     dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
 
     #informacion de los establecimientos que atienden un dia en particular
-    establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True)
+    listado_generadores = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True).order_by('nro_parada')
 
     dia_nombre = ""
 
@@ -255,8 +242,24 @@ def generar_hoja_ruta(request):
         dia_nombre = "Sábado"
 
     #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
-    return render(request, "hojaRuta/hojaruta_impresion.html", {'establecimientos': establecimientos, 'dia':dia_nombre,'dia_nro':dia_actual})
+    return render(request, "hojaRuta/hojaruta_impresion.html", {'listado_generadores': listado_generadores, 'dia':dia_nombre,'dia_nro':dia_actual})
 
+
+
+def modificar_itinerario(request, id_generador):
+
+    generador = EstablecimientoGenerador.objects.get(id=id_generador)
+
+    if request.method == 'POST':
+        generador_form = ItinerarioForm(request.POST, instance=generador)
+        if generador_form.is_valid():
+            generador_form.save()
+            return redirect('hojaRuta:generar_hoja_ruta')
+    else:
+        generador_form = ItinerarioForm(instance=generador, initial={'sector': generador.cuadrante.sector})
+
+    contexto= {'generador_form': generador_form}
+    return render(request, "hojaRuta/itinerario/itinerario_form.html", contexto)
 
 '''
 BALDES UTILIZADOS
@@ -422,6 +425,63 @@ def baja_sectores(request):
     sector_id = request.POST.get('sector_id')
     sector = Sector.objects.get(id=sector_id)
     sector.delete()
+    response = {}
+    return JsonResponse(response)
+
+
+'''
+CUADRANTE
+'''
+
+
+@login_required
+def listado_cuadrantes(request):
+    listado_cuadrantes = Cuadrante.objects.all()
+    return render(request, 'establecimiento/cuadrante/cuadrante_listado.html', {'listado_cuadrantes': listado_cuadrantes})
+
+
+@login_required
+def alta_cuadrantes(request):
+    data = dict()
+
+    if request.method == 'POST':
+        form = CuadranteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = CuadranteForm()
+
+    context = {'form': form}
+    data['html_form'] = render_to_string('establecimiento/cuadrante/partial_cuadrante_alta.html',
+        context,
+        request=request
+    )
+    return JsonResponse(data)
+
+
+@login_required
+def modificar_cuadrantes(request, id_cuadrante):
+    cuadrante = Cuadrante.objects.get(id=id_cuadrante)
+    if request.method == 'POST':
+        cuadrante_form = CuadranteForm(request.POST, instance=cuadrante)
+
+        if cuadrante_form.is_valid():
+            cuadrante_form.save()
+            return redirect('generadores:listado_cuadrantes')
+    else:
+        cuadrante_form = CuadranteForm(instance=cuadrante)
+
+    return render(request, "establecimiento/cuadrante/cuadrante_form.html", {'cuadrante_form': cuadrante_form})
+
+
+@login_required
+def baja_cuadrantes(request):
+    cuadrante_id = request.POST.get('cuadrante_id')
+    cuadrante = Cuadrante.objects.get(id=cuadrante_id)
+    cuadrante.delete()
     response = {}
     return JsonResponse(response)
 

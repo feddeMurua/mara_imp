@@ -16,6 +16,6 @@ urlpatterns = [
     #liquidacion mensual
     url(r'^liquidacion/PDF/(?P<mes>\d+)/$', LiquidacionPdf.as_view(), name= 'liquidacion_pdf'),
     #itinerario
-    url(r'^alta/itinerario/$', alta_itinerario, name="alta_itinerario"),
+    url(r'^modificación/generador/itinerario/(?P<id_generador>\d+)/$', modificar_itinerario, name="modificar_itinerario"),
 
 ]

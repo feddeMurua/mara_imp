@@ -9,6 +9,7 @@ $(document).ready(function() {
 
   //DataTable
   var table = $('#table-list').DataTable({
+    "order": [[ 1, "asc" ]], //ordena default: segunda columna
     "bSearchable":true,
     "language": {
     	"sProcessing":     "Procesando...",

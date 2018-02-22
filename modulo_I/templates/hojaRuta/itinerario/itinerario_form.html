@@ -1,0 +1,30 @@
+{% extends "base/base_forms.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+{% load widget_tweaks %}
+
+{% block title %}Modificar Dato{% endblock %}
+
+{% block header-title %} --- {% endblock %}
+
+{% block step-form %}
+
+  <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
+        <div class="panel-body">
+          <label>Número de Parada:</label>
+          {{generador_form.nro_parada|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+          <br>
+          <label>Cuadrante:</label>
+          {{generador_form.cuadrante|add_class:'select-2'}}
+          <br>          
+        </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block url-cancelar %}
+  {% url 'hojaRuta:generar_hoja_ruta' %}
+{% endblock %}

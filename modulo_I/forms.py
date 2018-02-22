@@ -98,6 +98,13 @@ GENERADORES
 '''
 
 
+class ItinerarioForm(forms.ModelForm):
+
+    class Meta:
+        model = EstablecimientoGenerador
+        fields = ['nro_parada','cuadrante', ]
+
+
 class SectorForm(forms.ModelForm):
     class Meta:
         model = Sector

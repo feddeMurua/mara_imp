@@ -15,8 +15,8 @@
 {% block thead-tabla %}
   <thead>
   <tr style="background:#6495ED;">
-      <th>N° Balde</th>
       <th>Capacidad</th>
+      <th>N° Balde</th>
       <th>Estado</th>
       <th>Acciones</th>
   </tr>
@@ -26,8 +26,8 @@
 {% block tfoot-tabla %}
   <tfoot >
      <tr>
-       <th>N° Balde</th>
        <th>Capacidad</th>
+       <th>N° Balde</th>
        <th>Estado</th>
        <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
     </tr>
@@ -38,8 +38,8 @@
   <tbody>
     {% for balde in listado_baldes %}
         <tr>
-            <td>{{ balde.nro_balde }}</td>
             <td>{{ balde.capacidad}}</td>
+            <td>{{ balde.nro_balde }}</td>
             {% if balde.estado == 'Ocupado' %}
               <td><strong>{{ balde.estado }}, Establecimiento: {{ balde.establecimiento_generador }}</strong></td>
             {% else %}

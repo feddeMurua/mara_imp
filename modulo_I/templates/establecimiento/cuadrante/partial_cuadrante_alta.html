@@ -1,0 +1,29 @@
+{% load widget_tweaks %}
+
+<form method="post" action="{% url 'generadores:alta_cuadrantes' %}" class="js-alta-cuadrante-form">
+  {% csrf_token %}
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Alta de Cuadrante</h4>
+  </div>
+  <div class="modal-body">
+    <label>(*)Nombre:</label>
+    {{form.nombre_cuadrante|add_class:'form-control nombre_cuadrante'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
+    <br>
+    <label>(*)Sector:</label>
+    {{form.sector|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo sector es obligatorio"}}
+    <script>
+      $('.nombre_cuadrante').on('input', function(evt) {
+        $(this).val(function (_, val) {
+          return val.toUpperCase();
+        });
+      });
+    </script>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary">Crear cuadrante</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+  </div>
+</form>
