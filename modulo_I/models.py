@@ -34,7 +34,7 @@ ESTABLECIMIENTO GENERADOR
 class Sector(models.Model):
     nombre_sector = models.CharField(max_length=50, unique=True)
     localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return "%s" % (self.nombre_sector)
 
@@ -69,6 +69,11 @@ class EstablecimientoGenerador(models.Model):
     nro_parada = models.IntegerField(validators=[MinValueValidator(1)], blank=True, null=True) # En el cuadrante
     cuadrante = models.ForeignKey('Cuadrante',blank=True, null=True, on_delete=models.SET_NULL)
 
+    '''
+    class Meta:
+        unique_together = ('cuadrante', 'nro_parada',)
+    '''
+
     def __str__(self):
         return "%s" % (self.razon_social)
 
@@ -100,8 +105,6 @@ class Balde(models.Model):
 class DetalleHojaRuta(models.Model):
     hoja_ruta = models.ForeignKey('HojaRuta')
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
-    hora_llegada = models.TimeField(blank=True, null=True)
-    hora_salida = models.TimeField(blank=True, null=True)
     balde = models.ForeignKey('Balde') #balde_entrega
     nro_precinto = models.BigIntegerField(unique=True, blank=True, null=True)
     tipo = models.CharField(max_length=15, choices=Entrega_Retiro)
@@ -120,6 +123,8 @@ class DetalleHojaRuta(models.Model):
 
 class HojaRuta(models.Model):
     fecha_recorrido = models.DateField() #fecha del dia que se imprimió la hoja de ruta
+    hora_llegada = models.TimeField(blank=True, null=True)
+    hora_salida = models.TimeField(blank=True, null=True)    
 
     def __str__(self):
         return "Fecha Recorrido: %s" % (self.fecha_recorrido)

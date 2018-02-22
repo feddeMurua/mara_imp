@@ -14,7 +14,6 @@ import datetime
 from django.utils.html import escape
 from .choices import Capacidad_balde
 import collections
-from django.contrib import messages
 import json
 import ast
 # Create your views here.
@@ -43,6 +42,11 @@ def handlePopAdd(request, addForm, field):
 @login_required
 def new_localidad(request):
     return handlePopAdd(request, LocalidadForm, 'localidad')
+
+
+@login_required
+def new_cuadrante(request):
+    return handlePopAdd(request, CuadranteForm, 'cuadrante')
 
 
 '''
@@ -254,7 +258,7 @@ def modificar_itinerario(request, id_generador):
         generador_form = ItinerarioForm(request.POST, instance=generador)
         if generador_form.is_valid():
             generador_form.save()
-            return redirect('hojaRuta:generar_hoja_ruta')
+            return redirect('hojaRuta:generar_hoja_ruta')        
     else:
         generador_form = ItinerarioForm(instance=generador, initial={'sector': generador.cuadrante.sector})
 
@@ -364,7 +368,7 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
     redirect_field_name = 'next'
 
     def get_context_data(self, dia):
-        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True)
+        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True).order_by('nro_parada')
 
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",

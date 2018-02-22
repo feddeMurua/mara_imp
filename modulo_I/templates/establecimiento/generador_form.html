@@ -70,7 +70,6 @@
     </div>
   </div>
 
-
    <!-- SECTION 3 -->
    <div class="form-section">
      <div class="panel panel-default">
@@ -105,7 +104,22 @@
            <br>
            <label>Cuadrante:</label>
            {{generador_form.cuadrante|add_class:'select-2'}}
-           <br>           
+           <br>
+         </div>
+     </div>
+   </div>
+
+   <!-- SECTION 6 -->
+   <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">CUADRANTE Y SECTOR ASOCIADO</div>
+         <div class="panel-body">
+           <label>Número de Parada:</label>
+           {{generador_form.nro_parada|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+           <br>
+           <label>Cuadrante:</label>
+           {{generador_form.cuadrante|add_class:'select-2'}}
+           <br>
          </div>
      </div>
    </div>

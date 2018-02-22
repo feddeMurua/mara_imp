@@ -17,6 +17,9 @@
         <br>
         <label>(*)Sector:</label>
         {{cuadrante_form.sector|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo sector es obligatorio"}}
+        {% for error in cuadrante_form.sector.errors %}
+            <span style="color:red;" class="help-block"> Ya Existe un Balde con este número.</span>
+        {% endfor %}
         <script>
           $('.nombre_cuadrante').on('input', function(evt) {
             $(this).val(function (_, val) {

@@ -23,6 +23,13 @@ class SelectLocalidadWithPop(forms.Select):
         return html+popupplus
 
 
+class SelectCuadranteWithPop(forms.Select):
+    def render(self, name, *args, **kwargs):
+        html = super(SelectCuadranteWithPop, self).render(name, *args, **kwargs)
+        popupplus = render_to_string("base/popupplus_cuadrante.html", {'field': name})
+        return html+popupplus
+
+
 class FormularioUsuario(AuthenticationForm):
     '''
     Corresponde al formulario que permite el acceso al sistema por parte del usuario.
@@ -61,6 +68,11 @@ BALDES
 
 
 class BaldeUtilizadoForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(BaldeUtilizadoForm, self).__init__(*args, **kwargs)
+        self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(activo=True)
+
     class Meta:
         model = DetalleHojaRuta
         exclude = ['hoja_ruta',]
@@ -82,11 +94,13 @@ class BaldeForm(forms.ModelForm):
 HOJAS DE RUTA
 '''
 
+
 class HojaRutaForm(forms.ModelForm):
     fecha_recorrido = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
     class Meta:
         model = HojaRuta
         fields = '__all__'
+
 
 '''
 class LiqMensualForm(forms.Form):
@@ -96,6 +110,13 @@ class LiqMensualForm(forms.Form):
 '''
 GENERADORES
 '''
+
+
+class BaldePactadoForm(forms.ModelForm):
+
+    class Meta:
+        model = BaldePactado
+        exclude = ['establecimiento_generador', ]
 
 
 class ItinerarioForm(forms.ModelForm):
@@ -119,6 +140,7 @@ class CuadranteForm(forms.ModelForm):
 
 class GeneradorForm(forms.ModelForm):
     localidad = forms.ModelChoiceField(Localidad.objects, widget=SelectLocalidadWithPop)
+    cuadrante = forms.ModelChoiceField(Cuadrante.objects, widget=SelectCuadranteWithPop, required=False,)
     class Meta:
         model = EstablecimientoGenerador
         exclude = ['domicilio','fecha' ]

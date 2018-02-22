@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^alta/cuadrante/$', alta_cuadrantes, name="alta_cuadrantes"),
     url(r'^modificar/cuadrantes/(?P<id_cuadrante>\d+)/$', modificar_cuadrantes, name="modificar_cuadrantes"),
     url(r'^baja/cuadrantes/$', baja_cuadrantes, name="baja_cuadrantes"),
+    url(r'^alta/cuadrante/?$', new_cuadrante, name="nuevo_cuadrante"),
 ]

@@ -1,0 +1,18 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <title>Add {{ field }}</title>
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/RelatedObjectLookups.js' %}"></script>
+  </head>
+  <body>
+    <a
+      href="{% url 'generadores:nuevo_cuadrante' %}"
+      class="add-another"
+      id="add_id_{{ field }}"
+      onclick="return showAddAnotherPopup(this);">
+      <img src="/static/images/icon-addlink.svg" width="10" height="10" alt="Add Another"/>
+    </a>
+  </body>
+</html>
