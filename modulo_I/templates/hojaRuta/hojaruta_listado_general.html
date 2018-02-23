@@ -9,12 +9,20 @@
 
 {% block panel-heading-tabla %}
   <div style="padding-top:0.3%; padding-left:0.1%;">
-    <a href="{% url 'hojaRuta:alta_modif_hoja_ruta' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Recepción Hoja de Ruta </a>
-    <a href="{% url 'hojaRuta:generar_hoja_ruta' %}" class="btn btn-info"><i class="fa fa-file-text"></i> Generar Hoja de Ruta </a>
-    {% now "m" as numero_mes %}
-    <a href="{% url 'hojaRuta:liquidacion_pdf' mes=numero_mes %}" class="btn btn-warning" target="_blank"><i class="fa fa-book"></i> Liquidación Mensual de Retiros </a>
-  </div>
-{% endblock %}
+    <div class="btn-group">
+      <a href="{% url 'hojaRuta:alta_modif_hoja_ruta' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Recepción Hoja de Ruta </a>
+      <a href="{% url 'hojaRuta:generar_hoja_ruta' %}" class="btn btn-info"><i class="fa fa-file-text"></i> Generar Hoja de Ruta </a>
+      <div class="btn-group">
+          <button type="button" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">Liquidación Mensual de Retiros <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+              {% for kmes, vmes in meses.items %}
+              <li><a href="{% url 'hojaRuta:liquidacion_pdf' mes=kmes nombre_mes=vmes.0 anio=vmes.1 %}" target="_blank">{{vmes.0}}</a></li>
+              {% endfor %}
+          </ul>
+      </div>
+    </div>
+ </div>
+ {% endblock %}
 
 
 {% block thead-tabla %}

@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^alta/balde/utilizado/$', alta_balde_utilizado, name="alta_balde_utilizado"),
     url(r'^baja/balde/utilizado/hoja/$', baja_balde_utilizado, name="baja_balde_utilizado"),
     #liquidacion mensual
-    url(r'^liquidacion/PDF/(?P<mes>\d+)/$', LiquidacionPdf.as_view(), name= 'liquidacion_pdf'),
+    url(r'^liquidacion/PDF/(?P<mes>\d+)/(?P<nombre_mes>\w+)/(?P<anio>\d+)/$', LiquidacionPdf.as_view(), name= 'liquidacion_pdf'),
     #itinerario
     url(r'^modificación/generador/itinerario/(?P<id_generador>\d+)/$', modificar_itinerario, name="modificar_itinerario"),
 

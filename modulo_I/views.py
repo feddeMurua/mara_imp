@@ -183,15 +183,48 @@ HOJAS DE RUTA
 @login_required
 def listado_general_hojas_de_ruta(request):
 
-    #form_liq_mensual = LiqMensualForm()
     listado_general = HojaRuta.objects.values('fecha_recorrido').distinct()
-    #return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'form_liq_mensual':form_liq_mensual})
 
     if 'baldes_utilizados' in request.session:
         del request.session['baldes_utilizados']
     request.session['baldes_utilizados'] = []
 
-    return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general})
+    #Devuelve diccionario con numero y nombre mes
+    meses = {}
+    mes_nombre = ""
+
+    for fecha in HojaRuta.objects.all().values("fecha_recorrido").distinct().order_by("fecha_recorrido"):
+        mes_actual = fecha['fecha_recorrido'].month
+        anio_hoja_ruta = fecha['fecha_recorrido'].year
+
+        if mes_actual == 1:
+            mes_nombre = "Enero"
+        elif mes_actual == 2:
+            mes_nombre = "Febrero"
+        elif mes_actual == 3:
+            mes_nombre = "Marzo"
+        elif mes_actual == 4:
+            mes_nombre = "Abril"
+        elif mes_actual == 5:
+            mes_nombre = "Mayo"
+        elif mes_actual == 6:
+            mes_nombre = "Junio"
+        elif mes_actual == 7:
+            mes_nombre = "Julio"
+        elif mes_actual == 8:
+            mes_nombre = "Agosto"
+        elif mes_actual == 9:
+            mes_nombre = "Septiembre"
+        elif mes_actual == 10:
+            mes_nombre = "Octubre"
+        elif mes_actual == 11:
+            mes_nombre = "Noviembre"
+        elif mes_actual == 12:
+            mes_nombre = "Diciembre"
+
+        meses[mes_actual] = (mes_nombre,anio_hoja_ruta)
+
+    return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'meses':meses})
 
 
 @login_required
@@ -669,7 +702,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
     login_url = '/accounts/login/'
     redirect_field_name = 'next'
 
-    def get_context_data(self, mes):
+    def get_context_data(self, mes, nombre_mes, anio):
 
         establecimientos = {}
 
@@ -697,5 +730,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
         return super(LiquidacionPdf, self).get_context_data(
             pagesize="A4",
-            establecimientos=establecimientos
+            establecimientos=establecimientos,
+            nombre_mes=nombre_mes,
+            anio=anio
         )
