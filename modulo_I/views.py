@@ -203,7 +203,7 @@ def alta_modif_hoja_ruta(request):
         if hojaruta_form.is_valid():
             hoja_ruta = hojaruta_form.save()
             request.session['fecha'] = str(hojaruta_form.cleaned_data.get('fecha_recorrido')) # Para controlar que no haya un balde repetido en mas de un generador
-            carga_baldes(request, hoja_ruta)
+            carga_baldes_utilizados(request, hoja_ruta)
             if 'btn-guardar' in request.POST:
                 return redirect('hojaRuta:listado_general')
             else:
@@ -320,7 +320,7 @@ def alta_balde_utilizado(request):
     success = True
     if form.is_valid():
         balde_utilizado = form.save(commit=False)
-        if existe_balde(request, balde_utilizado):
+        if existe_balde_utilizado(request, balde_utilizado):
             success = False
         else:
             request.session['baldes_utilizados'].append(balde_utilizado.to_json())
@@ -328,14 +328,14 @@ def alta_balde_utilizado(request):
     return JsonResponse({'success': success, 'baldes_utilizados': request.session['baldes_utilizados']})
 
 
-def existe_balde(request, balde_utilizado):
+def existe_balde_utilizado(request, balde_utilizado):
     for item in request.session['baldes_utilizados']:
         if ((item['nro_precinto'] == balde_utilizado.nro_precinto) or (item['balde']['nro_balde'] == balde_utilizado.balde.nro_balde)):
             return True
     return False
 
 
-def carga_baldes(request, hoja_ruta):
+def carga_baldes_utilizados(request, hoja_ruta):
     for b_utilizado in request.session['baldes_utilizados']:
         balde = Balde.objects.get(nro_balde=b_utilizado['balde']['nro_balde'])
         if b_utilizado['tipo'] =="Entrega":
@@ -373,10 +373,12 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
 
     def get_context_data(self, dia):
         establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, cuadrante__isnull=False, nro_parada__isnull=False).order_by('nro_parada')
+        #baldes_pactados = BaldePactado.objects.filter(establecimiento_generador__in=establecimientos).values('establecimiento_generador')
 
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
             establecimientos=establecimientos
+        #    baldes_pactados=baldes_pactados
         )
 
 

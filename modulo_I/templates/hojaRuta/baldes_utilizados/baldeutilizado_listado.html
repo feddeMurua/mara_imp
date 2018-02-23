@@ -47,8 +47,16 @@
         <td style="text-align: center;">{{ balde.balde.nro_balde }}</td>
         <td style="text-align: center;">{{ balde.nro_precinto}}</td>
         <td style="text-align: center;">{{ balde.tipo}}</td>
-        <td style="text-align: center;">{{ hoja_ruta.hora_llegada}}</td>
-        <td style="text-align: center;">{{ hoja_ruta.hora_salida}}</td>
+        {% if hoja_ruta.hora_llegada %}
+          <td style="text-align: center;">{{ hoja_ruta.hora_llegada}}</td>
+        {% else %}
+          <td style="text-align: center;">-</td>
+        {% endif %}
+        {% if hoja_ruta.hora_salida %}
+          <td style="text-align: center;">{{ hoja_ruta.hora_salida}}</td>
+        {% else %}
+          <td style="text-align: center;">-</td>
+        {% endif %}
         <td align="center">
             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:modif_balde_utilizado' id_balde=balde.balde.nro_balde id_hoja=balde.hoja_ruta.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
             <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.balde.nro_balde}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>

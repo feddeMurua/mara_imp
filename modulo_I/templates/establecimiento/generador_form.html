@@ -133,6 +133,7 @@
                              <th style="text-align:center;">Capacidad de Balde</th>
                              <th style="text-align:center;">Color de Precinto</th>
                              <th style="text-align:center;">Cantidad</th>
+                             <!--<th style="text-align:center;">Acciones</th>-->
                            </tr>
                        </thead>
                        <tbody>
@@ -144,7 +145,7 @@
           </div>
         </div>
      </div>
-  {% endif %}
+   {% endif %}
 
 {% endblock %}
 
@@ -211,17 +212,29 @@
              });
          });
 
-     function refresh_table(baldes_utilizados){
-             var $tbody = $("table tbody");
-             $tbody.children().remove();
-             for(var i = 0; i < baldes_utilizados.length; i++){
-                 var row = "<tr align='center'>" +
-                 "<td>" + baldes_utilizados[i]['capacidad_balde'] + "dm3 </td>" +
-                 "<td>" + baldes_utilizados[i]['color_precinto'] + "</td>" +
-                 "<td>" + baldes_utilizados[i]['cantidad'] + "</td>" +
-                 "</tr>";
-                 $tbody.append(row);
-             }
+      function refresh_table(baldes_pactados){
+        var $tbody = $("table tbody");
+        $tbody.children().remove();
+        for(var i = 0; i < baldes_pactados.length; i++){
+           var row = "<tr align='center'>" +
+           "<td>" + baldes_pactados[i]['capacidad_balde'] + "dm3 </td>" +
+           "<td>" + baldes_pactados[i]['color_precinto'] + "</td>" +
+           "<td>" + baldes_pactados[i]['cantidad'] + "</td>" +
+           //"<td align='center'>" +
+           //"<a onclick='deleteRow(this)' class='btn btn-danger' data-toggle='tooltip' title='Eliminar'><em class='glyphicon glyphicon-trash'></em></a> </td>" +
+           "</tr>";
+           $tbody.append(row);
+
+        }
       }
+
+      /*
+      function deleteRow(btn) {
+        var row = btn.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+      }
+      */
+
+
   </script>
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends "easy_pdf/base.html" %}
 {% load staticfiles %}
 {% load staticfiles bootstrap3 %}
+{% load hoja_ruta_extras %}
 
 
 {% block extra_style %}
@@ -64,7 +65,7 @@
                 <td colspan="1" rowspan="2"><strong>Hora Llegada</strong></td>
                 <td colspan="1" rowspan="2"><strong>Hora Retiro</strong></td>
                 <td colspan="1" rowspan="2"><strong>Vol. Retirado</strong></td>
-                <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}} </th>
+                <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}}, {{ establecimiento|baldes_pactados }} </th>
                 <td colspan="1" rowspan="2"><strong>N° Inscripción</strong></td>
               </tr>
               <tr>
@@ -74,7 +75,7 @@
                   <td align="left">Pr </td>
                 {% endfor %}
               </tr>
-              <tr>                
+              <tr>
                 <td></td><td></td>
                 <td></td><td align="left">Entregas</td>
                 <td></td><td></td>

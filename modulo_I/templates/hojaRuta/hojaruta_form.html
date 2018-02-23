@@ -108,7 +108,7 @@
                      {% endfor %}
                  </div>
                  <div class="form-group">
-                   <label>(*)Número de Precinto:</label>
+                   <label>Número de Precinto:</label>
                    {{baldeutilizado_form.nro_precinto|add_class:'form-control'}}
                    <br>
                    {% for error in baldeutilizado_form.nro_precinto.errors %}
@@ -160,7 +160,7 @@
                  var row = "<tr align='center'>" +
                  "<td align="+"left"+">" + establecimiento + "</td>" +
                  "<td>" + balde + "</td>" +
-                 "<td>" + baldes_utilizados[i]['nro_precinto'] + "</td>" +
+                 "<td>" + baldes_utilizados[i]['nro_precinto'] + "</td>" +                 
                  "<td>" + baldes_utilizados[i]['tipo'] + "</td>" +
                  "</tr>";
                  $tbody.append(row);
