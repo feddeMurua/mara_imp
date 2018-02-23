@@ -1,0 +1,53 @@
+{% extends "balde/balde_listado.html" %}
+{% load staticfiles %}
+
+{% block panel-heading %}
+  LISTADO DE BALDES PACTADOS DEL GENERADOR: {{generador}}
+{% endblock %}
+
+{% block panel-heading-tabla %}
+  <div style="padding-top:0.3%; padding-left:0.1%;">
+    <a href="{% url 'generadores:alta_balde_pactado_mod' nro_generador=nro_generador %}" class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo Balde</a>
+    <a href="{% url 'generadores:listado_generadores' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;padding-right:2px;"></i></a>
+  </div>
+{% endblock %}
+
+{% block thead-tabla %}
+  <thead>
+  <tr style="background:#6495ED;">
+      <th style="text-align: center;">Capacidad Balde</th>
+      <th style="text-align: center;">Color Precinto</th>
+      <th style="text-align: center;">Cantidad</th>
+      <th style="text-align: center;">Acciones</th>
+  </tr>
+  </thead>
+{% endblock %}
+
+{% block tfoot-tabla %}
+  <tfoot>
+     <tr>
+       <th style="text-align: center;">Capacidad Balde</th>
+       <th style="text-align: center;">Color Precinto</th>
+       <th style="text-align: center;">Cantidad</th>
+       <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
+    </tr>
+  </tfoot>
+{% endblock %}
+
+{% block tbody-tabla %}
+<tbody>
+  {% for balde in listado_baldes %}
+      <tr>
+        <td style="text-align: center;">{{ balde.capacidad_balde }} dm3</td>
+        <td style="text-align: center;">{{ balde.color_precinto }}</td>
+        <td style="text-align: center;">{{ balde.cantidad }}</td>
+        <td style="text-align: center;" align="center">
+          <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modif_balde_pactado' nro_balde=balde.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
+          <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.id}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+{% endblock %}
+
+{% block url-baja-balde %} "{% url 'generadores:baja_balde_pactado' %}" {% endblock %}

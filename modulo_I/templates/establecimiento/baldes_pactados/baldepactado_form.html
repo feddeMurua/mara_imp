@@ -1,0 +1,38 @@
+{% extends "balde/balde_form.html" %}
+{% load widget_tweaks %}
+
+{% block step-form %}
+
+  <div class="form-section">
+     <div class="panel panel-default">
+       <div class="panel-heading">DATOS BALDES</div>
+         <div class="panel-body">
+           <div class="form-group">
+             <label>(*)Capacidad Balde:</label>
+             {{baldepactado_form.capacidad_balde|add_class:"form-control"}}
+             <br>
+             {% for error in baldepactado_form.capacidad_balde.errors %}
+                 <span style="color:red;" class="help-block">{{error}}</span>
+               {% endfor %}
+           </div>
+           <div class="form-group">
+             <label>(*)Color de Precinto:</label>
+             {{baldepactado_form.color_precinto|add_class:'form-control'}}
+             <br>
+             {% for error in baldeutilizado_form.nro_precinto.errors %}
+                 <span style="color:red;" class="help-block">{{error}}</span>
+               {% endfor %}
+           </div>
+           <div class="form-group">
+             <label>(*)Cantidad:</label>
+             {{baldepactado_form.cantidad|add_class:"form-control"}}
+           </div>
+         </div>
+     </div>
+   </div>
+
+{% endblock %}
+
+{% block url-cancelar %}
+    {% url 'generadores:listado_baldes_pactados' nro_generador=nro_generador %}  
+{% endblock %}

@@ -45,6 +45,7 @@
             <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'generadores:detalle_generadores' nro_generador=generador.id %}"><em class="glyphicon glyphicon-eye-open"></em></a>
             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:alta_modif_generadores' nro_generador=generador.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
             <a id="generador_id"class="btn btn-danger btn-baja"  data-generadornro="{{generador.id}}" data-generadornombre="{{generador.razon_social}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+            <a class="btn btn-success" data-toggle="tooltip" title="Baldes Pactados" href="{% url 'generadores:listado_baldes_pactados' nro_generador=generador.id %}"><em class="glyphicon glyphicon-list-alt"></em></a>
           </td>
       </tr>
   {% endfor %}
@@ -66,7 +67,7 @@
 
 
         var title = 'Generador: ' + generador_nombre
-        var content = '¿Está seguro que quiere eliminar el generador con N° inscripción: ' + generador_nro + '?'
+        var content = '¿Está seguro que quiere eliminar el generador?'
 
         // actualiza el contenido del manual
         var modal = $(this)

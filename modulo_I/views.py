@@ -49,6 +49,11 @@ def new_cuadrante(request):
     return handlePopAdd(request, CuadranteForm, 'cuadrante')
 
 
+@login_required
+def new_sector(request):
+    return handlePopAdd(request, SectorForm, 'sector')
+
+
 '''
 LOCALIDADES
 '''
@@ -112,7 +117,7 @@ BALDES
 
 @login_required
 def listado_baldes(request):
-    listado_baldes = Balde.objects.all().order_by('nro_balde')
+    listado_baldes = Balde.objects.all()
     '''
     for i in range (55):
         balde = Balde(nro_balde=(i+1), capacidad=10)
@@ -152,9 +157,9 @@ def alta_modif_balde(request, nro_balde=None):
         balde = None
     if request.method == 'POST':
         balde_form = BaldeForm(request.POST, instance=balde)
+        balde.delete()
         if balde_form.is_valid():
-            balde = balde_form.save(commit=False)
-            balde.save()
+            balde_form.save()
             return redirect('baldes:listado_baldes')
     else:
         balde_form = BaldeForm(instance=balde)
@@ -226,7 +231,7 @@ def generar_hoja_ruta(request):
     dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
 
     #informacion de los establecimientos que atienden un dia en particular
-    listado_generadores = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True).order_by('nro_parada')
+    listado_generadores = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True, cuadrante__isnull=False, nro_parada__isnull=False).order_by('nro_parada')
 
     dia_nombre = ""
 
@@ -249,7 +254,6 @@ def generar_hoja_ruta(request):
     return render(request, "hojaRuta/hojaruta_impresion.html", {'listado_generadores': listado_generadores, 'dia':dia_nombre,'dia_nro':dia_actual})
 
 
-
 def modificar_itinerario(request, id_generador):
 
     generador = EstablecimientoGenerador.objects.get(id=id_generador)
@@ -258,12 +262,13 @@ def modificar_itinerario(request, id_generador):
         generador_form = ItinerarioForm(request.POST, instance=generador)
         if generador_form.is_valid():
             generador_form.save()
-            return redirect('hojaRuta:generar_hoja_ruta')        
+            return redirect('hojaRuta:generar_hoja_ruta')
     else:
         generador_form = ItinerarioForm(instance=generador, initial={'sector': generador.cuadrante.sector})
 
     contexto= {'generador_form': generador_form}
     return render(request, "hojaRuta/itinerario/itinerario_form.html", contexto)
+
 
 '''
 BALDES UTILIZADOS
@@ -280,7 +285,7 @@ def listado_baldes_utilizados(request, anio, mes, dia):
 
 #MODIFICACION EN EL LISTADO DE BALDES
 @login_required
-def alta_modif_balde_utilizado(request, id_hoja=None, id_balde=None):
+def modif_balde_utilizado(request, id_hoja=None, id_balde=None):
     try:
         balde = DetalleHojaRuta.objects.get(balde__nro_balde=id_balde, hoja_ruta__id=id_hoja)
     except:
@@ -346,7 +351,6 @@ def carga_baldes(request, hoja_ruta):
             item.save()
 
 
-
 @login_required
 def baja_balde_utilizado(request):
     balde_nro = request.POST.get('balde_nro')
@@ -368,7 +372,7 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
     redirect_field_name = 'next'
 
     def get_context_data(self, dia):
-        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True).order_by('nro_parada')
+        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, cuadrante__isnull=False, nro_parada__isnull=False).order_by('nro_parada')
 
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
@@ -509,6 +513,7 @@ def detalle_generadores(request, nro_generador):
 
 @login_required
 def alta_modif_generadores(request, nro_generador=None):
+    baldepactado_form = BaldePactadoForm()
 
     try:
         generador = EstablecimientoGenerador.objects.get(id=nro_generador)
@@ -528,6 +533,7 @@ def alta_modif_generadores(request, nro_generador=None):
             generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
             generador.recoleccion = dias_form.cleaned_data.get('recoleccion')
             generador.save()
+            carga_baldes(request, generador)
 
             return redirect('generadores:listado_generadores')
 
@@ -541,10 +547,15 @@ def alta_modif_generadores(request, nro_generador=None):
         dias_form = RecoleccionForm(instance=generador)
         cuadrante_form = CuadranteForm(instance=generador)
 
+    if 'baldes_pactados' in request.session:
+        del request.session['baldes_pactados']
+    request.session['baldes_pactados'] = []
+
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,
                'dias_form': dias_form,
                'cuadrante_form': cuadrante_form,
+               'baldepactado_form':baldepactado_form,
                'modificar':modificar
     }
     return render(request, "establecimiento/generador_form.html", contexto)
@@ -555,6 +566,90 @@ def baja_generadores(request):
     nro_inscripcion = request.POST.get('generador_id')
     generador = EstablecimientoGenerador.objects.get(id=nro_inscripcion)
     generador.delete()
+    response = {}
+    return JsonResponse(response)
+
+
+'''
+BALDES PACTADOS
+'''
+
+
+@login_required
+def listado_baldes_pactados(request, nro_generador):
+    listado_baldes = BaldePactado.objects.filter(establecimiento_generador__id=nro_generador)
+    generador = EstablecimientoGenerador.objects.get(id=nro_generador)
+    return render(request, 'establecimiento/baldes_pactados/baldepactado_listado.html', {'listado_baldes': listado_baldes, 'nro_generador':nro_generador, 'generador':generador})
+
+
+@login_required(login_url='login')
+def alta_balde_pactado(request):
+    form = BaldePactadoForm(request.POST)
+    success = True
+    if form.is_valid():
+        balde_pactado = form.save(commit=False)
+        if existe_balde(request, balde_pactado):
+            success = False
+        else:
+            request.session['baldes_pactados'].append(balde_pactado.to_json())
+            request.session.modified = True
+    return JsonResponse({'success': success, 'baldes_pactados': request.session['baldes_pactados']})
+
+
+def existe_balde(request, balde_pactado):
+    for item in request.session['baldes_pactados']:
+        if ((item['capacidad_balde'] == balde_pactado.capacidad_balde) and (item['color_precinto'] == balde_pactado.color_precinto)):
+            return True
+    return False
+
+
+def carga_baldes(request, generador):
+    for b_pactado in request.session['baldes_pactados']:
+        item = BaldePactado(establecimiento_generador=generador,capacidad_balde=b_pactado['capacidad_balde'], color_precinto=b_pactado['color_precinto'], cantidad=b_pactado['cantidad'])
+        item.save()
+
+
+@login_required
+def alta_balde_pactado_mod(request, nro_generador):
+
+    if request.method == 'POST':
+        baldepactado_form = BaldePactadoForm(request.POST)
+        if baldepactado_form.is_valid():
+            balde = baldepactado_form.save(commit=False)
+            generador = EstablecimientoGenerador.objects.get(id=nro_generador)
+            balde.establecimiento_generador=generador
+            try:
+                balde.save()
+                return redirect('generadores:listado_baldes_pactados', nro_generador=nro_generador)
+            except:
+                messages.add_message(request, messages.ERROR, 'Ya está cargada esta capacidad de baldes y color de precinto.')
+    else:
+        baldepactado_form = BaldePactadoForm()
+
+    return render(request, "establecimiento/baldes_pactados/baldepactado_form.html", {'baldepactado_form': baldepactado_form, 'nro_generador':nro_generador})
+
+
+@login_required
+def modif_balde_pactado(request, nro_balde=None):
+
+    balde = BaldePactado.objects.get(id=nro_balde)
+
+    if request.method == 'POST':
+        baldepactado_form = BaldePactadoForm(request.POST, instance=balde)
+        if baldepactado_form.is_valid():
+            balde = baldepactado_form.save()
+            return redirect('generadores:listado_baldes_pactados', nro_generador=balde.establecimiento_generador.id)
+    else:
+        baldepactado_form = BaldePactadoForm(instance=balde)
+
+    return render(request, "establecimiento/baldes_pactados/baldepactado_form.html", {'baldepactado_form': baldepactado_form, 'nro_generador':balde.establecimiento_generador.id})
+
+
+@login_required
+def baja_balde_pactado(request):
+    balde_nro = request.POST.get('balde_nro')
+    balde_pactado = BaldePactado.objects.get(id=balde_nro)
+    balde_pactado.delete()
     response = {}
     return JsonResponse(response)
 
@@ -576,7 +671,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
         establecimientos = {}
 
-        total_baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido__month=mes, establecimiento_generador__activo=True)
+        total_baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido__month=mes, establecimiento_generador__activo=True, establecimiento_generador__cuadrante__isnull=False, establecimiento_generador__nro_parada__isnull=False)
 
         for b in total_baldes:
 

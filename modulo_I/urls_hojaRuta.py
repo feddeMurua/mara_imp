@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^hoja_ruta/PDF/(?P<dia>\d+)/$', HojaRutaPdf.as_view(), name= 'hoja_ruta_pdf'),
     #BALDES UTILIZADOS
     url(r'^listado/hoja_de_ruta/(?P<anio>\d+)/(?P<mes>\d+)/(?P<dia>\d+)/$', listado_baldes_utilizados, name="listado_baldes_utilizados"),
-    url(r'^modificación/balde/(?P<id_balde>\d+)/hoja_de_ruta/(?P<id_hoja>\d+)/$', alta_modif_balde_utilizado, name="alta_modif_balde_utilizado"),
+    url(r'^modificación/balde/(?P<id_balde>\d+)/hoja_de_ruta/(?P<id_hoja>\d+)/$', modif_balde_utilizado, name="modif_balde_utilizado"),
     url(r'^alta/balde/utilizado/$', alta_balde_utilizado, name="alta_balde_utilizado"),
     url(r'^baja/balde/utilizado/hoja/$', baja_balde_utilizado, name="baja_balde_utilizado"),
     #liquidacion mensual

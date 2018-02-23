@@ -30,6 +30,13 @@ class SelectCuadranteWithPop(forms.Select):
         return html+popupplus
 
 
+class SelectSectorWithPop(forms.Select):
+    def render(self, name, *args, **kwargs):
+        html = super(SelectSectorWithPop, self).render(name, *args, **kwargs)
+        popupplus = render_to_string("base/popupplus_sector.html", {'field': name})
+        return html+popupplus
+
+
 class FormularioUsuario(AuthenticationForm):
     '''
     Corresponde al formulario que permite el acceso al sistema por parte del usuario.
@@ -71,7 +78,7 @@ class BaldeUtilizadoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(BaldeUtilizadoForm, self).__init__(*args, **kwargs)
-        self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(activo=True)
+        self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(activo=True, cuadrante__isnull=False, nro_parada__isnull=False)
 
     class Meta:
         model = DetalleHojaRuta
@@ -133,6 +140,7 @@ class SectorForm(forms.ModelForm):
 
 
 class CuadranteForm(forms.ModelForm):
+    sector = forms.ModelChoiceField(Sector.objects, widget=SelectSectorWithPop)
     class Meta:
         model = Cuadrante
         fields = '__all__'

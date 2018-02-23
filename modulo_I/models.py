@@ -50,9 +50,21 @@ class Cuadrante(models.Model):
 class BaldePactado(models.Model):
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', blank=True, null=True, default=None)
     capacidad_balde = models.CharField(max_length=5, choices=Capacidad_balde) # en dm3
-    color_precinto = models.CharField(max_length=15, choices=Color_precinto) # en dm3
-    cantidad = models.IntegerField(validators=[MinValueValidator(1)], unique=True)
+    color_precinto = models.CharField(max_length=15, choices=Color_precinto)
+    cantidad = models.IntegerField(validators=[MinValueValidator(1)])
 
+    class Meta:
+        unique_together = ('establecimiento_generador', 'capacidad_balde', 'color_precinto')
+
+    def __str__(self):
+        return "Establecimiento: %s" % (self.establecimiento_generador)
+
+    def to_json(self):
+        return {
+            'capacidad_balde': self.capacidad_balde,
+            'color_precinto': self.color_precinto,
+            'cantidad': self.cantidad,
+        }
 
 class EstablecimientoGenerador(models.Model):
     nro_inscripcion = models.BigIntegerField(unique=True, blank=True, null=True, default=None) # N° inscripcion registro de generadores provincia del chubut
@@ -90,7 +102,7 @@ PARA GENERAR HOJA DE RUTA: http://jsfiddle.net/J5nCS/1/
 '''
 
 class Balde(models.Model):
-    nro_balde = models.BigIntegerField(primary_key=True) #identificador
+    nro_balde = models.CharField(max_length=15, primary_key=True) #identificador
     capacidad = models.CharField(max_length=5, choices=Capacidad_balde) # en dm3
     estado = models.CharField(max_length=15, choices=Estado, default='En Planta')
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', blank=True, null=True, default=None)
@@ -124,7 +136,7 @@ class DetalleHojaRuta(models.Model):
 class HojaRuta(models.Model):
     fecha_recorrido = models.DateField() #fecha del dia que se imprimió la hoja de ruta
     hora_llegada = models.TimeField(blank=True, null=True)
-    hora_salida = models.TimeField(blank=True, null=True)    
+    hora_salida = models.TimeField(blank=True, null=True)
 
     def __str__(self):
         return "Fecha Recorrido: %s" % (self.fecha_recorrido)
