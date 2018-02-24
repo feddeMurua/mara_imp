@@ -10,8 +10,8 @@
 {% block panel-heading-tabla %}
   <div style="padding-top:0.3%; padding-left:0.1%;">
     <div class="btn-group">
-      <a href="{% url 'hojaRuta:alta_modif_hoja_ruta' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Recepción Hoja de Ruta </a>
       <a href="{% url 'hojaRuta:generar_hoja_ruta' %}" class="btn btn-info"><i class="fa fa-file-text"></i> Generar Hoja de Ruta </a>
+      <a href="{% url 'hojaRuta:alta_modif_hoja_ruta' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Recepción Hoja de Ruta </a>
       <div class="btn-group">
           <button type="button" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">Liquidación Mensual de Retiros <span class="caret"></span></button>
           <ul class="dropdown-menu">
@@ -93,26 +93,6 @@
 {% block modal-scripts %}
 
   <script>
-
-    /*
-    $(function(){
-      $('#liq_mensual_form').on('submit', function(e){
-        e.preventDefault();
-        var url = ""
-        var win = window.open(url, '_blank'); // para abrir en otra pestaña
-        win.focus();
-        $("#liq_mensual").modal('hide');
-        $.ajax({
-            url: url ,
-            type: 'GET',
-            data: {
-                'mes': $('#liq_mensual_form').find('input[name="mes"]').val()
-            }
-        });
-
-      });
-    });
-    */
 
     //codigo para cambiar los datos del modal y para dar de baja
     $(document).ready(function () {

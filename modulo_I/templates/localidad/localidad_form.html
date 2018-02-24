@@ -13,7 +13,7 @@
       <div class="panel-heading">DATOS LOCALIDAD</div>
       <div class="panel-body">
         <label>(*)Nombre:</label>
-        {{localidad_form.nombre|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
+        {{localidad_form.nombre|add_class:'form-control nombre_localidad'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
         <br>
         <label>(*)CP:</label>
         {{localidad_form.cp|add_class:'form-control'|attr:"required:"|attr:"type:number"|attr:"data-parsley-type=integer"|attr:"data-parsley-error-message:(*)El campo CP es obligatorio"}}
@@ -22,6 +22,13 @@
         {{localidad_form.provincia|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo provincia es obligatorio"}}
       </div>
     </div>
+    <script>
+      $('.nombre_localidad').on('input', function(evt) {
+        $(this).val(function (_, val) {
+          return val.toUpperCase();
+        });
+      });
+    </script>
   </div>
 
 {% endblock %}

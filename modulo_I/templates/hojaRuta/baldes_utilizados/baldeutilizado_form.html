@@ -11,7 +11,7 @@
            {{balde_form.establecimiento_generador|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Establecimiento es obligatorio"}}
            <br>
            <label>(*)Número de Precinto:</label>
-           {{balde_form.nro_precinto|add_class:'form-control'|attr:"required:"}}
+           {{balde_form.nro_precinto|add_class:'form-control'}}
            <br>
            {% for error in balde_form.nro_precinto.errors %}
                <span style="color:red;" class="help-block">{{error}}</span>

@@ -42,12 +42,19 @@
             <td>{{ balde.nro_balde }}</td>
             {% if balde.estado == 'Ocupado' %}
               <td><strong>{{ balde.estado }}, Establecimiento: {{ balde.establecimiento_generador }}</strong></td>
+            {% elif balde.establecimiento_generador %}
+              <td><strong>Último Establecimiento del balde:</strong> {{ balde.establecimiento_generador }} </td>
             {% else %}
-              <td>{{ balde.estado }}</td>
+              <td> {{ balde.estado }} </td>
             {% endif %}
             <td align="center">
-               <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'baldes:alta_modif_balde' nro_balde=balde.nro_balde %}"><em class="glyphicon glyphicon-pencil"></em></a>
-               <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.nro_balde}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+              {% if balde.establecimiento_generador and balde.estado != 'Ocupado'  %}
+                <a href="{% url 'baldes:reset_balde' nro_balde=balde.nro_balde %}" onclick="return confirm('Esta seguro que sea cambiar el estado?')" class="btn btn-success" data-toggle="tooltip" title="Modificar" href="#"><em class="glyphicon glyphicon-exclamation-sign"></em></a>
+              {% endif %}
+              {% if balde.estado != 'Ocupado'  %}
+                <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'baldes:alta_modif_balde' nro_balde=balde.nro_balde %}"><em class="glyphicon glyphicon-pencil"></em></a>
+              {% endif %}
+              <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.id}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
             </td>
         </tr>
     {% endfor %}

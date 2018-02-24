@@ -79,6 +79,7 @@ class BaldeUtilizadoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(BaldeUtilizadoForm, self).__init__(*args, **kwargs)
         self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(activo=True, cuadrante__isnull=False, nro_parada__isnull=False)
+        self.fields['balde'].queryset = Balde.objects.all().order_by('nro_balde')
 
     class Meta:
         model = DetalleHojaRuta

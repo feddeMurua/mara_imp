@@ -18,8 +18,6 @@
       <th style="text-align: center;">N° Balde</th>
       <th style="text-align: center;">N° Precinto</th>
       <th style="text-align: center;">Tipo</th>
-      <th style="text-align: center;">Hora Llegada</th>
-      <th style="text-align: center;">Hora Salida</th>
       <th style="text-align: center;">Acciones</th>
   </tr>
   </thead>
@@ -32,8 +30,6 @@
        <th>N° Balde</th>
        <th>N° Precinto</th>
        <th>Tipo</th>
-       <th>Hora Llegada</th>
-       <th>Hora Salida</th>
        <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
     </tr>
   </tfoot>
@@ -45,21 +41,16 @@
       <tr>
         <td>{{ balde.establecimiento_generador}}</td>
         <td style="text-align: center;">{{ balde.balde.nro_balde }}</td>
-        <td style="text-align: center;">{{ balde.nro_precinto}}</td>
+        {% if balde.nro_precinto == None %}
+          <td style="text-align: center;">-</td>
+        {% else %}
+          <td style="text-align: center;">{{ balde.nro_precinto}}</td>
+        {% endif %}
         <td style="text-align: center;">{{ balde.tipo}}</td>
-        {% if hoja_ruta.hora_llegada %}
-          <td style="text-align: center;">{{ hoja_ruta.hora_llegada}}</td>
-        {% else %}
-          <td style="text-align: center;">-</td>
-        {% endif %}
-        {% if hoja_ruta.hora_salida %}
-          <td style="text-align: center;">{{ hoja_ruta.hora_salida}}</td>
-        {% else %}
-          <td style="text-align: center;">-</td>
-        {% endif %}
         <td align="center">
-            <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:modif_balde_utilizado' id_balde=balde.balde.nro_balde id_hoja=balde.hoja_ruta.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
-            <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.balde.nro_balde}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+            <a class="btn btn-warning" data-toggle="tooltip" title="Detalles" href="{% url 'hojaRuta:detalle_balde_utilizado' id_balde=balde.id %}"><em class="glyphicon glyphicon-eye-open"></em></a>
+            <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:modif_balde_utilizado' id_balde=balde.balde.id id_hoja=balde.hoja_ruta.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
+            <a id="nro_balde"class="btn btn-danger btn-baja"  data-baldenro="{{balde.id}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
         </td>
       </tr>
     {% endfor %}

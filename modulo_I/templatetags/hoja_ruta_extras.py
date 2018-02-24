@@ -30,3 +30,16 @@ def baldes_pactados(generador):
         return lista
     else:
         return ""
+
+
+@register.filter
+def calcular_vol(generador):
+    '''
+    FUNCION que se encarga de devolver total de volumen retirado
+    '''
+    detalles = DetalleHojaRuta.objects.filter(establecimiento_generador__id=generador.id, tipo="Retiro")
+
+    acumu = 0
+    for d in detalles:
+        acumu+= int(d.balde.capacidad)
+    return acumu

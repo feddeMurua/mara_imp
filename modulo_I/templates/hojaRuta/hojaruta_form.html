@@ -22,14 +22,6 @@
         <label>(*)Fecha Recorrido:</label>
         {{hojaruta_form.fecha_recorrido|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha impresión es obligatorio"}}
         <br>
-        <label>Hora Llegada:</label>
-        <br>
-        {{hojaruta_form.hora_llegada|add_class:'form-control hora'}}
-        <br>
-        <label>Hora Salida:</label>
-        <br>
-        {{hojaruta_form.hora_salida|add_class:'form-control hora'}}
-        <br>
       </div>
     </div>
   </div>
@@ -119,6 +111,16 @@
                    <label>(*)Tipo:</label>
                    {{baldeutilizado_form.tipo|add_class:"select-2"}}
                  </div>
+                 <div class="form-group">
+                   <label>Hora Llegada:</label>
+                   <br>
+                   {{baldeutilizado_form.hora_llegada|add_class:'form-control hora'}}
+                   <br>
+                   <label>Hora Salida:</label>
+                   <br>
+                   {{baldeutilizado_form.hora_salida|add_class:'form-control hora'}}
+                   <br>
+                 </div>
                  <input type="submit" class="btn btn-default" id="btn-confirmar" value="Confirmar"/>
                  <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
                </form>
@@ -160,7 +162,7 @@
                  var row = "<tr align='center'>" +
                  "<td align="+"left"+">" + establecimiento + "</td>" +
                  "<td>" + balde + "</td>" +
-                 "<td>" + baldes_utilizados[i]['nro_precinto'] + "</td>" +                 
+                 "<td>" + baldes_utilizados[i]['nro_precinto'] + "</td>" +
                  "<td>" + baldes_utilizados[i]['tipo'] + "</td>" +
                  "</tr>";
                  $tbody.append(row);

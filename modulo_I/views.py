@@ -118,34 +118,6 @@ BALDES
 @login_required
 def listado_baldes(request):
     listado_baldes = Balde.objects.all()
-    '''
-    for i in range (55):
-        balde = Balde(nro_balde=(i+1), capacidad=10)
-        balde.save()
-
-    for i in range(55,111):
-        balde = Balde(nro_balde=(i), capacidad=20)
-        balde.save()
-
-    for i in range(111,141):
-        balde = Balde(nro_balde=(i), capacidad=50)
-        balde.save()
-
-    for i in range(141,153):
-        balde = Balde(nro_balde=(i), capacidad=120)
-        balde.save()
-
-    for i in range(153,167):
-        balde = Balde(nro_balde=(i), capacidad=240)
-        balde.save()
-
-    for i in range(167,349):
-        balde = Balde(nro_balde=(i), capacidad=10)
-        balde.save()
-    for i in range(349,451):
-        balde = Balde(nro_balde=(i), capacidad=20)
-        balde.save()
-    '''
     return render(request, 'balde/balde_listado.html', {'listado_baldes': listado_baldes})
 
 
@@ -157,7 +129,10 @@ def alta_modif_balde(request, nro_balde=None):
         balde = None
     if request.method == 'POST':
         balde_form = BaldeForm(request.POST, instance=balde)
-        balde.delete()
+        try:
+            balde.delete()
+        except:
+            pass
         if balde_form.is_valid():
             balde_form.save()
             return redirect('baldes:listado_baldes')
@@ -169,10 +144,19 @@ def alta_modif_balde(request, nro_balde=None):
 @login_required
 def baja_balde(request):
     balde_nro = request.POST.get('balde_nro')
-    balde = Balde.objects.get(nro_balde=balde_nro)
+    balde = Balde.objects.get(id=balde_nro)
     balde.delete()
     response = {}
     return JsonResponse(response)
+
+
+@login_required
+def reset_balde(request, nro_balde):
+    balde = Balde.objects.get(nro_balde=nro_balde)
+    balde.Estado = "En Planta"
+    balde.establecimiento_generador = None
+    balde.save()
+    return redirect('baldes:listado_baldes')
 
 
 '''
@@ -264,7 +248,7 @@ def generar_hoja_ruta(request):
     dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
 
     #informacion de los establecimientos que atienden un dia en particular
-    listado_generadores = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True, cuadrante__isnull=False, nro_parada__isnull=False).order_by('nro_parada')
+    listado_generadores = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True, cuadrante__isnull=False).order_by('nro_parada')
 
     dia_nombre = ""
 
@@ -316,11 +300,17 @@ def listado_baldes_utilizados(request, anio, mes, dia):
     return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes, 'hoja_ruta':hoja_de_ruta})
 
 
+@login_required
+def detalle_balde_utilizado(request, id_balde):
+    balde_utilizado = DetalleHojaRuta.objects.get(id=id_balde)
+    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_detalle.html', {'balde_utilizado': balde_utilizado})
+
+
 #MODIFICACION EN EL LISTADO DE BALDES
 @login_required
 def modif_balde_utilizado(request, id_hoja=None, id_balde=None):
     try:
-        balde = DetalleHojaRuta.objects.get(balde__nro_balde=id_balde, hoja_ruta__id=id_hoja)
+        balde = DetalleHojaRuta.objects.get(balde__id=id_balde, hoja_ruta__id=id_hoja)
     except:
         balde = None
     if request.method == 'POST':
@@ -363,7 +353,7 @@ def alta_balde_utilizado(request):
 
 def existe_balde_utilizado(request, balde_utilizado):
     for item in request.session['baldes_utilizados']:
-        if ((item['nro_precinto'] == balde_utilizado.nro_precinto) or (item['balde']['nro_balde'] == balde_utilizado.balde.nro_balde)):
+        if (((item['nro_precinto'] == balde_utilizado.nro_precinto and (item['nro_precinto'] != None))) or (item['balde']['nro_balde'] == balde_utilizado.balde.nro_balde)):
             return True
     return False
 
@@ -387,8 +377,8 @@ def carga_baldes_utilizados(request, hoja_ruta):
 @login_required
 def baja_balde_utilizado(request):
     balde_nro = request.POST.get('balde_nro')
-    balde_utilizado = DetalleHojaRuta.objects.get(balde__nro_balde=balde_nro)
-    balde = Balde.objects.get(nro_balde=balde_nro)
+    balde_utilizado = DetalleHojaRuta.objects.get(id=balde_nro)
+    balde = Balde.objects.get(id=balde_utilizado.balde.id)
     balde.estado = "En Planta"
     balde.save()
     balde_utilizado.delete()
@@ -405,7 +395,7 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
     redirect_field_name = 'next'
 
     def get_context_data(self, dia):
-        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, cuadrante__isnull=False, nro_parada__isnull=False).order_by('nro_parada')
+        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, cuadrante__isnull=False).order_by('nro_parada')
         #baldes_pactados = BaldePactado.objects.filter(establecimiento_generador__in=establecimientos).values('establecimiento_generador')
 
         return super(HojaRutaPdf, self).get_context_data(

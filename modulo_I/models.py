@@ -44,7 +44,7 @@ class Cuadrante(models.Model):
     sector = models.ForeignKey('Sector', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return "Sector: %s, N°: %s " % (self.sector, self.nombre_cuadrante)
+        return "Sector: %s, Cuadrante: %s " % (self.sector, self.nombre_cuadrante)
 
 
 class BaldePactado(models.Model):
@@ -102,13 +102,13 @@ PARA GENERAR HOJA DE RUTA: http://jsfiddle.net/J5nCS/1/
 '''
 
 class Balde(models.Model):
-    nro_balde = models.CharField(max_length=15, primary_key=True) #identificador
+    nro_balde = models.CharField(max_length=15, unique=True)
     capacidad = models.CharField(max_length=5, choices=Capacidad_balde) # en dm3
     estado = models.CharField(max_length=15, choices=Estado, default='En Planta')
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador', blank=True, null=True, default=None)
 
     def __str__(self):
-        return "N°: %s" % (self.nro_balde)
+        return "%s" % (self.nro_balde)
 
     def to_json(self):
         return {'nro_balde': self.nro_balde}
@@ -117,6 +117,8 @@ class Balde(models.Model):
 class DetalleHojaRuta(models.Model):
     hoja_ruta = models.ForeignKey('HojaRuta')
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
+    hora_llegada = models.TimeField(blank=True, null=True)
+    hora_salida = models.TimeField(blank=True, null=True)
     balde = models.ForeignKey('Balde') #balde_entrega
     nro_precinto = models.BigIntegerField(unique=True, blank=True, null=True)
     tipo = models.CharField(max_length=15, choices=Entrega_Retiro)
@@ -135,8 +137,6 @@ class DetalleHojaRuta(models.Model):
 
 class HojaRuta(models.Model):
     fecha_recorrido = models.DateField() #fecha del dia que se imprimió la hoja de ruta
-    hora_llegada = models.TimeField(blank=True, null=True)
-    hora_salida = models.TimeField(blank=True, null=True)
 
     def __str__(self):
         return "Fecha Recorrido: %s" % (self.fecha_recorrido)
