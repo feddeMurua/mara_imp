@@ -40,8 +40,11 @@ class Sector(models.Model):
 
 
 class Cuadrante(models.Model):
-    nombre_cuadrante = models.CharField(max_length=50, unique=True)
+    nombre_cuadrante = models.CharField(max_length=50)
     sector = models.ForeignKey('Sector', on_delete=models.CASCADE, blank=True, null=True)
+
+    class Meta:
+        unique_together = ('sector', 'nombre_cuadrante',)
 
     def __str__(self):
         return "Sector: %s, Cuadrante: %s " % (self.sector, self.nombre_cuadrante)

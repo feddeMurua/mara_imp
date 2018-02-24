@@ -287,6 +287,23 @@ def modificar_itinerario(request, id_generador):
     return render(request, "hojaRuta/itinerario/itinerario_form.html", contexto)
 
 
+class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
+
+    template_name = 'hojaRuta/hoja_ruta_pdf.html'
+    title = "Planilla de Hoja de Ruta del dia: " + f"{datetime.datetime.now():%d/%m/%y}"
+
+    login_url = '/accounts/login/'
+    redirect_field_name = 'next'
+
+    def get_context_data(self, dia):
+        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, cuadrante__isnull=False).order_by('nro_parada')
+        
+        return super(HojaRutaPdf, self).get_context_data(
+            pagesize="A4",
+            establecimientos=establecimientos
+        )
+
+
 '''
 BALDES UTILIZADOS
 '''
@@ -384,25 +401,6 @@ def baja_balde_utilizado(request):
     balde_utilizado.delete()
     response = {}
     return JsonResponse(response)
-
-
-class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
-
-    template_name = 'hojaRuta/hoja_ruta_pdf.html'
-    title = "Planilla de Hoja de Ruta del dia: " + f"{datetime.datetime.now():%d/%m/%y}"
-
-    login_url = '/accounts/login/'
-    redirect_field_name = 'next'
-
-    def get_context_data(self, dia):
-        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, cuadrante__isnull=False).order_by('nro_parada')
-        #baldes_pactados = BaldePactado.objects.filter(establecimiento_generador__in=establecimientos).values('establecimiento_generador')
-
-        return super(HojaRutaPdf, self).get_context_data(
-            pagesize="A4",
-            establecimientos=establecimientos
-        #    baldes_pactados=baldes_pactados
-        )
 
 
 '''

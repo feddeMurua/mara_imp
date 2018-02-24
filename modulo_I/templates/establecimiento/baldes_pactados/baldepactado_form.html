@@ -9,23 +9,15 @@
          <div class="panel-body">
            <div class="form-group">
              <label>(*)Capacidad Balde:</label>
-             {{baldepactado_form.capacidad_balde|add_class:"form-control"}}
-             <br>
-             {% for error in baldepactado_form.capacidad_balde.errors %}
-                 <span style="color:red;" class="help-block">{{error}}</span>
-               {% endfor %}
+             {{baldepactado_form.capacidad_balde|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo capacidad del balde es obligatorio"}}
            </div>
            <div class="form-group">
              <label>(*)Color de Precinto:</label>
-             {{baldepactado_form.color_precinto|add_class:'form-control'}}
-             <br>
-             {% for error in baldeutilizado_form.nro_precinto.errors %}
-                 <span style="color:red;" class="help-block">{{error}}</span>
-               {% endfor %}
+             {{baldepactado_form.color_precinto|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo color de precinto es obligatorio"}}
            </div>
            <div class="form-group">
              <label>(*)Cantidad:</label>
-             {{baldepactado_form.cantidad|add_class:"form-control"}}
+             {{baldepactado_form.cantidad|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo cantidad es obligatorio"}}
            </div>
          </div>
      </div>
@@ -34,5 +26,5 @@
 {% endblock %}
 
 {% block url-cancelar %}
-    {% url 'generadores:listado_baldes_pactados' nro_generador=nro_generador %}  
+    {% url 'generadores:listado_baldes_pactados' nro_generador=nro_generador %}
 {% endblock %}
