@@ -33,11 +33,12 @@ def baldes_pactados(generador):
 
 
 @register.filter
-def calcular_vol(generador):
+def calcular_vol(balde_utilizado):
     '''
     FUNCION que se encarga de devolver total de volumen retirado
     '''
-    detalles = DetalleHojaRuta.objects.filter(establecimiento_generador__id=generador.id, tipo="Retiro")
+    detalles = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido__month=balde_utilizado.hoja_ruta.fecha_recorrido.month,
+                                                hoja_ruta__fecha_recorrido__day=balde_utilizado.hoja_ruta.fecha_recorrido.day, establecimiento_generador__id=balde_utilizado.establecimiento_generador.id, tipo="Retiro")
 
     acumu = 0
     for d in detalles:

@@ -135,6 +135,8 @@ class DetalleHojaRuta(models.Model):
             'establecimiento_generador': {'razon_social': self.establecimiento_generador.razon_social},
             'nro_precinto': self.nro_precinto,
             'tipo': self.tipo,
+            'hora_llegada': str(self.hora_llegada),
+            'hora_salida': str(self.hora_salida),
         }
 
 

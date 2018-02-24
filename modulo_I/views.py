@@ -297,7 +297,7 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
 
     def get_context_data(self, dia):
         establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, cuadrante__isnull=False).order_by('nro_parada')
-        
+
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
             establecimientos=establecimientos
@@ -387,7 +387,7 @@ def carga_baldes_utilizados(request, hoja_ruta):
         balde.establecimiento_generador = establecimiento_generador
         balde.save()
         if not DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido=request.session['fecha'], balde=balde): # No tiene qe existir el nro balde cargado ese dia en otro lugar
-            item = DetalleHojaRuta(balde=balde, establecimiento_generador=establecimiento_generador,hoja_ruta=hoja_ruta,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
+            item = DetalleHojaRuta(balde=balde, establecimiento_generador=establecimiento_generador,hoja_ruta=hoja_ruta,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'], hora_llegada=b_utilizado['hora_llegada'], hora_salida=b_utilizado['hora_salida'])
             item.save()
 
 
@@ -694,7 +694,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
         establecimientos = {}
 
-        total_baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido__month=mes, establecimiento_generador__activo=True, establecimiento_generador__cuadrante__isnull=False, establecimiento_generador__nro_parada__isnull=False)
+        total_baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido__month=mes, establecimiento_generador__activo=True, establecimiento_generador__cuadrante__isnull=False)
 
         for b in total_baldes:
 
@@ -703,11 +703,11 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
             for c in Capacidad_balde: #Capacidad_balde: tupla del choices.py
 
-                cant_envases = DetalleHojaRuta.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__id=b.hoja_ruta.id, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
+                cant_envases = DetalleHojaRuta.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__fecha_recorrido__month=b.hoja_ruta.fecha_recorrido.month, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
                 baldes_utilizados[c[0]] = cant_envases
                 total_envases+=cant_envases #acumulador por cada tipo de balde
 
-                c_envases = DetalleHojaRuta.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__id=b.hoja_ruta.id, tipo='Retiro').values_list('balde__capacidad')
+                c_envases = DetalleHojaRuta.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__fecha_recorrido__month=b.hoja_ruta.fecha_recorrido.month, tipo='Retiro').values_list('balde__capacidad')
                 acumu = 0
 
                 for env in c_envases:
