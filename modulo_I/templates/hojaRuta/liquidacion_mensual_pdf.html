@@ -61,7 +61,7 @@
             rowspan: n° de filas dentro de la fila
             -->
             <td rowspan="2"><strong>Establecimiento Generador</strong></td>
-            <th colspan="6" scope="colgroup">Cantidad de Envases</th>
+            <th colspan="7" scope="colgroup">Cantidad de Envases</th>
             <td rowspan="2"><strong>Total de Envases Utilizados</strong></td>
             <td rowspan="2"><strong>Total de dm3</strong></td>
           </tr>
@@ -71,6 +71,7 @@
             <th scope="col">20 dm3</th>
             <th scope="col">50 dm3</th>
             <th scope="col">120 dm3</th>
+            <th scope="col">200 dm3</th>
             <th scope="col">240 dm3</th>
           </tr>
           {% for key, value in establecimientos.items %}
@@ -83,7 +84,7 @@
               <td>{{value.2}}</td>
             </tr>
           {% endfor %}
-      </table>      
+      </table>
     </div>
 </div>
 {% endblock %}

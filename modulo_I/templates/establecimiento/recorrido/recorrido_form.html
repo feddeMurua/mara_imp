@@ -1,0 +1,36 @@
+{% extends "base/base_forms.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}recorrido{% endblock %}
+
+{% block header-title %} Información del recorrido {% endblock %}
+
+{% block step-form %}
+
+  <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">DATOS recorrido</div>
+      <div class="panel-body">
+        <label>(*)Nombre:</label>
+        {{recorrido_form.nombre|add_class:'form-control nombre_recorrido'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
+        <br>
+        <label>(*)Día:</label>
+        {{recorrido_form.dia|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo día es obligatorio"}}
+        <script>
+          $('.nombre_recorrido').on('input', function(evt) {
+            $(this).val(function (_, val) {
+              return val.toUpperCase();
+            });
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+
+{% block url-cancelar %}
+  {% url 'generadores:listado_recorridos' %}
+{% endblock %}

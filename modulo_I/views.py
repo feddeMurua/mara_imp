@@ -45,13 +45,8 @@ def new_localidad(request):
 
 
 @login_required
-def new_cuadrante(request):
-    return handlePopAdd(request, CuadranteForm, 'cuadrante')
-
-
-@login_required
-def new_sector(request):
-    return handlePopAdd(request, SectorForm, 'sector')
+def new_recorrido(request):
+    return handlePopAdd(request, RecorridoForm, 'recorrido')
 
 
 '''
@@ -248,7 +243,7 @@ def generar_hoja_ruta(request):
     dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
 
     #informacion de los establecimientos que atienden un dia en particular
-    listado_generadores = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True, cuadrante__isnull=False).order_by('nro_parada')
+    listado_generadores = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True, recorrido__isnull=False).order_by('nro_parada')
 
     dia_nombre = ""
 
@@ -281,7 +276,7 @@ def modificar_itinerario(request, id_generador):
             generador_form.save()
             return redirect('hojaRuta:generar_hoja_ruta')
     else:
-        generador_form = ItinerarioForm(instance=generador, initial={'sector': generador.cuadrante.sector})
+        generador_form = ItinerarioForm(instance=generador)
 
     contexto= {'generador_form': generador_form}
     return render(request, "hojaRuta/itinerario/itinerario_form.html", contexto)
@@ -296,7 +291,7 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
     redirect_field_name = 'next'
 
     def get_context_data(self, dia):
-        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, cuadrante__isnull=False).order_by('nro_parada')
+        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido__isnull=False).order_by('nro_parada')
 
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
@@ -414,22 +409,33 @@ def listado_sectores(request):
     return render(request, 'establecimiento/sector/sector_listado.html', {'listado_sectores': listado_sectores})
 
 
+'''
+RECORRIDO
+'''
+
+
 @login_required
-def alta_sectores(request):
+def listado_recorridos(request):
+    listado_recorridos = Recorrido.objects.all()
+    return render(request, 'establecimiento/recorrido/recorrido_listado.html', {'listado_recorridos': listado_recorridos})
+
+
+@login_required
+def alta_recorridos(request):
     data = dict()
 
     if request.method == 'POST':
-        form = SectorForm(request.POST)
+        form = RecorridoForm(request.POST)
         if form.is_valid():
             form.save()
             data['form_is_valid'] = True
         else:
             data['form_is_valid'] = False
     else:
-        form = SectorForm()
+        form = RecorridoForm()
 
     context = {'form': form}
-    data['html_form'] = render_to_string('establecimiento/sector/partial_sector_alta.html',
+    data['html_form'] = render_to_string('establecimiento/recorrido/partial_recorrido_alta.html',
         context,
         request=request
     )
@@ -437,82 +443,25 @@ def alta_sectores(request):
 
 
 @login_required
-def modificar_sectores(request, id_sector):
-    sector = Sector.objects.get(id=id_sector)
+def modificar_recorridos(request, id_recorrido):
+    recorrido = Recorrido.objects.get(id=id_recorrido)
     if request.method == 'POST':
-        sector_form = SectorForm(request.POST, instance=sector)
+        recorrido_form = RecorridoForm(request.POST, instance=recorrido)
 
-        if sector_form.is_valid():
-            sector_form.save()
-            return redirect('generadores:listado_sectores')
+        if recorrido_form.is_valid():
+            recorrido_form.save()
+            return redirect('generadores:listado_recorridos')
     else:
-        sector_form = SectorForm(instance=sector)
+        recorrido_form = RecorridoForm(instance=recorrido)
 
-    return render(request, "establecimiento/sector/sector_form.html", {'sector_form': sector_form})
-
-
-@login_required
-def baja_sectores(request):
-    sector_id = request.POST.get('sector_id')
-    sector = Sector.objects.get(id=sector_id)
-    sector.delete()
-    response = {}
-    return JsonResponse(response)
-
-
-'''
-CUADRANTE
-'''
+    return render(request, "establecimiento/recorrido/recorrido_form.html", {'recorrido_form': recorrido_form})
 
 
 @login_required
-def listado_cuadrantes(request):
-    listado_cuadrantes = Cuadrante.objects.all()
-    return render(request, 'establecimiento/cuadrante/cuadrante_listado.html', {'listado_cuadrantes': listado_cuadrantes})
-
-
-@login_required
-def alta_cuadrantes(request):
-    data = dict()
-
-    if request.method == 'POST':
-        form = CuadranteForm(request.POST)
-        if form.is_valid():
-            form.save()
-            data['form_is_valid'] = True
-        else:
-            data['form_is_valid'] = False
-    else:
-        form = CuadranteForm()
-
-    context = {'form': form}
-    data['html_form'] = render_to_string('establecimiento/cuadrante/partial_cuadrante_alta.html',
-        context,
-        request=request
-    )
-    return JsonResponse(data)
-
-
-@login_required
-def modificar_cuadrantes(request, id_cuadrante):
-    cuadrante = Cuadrante.objects.get(id=id_cuadrante)
-    if request.method == 'POST':
-        cuadrante_form = CuadranteForm(request.POST, instance=cuadrante)
-
-        if cuadrante_form.is_valid():
-            cuadrante_form.save()
-            return redirect('generadores:listado_cuadrantes')
-    else:
-        cuadrante_form = CuadranteForm(instance=cuadrante)
-
-    return render(request, "establecimiento/cuadrante/cuadrante_form.html", {'cuadrante_form': cuadrante_form})
-
-
-@login_required
-def baja_cuadrantes(request):
-    cuadrante_id = request.POST.get('cuadrante_id')
-    cuadrante = Cuadrante.objects.get(id=cuadrante_id)
-    cuadrante.delete()
+def baja_recorridos(request):
+    recorrido_id = request.POST.get('recorrido_id')
+    recorrido = Recorrido.objects.get(id=recorrido_id)
+    recorrido.delete()
     response = {}
     return JsonResponse(response)
 
@@ -561,14 +510,13 @@ def alta_modif_generadores(request, nro_generador=None):
             return redirect('generadores:listado_generadores')
 
         else:
-            if cuadrante_form.cleaned_data.get('nro_parada') and cuadrante_form.cleaned_data.get('sector'):
-                messages.add_message(request, messages.ERROR, 'Se produjo un error, por favor, revise los datos ingresados.')
+            messages.add_message(request, messages.ERROR, 'Se produjo un error, por favor, revise los datos ingresados.')
     else:
 
         generador_form = GeneradorForm(instance=generador)
         actividades_form = ActividadesForm(instance=generador)
         dias_form = RecoleccionForm(instance=generador)
-        cuadrante_form = CuadranteForm(instance=generador)
+        recorrido_form = RecorridoForm(instance=generador)
 
     if 'baldes_pactados' in request.session:
         del request.session['baldes_pactados']
@@ -577,7 +525,7 @@ def alta_modif_generadores(request, nro_generador=None):
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,
                'dias_form': dias_form,
-               'cuadrante_form': cuadrante_form,
+               'recorrido_form': recorrido_form,
                'baldepactado_form':baldepactado_form,
                'modificar':modificar
     }
@@ -694,7 +642,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
         establecimientos = {}
 
-        total_baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido__month=mes, establecimiento_generador__activo=True, establecimiento_generador__cuadrante__isnull=False)
+        total_baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido__month=mes, establecimiento_generador__activo=True, establecimiento_generador__recorrido__isnull=False)
 
         for b in total_baldes:
 
@@ -714,7 +662,6 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
                     acumu += int(env[0])
 
             establecimientos[b.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
-
 
         return super(LiquidacionPdf, self).get_context_data(
             pagesize="A4",

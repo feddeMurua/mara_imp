@@ -7,18 +7,12 @@ urlpatterns = [
     url(r'^alta/generadores/$', alta_modif_generadores, name="alta_modif_generadores"),
     url(r'^baja/generadores/$', baja_generadores, name="baja_generadores"),
     url(r'^modificar/generadores/(?P<nro_generador>\d+)/$', alta_modif_generadores, name="alta_modif_generadores"),
-    #Sector asociado
-    url(r'^listado/sectores/$', listado_sectores, name="listado_sectores"),
-    url(r'^alta/sector/$', alta_sectores, name="alta_sectores"),
-    url(r'^modificar/sectores/(?P<id_sector>\d+)/$', modificar_sectores, name="modificar_sectores"),
-    url(r'^baja/sectores/$', baja_sectores, name="baja_sectores"),
-    url(r'^alta/sector/?$', new_sector, name="nuevo_sector"),
-    #Cuadrantes
-    url(r'^listado/cuadrantes/$', listado_cuadrantes, name="listado_cuadrantes"),
-    url(r'^alta/cuadrante/$', alta_cuadrantes, name="alta_cuadrantes"),
-    url(r'^modificar/cuadrantes/(?P<id_cuadrante>\d+)/$', modificar_cuadrantes, name="modificar_cuadrantes"),
-    url(r'^baja/cuadrantes/$', baja_cuadrantes, name="baja_cuadrantes"),
-    url(r'^alta/cuadrante/?$', new_cuadrante, name="nuevo_cuadrante"),
+    #RECORRIDOS
+    url(r'^listado/recorridos/$', listado_recorridos, name="listado_recorridos"),
+    url(r'^alta/recorrido/$', alta_recorridos, name="alta_recorridos"),
+    url(r'^modificar/recorridos/(?P<id_recorrido>\d+)/$', modificar_recorridos, name="modificar_recorridos"),
+    url(r'^baja/recorridos/$', baja_recorridos, name="baja_recorridos"),
+    url(r'^alta/recorrido/?$', new_recorrido, name="nuevo_recorrido"),
     #BALDES PACTADOS
     url(r'^listado/baldes/pactados/(?P<nro_generador>\d+)/$', listado_baldes_pactados, name="listado_baldes_pactados"),
     url(r'^alta/balde/pactado/$', alta_balde_pactado, name="alta_balde_pactado"),

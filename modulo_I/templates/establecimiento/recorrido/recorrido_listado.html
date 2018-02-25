@@ -3,12 +3,12 @@
 {% load staticfiles bootstrap3 %}
 
 {% block panel-heading %}
-  LISTADO DE CUADRANTES
+  LISTADO DE RECORRIDOS
 {% endblock %}
 
 {% block panel-heading-tabla %}
   <div style="padding-top:0.3%; padding-left:0.1%;">
-    <a class="btn btn-primary js-alta-cuadrante"><i class="fa fa-plus"></i> Nuevo Cuadrante</a>
+    <a class="btn btn-primary js-alta-recorrido"><i class="fa fa-plus"></i> Nuevo recorrido</a>
   </div>
 {% endblock %}
 
@@ -16,7 +16,7 @@
   <thead>
   <tr style="background:#6495ED;">
       <th>Nombre</th>
-      <th>Sector</th>
+      <th>Día</th>
       <th>Acciones</th>
   </tr>
   </thead>
@@ -26,7 +26,7 @@
   <tfoot >
      <tr>
        <th>Nombre</th>
-       <th>Sector</th>
+       <th>Día</th>
        <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
     </tr>
   </tfoot>
@@ -34,13 +34,13 @@
 
 {% block tbody-tabla %}
   <tbody>
-  {% for cuadrante in listado_cuadrantes %}
+  {% for recorrido in listado_recorridos %}
       <tr>
-          <td>{{ cuadrante.nombre_cuadrante }}</td>
-          <td>{{ cuadrante.sector }}</td>
+          <td>{{ recorrido.nombre }}</td>
+          <td>{{ recorrido.get_dia_display }}</td>
           <td align="center">
-             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modificar_cuadrantes' id_cuadrante=cuadrante.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
-             <a id="cuadrante_id"class="btn btn-danger btn-baja" data-cuadranteid="{{cuadrante.id}}" data-cuadrantenombre="{{cuadrante.nombre_cuadrante}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
+             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modificar_recorridos' id_recorrido=recorrido.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
+             <a id="recorrido_id"class="btn btn-danger btn-baja" data-recorridoid="{{recorrido.id}}" data-recorridonombre="{{recorrido.nombre}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
           </td>
       </tr>
   {% endfor %}
@@ -48,11 +48,11 @@
 {% endblock %}
 
 {% block more-datos %}
-  {% include "establecimiento/cuadrante/cuadrante_alta.html" %}
+  {% include "establecimiento/recorrido/recorrido_alta.html" %}
 {% endblock %}
 
 {% block modal-btn-eliminar%}
-  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarCuadrante(value)">Eliminar</button>
+  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarRecorrido(value)">Eliminar</button>
 {% endblock %}
 
 {% block modal-scripts %}
@@ -61,11 +61,11 @@
     $(document).ready(function () {
       $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var cuadrante_nombre = button.data('cuadrantenombre')
-        var cuadrante_id = button.data('cuadranteid') // id localidad.
+        var recorrido_nombre = button.data('recorridonombre')
+        var recorrido_id = button.data('recorridoid') // id localidad.
 
-        var title = 'cuadrante: ' + cuadrante_nombre
-        var content = '¿Está seguro que quiere eliminar el cuadrante ?'
+        var title = 'Recorrido: ' + recorrido_nombre
+        var content = '¿Está seguro que quiere eliminar el recorrido ?'
 
 
         // actualiza el contenido del manual
@@ -74,17 +74,17 @@
         modal.find('.modal-body').text(content)
 
         // se le pasa el valor del documento al boton de confirmar
-        modal.find('button.btn-danger').val(cuadrante_id)
+        modal.find('button.btn-danger').val(recorrido_id)
       })
     })
 
-    function eliminarCuadrante(cuadrante_id) {
+    function eliminarRecorrido(recorrido_id) {
       var request = $.ajax({
           type: "POST",
-          url: "{% url 'generadores:baja_cuadrantes' %}",
+          url: "{% url 'generadores:baja_recorridos' %}",
           data: {
               "csrfmiddlewaretoken": "{{ csrf_token }}",
-              "cuadrante_id": cuadrante_id
+              "recorrido_id": recorrido_id
           },
       });
     }

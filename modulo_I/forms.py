@@ -23,17 +23,10 @@ class SelectLocalidadWithPop(forms.Select):
         return html+popupplus
 
 
-class SelectCuadranteWithPop(forms.Select):
+class SelectRecorridoWithPop(forms.Select):
     def render(self, name, *args, **kwargs):
-        html = super(SelectCuadranteWithPop, self).render(name, *args, **kwargs)
-        popupplus = render_to_string("base/popupplus_cuadrante.html", {'field': name})
-        return html+popupplus
-
-
-class SelectSectorWithPop(forms.Select):
-    def render(self, name, *args, **kwargs):
-        html = super(SelectSectorWithPop, self).render(name, *args, **kwargs)
-        popupplus = render_to_string("base/popupplus_sector.html", {'field': name})
+        html = super(SelectRecorridoWithPop, self).render(name, *args, **kwargs)
+        popupplus = render_to_string("base/popupplus_recorrido.html", {'field': name})
         return html+popupplus
 
 
@@ -78,7 +71,7 @@ class BaldeUtilizadoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(BaldeUtilizadoForm, self).__init__(*args, **kwargs)
-        self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(activo=True, cuadrante__isnull=False, nro_parada__isnull=False)
+        self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(activo=True, recorrido__isnull=False, nro_parada__isnull=False)
         self.fields['balde'].queryset = Balde.objects.all().order_by('nro_balde')
 
     class Meta:
@@ -131,25 +124,18 @@ class ItinerarioForm(forms.ModelForm):
 
     class Meta:
         model = EstablecimientoGenerador
-        fields = ['nro_parada','cuadrante', ]
+        fields = ['nro_parada','recorrido', ]
 
 
-class SectorForm(forms.ModelForm):
+class RecorridoForm(forms.ModelForm):
     class Meta:
-        model = Sector
-        exclude = ['itinerario', ]
-
-
-class CuadranteForm(forms.ModelForm):
-    sector = forms.ModelChoiceField(Sector.objects, widget=SelectSectorWithPop)
-    class Meta:
-        model = Cuadrante
+        model = Recorrido
         fields = '__all__'
 
 
 class GeneradorForm(forms.ModelForm):
     localidad = forms.ModelChoiceField(Localidad.objects, widget=SelectLocalidadWithPop)
-    cuadrante = forms.ModelChoiceField(Cuadrante.objects, widget=SelectCuadranteWithPop, required=False,)
+    recorrido = forms.ModelChoiceField(Recorrido.objects, widget=SelectRecorridoWithPop, required=False,)
     class Meta:
         model = EstablecimientoGenerador
         exclude = ['domicilio','fecha' ]

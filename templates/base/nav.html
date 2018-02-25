@@ -6,9 +6,8 @@
     <ul class="nav navbar-nav">
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-building"></i> Establecimientos <span class="caret"></span></a>
        <ul class="dropdown-menu">
-         <li><a href="{% url 'generadores:listado_generadores' %}"><i class="fa fa-list"></i> Listado de Establecimientos</a><li>
-         <li><a href="{% url 'generadores:listado_sectores' %}"><i class="fa fa-arrows"></i> Sectores Asociados</a><li>
-           <li><a href="{% url 'generadores:listado_cuadrantes' %}"><i class="fa fa-crosshairs"></i> Cuadrantes</a><li>
+         <li><a href="{% url 'generadores:listado_generadores' %}"><i class="fa fa-list"></i> Listado de Establecimientos</a><li>         
+           <li><a href="{% url 'generadores:listado_recorridos' %}"><i class="fa fa-crosshairs"></i> Recorridos</a><li>
        </ul>
       </li>
       <li><a href="{% url 'hojaRuta:listado_general' %}"><i class="fa fa-truck"></i> Hoja de Ruta</a><li>

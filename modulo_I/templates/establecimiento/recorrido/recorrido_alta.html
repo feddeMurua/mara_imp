@@ -1,25 +1,25 @@
 
-<div class="modal fade" id="modal-cuadrante">
+<div class="modal fade" id="modal-recorrido">
   <div class="modal-dialog">
     <div class="modal-content"></div>
   </div>
 </div>
 
 <script>
-  $(".js-alta-cuadrante").click(function () {
+  $(".js-alta-recorrido").click(function () {
    $.ajax({
-     url: "{% url 'generadores:alta_cuadrantes' %}",
+     url: "{% url 'generadores:alta_recorridos' %}",
      type: 'get',
      dataType: 'json',
      beforeSend: function () {
-       $("#modal-cuadrante").modal("show");
+       $("#modal-recorrido").modal("show");
      },
      success: function (data) {
-       $("#modal-cuadrante .modal-content").html(data.html_form);
+       $("#modal-recorrido .modal-content").html(data.html_form);
      }
    });
   });
-  $("#modal-cuadrante").on("submit", ".js-alta-cuadrante-form", function () {
+  $("#modal-recorrido").on("submit", ".js-alta-recorrido-form", function () {
     var form = $(this);
     $.ajax({
      url: form.attr("action"),
@@ -28,11 +28,11 @@
      dataType: 'json',
      success: function (data) {
        if (data.form_is_valid) {
-         $("#modal-cuadrante").modal("hide");  // <-- Close the modal
+         $("#modal-recorrido").modal("hide");  // <-- Close the modal
          window.location.reload(true); //recarga la pagina
        }
        else {
-         $("#modal-cuadrante .modal-content").html(data.html_form);
+         $("#modal-recorrido .modal-content").html(data.html_form);
        }
      }
     });

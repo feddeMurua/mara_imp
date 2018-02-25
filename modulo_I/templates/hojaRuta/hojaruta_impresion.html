@@ -18,8 +18,7 @@
     <tr style="background:#6495ED;">
         <th>Razon social</th>
         <th style="text-align:center;">N° Parada</th>
-        <th style="text-align: center;">Cuadrante</th>
-        <th style="text-align: center;">Sector</th>
+        <th style="text-align: center;">Recorrido</th>
         <th style="text-align: center;">Acciones</th>
     </tr>
   </thead>
@@ -30,8 +29,7 @@
     <tr>
         <th>Razon social</th>
         <th style="text-align:center;">N° Parada</th>
-        <th style="text-align: center;">Cuadrante</th>
-        <th style="text-align: center;">Sector</th>
+        <th style="text-align: center;">Recorrido</th>
         <th style="text-align: center;">Acciones</th>
     </tr>
   </tfoot>
@@ -47,11 +45,9 @@
             {% else %}
               <td style="text-align:center;">-</td>
             {% endif %}
-            {% if generador.cuadrante %}
-              <td style="text-align:center;">{{ generador.cuadrante.nombre_cuadrante }}</td>
-              <td style="text-align:center;">{{ generador.cuadrante.sector.nombre_sector }}</td>
+            {% if generador.recorrido %}
+              <td style="text-align:center;">{{ generador.recorrido.nombre }}</td>              
             {% else %}
-              <td style="text-align:center;">-</td>
               <td style="text-align:center;">-</td>
             {% endif %}
             <td align="center">

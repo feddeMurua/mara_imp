@@ -31,23 +31,12 @@ ESTABLECIMIENTO GENERADOR
 '''
 
 
-class Sector(models.Model):
-    nombre_sector = models.CharField(max_length=50, unique=True)
-    localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
+class Recorrido(models.Model):
+    nombre = models.CharField(max_length=50, unique=True)
+    dia = models.CharField(max_length=15, choices=Dias)
 
     def __str__(self):
-        return "%s" % (self.nombre_sector)
-
-
-class Cuadrante(models.Model):
-    nombre_cuadrante = models.CharField(max_length=50)
-    sector = models.ForeignKey('Sector', on_delete=models.CASCADE, blank=True, null=True)
-
-    class Meta:
-        unique_together = ('sector', 'nombre_cuadrante',)
-
-    def __str__(self):
-        return "Sector: %s, Cuadrante: %s " % (self.sector, self.nombre_cuadrante)
+        return "%s" % (self.nombre)
 
 
 class BaldePactado(models.Model):
@@ -81,12 +70,12 @@ class EstablecimientoGenerador(models.Model):
     email = models.CharField(max_length=200, blank=True, null=True)
     responsable_ambiental = models.CharField(max_length=50, blank=True, null=True)
     cuit = models.CharField(max_length=20, blank=True, null=True)
-    nro_parada = models.IntegerField(validators=[MinValueValidator(1)], blank=True, null=True) # En el cuadrante
-    cuadrante = models.ForeignKey('Cuadrante',blank=True, null=True, on_delete=models.SET_NULL)
+    nro_parada = models.IntegerField(validators=[MinValueValidator(1)], blank=True, null=True) # En el recorrido
+    recorrido = models.ForeignKey('Recorrido',blank=True, null=True, on_delete=models.SET_NULL)
 
     '''
     class Meta:
-        unique_together = ('cuadrante', 'nro_parada',)
+        unique_together = ('recorrido', 'nro_parada',)
     '''
 
     def __str__(self):
