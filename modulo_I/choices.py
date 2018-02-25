@@ -42,6 +42,22 @@ Dias = (
     ('6', _("Sábado")),
 )
 
+Meses = (
+    ('1', _("Enero")),
+    ('2', _("Febrero")),
+    ('3', _("Marzo")),
+    ('4', _("Abril")),
+    ('5', _("Mayo")),
+    ('6', _("Junio")),
+    ('7', _("Julio")),
+    ('8', _("Agosto")),
+    ('9', _("Septiembre")),
+    ('10', _("Octubre}")),
+    ('11', _("Noviembre")),
+    ('12', _("Diciembre")),
+
+)
+
 Entrega_Retiro = (
     ('Entrega', _("Entrega")),
     ('Retiro', _("Retiro")),

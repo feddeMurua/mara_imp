@@ -18,7 +18,7 @@
           <br>
           <label>recorrido:</label>
           {{generador_form.recorrido|add_class:'select-2'}}
-          <br>          
+          <br>
         </div>
     </div>
   </div>
@@ -26,5 +26,5 @@
 {% endblock %}
 
 {% block url-cancelar %}
-  {% url 'hojaRuta:generar_hoja_ruta' %}
+  {% url 'generadores:listado_establecimientos_recorrido' id_recorrido=recorrido %}
 {% endblock %}

@@ -65,7 +65,7 @@ class EstablecimientoGenerador(models.Model):
     direccion = models.CharField(max_length=100)
     tipo_actividad = MultiSelectField(choices=sorted(Actividades), blank=True, null=True)
     recoleccion = MultiSelectField(choices=Dias, blank=True, null=True)
-    localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
+    localidad = models.ForeignKey('Localidad', null=True, on_delete=models.SET_NULL)
     telefono = models.CharField(max_length=50, blank=True, null=True)
     email = models.CharField(max_length=200, blank=True, null=True)
     responsable_ambiental = models.CharField(max_length=50, blank=True, null=True)
@@ -109,8 +109,8 @@ class Balde(models.Model):
 class DetalleHojaRuta(models.Model):
     hoja_ruta = models.ForeignKey('HojaRuta')
     establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
-    hora_llegada = models.TimeField(blank=True, null=True)
-    hora_salida = models.TimeField(blank=True, null=True)
+    hora_llegada = models.CharField(max_length=5, blank=True, null=True)
+    hora_salida = models.CharField(max_length=5, blank=True, null=True)
     balde = models.ForeignKey('Balde') #balde_entrega
     nro_precinto = models.BigIntegerField(unique=True, blank=True, null=True)
     tipo = models.CharField(max_length=15, choices=Entrega_Retiro)

@@ -16,7 +16,7 @@
       <tbody>
           <tr>
             <th>Hora Llegada:</th>
-            {% if balde_utilizado.hora_llegada %}
+            {% if balde_utilizado.hora_llegada != "None" %}
               <td style="text-align:right;"> {{balde_utilizado.hora_llegada}}</td>
             {% else %}
               <td style="text-align:right;"> - </td>
@@ -24,7 +24,7 @@
           </tr>
           <tr>
             <th>Hora Retiro:</th>
-            {% if balde_utilizado.hora_salida %}
+            {% if balde_utilizado.hora_salida != "None" %}
               <td style="text-align:right;"> {{balde_utilizado.hora_salida}}</td>
             {% else %}
               <td style="text-align:right;"> - </td>

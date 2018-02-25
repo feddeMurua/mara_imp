@@ -1,14 +1,15 @@
 {% extends "base/base_listado.html" %}
 {% load staticfiles %}
 {% load staticfiles bootstrap3 %}
+{% load hoja_ruta_extras %}
 
 {% block panel-heading %}
-  Generar hoja de ruta del día: {{dia}}
+  Generar hoja de ruta del día: <strong>{{dia.1}}</strong>
 {% endblock %}
 
 {% block panel-heading-tabla %}
   <div style="padding-top:0.3%; padding-left:0.1%;">
-    <a target="_blank" href="{% url 'hojaRuta:hoja_ruta_pdf' dia=dia_nro %}" class="btn btn-success"><i class="fa fa-print"></i> imprimir </a>
+    <a class="btn btn-primary js-alta-recorrido"><i class="fa fa-plus"></i> Nuevo Recorrido</a>
     <a href="{% url 'hojaRuta:listado_general' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;"></i></a>
   </div>
 {% endblock %}
@@ -16,10 +17,8 @@
 {% block thead-tabla %}
   <thead>
     <tr style="background:#6495ED;">
-        <th>Razon social</th>
-        <th style="text-align:center;">N° Parada</th>
-        <th style="text-align: center;">Recorrido</th>
-        <th style="text-align: center;">Acciones</th>
+      <th>Recorrido</th>
+      <th style="text-align: center;">Acciones</th>
     </tr>
   </thead>
 {% endblock %}
@@ -27,39 +26,76 @@
 {% block tfoot-tabla %}
   <tfoot >
     <tr>
-        <th>Razon social</th>
-        <th style="text-align:center;">N° Parada</th>
-        <th style="text-align: center;">Recorrido</th>
-        <th style="text-align: center;">Acciones</th>
+      <th>Recorrido</th>
+      <th style="text-align: center;">Acciones</th>
     </tr>
   </tfoot>
 {% endblock %}
 
 {% block tbody-tabla %}
   <tbody>
-    {% for generador in listado_generadores %}
+    {% for recorrido in listado_recorridos %}
         <tr>
-            <td>{{ generador.razon_social }}</td>
-            {% if generador.nro_parada %}
-              <td style="text-align:center;">{{ generador.nro_parada }}</td>
-            {% else %}
-              <td style="text-align:center;">-</td>
+          <td>{{ recorrido.nombre }}</td>
+          <td align="center">
+            <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:listado_establecimientos_recorrido' id_recorrido=recorrido.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
+            {% if recorrido.id|cant_establecimientos %}
+              <a class="btn btn-success" data-toggle="tooltip" title="Imprimir" href="{% url 'hojaRuta:hoja_ruta_pdf' dia=dia.0 recorrido=recorrido.id%}" target="_blank"><em class="glyphicon glyphicon-print"></em></a>
             {% endif %}
-            {% if generador.recorrido %}
-              <td style="text-align:center;">{{ generador.recorrido.nombre }}</td>              
-            {% else %}
-              <td style="text-align:center;">-</td>
+            {% if not recorrido.id|cant_establecimientos %}
+              <a id="recorrido_id"class="btn btn-danger btn-baja" data-recorridoid="{{recorrido.id}}" data-recorridonombre="{{recorrido.nombre}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
             {% endif %}
-            <td align="center">
-              <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'hojaRuta:modificar_itinerario' id_generador=generador.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
-            </td>
+          </td>
         </tr>
     {% endfor %}
   </tbody>
 {% endblock %}
 
-{% block modal-btn-eliminar%}
+{% block more-datos %}
+  {% include "establecimiento/recorrido/recorrido_alta.html" %}
 {% endblock %}
 
-{% block no-modal%}
+{% block modal-btn-eliminar%}
+  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarRecorrido(value)">Eliminar</button>
+{% endblock %}
+
+{% block modal-scripts %}
+  <script>
+    //codigo para cambiar los datos del modal y para dar de baja
+    $(document).ready(function () {
+      $('#modal_baja').on('show.bs.modal', function (event) { // id of the modal with event
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recorrido_nombre = button.data('recorridonombre')
+        var recorrido_id = button.data('recorridoid') // id localidad.
+
+        var title = 'Recorrido: ' + recorrido_nombre
+        var content = '¿Está seguro que quiere eliminar el recorrido ?'
+
+
+        // actualiza el contenido del manual
+        var modal = $(this)
+        modal.find('.modal-title').text(title)
+        modal.find('.modal-body').text(content)
+
+        // se le pasa el valor del documento al boton de confirmar
+        modal.find('button.btn-danger').val(recorrido_id)
+      })
+    })
+
+    function eliminarRecorrido(recorrido_id) {
+      var request = $.ajax({
+          type: "POST",
+          url: "{% url 'generadores:baja_recorridos' %}",
+          data: {
+              "csrfmiddlewaretoken": "{{ csrf_token }}",
+              "recorrido_id": recorrido_id
+          },
+      });
+    }
+
+    //para actualizar cuando se da de baja.
+    $('#modal_baja').on('hidden.bs.modal', function () {
+      window.location.reload(true);
+    })
+  </script>
 {% endblock %}

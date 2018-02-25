@@ -65,7 +65,7 @@
                 <td colspan="1" rowspan="2"><strong>Hora Llegada</strong></td>
                 <td colspan="1" rowspan="2"><strong>Hora Retiro</strong></td>
                 <td colspan="1" rowspan="2"><strong>N° Manifiesto</strong></td>
-                <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}} {% if establecimiento.cuit %}, Cuit: {{establecimiento.cuit}} {% endif %} || {{establecimiento.localidad}} || BALDES{{ establecimiento|baldes_pactados }} </th>
+                <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}} {% if establecimiento.cuit %}, Cuit: {{establecimiento.cuit}} {% endif %} || {{establecimiento.localidad.nombre}} || BALDES{{ establecimiento|baldes_pactados }} </th>
                 <td colspan="1" rowspan="2"><strong>N° Generador</strong></td>
               </tr>
               <tr>

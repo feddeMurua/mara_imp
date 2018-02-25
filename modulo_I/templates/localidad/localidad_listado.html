@@ -15,9 +15,8 @@
 {% block thead-tabla %}
   <thead>
   <tr style="background:#6495ED;">
-      <th>Nombre</th>
-      <th>Código Postal</th>
-      <th>Provincia</th>
+      <th style="text-align: center;">Nombre</th>
+      <th style="text-align: center;">Código Postal</th>
       <th>Acciones</th>
   </tr>
   </thead>
@@ -26,9 +25,8 @@
 {% block tfoot-tabla %}
   <tfoot >
      <tr>
-       <th>Nombre</th>
-       <th>Código Postal</th>
-       <th>Provincia</th>
+       <th style="text-align: center;">Nombre</th>
+       <th style="text-align: center;">Código Postal</th>
        <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
     </tr>
   </tfoot>
@@ -38,9 +36,8 @@
   <tbody>
   {% for localidad in listado_localidades %}
       <tr>
-          <td>{{ localidad.nombre }}</td>
-          <td>{{ localidad.cp }}</td>
-          <td>{{ localidad.provincia.nombre }}</td>
+          <td style="text-align: center;">{{ localidad.nombre }}</td>
+          <td style="text-align: center;">{{ localidad.cp }}</td>          
           <td align="center">
              <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'localidades:modificar_localidades' id_localidad=localidad.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
              <a id="localidad_id"class="btn btn-danger btn-baja" data-localidadid="{{localidad.id}}" data-localidadnombre="{{localidad.nombre}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>

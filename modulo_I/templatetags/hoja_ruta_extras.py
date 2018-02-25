@@ -1,5 +1,5 @@
 from django import template
-from modulo_I.models import DetalleHojaRuta,BaldePactado
+from modulo_I.models import DetalleHojaRuta,BaldePactado, EstablecimientoGenerador
 
 register = template.Library()
 
@@ -44,3 +44,14 @@ def calcular_vol(balde_utilizado):
     for d in detalles:
         acumu+= int(d.balde.capacidad)
     return acumu
+
+
+@register.filter
+def cant_establecimientos(recorrido):
+    '''
+    FUNCION que se encarga de devolver total de establecimientos en el recorrido
+    '''
+    if EstablecimientoGenerador.objects.filter(recorrido__id=recorrido).count() > 0:
+        return True
+    else:
+        return False

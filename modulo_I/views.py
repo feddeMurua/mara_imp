@@ -12,7 +12,7 @@ from django.db import IntegrityError
 from mara_imp import factories
 import datetime
 from django.utils.html import escape
-from .choices import Capacidad_balde
+from .choices import Capacidad_balde, Dias, Meses
 import collections
 import json
 import ast
@@ -175,35 +175,12 @@ def listado_general_hojas_de_ruta(request):
     for fecha in HojaRuta.objects.all().values("fecha_recorrido").distinct().order_by("fecha_recorrido"):
         mes_actual = fecha['fecha_recorrido'].month
         anio_hoja_ruta = fecha['fecha_recorrido'].year
+        meses[mes_actual] = (Meses[mes_actual-1][1],anio_hoja_ruta)
 
-        if mes_actual == 1:
-            mes_nombre = "Enero"
-        elif mes_actual == 2:
-            mes_nombre = "Febrero"
-        elif mes_actual == 3:
-            mes_nombre = "Marzo"
-        elif mes_actual == 4:
-            mes_nombre = "Abril"
-        elif mes_actual == 5:
-            mes_nombre = "Mayo"
-        elif mes_actual == 6:
-            mes_nombre = "Junio"
-        elif mes_actual == 7:
-            mes_nombre = "Julio"
-        elif mes_actual == 8:
-            mes_nombre = "Agosto"
-        elif mes_actual == 9:
-            mes_nombre = "Septiembre"
-        elif mes_actual == 10:
-            mes_nombre = "Octubre"
-        elif mes_actual == 11:
-            mes_nombre = "Noviembre"
-        elif mes_actual == 12:
-            mes_nombre = "Diciembre"
+    #Para cada diá de la hoja de ruta
+    dias_semana = Dias
 
-        meses[mes_actual] = (mes_nombre,anio_hoja_ruta)
-
-    return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'meses':meses})
+    return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'meses':meses, 'dias_semana':dias_semana})
 
 
 @login_required
@@ -239,34 +216,15 @@ def baja_hoja_ruta(request):
 
 
 @login_required
-def generar_hoja_ruta(request):
-    dia_actual = datetime.datetime.now().strftime("%w") #%w numero dia en la semana (0 domingo, 6 sabado)
+def generar_hoja_ruta(request, dia):
 
-    #informacion de los establecimientos que atienden un dia en particular
-    listado_generadores = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia_actual, activo=True, recorrido__isnull=False).order_by('nro_parada')
-
-    dia_nombre = ""
-
-    if dia_actual == "0":
-        dia_nombre = "Domingo"
-    elif dia_actual == "1":
-        dia_nombre = "Lunes"
-    elif dia_actual == "2":
-        dia_nombre = "Martes"
-    elif dia_actual == "3":
-        dia_nombre = "Miercoles"
-    elif dia_actual == "4":
-        dia_nombre = "Jueves"
-    elif dia_actual == "5":
-        dia_nombre = "Viernes"
-    elif dia_actual == "6":
-        dia_nombre = "Sábado"
+    listado_recorridos = Recorrido.objects.filter(dia=dia)
 
     #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
-    return render(request, "hojaRuta/hojaruta_impresion.html", {'listado_generadores': listado_generadores, 'dia':dia_nombre,'dia_nro':dia_actual})
+    return render(request, "hojaRuta/hojaruta_impresion.html", {'listado_recorridos': listado_recorridos, 'dia':Dias[int(dia)]})
 
 
-def modificar_itinerario(request, id_generador):
+def modificar_itinerario(request, id_generador, id_recorrido):
 
     generador = EstablecimientoGenerador.objects.get(id=id_generador)
 
@@ -274,11 +232,11 @@ def modificar_itinerario(request, id_generador):
         generador_form = ItinerarioForm(request.POST, instance=generador)
         if generador_form.is_valid():
             generador_form.save()
-            return redirect('hojaRuta:generar_hoja_ruta')
+            return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido)
     else:
         generador_form = ItinerarioForm(instance=generador)
 
-    contexto= {'generador_form': generador_form}
+    contexto= {'generador_form': generador_form, 'recorrido':id_recorrido}
     return render(request, "hojaRuta/itinerario/itinerario_form.html", contexto)
 
 
@@ -290,8 +248,8 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
     login_url = '/accounts/login/'
     redirect_field_name = 'next'
 
-    def get_context_data(self, dia):
-        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido__isnull=False).order_by('nro_parada')
+    def get_context_data(self, dia, recorrido):
+        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido__id=recorrido).order_by('nro_parada')
 
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
@@ -399,17 +357,6 @@ def baja_balde_utilizado(request):
 
 
 '''
-SECTOR
-'''
-
-
-@login_required
-def listado_sectores(request):
-    listado_sectores = Sector.objects.all()
-    return render(request, 'establecimiento/sector/sector_listado.html', {'listado_sectores': listado_sectores})
-
-
-'''
 RECORRIDO
 '''
 
@@ -418,6 +365,12 @@ RECORRIDO
 def listado_recorridos(request):
     listado_recorridos = Recorrido.objects.all()
     return render(request, 'establecimiento/recorrido/recorrido_listado.html', {'listado_recorridos': listado_recorridos})
+
+
+@login_required
+def listado_establecimientos_recorrido(request, id_recorrido):
+    listado_establecimientos = EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido)
+    return render(request, 'establecimiento/recorrido/establecimientos_recorrido_listado.html', {'listado_establecimientos': listado_establecimientos, 'recorrido':Recorrido.objects.get(id=id_recorrido)})
 
 
 @login_required

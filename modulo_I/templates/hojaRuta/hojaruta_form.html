@@ -14,7 +14,6 @@
 
 {% block step-form %}
 
-
   <div class="form-section">
     <div class="panel panel-default">
       <div class="panel-heading">DATOS HOJA DE RUTA</div>
@@ -25,7 +24,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="form-section">
      <div class="panel panel-default">
@@ -61,6 +59,7 @@
        </div>
      </div>
   </div>
+
 {% endblock %}
 
 {% block guardar-seguir %}
@@ -121,7 +120,7 @@
                    {{baldeutilizado_form.hora_salida|add_class:'form-control hora'}}
                    <br>
                  </div>
-                 <input type="submit" class="btn btn-default" id="btn-confirmar" value="Confirmar"/>
+                 <input type="submit" class="btn btn-default" id="btn-confirmar" onclick="return confirm('Confirma los datos ingresados?')" value="Confirmar"/>
                  <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
                </form>
             </div>
@@ -159,13 +158,23 @@
              for(var i = 0; i < baldes_utilizados.length; i++){
                  var establecimiento = baldes_utilizados[i]['establecimiento_generador']['razon_social']
                  var balde = baldes_utilizados[i]['balde']['nro_balde']
+                 var precinto = "-"
+                 if (baldes_utilizados[i]['nro_precinto']){
+                   precinto = baldes_utilizados[i]['nro_precinto'];
+                 }
                  var row = "<tr align='center'>" +
                  "<td align="+"left"+">" + establecimiento + "</td>" +
                  "<td>" + balde + "</td>" +
-                 "<td>" + baldes_utilizados[i]['nro_precinto'] + "</td>" +
+                 "<td>" + precinto + "</td>" +
                  "<td>" + baldes_utilizados[i]['tipo'] + "</td>" +
                  "</tr>";
+
                  $tbody.append(row);
+
+
+
+
+
              }
       }
   </script>
