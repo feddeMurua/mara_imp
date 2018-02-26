@@ -295,7 +295,7 @@ def modif_balde_utilizado(request, id_hoja=None, id_balde=None):
         balde_form = ActualizarBaldeUtilizadoForm(request.POST, instance=balde)
         if balde_form.is_valid():
             balde = balde_form.save(commit=False)
-            balde.hoja_ruta = RegistroHojaRuta.objects.get(id=id_hoja)
+            balde.registro_hoja_ruta = RegistroHojaRuta.objects.get(id=id_hoja)
             balde_generado = Balde.objects.get(id=id_balde)
             if balde.tipo == "Entrega":
                 balde_generado.estado = "Ocupado"
@@ -304,7 +304,7 @@ def modif_balde_utilizado(request, id_hoja=None, id_balde=None):
             balde_generado.save()
             balde.balde = balde_generado
             balde.save()
-            fecha_recorrido = balde.hoja_ruta.fecha_recorrido
+            fecha_recorrido = balde.registro_hoja_ruta.fecha_recorrido
             anio = fecha_recorrido.year
             mes = fecha_recorrido.month
             dia = fecha_recorrido.day
@@ -333,21 +333,20 @@ def existe_balde_utilizado(request, balde_utilizado):
     for item in request.session['baldes_utilizados']:
         if (((item['nro_precinto'] == balde_utilizado.nro_precinto and (item['nro_precinto'] != None))) or (item['balde']['nro_balde'] == balde_utilizado.balde.nro_balde)):
             return True
-        if(item['hora_llegada'] != balde_utilizado.hora_llegada or item['hora_salida'] != balde_utilizado.hora_salida):
-            return True
     return False
 
 
-def carga_baldes_utilizados(request, registro_hoja):
+def carga_baldes_utilizados(request, registro_hoja_ruta):
     for b_utilizado in request.session['baldes_utilizados']:
         balde = Balde.objects.get(nro_balde=b_utilizado['balde']['nro_balde'])
         if b_utilizado['tipo'] =="Entrega":
             balde.estado = "Ocupado"
+            balde.establecimiento_generador = registro_hoja_ruta.establecimiento_generador
         else:
             balde.estado = "En Planta"
         balde.save()
         if not DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido=request.session['fecha'], balde=balde): # No tiene qe existir el nro balde cargado ese dia en otro lugar
-            item = DetalleHojaRuta(balde=balde, registro_hoja_ruta=registro_hoja,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
+            item = DetalleHojaRuta(balde=balde, registro_hoja_ruta=registro_hoja_ruta,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
             item.save()
 
 
