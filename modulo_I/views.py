@@ -162,7 +162,7 @@ HOJAS DE RUTA
 @login_required
 def listado_general_hojas_de_ruta(request):
 
-    listado_general = HojaRuta.objects.values('fecha_recorrido').distinct()
+    listado_general = RegistroHojaRuta.objects.values('fecha_recorrido').distinct()
 
     if 'baldes_utilizados' in request.session:
         del request.session['baldes_utilizados']
@@ -172,7 +172,7 @@ def listado_general_hojas_de_ruta(request):
     meses = {}
     mes_nombre = ""
 
-    for fecha in HojaRuta.objects.all().values("fecha_recorrido").distinct().order_by("fecha_recorrido"):
+    for fecha in RegistroHojaRuta.objects.all().values("fecha_recorrido").distinct().order_by("fecha_recorrido"):
         mes_actual = fecha['fecha_recorrido'].month
         anio_hoja_ruta = fecha['fecha_recorrido'].year
         meses[mes_actual] = (Meses[mes_actual-1][1],anio_hoja_ruta)
@@ -180,7 +180,7 @@ def listado_general_hojas_de_ruta(request):
     #Para cada diá de la hoja de ruta
     dias_semana = Dias
 
-    return render(request, 'hojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'meses':meses, 'dias_semana':dias_semana})
+    return render(request, 'registroHojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'meses':meses, 'dias_semana':dias_semana})
 
 
 @login_required
@@ -192,23 +192,32 @@ def alta_modif_hoja_ruta(request):
         if hojaruta_form.is_valid():
             hoja_ruta = hojaruta_form.save()
             request.session['fecha'] = str(hojaruta_form.cleaned_data.get('fecha_recorrido')) # Para controlar que no haya un balde repetido en mas de un generador
-            carga_baldes_utilizados(request, hoja_ruta)
+            carga_baldes_utilizados(request, hoja_ruta) #Para no crear una hoja de ruta vacía
+
+            #se chequea que la hoja de ruta no quede sin detalle
+            registros = DetalleHojaRuta.objects.filter(registro_hoja_ruta=hoja_ruta).count()
+            if registros == 0:
+                hoja_ruta.delete()
+
             if 'btn-guardar' in request.POST:
-                return redirect('hojaRuta:listado_general')
+                return redirect('registroHojaRuta:listado_general')
             else:
-                return redirect('hojaRuta:alta_modif_hoja_ruta')
+                return redirect('registroHojaRuta:alta_modif_hoja_ruta')
+        else:
+            messages.add_message(request, messages.ERROR, 'Ya se cargó el registro del establecimiento solicitado de la hoja de ruta de este día.')
+
     else:
         hojaruta_form = HojaRutaForm()
 
-    return render(request, "hojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form, 'baldeutilizado_form':baldeutilizado_form})
+    return render(request, "registroHojaRuta/hojaruta_form.html", {'hojaruta_form': hojaruta_form, 'baldeutilizado_form':baldeutilizado_form})
 
 
 @login_required
 def baja_hoja_ruta(request):
     fecha = datetime.datetime.strptime(request.POST.get('fecha'), '%d %b. %Y')
-    hoja_rutas = HojaRuta.objects.filter(fecha_recorrido=fecha)
+    hoja_rutas = RegistroHojaRuta.objects.filter(fecha_recorrido=fecha)
     for h in hoja_rutas:
-        baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido=fecha)
+        baldes = DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido=fecha)
         if (len(baldes)) == 0 :
             h.delete()
     response = {}
@@ -221,7 +230,7 @@ def generar_hoja_ruta(request, dia):
     listado_recorridos = Recorrido.objects.filter(dia=dia)
 
     #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
-    return render(request, "hojaRuta/hojaruta_impresion.html", {'listado_recorridos': listado_recorridos, 'dia':Dias[int(dia)]})
+    return render(request, "registroHojaRuta/hojaruta_impresion.html", {'listado_recorridos': listado_recorridos, 'dia':Dias[int(dia)]})
 
 
 def modificar_itinerario(request, id_generador, id_recorrido):
@@ -237,12 +246,12 @@ def modificar_itinerario(request, id_generador, id_recorrido):
         generador_form = ItinerarioForm(instance=generador)
 
     contexto= {'generador_form': generador_form, 'recorrido':id_recorrido}
-    return render(request, "hojaRuta/itinerario/itinerario_form.html", contexto)
+    return render(request, "registroHojaRuta/itinerario/itinerario_form.html", contexto)
 
 
 class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
 
-    template_name = 'hojaRuta/hoja_ruta_pdf.html'
+    template_name = 'registroHojaRuta/hoja_ruta_pdf.html'
     title = "Planilla de Hoja de Ruta del dia: " + f"{datetime.datetime.now():%d/%m/%y}"
 
     login_url = '/accounts/login/'
@@ -265,30 +274,29 @@ BALDES UTILIZADOS
 @login_required
 def listado_baldes_utilizados(request, anio, mes, dia):
     fecha_recorrido = datetime.date(int(anio), int(mes), int(dia))
-    hoja_de_ruta = HojaRuta.objects.filter(fecha_recorrido=fecha_recorrido).first() #Solo importa el primero, para obtener la fecha.
-    listado_baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido=hoja_de_ruta.fecha_recorrido)
-    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes, 'hoja_ruta':hoja_de_ruta})
+    listado_baldes = DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido__year=int(anio), registro_hoja_ruta__fecha_recorrido__month=int(mes), registro_hoja_ruta__fecha_recorrido__day=int(dia))
+    return render(request, 'registroHojaRuta/baldes_utilizados/baldeutilizado_listado.html', {'listado_baldes': listado_baldes})
 
 
 @login_required
 def detalle_balde_utilizado(request, id_balde):
     balde_utilizado = DetalleHojaRuta.objects.get(id=id_balde)
-    return render(request, 'hojaRuta/baldes_utilizados/baldeutilizado_detalle.html', {'balde_utilizado': balde_utilizado})
+    return render(request, 'registroHojaRuta/baldes_utilizados/baldeutilizado_detalle.html', {'balde_utilizado': balde_utilizado})
 
 
 #MODIFICACION EN EL LISTADO DE BALDES
 @login_required
 def modif_balde_utilizado(request, id_hoja=None, id_balde=None):
     try:
-        balde = DetalleHojaRuta.objects.get(balde__id=id_balde, hoja_ruta__id=id_hoja)
+        balde = DetalleHojaRuta.objects.get(balde__id=id_balde, registro_hoja_ruta__id=id_hoja)
     except:
         balde = None
     if request.method == 'POST':
         balde_form = ActualizarBaldeUtilizadoForm(request.POST, instance=balde)
         if balde_form.is_valid():
             balde = balde_form.save(commit=False)
-            balde.hoja_ruta = HojaRuta.objects.get(id=id_hoja)
-            balde_generado = Balde.objects.get(nro_balde=id_balde)
+            balde.hoja_ruta = RegistroHojaRuta.objects.get(id=id_hoja)
+            balde_generado = Balde.objects.get(id=id_balde)
             if balde.tipo == "Entrega":
                 balde_generado.estado = "Ocupado"
             else:
@@ -300,11 +308,11 @@ def modif_balde_utilizado(request, id_hoja=None, id_balde=None):
             anio = fecha_recorrido.year
             mes = fecha_recorrido.month
             dia = fecha_recorrido.day
-            return redirect('hojaRuta:listado_baldes_utilizados', anio=anio, mes=mes, dia=dia)
+            return redirect('registroHojaRuta:listado_baldes_utilizados', anio=anio, mes=mes, dia=dia)
     else:
         balde_form = ActualizarBaldeUtilizadoForm(instance=balde)
-    hoja_ruta = HojaRuta.objects.get(id=id_hoja) # Para obtener la fecha recorrido
-    return render(request, "hojaRuta/baldes_utilizados/baldeutilizado_form.html", {'balde_form': balde_form, 'hoja_ruta':hoja_ruta})
+    hoja_ruta = RegistroHojaRuta.objects.get(id=id_hoja) # Para obtener la fecha recorrido
+    return render(request, "registroHojaRuta/baldes_utilizados/baldeutilizado_form.html", {'balde_form': balde_form, 'hoja_ruta':hoja_ruta})
 
 
 @login_required(login_url='login')
@@ -325,10 +333,12 @@ def existe_balde_utilizado(request, balde_utilizado):
     for item in request.session['baldes_utilizados']:
         if (((item['nro_precinto'] == balde_utilizado.nro_precinto and (item['nro_precinto'] != None))) or (item['balde']['nro_balde'] == balde_utilizado.balde.nro_balde)):
             return True
+        if(item['hora_llegada'] != balde_utilizado.hora_llegada or item['hora_salida'] != balde_utilizado.hora_salida):
+            return True
     return False
 
 
-def carga_baldes_utilizados(request, hoja_ruta):
+def carga_baldes_utilizados(request, registro_hoja):
     for b_utilizado in request.session['baldes_utilizados']:
         balde = Balde.objects.get(nro_balde=b_utilizado['balde']['nro_balde'])
         if b_utilizado['tipo'] =="Entrega":
@@ -336,11 +346,8 @@ def carga_baldes_utilizados(request, hoja_ruta):
         else:
             balde.estado = "En Planta"
         balde.save()
-        establecimiento_generador = EstablecimientoGenerador.objects.get(razon_social=b_utilizado['establecimiento_generador']['razon_social'])
-        balde.establecimiento_generador = establecimiento_generador
-        balde.save()
-        if not DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido=request.session['fecha'], balde=balde): # No tiene qe existir el nro balde cargado ese dia en otro lugar
-            item = DetalleHojaRuta(balde=balde, establecimiento_generador=establecimiento_generador,hoja_ruta=hoja_ruta,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'], hora_llegada=b_utilizado['hora_llegada'], hora_salida=b_utilizado['hora_salida'])
+        if not DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido=request.session['fecha'], balde=balde): # No tiene qe existir el nro balde cargado ese dia en otro lugar
+            item = DetalleHojaRuta(balde=balde, registro_hoja_ruta=registro_hoja,nro_precinto=b_utilizado['nro_precinto'], tipo=b_utilizado['tipo'])
             item.save()
 
 
@@ -585,7 +592,7 @@ LIQUIDACIONES MENSUALES
 
 class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
-    template_name = 'hojaRuta/liquidacion_mensual_pdf.html'
+    template_name = 'registroHojaRuta/liquidacion_mensual_pdf.html'
     title = "LIQUIDACIÓN MENSUAL DE RETIROS"
 
     login_url = '/accounts/login/'
@@ -595,7 +602,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
         establecimientos = {}
 
-        total_baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido__month=mes, establecimiento_generador__activo=True, establecimiento_generador__recorrido__isnull=False)
+        total_baldes = DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido__month=mes, registro_hoja_ruta__establecimiento_generador__activo=True, registro_hoja_ruta__establecimiento_generador__recorrido__isnull=False)
 
         for b in total_baldes:
 
@@ -604,17 +611,17 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
             for c in Capacidad_balde: #Capacidad_balde: tupla del choices.py
 
-                cant_envases = DetalleHojaRuta.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__fecha_recorrido__month=b.hoja_ruta.fecha_recorrido.month, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
+                cant_envases = DetalleHojaRuta.objects.filter(registro_hoja_ruta__establecimiento_generador__id=b.registro_hoja_ruta.establecimiento_generador.id, registro_hoja_ruta__fecha_recorrido__month=b.registro_hoja_ruta.fecha_recorrido.month, balde__capacidad=c[0], tipo="Retiro").count() #baldes en cada hoja
                 baldes_utilizados[c[0]] = cant_envases
                 total_envases+=cant_envases #acumulador por cada tipo de balde
 
-                c_envases = DetalleHojaRuta.objects.filter(establecimiento_generador__id=b.establecimiento_generador.id, hoja_ruta__fecha_recorrido__month=b.hoja_ruta.fecha_recorrido.month, tipo='Retiro').values_list('balde__capacidad')
+                c_envases = DetalleHojaRuta.objects.filter(registro_hoja_ruta__establecimiento_generador__id=b.registro_hoja_ruta.establecimiento_generador.id, registro_hoja_ruta__fecha_recorrido__month=b.registro_hoja_ruta.fecha_recorrido.month, tipo='Retiro').values_list('balde__capacidad')
                 acumu = 0
 
                 for env in c_envases:
                     acumu += int(env[0])
 
-            establecimientos[b.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
+            establecimientos[b.registro_hoja_ruta.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
 
         return super(LiquidacionPdf, self).get_context_data(
             pagesize="A4",

@@ -14,16 +14,16 @@
           <button type="button" data-toggle="dropdown" class="btn btn-info dropdown-toggle">Generar Hoja de Ruta <span class="caret"></span></button>
           <ul class="dropdown-menu">
               {% for dia in dias_semana %}
-              <li><a href="{% url 'hojaRuta:generar_hoja_ruta' dia=dia.0 %}">{{dia.1}}</a></li>
+              <li><a href="{% url 'registroHojaRuta:generar_hoja_ruta' dia=dia.0 %}">{{dia.1}}</a></li>
               {% endfor %}
           </ul>
       </div>
-      <a href="{% url 'hojaRuta:alta_modif_hoja_ruta' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Recepción Hoja de Ruta </a>
+      <a href="{% url 'registroHojaRuta:alta_modif_hoja_ruta' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Recepción Hoja de Ruta </a>
       <div class="btn-group">
           <button type="button" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">Liquidación Mensual de Retiros <span class="caret"></span></button>
           <ul class="dropdown-menu">
               {% for kmes, vmes in meses.items %}
-              <li><a href="{% url 'hojaRuta:liquidacion_pdf' mes=kmes nombre_mes=vmes.0 anio=vmes.1 %}" target="_blank">{{vmes.0}}</a></li>
+              <li><a href="{% url 'registroHojaRuta:liquidacion_pdf' mes=kmes nombre_mes=vmes.0 anio=vmes.1 %}" target="_blank">{{vmes.0}}</a></li>
               {% endfor %}
           </ul>
       </div>
@@ -56,7 +56,7 @@
         <tr>
             <td style="padding-left:15px;">{{ hoja_ruta.fecha_recorrido|date:"d M Y" }}</td>
             <td align="center">
-               <a class="btn btn-success" data-toggle="tooltip" title="Registros" href="{% url 'hojaRuta:listado_baldes_utilizados' hoja_ruta.fecha_recorrido.year hoja_ruta.fecha_recorrido.month hoja_ruta.fecha_recorrido.day %}"><em class="fa fa-list"></em></a>
+               <a class="btn btn-success" data-toggle="tooltip" title="Registros" href="{% url 'registroHojaRuta:listado_baldes_utilizados' hoja_ruta.fecha_recorrido.year hoja_ruta.fecha_recorrido.month hoja_ruta.fecha_recorrido.day %}"><em class="fa fa-list"></em></a>
                {% if hoja_ruta.fecha_recorrido|hojas_validas %}
                 <a id="fecha_id"class="btn btn-danger btn-baja"  data-fecha="{{ hoja_ruta.fecha_recorrido }}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>
                {% endif %}
@@ -123,7 +123,7 @@
     function eliminarHoja(fecha) {
       var request = $.ajax({
           type: "POST",
-          url: "{% url 'hojaRuta:baja_hoja_ruta' %}",
+          url: "{% url 'registroHojaRuta:baja_hoja_ruta' %}",
           data: {
               "csrfmiddlewaretoken": "{{ csrf_token }}",
               "fecha": fecha

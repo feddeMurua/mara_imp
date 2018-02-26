@@ -15,7 +15,7 @@ class BuscarBalde(admin.ModelAdmin):
     search_fields = ['nro_balde']
 
 # Register your models here.
-admin.site.register(HojaRuta,BuscarHojaRuta)
+admin.site.register(RegistroHojaRuta,BuscarHojaRuta)
 admin.site.register(DetalleHojaRuta)
 admin.site.register(EstablecimientoGenerador, BuscarEstablecimiento)
 admin.site.register(Balde, BuscarBalde)

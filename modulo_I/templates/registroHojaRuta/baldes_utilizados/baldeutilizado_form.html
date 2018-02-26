@@ -7,15 +7,11 @@
      <div class="panel panel-default">
        <div class="panel-heading">DATOS BALDE</div>
          <div class="panel-body">
-           <label>(*)Establecimiento Generador:</label>
-           {{balde_form.establecimiento_generador|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo Establecimiento es obligatorio"}}
-           <br>
            <label>(*)Número de Precinto:</label>
            {{balde_form.nro_precinto|add_class:'form-control'}}
-           <br>
            {% for error in balde_form.nro_precinto.errors %}
                <span style="color:red;" class="help-block">{{error}}</span>
-             {% endfor %}
+           {% endfor %}
            <br>
            <label>(*)Tipo:</label>
            {{balde_form.tipo|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo tipo es obligatorio"}}
@@ -26,5 +22,5 @@
 {% endblock %}
 
 {% block url-cancelar %}
-  {% url 'hojaRuta:listado_baldes_utilizados' anio=hoja_ruta.fecha_recorrido.year mes=hoja_ruta.fecha_recorrido.month dia=hoja_ruta.fecha_recorrido.day %}
+  {% url 'registroHojaRuta:listado_baldes_utilizados' anio=hoja_ruta.fecha_recorrido.year mes=hoja_ruta.fecha_recorrido.month dia=hoja_ruta.fecha_recorrido.day %}
 {% endblock %}

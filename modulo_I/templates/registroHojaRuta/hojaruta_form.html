@@ -21,6 +21,17 @@
         <label>(*)Fecha Recorrido:</label>
         {{hojaruta_form.fecha_recorrido|add_class:'form-control'|attr:"readonly"|attr:"style:background:white"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo fecha impresión es obligatorio"}}
         <br>
+        <label>Hora Llegada:</label>
+        <br>
+        {{hojaruta_form.hora_llegada|add_class:'form-control hora'}}
+        <br>
+        <label>Hora Salida:</label>
+        <br>
+        {{hojaruta_form.hora_salida|add_class:'form-control hora'}}
+        <br>
+        <label>(*)Establecimiento Generador:</label>
+        {{hojaruta_form.establecimiento_generador|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo establecimiento generador es obligatorio"}}
+        <br>
       </div>
     </div>
   </div>
@@ -44,7 +55,6 @@
                 <table style="overflow:auto" class="table table-list table-bordered table-striped" id="table-list">
                     <thead>
                         <tr align="center">
-                          <th>Establecimiento</th>
                           <th style="text-align:center;">N° Balde</th>
                           <th style="text-align:center;">N° Precinto</th>
                           <th style="text-align:center;">Tipo</th>
@@ -69,7 +79,7 @@
 {% endblock %}
 
 {% block url-cancelar %}
-  {% url 'hojaRuta:listado_general' %}
+  {% url 'registroHojaRuta:listado_general' %}
 {% endblock %}
 
 
@@ -83,13 +93,9 @@
                 <h5 style="color:red;">(*)Atencion! si no se crea el registro en la tabla, es porque viola la llave de seguridad del N° Precinto en otra Hoja de Ruta</h5>
             </div>
             <div class="modal-body">
-              <form action="" id="baldeForm" data-url="{% url 'hojaRuta:alta_balde_utilizado' %}">
+              <form action="" id="baldeForm" data-url="{% url 'registroHojaRuta:alta_balde_utilizado' %}">
                  {% csrf_token %}
                  {{ baldeutilizado_form.media }}
-                 <div class="form-group">
-                   <label>(*)Establecimiento Generador:</label>
-                   {{baldeutilizado_form.establecimiento_generador|add_class:"select-2"}}
-                 </div>
                  <div class="form-group">
                    <label>(*)Balde:</label>
                    {{baldeutilizado_form.balde|add_class:"select-2"}}
@@ -109,16 +115,6 @@
                  <div class="form-group">
                    <label>(*)Tipo:</label>
                    {{baldeutilizado_form.tipo|add_class:"select-2"}}
-                 </div>
-                 <div class="form-group">
-                   <label>Hora Llegada:</label>
-                   <br>
-                   {{baldeutilizado_form.hora_llegada|add_class:'form-control hora'}}
-                   <br>
-                   <label>Hora Salida:</label>
-                   <br>
-                   {{baldeutilizado_form.hora_salida|add_class:'form-control hora'}}
-                   <br>
                  </div>
                  <input type="submit" class="btn btn-default" id="btn-confirmar" onclick="return confirm('Confirma los datos ingresados?')" value="Confirmar"/>
                  <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
@@ -146,7 +142,7 @@
                        $('#agregar_baldeutilizado').modal('hide');
                        refresh_table(data['baldes_utilizados']);
                    } else {
-                       alert("El N° Balde o N° Precinto ya se encuentran cargados");
+                       alert("El N° Balde o N° Precinto ya se encuentran cargados o no se puede cargar otro horario de llegada o salida del generador.");
                    }
                 });
              });
@@ -156,14 +152,12 @@
              var $tbody = $("table tbody");
              $tbody.children().remove();
              for(var i = 0; i < baldes_utilizados.length; i++){
-                 var establecimiento = baldes_utilizados[i]['establecimiento_generador']['razon_social']
                  var balde = baldes_utilizados[i]['balde']['nro_balde']
                  var precinto = "-"
                  if (baldes_utilizados[i]['nro_precinto']){
                    precinto = baldes_utilizados[i]['nro_precinto'];
                  }
                  var row = "<tr align='center'>" +
-                 "<td align="+"left"+">" + establecimiento + "</td>" +
                  "<td>" + balde + "</td>" +
                  "<td>" + precinto + "</td>" +
                  "<td>" + baldes_utilizados[i]['tipo'] + "</td>" +

@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import *
 from functools import partial
 import re
+import datetime
 from django.template.loader import render_to_string
 
 DateInput = partial(forms.DateInput, {'class': 'datepicker'})
@@ -71,18 +72,17 @@ class BaldeUtilizadoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(BaldeUtilizadoForm, self).__init__(*args, **kwargs)
-        self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(activo=True, recorrido__isnull=False, nro_parada__isnull=False)
         self.fields['balde'].queryset = Balde.objects.all().order_by('nro_balde')
 
     class Meta:
         model = DetalleHojaRuta
-        exclude = ['hoja_ruta',]
+        exclude = ['registro_hoja_ruta',]
 
 
 class ActualizarBaldeUtilizadoForm(forms.ModelForm):
     class Meta:
         model = DetalleHojaRuta
-        exclude = ['hoja_ruta','balde',]
+        exclude = ['registro_hoja_ruta','balde',]
 
 
 class BaldeForm(forms.ModelForm):
@@ -98,15 +98,15 @@ HOJAS DE RUTA
 
 class HojaRutaForm(forms.ModelForm):
     fecha_recorrido = forms.DateField(widget=DateInput(), label="Fecha creación vínculo")
+
+    def __init__(self, *args, **kwargs):
+        super(HojaRutaForm, self).__init__(*args, **kwargs)
+        self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(activo=True, recorrido__isnull=False)
+
     class Meta:
-        model = HojaRuta
+        model = RegistroHojaRuta
         fields = '__all__'
 
-
-'''
-class LiqMensualForm(forms.Form):
-    mes = forms.IntegerField()
-'''
 
 '''
 GENERADORES
@@ -128,6 +128,11 @@ class ItinerarioForm(forms.ModelForm):
 
 
 class RecorridoForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(RecorridoForm, self).__init__(*args, **kwargs)
+        self.fields['dia'].initial = (datetime.datetime.now().strftime("%w"))
+
     class Meta:
         model = Recorrido
         fields = '__all__'

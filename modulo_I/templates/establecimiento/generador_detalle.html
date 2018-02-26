@@ -87,12 +87,12 @@
 
           {% if generador.recorrido %}
           <tr>
-              <th>Sector Asociado en el recorrido:</th>
-              <td style="text-align:right;"> {{generador.recorrido}}</td>
+              <th>Recorrido Asociado:</th>
+              <td style="text-align:right;"> {{generador.recorrido.nombre}}</td>
           </tr>
           {% else %}
             <tr>
-              <th>Sector Asociado en el recorrido:</th>
+              <th>Recorrido Asociado:</th>
               <td style="text-align:right;"> - </td>
             </tr>
           {% endif %}

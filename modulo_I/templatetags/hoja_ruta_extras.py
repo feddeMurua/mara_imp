@@ -8,7 +8,8 @@ def hojas_validas(hoja):
     '''
     FUNCION que se encarga de permitir borrar la hoja de ruta si no tiene detalle.
     '''
-    baldes = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido=hoja)
+    
+    baldes = DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido=hoja)
     if (len(baldes)) == 0 :
         return True
     else:
@@ -37,8 +38,8 @@ def calcular_vol(balde_utilizado):
     '''
     FUNCION que se encarga de devolver total de volumen retirado
     '''
-    detalles = DetalleHojaRuta.objects.filter(hoja_ruta__fecha_recorrido__month=balde_utilizado.hoja_ruta.fecha_recorrido.month,
-                                                hoja_ruta__fecha_recorrido__day=balde_utilizado.hoja_ruta.fecha_recorrido.day, establecimiento_generador__id=balde_utilizado.establecimiento_generador.id, tipo="Retiro")
+    detalles = DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido__month=balde_utilizado.registro_hoja_ruta.fecha_recorrido.month,
+                                                registro_hoja_ruta__fecha_recorrido__day=balde_utilizado.registro_hoja_ruta.fecha_recorrido.day, registro_hoja_ruta__establecimiento_generador__id=balde_utilizado.registro_hoja_ruta.establecimiento_generador.id, tipo="Retiro")
 
     acumu = 0
     for d in detalles:
