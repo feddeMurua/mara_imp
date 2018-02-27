@@ -192,7 +192,7 @@ def alta_modif_hoja_ruta(request):
         if hojaruta_form.is_valid():
             hoja_ruta = hojaruta_form.save()
             request.session['fecha'] = str(hojaruta_form.cleaned_data.get('fecha_recorrido')) # Para controlar que no haya un balde repetido en mas de un generador
-            carga_baldes_utilizados(request, hoja_ruta) #Para no crear una hoja de ruta vacía
+            carga_baldes_utilizados(request, hoja_ruta)
 
             #se chequea que la hoja de ruta no quede sin detalle
             registros = DetalleHojaRuta.objects.filter(registro_hoja_ruta=hoja_ruta).count()
@@ -202,6 +202,7 @@ def alta_modif_hoja_ruta(request):
             if 'btn-guardar' in request.POST:
                 return redirect('registroHojaRuta:listado_general')
             else:
+                request.session['baldes_utilizados'] = []
                 return redirect('registroHojaRuta:alta_modif_hoja_ruta')
         else:
             messages.add_message(request, messages.ERROR, 'Ya se cargó el registro del establecimiento solicitado de la hoja de ruta de este día.')
@@ -601,7 +602,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
         establecimientos = {}
 
-        total_baldes = DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido__month=mes, registro_hoja_ruta__establecimiento_generador__activo=True, registro_hoja_ruta__establecimiento_generador__recorrido__isnull=False)
+        total_baldes = DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido__month=mes, registro_hoja_ruta__establecimiento_generador__activo=True, registro_hoja_ruta__establecimiento_generador__recorrido__isnull=False, tipo="Retiro")
 
         for b in total_baldes:
 
