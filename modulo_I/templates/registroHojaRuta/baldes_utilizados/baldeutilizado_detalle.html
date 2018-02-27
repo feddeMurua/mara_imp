@@ -14,28 +14,14 @@
 {% block detalle %}
   <table class="table table-striped table-bordered">
       <tbody>
-          {% if balde_utilizado.hora_llegada %}
           <tr>
-            <th>Hora Llegada:</th>
-            <td style="text-align:right;"> {{balde_utilizado.hora_llegada}</td>
-          </tr>
-          {% else %}
-            <tr>
               <th>Hora Llegada:</th>
-              <td style="text-align:right;"> - </td>
-            </tr>
-          {% endif %}
-          {% if balde_utilizado.hora_salida %}
-          <tr>
-            <th>Hora Retiro:</th>
-            <td style="text-align:right;"> {{balde_utilizado.hora_salida}</td>
+              <td style="text-align:right;"> {{ balde_utilizado.registro_hoja_ruta.hora_llegada|default_if_none:"-" }}</td>
           </tr>
-          {% else %}
-            <tr>
+          <tr>
               <th>Hora Retiro:</th>
-              <td style="text-align:right;"> - </td>
-            </tr>
-          {% endif %}
+              <td style="text-align:right;"> {{ balde_utilizado.registro_hoja_ruta.hora_salida|default_if_none:"-" }}</td>
+          </tr>
           <tr>
             <th>Volumen Retirado:</th>
             <td style="text-align:right;"> {{ balde_utilizado |calcular_vol }} dm3</td>

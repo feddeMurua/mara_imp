@@ -261,9 +261,11 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
     def get_context_data(self, dia, recorrido):
         establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido__id=recorrido).order_by('nro_parada')
 
+
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
-            establecimientos=establecimientos
+            establecimientos=establecimientos,
+            recorrido = Recorrido.objects.get(id=recorrido).nombre
         )
 
 
@@ -376,7 +378,7 @@ def listado_recorridos(request):
 
 @login_required
 def listado_establecimientos_recorrido(request, id_recorrido):
-    listado_establecimientos = EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido)
+    listado_establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=Recorrido.objects.get(id=id_recorrido).dia, activo=True, recorrido__id=id_recorrido)
     return render(request, 'establecimiento/recorrido/establecimientos_recorrido_listado.html', {'listado_establecimientos': listado_establecimientos, 'recorrido':Recorrido.objects.get(id=id_recorrido)})
 
 
