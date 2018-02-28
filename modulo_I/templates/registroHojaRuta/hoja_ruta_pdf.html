@@ -53,8 +53,9 @@
   <div id="content">
       <div class="main">
         <h1 style="background-color: lightblue; padding-top:5px;">IMPEESAmbiental</h1>
-        <h2>{{ view.title }}</h2>
-        <h2> Recorrido: {{ recorrido }}</h2>
+        <h2>{{ view.title }} {{recorrido.get_dia_display}}</h2>
+        <h4>{{ view.sub_title }} </h4>
+        <h2 style="text-align: center;"> Recorrido: {{ recorrido.nombre }}</h2>
           <!-- Table with irregular header -->
           <table class="table">
             {% for establecimiento in establecimientos %}

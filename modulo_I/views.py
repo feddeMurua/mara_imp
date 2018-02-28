@@ -257,11 +257,18 @@ def agregar_itinerario(request, id_recorrido):
     if request.method == 'POST':
         generador = EstablecimientoGenerador.objects.get(id=request.POST.get('establecimiento'))
         generador.recorrido= Recorrido.objects.get(id=id_recorrido)
+
+        if request.POST.get('nro_parada_generador'):
+            generador.nro_parada = request.POST.get('nro_parada_generador')
+        else:
+            generador.nro_parada = None
+
         generador.save()
         return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido)
 
-    recorrido_dia = Recorrido.objects.get(id=id_recorrido).dia #Solo establecimientos que atienden ese dia
-    contexto= {'recorrido':id_recorrido, 'establecimientos':EstablecimientoGenerador.objects.filter(recoleccion__icontains=recorrido_dia, activo=True)}
+    establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=Recorrido.objects.get(id=id_recorrido).dia, activo=True) #Solo establecimientos que atienden ese dia
+
+    contexto= {'recorrido':id_recorrido, 'establecimientos':establecimientos}
     return render(request, "registroHojaRuta/itinerario/agregar_generador_form.html", contexto)
 
 
@@ -276,7 +283,8 @@ def baja_itinerario(request, id_generador, id_recorrido):
 class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
 
     template_name = 'registroHojaRuta/hoja_ruta_pdf.html'
-    title = "Planilla de Hoja de Ruta del dia: " + f"{datetime.datetime.now():%d/%m/%y}"
+    title = "Planilla de Hoja de Ruta del dia: "
+    sub_title = "Fecha de Impresión: " + f"{datetime.datetime.now():%d/%m/%y}"
 
     login_url = '/accounts/login/'
     redirect_field_name = 'next'
@@ -288,7 +296,7 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
             establecimientos=establecimientos,
-            recorrido = Recorrido.objects.get(id=recorrido).nombre
+            recorrido = Recorrido.objects.get(id=recorrido)
         )
 
 
