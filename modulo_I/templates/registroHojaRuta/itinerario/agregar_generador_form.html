@@ -1,0 +1,32 @@
+{% extends "base/base_forms.html" %}
+{% load staticfiles %}
+{% load staticfiles bootstrap3 %}
+{% load widget_tweaks %}
+
+{% block title %}Hoja de Ruta{% endblock %}
+
+{% block header-title %} Agregar Establecimiento Generador {% endblock %}
+
+{% block step-form %}
+
+  <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">ESTABLECIMIENTO GENERADOR</div>
+      <div class="panel-body">
+        <label>(*) Establecimientos:</label>
+        <select name="establecimiento" class="select-2" id="establecimientos_id" required data-parsley-error-message="(*)El campo establecimiento generador es obligatorio">
+          <option>---------------------</option>
+          {% for e in establecimientos %}
+          <option value="{{e.id}}">{{e}}</option>
+          {% endfor %}
+        </select>
+        <br>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block url-cancelar %}
+  {% url 'generadores:listado_establecimientos_recorrido' id_recorrido=recorrido %}
+{% endblock %}

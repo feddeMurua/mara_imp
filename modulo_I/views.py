@@ -234,6 +234,7 @@ def generar_hoja_ruta(request, dia):
     return render(request, "registroHojaRuta/hojaruta_impresion.html", {'listado_recorridos': listado_recorridos, 'dia':Dias[int(dia)]})
 
 
+@login_required
 def modificar_itinerario(request, id_generador, id_recorrido):
 
     generador = EstablecimientoGenerador.objects.get(id=id_generador)
@@ -248,6 +249,28 @@ def modificar_itinerario(request, id_generador, id_recorrido):
 
     contexto= {'generador_form': generador_form, 'recorrido':id_recorrido}
     return render(request, "registroHojaRuta/itinerario/itinerario_form.html", contexto)
+
+
+@login_required
+def agregar_itinerario(request, id_recorrido):
+
+    if request.method == 'POST':
+        generador = EstablecimientoGenerador.objects.get(id=request.POST.get('establecimiento'))
+        generador.recorrido= Recorrido.objects.get(id=id_recorrido)
+        generador.save()
+        return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido)
+
+    recorrido_dia = Recorrido.objects.get(id=id_recorrido).dia #Solo establecimientos que atienden ese dia
+    contexto= {'recorrido':id_recorrido, 'establecimientos':EstablecimientoGenerador.objects.filter(recoleccion__icontains=recorrido_dia, activo=True)}
+    return render(request, "registroHojaRuta/itinerario/agregar_generador_form.html", contexto)
+
+
+@login_required
+def baja_itinerario(request, id_generador, id_recorrido):
+    generador = EstablecimientoGenerador.objects.get(id=id_generador)
+    generador.recorrido = None
+    generador.save()
+    return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido)
 
 
 class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
@@ -378,7 +401,7 @@ def listado_recorridos(request):
 
 @login_required
 def listado_establecimientos_recorrido(request, id_recorrido):
-    listado_establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=Recorrido.objects.get(id=id_recorrido).dia, activo=True, recorrido__id=id_recorrido)
+    listado_establecimientos = EstablecimientoGenerador.objects.filter(activo=True, recorrido__id=id_recorrido)
     return render(request, 'establecimiento/recorrido/establecimientos_recorrido_listado.html', {'listado_establecimientos': listado_establecimientos, 'recorrido':Recorrido.objects.get(id=id_recorrido)})
 
 

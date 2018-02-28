@@ -8,6 +8,7 @@
 
 {% block panel-heading-tabla %}
   <div style="padding-top:0.3%; padding-left:0.1%;">
+    <a href="{% url 'registroHojaRuta:agregar_itinerario' id_recorrido=recorrido.id %}" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar Generador</a>
     <a href="{% url 'registroHojaRuta:generar_hoja_ruta' recorrido.dia %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;"></i></a>
   </div>
 {% endblock %}
@@ -50,6 +51,7 @@
           <td style="text-align:center;">{{ establecimiento.localidad.nombre }}</td>
           <td align="center">
             <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'registroHojaRuta:modificar_itinerario' id_generador=establecimiento.id id_recorrido=recorrido.id %}"><em class="glyphicon glyphicon-pencil"></em></a>
+            <a href="{% url 'registroHojaRuta:baja_itinerario' id_generador=establecimiento.id id_recorrido=recorrido.id %}" onclick="return confirm('Esta seguro que sea quitar el generador?')" class="btn btn-danger" data-toggle="tooltip" title="Reset" href="#"><em class="glyphicon glyphicon-trash"></em></a>
           </td>
       </tr>
   {% endfor %}

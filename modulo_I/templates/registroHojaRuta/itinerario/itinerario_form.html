@@ -13,6 +13,9 @@
     <div class="panel panel-default">
       <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
         <div class="panel-body">
+
+          {% block field-generador %}{% endblock %}
+
           <label>Número de Parada:</label>
           {{generador_form.nro_parada|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
           <br>
