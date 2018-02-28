@@ -256,7 +256,7 @@ def agregar_itinerario(request, id_recorrido):
 
     if request.method == 'POST':
         generador = EstablecimientoGenerador.objects.get(id=request.POST.get('establecimiento'))
-        generador.recorrido= Recorrido.objects.get(id=id_recorrido)
+        generador.recorrido.add(Recorrido.objects.get(id=id_recorrido))
 
         if request.POST.get('nro_parada_generador'):
             generador.nro_parada = request.POST.get('nro_parada_generador')

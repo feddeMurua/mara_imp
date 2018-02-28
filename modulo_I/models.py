@@ -71,7 +71,7 @@ class EstablecimientoGenerador(models.Model):
     responsable_ambiental = models.CharField(max_length=50, blank=True, null=True)
     cuit = models.CharField(max_length=20, blank=True, null=True)
     nro_parada = models.IntegerField(validators=[MinValueValidator(1)], blank=True, null=True) # En el recorrido
-    recorrido = models.ForeignKey('Recorrido',blank=True, null=True, on_delete=models.SET_NULL)
+    recorrido = models.ManyToManyField('Recorrido',blank=True)
 
     '''
     class Meta:
