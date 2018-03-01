@@ -64,11 +64,12 @@
                 colspan: n° de columnas dentro de la fila
                 rowspan: n° de filas dentro de la fila
                 -->
+                <td colspan="1" rowspan="2"><strong>N° Generador</strong></td>
                 <td colspan="1" rowspan="2"><strong>Hora Llegada</strong></td>
                 <td colspan="1" rowspan="2"><strong>Hora Retiro</strong></td>
                 <td colspan="1" rowspan="2"><strong>N° Manifiesto</strong></td>
                 <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}}, Cuit: {{ establecimiento.cuit|default_if_none:"-" }} || {{establecimiento.localidad.nombre}} || BALDES{{ establecimiento|baldes_pactados }} </th>
-                <td colspan="1" rowspan="2"><strong>N° Generador</strong></td>
+
               </tr>
               <tr>
                 <td align="left"rowspan="1" scope="colgroup">Retiros</td>
@@ -78,6 +79,7 @@
                 {% endfor %}
               </tr>
               <tr>
+                <td>{{ establecimiento.nro_inscripcion|default_if_none:"-" }}</td>
                 <td></td><td></td>
                 <td></td><td align="left">Entregas</td>
                 <td></td><td></td>
@@ -85,8 +87,7 @@
                 <td></td><td></td>
                 <td></td><td></td>
                 <td></td><td></td>
-                <td></td><td></td>
-                <td></td>
+                <td></td><td></td>                
               </tr>
             {% endfor %}
           </table>

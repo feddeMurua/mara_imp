@@ -32,8 +32,11 @@ ESTABLECIMIENTO GENERADOR
 
 
 class Recorrido(models.Model):
-    nombre = models.CharField(max_length=50, unique=True)
+    nombre = models.CharField(max_length=50)
     dia = models.CharField(max_length=15, choices=Dias)
+
+    class Meta:
+        unique_together = ('nombre', 'dia',)
 
     def __str__(self):
         return "%s" % (self.nombre)
