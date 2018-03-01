@@ -2,6 +2,13 @@
 {% load staticfiles %}
 {% load staticfiles bootstrap3 %}
 
+{% block scripts%}
+  <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  {% block more-scripts %}{% endblock %}
+{% endblock %}
+
 {% block content %}
     <div class="container container-detalle" style=" width:100%">
       <div class="panel panel-primary">

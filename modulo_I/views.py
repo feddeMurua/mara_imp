@@ -8,14 +8,11 @@ from django.http import HttpResponse
 from easy_pdf.views import PDFTemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.db import IntegrityError
-from mara_imp import factories
 import datetime
 from django.utils.html import escape
 from .choices import Capacidad_balde, Dias, Meses
-import collections
 import json
-import ast
+
 # Create your views here.
 
 '''
@@ -206,7 +203,6 @@ def alta_modif_hoja_ruta(request):
                 return redirect('registroHojaRuta:alta_modif_hoja_ruta')
         else:
             messages.add_message(request, messages.ERROR, 'Ya se cargó el registro del establecimiento solicitado de la hoja de ruta de este día.')
-
     else:
         hojaruta_form = HojaRutaForm()
 
@@ -215,12 +211,10 @@ def alta_modif_hoja_ruta(request):
 
 @login_required
 def baja_hoja_ruta(request):
-    fecha = datetime.datetime.strptime(request.POST.get('fecha'), '%d %b. %Y')
-    hoja_rutas = RegistroHojaRuta.objects.filter(fecha_recorrido=fecha)
-    for h in hoja_rutas:
-        baldes = DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido=fecha)
-        if (len(baldes)) == 0 :
-            h.delete()
+
+    fecha = request.POST.get('fecha')
+    hoja_rutas = RegistroHojaRuta.objects.get(fecha_recorrido=fecha)
+    hoja_rutas.delete()
     response = {}
     return JsonResponse(response)
 
@@ -275,7 +269,7 @@ def agregar_itinerario(request, id_recorrido):
 @login_required
 def baja_itinerario(request, id_generador, id_recorrido):
     generador = EstablecimientoGenerador.objects.get(id=id_generador)
-    generador.recorrido = None
+    generador.recorrido.remove(id_recorrido) #borrar solamente esa instancia del m2m
     generador.save()
     return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido)
 
@@ -627,6 +621,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
     template_name = 'registroHojaRuta/liquidacion_mensual_pdf.html'
     title = "LIQUIDACIÓN MENSUAL DE RETIROS"
+    sub_title = "Fecha de Impresión: " + f"{datetime.datetime.now():%d/%m/%y}"
 
     login_url = '/accounts/login/'
     redirect_field_name = 'next'

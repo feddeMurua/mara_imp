@@ -14,6 +14,10 @@
   <table class="table table-striped table-bordered">
       <tbody>
           <tr>
+              <th>N° inscripcion registro de generadores provincia del chubut:</th>
+              <td style="text-align:right;"> {{ generador.nro_inscripcion|default_if_none:"-" }}</td>
+          </tr>
+          <tr>
               <th>Responsable Ambiental:</th>
               <td style="text-align:right;"> {{ generador.responsable_ambiental|default_if_none:"-" }}</td>
           </tr>
@@ -39,7 +43,7 @@
           </tr>
           <tr>
               <th>Recorrido Asociado:</th>
-              <td style="text-align:right;"> {{ generador.recorrido.nombre|default_if_none:"-" }}</td>
+              <td style="text-align:right;"> {% for recorrido in generador.recorrido.all %}{{ recorrido }}, {% endfor %} || Parada N° {{ generador.nro_parada|default_if_none:"-" }}</td>
           </tr>
       </tbody>
   </table>

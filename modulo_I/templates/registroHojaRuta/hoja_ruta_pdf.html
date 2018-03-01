@@ -54,7 +54,7 @@
       <div class="main">
         <h1 style="background-color: lightblue; padding-top:5px;">IMPEESAmbiental</h1>
         <h2>{{ view.title }} {{recorrido.get_dia_display}}</h2>
-        <h4>{{ view.sub_title }} </h4>
+        <h4 style="text-align: right;">{{ view.sub_title }} </h4>
         <h2 style="text-align: center;"> Recorrido: {{ recorrido.nombre }}</h2>
           <!-- Table with irregular header -->
           <table class="table">
@@ -67,7 +67,7 @@
                 <td colspan="1" rowspan="2"><strong>Hora Llegada</strong></td>
                 <td colspan="1" rowspan="2"><strong>Hora Retiro</strong></td>
                 <td colspan="1" rowspan="2"><strong>N° Manifiesto</strong></td>
-                <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}} {% if establecimiento.cuit %}, Cuit: {{establecimiento.cuit}} {% endif %} || {{establecimiento.localidad.nombre}} || BALDES{{ establecimiento|baldes_pactados }} </th>
+                <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}}, Cuit: {{ establecimiento.cuit|default_if_none:"-" }} || {{establecimiento.localidad.nombre}} || BALDES{{ establecimiento|baldes_pactados }} </th>
                 <td colspan="1" rowspan="2"><strong>N° Generador</strong></td>
               </tr>
               <tr>

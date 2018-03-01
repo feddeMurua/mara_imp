@@ -49,7 +49,7 @@
                 <!-- Solo si es alta lo muestra, para que no aparezca repetido -->
                 <div class="pull-right">
                   {% if not modificar %}
-                      <button name="btn-guardar" type="submit" class="save btn btn-success">
+                      <button name="btn-guardar" type="submit" class="save btn btn-success" onclick="return confirm('Confirma los datos ingresados?')">
                         <span class="glyphicon glyphicon-ok"></span> Guardar
                       </button>
                       {% block guardar-seguir %}{% endblock %}
