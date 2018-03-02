@@ -16,8 +16,7 @@
   <thead>
   <tr style="background:#6495ED;">
       <th>Nombre</th>
-      <th>Día</th>
-      <th>Acciones</th>
+      <th style="text-align: center;">Acciones</th>
   </tr>
   </thead>
 {% endblock %}
@@ -26,7 +25,6 @@
   <tfoot >
      <tr>
        <th>Nombre</th>
-       <th>Día</th>
        <th style="text-align: center;"><i class="fa fa-cogs"></i></th>
     </tr>
   </tfoot>
@@ -37,7 +35,6 @@
   {% for recorrido in listado_recorridos %}
       <tr>
           <td>{{ recorrido.nombre }}</td>
-          <td>{{ recorrido.get_dia_display }}</td>
           <td align="center">
              <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:modificar_recorridos' id_recorrido=recorrido.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
              <a id="recorrido_id"class="btn btn-danger btn-baja" data-recorridoid="{{recorrido.id}}" data-recorridonombre="{{recorrido.nombre}}" data-toggle="modal" data-target="#modal_baja" title="Eliminar"><em class="glyphicon glyphicon-trash"></em></a>

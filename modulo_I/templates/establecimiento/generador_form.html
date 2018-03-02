@@ -14,6 +14,29 @@
 
 {% block step-form %}
 
+  <div class="form-section">
+    <div class="panel panel-default">
+      <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
+        <div class="panel-body">
+          <label>Número de Parada:</label>
+          {{itinerario_form.nro_parada|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+          <br>
+          <label>Recorrido:</label>
+          {{itinerario_form.recorrido|add_class:'select-2'}}
+          <br>
+          <!--
+          <label>Recorridos:</label>
+          <select name="recorrido" class="select-2" id="recorridos_id" multiple=multiple>
+            <option>---------------------</option>
+            {% for recorrido in recorridos %}
+            <option value="{{recorrido.id}}">{{recorrido}}</option>
+            {% endfor %}
+          </select>
+          -->
+        </div>
+    </div>
+  </div>
+
   <!-- SECTION 1 -->
   <div class="form-section">
     <div class="panel panel-default">

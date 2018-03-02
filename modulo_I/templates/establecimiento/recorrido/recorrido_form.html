@@ -15,8 +15,6 @@
         <label>(*)Nombre:</label>
         {{recorrido_form.nombre|add_class:'form-control nombre_recorrido'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
         <br>
-        <label>(*)Día:</label>
-        {{recorrido_form.dia|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo día es obligatorio"}}
         <script>
           $('.nombre_recorrido').on('input', function(evt) {
             $(this).val(function (_, val) {

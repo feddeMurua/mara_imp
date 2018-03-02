@@ -11,9 +11,7 @@
   <div class="modal-body">
     <label>(*)Nombre:</label>
     {{form.nombre|add_class:'form-control nombre_recorrido'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
-    <br>
-    <label>(*)Día:</label>
-    {{form.dia|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo día es obligatorio"}}
+    <br>    
     <script>
       $('.nombre_recorrido').on('input', function(evt) {
         $(this).val(function (_, val) {

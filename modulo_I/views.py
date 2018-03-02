@@ -485,14 +485,28 @@ def alta_modif_generadores(request, nro_generador=None):
         generador_form = GeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
         dias_form = RecoleccionForm(request.POST)
+        itinerario_form = ItinerarioForm(request.POST)
 
-        if generador_form.is_valid() & actividades_form.is_valid() & dias_form.is_valid():
+        if generador_form.is_valid() & actividades_form.is_valid() & dias_form.is_valid() & itinerario_form.is_valid():
 
             generador = generador_form.save(commit=False)
             generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
             generador.recoleccion = dias_form.cleaned_data.get('recoleccion')
             generador.save()
             carga_baldes(request, generador)
+
+            '''
+            ASOCIACION CON LOS RECORRIDOS
+            '''
+
+            for dia in dias_form.cleaned_data.get('recoleccion'):
+                recorridos_est = RecorridoEstablecimiento()
+                for recorrido in request.POST.getlist('recorrido'):
+                    recorridos_est.establecimiento_generador = generador
+                    recorridos_est.recorrido_id = recorrido
+                    recorridos_est.nro_parada = itinerario_form.cleaned_data.get('nro_parada')
+                    recorridos_est.dia = dia
+                recorridos_est.save()
 
             return redirect('generadores:listado_generadores')
 
@@ -503,7 +517,7 @@ def alta_modif_generadores(request, nro_generador=None):
         generador_form = GeneradorForm(instance=generador)
         actividades_form = ActividadesForm(instance=generador)
         dias_form = RecoleccionForm(instance=generador)
-        recorrido_form = RecorridoForm(instance=generador)
+        itinerario_form = ItinerarioForm(instance=generador)
 
     if 'baldes_pactados' in request.session:
         del request.session['baldes_pactados']
@@ -512,7 +526,8 @@ def alta_modif_generadores(request, nro_generador=None):
     contexto= {'generador_form': generador_form,
                'actividades_form': actividades_form,
                'dias_form': dias_form,
-               'recorrido_form': recorrido_form,
+               'itinerario_form': itinerario_form,
+               'recorridos':Recorrido.objects.all(),
                'baldepactado_form':baldepactado_form,
                'modificar':modificar
     }

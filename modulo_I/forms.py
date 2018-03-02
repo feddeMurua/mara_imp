@@ -120,18 +120,15 @@ class BaldePactadoForm(forms.ModelForm):
         exclude = ['establecimiento_generador', ]
 
 
+
 class ItinerarioForm(forms.ModelForm):
 
     class Meta:
-        model = EstablecimientoGenerador
-        fields = ['nro_parada','recorrido', ]
+        model = RecorridoEstablecimiento
+        fields = ['nro_parada', 'recorrido' ]
 
 
 class RecorridoForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super(RecorridoForm, self).__init__(*args, **kwargs)
-        self.fields['dia'].initial = (datetime.datetime.now().strftime("%w"))
 
     class Meta:
         model = Recorrido
