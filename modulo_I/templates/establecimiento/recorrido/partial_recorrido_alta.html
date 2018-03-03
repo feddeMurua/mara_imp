@@ -11,7 +11,10 @@
   <div class="modal-body">
     <label>(*)Nombre:</label>
     {{form.nombre|add_class:'form-control nombre_recorrido'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo nombre es obligatorio"}}
-    <br>    
+    <br>
+    <label>Extra:</label>
+    {{form.extra|add_class:'form-control'}}
+    <br>
     <script>
       $('.nombre_recorrido').on('input', function(evt) {
         $(this).val(function (_, val) {

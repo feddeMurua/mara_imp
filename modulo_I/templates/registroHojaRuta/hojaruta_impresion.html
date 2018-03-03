@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block panel-heading-tabla %}
-  <div style="padding-top:0.3%; padding-left:0.1%;">    
+  <div style="padding-top:0.3%; padding-left:0.1%;">
     <a href="{% url 'registroHojaRuta:listado_general' %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;"></i></a>
   </div>
 {% endblock %}
@@ -37,7 +37,7 @@
         <tr>
           <td>{{ recorrido.nombre }}</td>
           <td align="center">
-            <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:listado_establecimientos_recorrido' id_recorrido=recorrido.id%}"><em class="glyphicon glyphicon-pencil"></em></a>
+            <a class="btn btn-default" data-toggle="tooltip" title="Modificar" href="{% url 'generadores:listado_establecimientos_recorrido' id_recorrido=recorrido.id dia=dia.0 %}"><em class="glyphicon glyphicon-pencil"></em></a>
             {% if recorrido.id|cant_establecimientos %}
               <a class="btn btn-success" data-toggle="tooltip" title="Imprimir" href="{% url 'registroHojaRuta:hoja_ruta_pdf' dia=dia.0 recorrido=recorrido.id%}" target="_blank"><em class="glyphicon glyphicon-print"></em></a>
             {% endif %}

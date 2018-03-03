@@ -15,27 +15,48 @@
 {% block step-form %}
 
   <div class="form-section">
-    <div class="panel panel-default">
-      <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
-        <div class="panel-body">
-          <label>Número de Parada:</label>
-          {{itinerario_form.nro_parada|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
-          <br>
-          <label>Recorrido:</label>
-          {{itinerario_form.recorrido|add_class:'select-2'}}
-          <br>
-          <!--
-          <label>Recorridos:</label>
-          <select name="recorrido" class="select-2" id="recorridos_id" multiple=multiple>
-            <option>---------------------</option>
-            {% for recorrido in recorridos %}
-            <option value="{{recorrido.id}}">{{recorrido}}</option>
-            {% endfor %}
-          </select>
-          -->
-        </div>
-    </div>
+   <div class="panel panel-default">
+     <div class="panel-heading">DATOS DEL CENTRO GENERADOR</div>
+       <div class="panel-body">
+         <div class="form-group">
+           
+           <label>Número de Parada:</label>
+           {{generador_form.nro_parada|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+           <br>
+           <label>Recorrido:</label>
+           {{generador_form.recorrido|add_class:'select-2'}}
+           <br>
+
+           <div class="checkbox">
+             <label><input type="checkbox" class="recorrido_extra" name="recorrido_extra" onchange="valueChanged()"> <strong> Recorrido Extra <strong> </label>
+           </div>
+           <br>
+
+           <div class="recorrido_extras" style="display:none">
+             <label>Número de Parada:</label>
+             {{generador_form.nro_parada_extra|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
+             <br>
+             <label>Recorrido:</label>
+             {{generador_form.recorrido_extra|add_class:'select-2'}}
+             <br>
+           </div>
+
+           <br>
+         </div>
+       </div>
+   </div>
+   <script type="text/javascript">
+     // Función para el checkbox del formulario de sector de acopio transitorio
+     function valueChanged()
+     {
+         if($('.recorrido_extra').is(":checked"))
+             $(".recorrido_extras").show();
+         else
+             $(".recorrido_extras").hide();
+      }
+    </script>
   </div>
+
 
   <!-- SECTION 1 -->
   <div class="form-section">

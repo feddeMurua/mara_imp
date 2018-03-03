@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^modificar/generadores/(?P<nro_generador>\d+)/$', alta_modif_generadores, name="alta_modif_generadores"),
     #RECORRIDOS
     url(r'^listado/recorridos/$', listado_recorridos, name="listado_recorridos"),
-    url(r'^listado/establecimientos/recorrido/(?P<id_recorrido>\d+)/$', listado_establecimientos_recorrido, name="listado_establecimientos_recorrido"),
+    url(r'^listado/establecimientos/recorrido/(?P<id_recorrido>\d+)/(?P<dia>\d+)/$', listado_establecimientos_recorrido, name="listado_establecimientos_recorrido"),
     url(r'^alta/recorrido/$', alta_recorridos, name="alta_recorridos"),
     url(r'^modificar/recorridos/(?P<id_recorrido>\d+)/$', modificar_recorridos, name="modificar_recorridos"),
     url(r'^baja/recorridos/$', baja_recorridos, name="baja_recorridos"),

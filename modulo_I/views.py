@@ -222,56 +222,77 @@ def baja_hoja_ruta(request):
 @login_required
 def generar_hoja_ruta(request, dia):
 
-    listado_recorridos = Recorrido.objects.filter(dia=dia)
+    if dia!='0' and dia!='6':
+        establecimientos_recorrido = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia).values('recorrido')
+        listado_recorridos = Recorrido.objects.filter(id__in=establecimientos_recorrido)
+    else:
+        establecimientos_recorrido_extra = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia).values('recorrido_extra')
+        listado_recorridos = Recorrido.objects.filter(id__in=establecimientos_recorrido_extra)
 
     #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
     return render(request, "registroHojaRuta/hojaruta_impresion.html", {'listado_recorridos': listado_recorridos, 'dia':Dias[int(dia)]})
 
 
 @login_required
-def modificar_itinerario(request, id_generador, id_recorrido):
+def modificar_itinerario(request, id_generador, id_recorrido, dia):
 
-    generador = EstablecimientoGenerador.objects.get(id=id_generador)
+    generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido__id=id_recorrido, recoleccion__icontains=dia)
 
     if request.method == 'POST':
         generador_form = ItinerarioForm(request.POST, instance=generador)
         if generador_form.is_valid():
             generador_form.save()
-            return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido)
+            return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido, dia=dia)
     else:
         generador_form = ItinerarioForm(instance=generador)
 
-    contexto= {'generador_form': generador_form, 'recorrido':id_recorrido}
+    contexto= {'generador_form': generador_form, 'recorrido':id_recorrido, 'dia':dia}
     return render(request, "registroHojaRuta/itinerario/itinerario_form.html", contexto)
 
 
 @login_required
-def agregar_itinerario(request, id_recorrido):
+def agregar_itinerario(request, id_recorrido, dia):
 
     if request.method == 'POST':
         generador = EstablecimientoGenerador.objects.get(id=request.POST.get('establecimiento'))
-        generador.recorrido.add(Recorrido.objects.get(id=id_recorrido))
+        recorrido= (Recorrido.objects.get(id=id_recorrido))
 
-        if request.POST.get('nro_parada_generador'):
-            generador.nro_parada = request.POST.get('nro_parada_generador')
+        if recorrido.extra:
+            generador.recorrido_extra = recorrido
+            if request.POST.get('nro_parada_generador'):
+                generador.nro_parada_extra = request.POST.get('nro_parada_generador')
+            else:
+                generador.nro_parada_extra = None
         else:
-            generador.nro_parada = None
-
+            generador.recorrido = recorrido
+            if request.POST.get('nro_parada_generador'):
+                generador.nro_parada = request.POST.get('nro_parada_generador')
+            else:
+                generador.nro_parada = None
         generador.save()
-        return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido)
+        return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido, dia=dia)
 
-    establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=Recorrido.objects.get(id=id_recorrido).dia, activo=True) #Solo establecimientos que atienden ese dia
+    establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True) #Solo establecimientos que atienden ese dia
 
-    contexto= {'recorrido':id_recorrido, 'establecimientos':establecimientos}
+    contexto= {'recorrido':id_recorrido, 'establecimientos':establecimientos, 'dia':dia}
     return render(request, "registroHojaRuta/itinerario/agregar_generador_form.html", contexto)
 
 
 @login_required
-def baja_itinerario(request, id_generador, id_recorrido):
-    generador = EstablecimientoGenerador.objects.get(id=id_generador)
-    generador.recorrido.remove(id_recorrido) #borrar solamente esa instancia del m2m
+def baja_itinerario(request, id_generador, id_recorrido, dia):
+    generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido__id=id_recorrido, recoleccion__icontains=dia)
+    recorrido= (Recorrido.objects.get(id=id_recorrido))
+
+    if recorrido.extra:
+        generador.recorrido_extra = None
+        generador.nro_parada_extra = None
+    else:
+        generador.recorrido = None
+        generador.nro_parada = None
+
+    generador.recoleccion.remove(dia)
     generador.save()
-    return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido)
+    return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido, dia=dia)
 
 
 class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
@@ -284,8 +305,10 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
     redirect_field_name = 'next'
 
     def get_context_data(self, dia, recorrido):
-        establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido__id=recorrido).order_by('nro_parada')
-
+        if dia!='0' and dia!='6':
+            establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido__id=recorrido).order_by('nro_parada')
+        else:
+            establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido_extra__id=recorrido).order_by('nro_parada')
 
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
@@ -402,9 +425,13 @@ def listado_recorridos(request):
 
 
 @login_required
-def listado_establecimientos_recorrido(request, id_recorrido):
-    listado_establecimientos = EstablecimientoGenerador.objects.filter(activo=True, recorrido__id=id_recorrido)
-    return render(request, 'establecimiento/recorrido/establecimientos_recorrido_listado.html', {'listado_establecimientos': listado_establecimientos, 'recorrido':Recorrido.objects.get(id=id_recorrido)})
+def listado_establecimientos_recorrido(request, id_recorrido, dia):
+    if dia!='0' and dia!='6':
+        listado_establecimientos = EstablecimientoGenerador.objects.filter(activo=True, recorrido__id=id_recorrido, recoleccion__icontains=dia)
+    else:
+        listado_establecimientos = EstablecimientoGenerador.objects.filter(activo=True, recorrido_extra__id=id_recorrido, recoleccion__icontains=dia)
+
+    return render(request, 'establecimiento/recorrido/establecimientos_recorrido_listado.html', {'listado_establecimientos': listado_establecimientos, 'recorrido':Recorrido.objects.get(id=id_recorrido), 'dia':dia})
 
 
 @login_required
@@ -485,31 +512,14 @@ def alta_modif_generadores(request, nro_generador=None):
         generador_form = GeneradorForm(request.POST, instance=generador)
         actividades_form = ActividadesForm(request.POST)
         dias_form = RecoleccionForm(request.POST)
-        itinerario_form = ItinerarioForm(request.POST)
 
-        if generador_form.is_valid() & actividades_form.is_valid() & dias_form.is_valid() & itinerario_form.is_valid():
-
+        if generador_form.is_valid() & actividades_form.is_valid() & dias_form.is_valid():
             generador = generador_form.save(commit=False)
             generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
             generador.recoleccion = dias_form.cleaned_data.get('recoleccion')
             generador.save()
             carga_baldes(request, generador)
-
-            '''
-            ASOCIACION CON LOS RECORRIDOS
-            '''
-
-            for dia in dias_form.cleaned_data.get('recoleccion'):
-                recorridos_est = RecorridoEstablecimiento()
-                for recorrido in request.POST.getlist('recorrido'):
-                    recorridos_est.establecimiento_generador = generador
-                    recorridos_est.recorrido_id = recorrido
-                    recorridos_est.nro_parada = itinerario_form.cleaned_data.get('nro_parada')
-                    recorridos_est.dia = dia
-                recorridos_est.save()
-
             return redirect('generadores:listado_generadores')
-
         else:
             messages.add_message(request, messages.ERROR, 'Se produjo un error, por favor, revise los datos ingresados.')
     else:

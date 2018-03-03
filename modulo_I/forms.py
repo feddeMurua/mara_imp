@@ -124,7 +124,7 @@ class BaldePactadoForm(forms.ModelForm):
 class ItinerarioForm(forms.ModelForm):
 
     class Meta:
-        model = RecorridoEstablecimiento
+        model = EstablecimientoGenerador
         fields = ['nro_parada', 'recorrido' ]
 
 
@@ -138,6 +138,7 @@ class RecorridoForm(forms.ModelForm):
 class GeneradorForm(forms.ModelForm):
     localidad = forms.ModelChoiceField(Localidad.objects, widget=SelectLocalidadWithPop)
     recorrido = forms.ModelChoiceField(Recorrido.objects, widget=SelectRecorridoWithPop, required=False,)
+    recorrido_extra = forms.ModelChoiceField(Recorrido.objects.filter(extra=True), widget=SelectRecorridoWithPop, required=False,)
     class Meta:
         model = EstablecimientoGenerador
         exclude = ['domicilio','fecha' ]

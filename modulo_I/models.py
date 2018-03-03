@@ -31,24 +31,9 @@ ESTABLECIMIENTO GENERADOR
 '''
 
 
-class RecorridoEstablecimiento(models.Model):
-    establecimiento_generador = models.ForeignKey('EstablecimientoGenerador')
-    recorrido = models.ForeignKey('Recorrido')
-    nro_parada = models.IntegerField(validators=[MinValueValidator(1)], blank=True, null=True)
-    dia = models.CharField(max_length=15, choices=Dias)
-
-    class Meta:
-        unique_together = ('establecimiento_generador','recorrido', 'nro_parada', 'dia')
-
-    def __str__(self):
-        if self.nro_parada:
-            return "Establecimiento: %s, Recorrido: %s, N°: %s, Día: %s" % (self.establecimiento_generador, self.recorrido, self.nro_parada, self.get_dia_display())
-        else:
-            return "Establecimiento: %s, Recorrido: %s, N°: - , Día: %s" % (self.establecimiento_generador, self.recorrido, self.get_dia_display())
-
-
 class Recorrido(models.Model):
     nombre = models.CharField(max_length=50, unique=True)
+    extra = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s" % (self.nombre)
@@ -86,6 +71,10 @@ class EstablecimientoGenerador(models.Model):
     email = models.CharField(max_length=200, blank=True, null=True)
     responsable_ambiental = models.CharField(max_length=50, blank=True, null=True)
     cuit = models.CharField(max_length=20, blank=True, null=True)
+    recorrido = models.ForeignKey('Recorrido', blank=True, null=True, on_delete=models.SET_NULL)
+    nro_parada = models.IntegerField(validators=[MinValueValidator(1)], blank=True, null=True)
+    recorrido_extra = models.ForeignKey('Recorrido', blank=True, null=True, on_delete=models.SET_NULL, related_name="recorrido_extra")
+    nro_parada_extra = models.IntegerField(validators=[MinValueValidator(1)], blank=True, null=True)
 
     def __str__(self):
         return "%s" % (self.razon_social)

@@ -8,7 +8,7 @@ def hojas_validas(hoja):
     '''
     FUNCION que se encarga de permitir borrar la hoja de ruta si no tiene detalle.
     '''
-    
+
     baldes = DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido=hoja)
     if (len(baldes)) == 0 :
         return True
@@ -52,7 +52,10 @@ def cant_establecimientos(recorrido):
     '''
     FUNCION que se encarga de devolver total de establecimientos en el recorrido
     '''
+    print(recorrido)
     if EstablecimientoGenerador.objects.filter(recorrido__id=recorrido).count() > 0:
+        return True
+    elif EstablecimientoGenerador.objects.filter(recorrido_extra__id=recorrido).count() > 0:        
         return True
     else:
         return False
