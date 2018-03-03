@@ -52,10 +52,9 @@ def cant_establecimientos(recorrido):
     '''
     FUNCION que se encarga de devolver total de establecimientos en el recorrido
     '''
-    print(recorrido)
-    if EstablecimientoGenerador.objects.filter(recorrido__id=recorrido).count() > 0:
+    if EstablecimientoGenerador.objects.filter(recorrido__id=recorrido, recorrido__extra=False).count() > 0:
         return True
-    elif EstablecimientoGenerador.objects.filter(recorrido_extra__id=recorrido).count() > 0:        
+    elif EstablecimientoGenerador.objects.filter(recorrido_extra__id=recorrido).count() > 0:
         return True
     else:
         return False

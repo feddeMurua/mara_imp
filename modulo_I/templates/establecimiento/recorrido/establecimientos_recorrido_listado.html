@@ -9,7 +9,7 @@
 {% block panel-heading-tabla %}
   <div style="padding-top:0.3%; padding-left:0.1%;">
     <a href="{% url 'registroHojaRuta:agregar_itinerario' id_recorrido=recorrido.id dia=dia %}" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar Generador</a>
-    <a href="{% url 'registroHojaRuta:generar_hoja_ruta' dia=dia %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;padding-right:2px;"></i></a>        
+    <a href="{% url 'registroHojaRuta:generar_hoja_ruta' dia=dia %}" data-toggle="tooltip" title="Volver"><i class="fa fa-arrow-left pull-right" style="font-size: 35px;padding-right:2px;"></i></a>
   </div>
 {% endblock %}
 
@@ -42,7 +42,11 @@
   {% for establecimiento in listado_establecimientos %}
       <tr>
           <td>{{ establecimiento.razon_social }}</td>
-          <td style="text-align:center;"> {{ establecimiento.nro_parada|default_if_none:"-" }}</td>
+          {% if flag %}
+            <td style="text-align:center;"> {{ establecimiento.nro_parada|default_if_none:"-" }}</td>
+          {% else %}
+            <td style="text-align:center;"> {{ establecimiento.nro_parada_extra|default_if_none:"-" }}</td>
+          {% endif %}
           <td>{{ establecimiento.direccion }}</td>
           <td style="text-align:center;">{{ establecimiento.localidad.nombre }}</td>
           <td align="center">

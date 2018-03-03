@@ -128,6 +128,13 @@ class ItinerarioForm(forms.ModelForm):
         fields = ['nro_parada', 'recorrido' ]
 
 
+class ItinerarioFormExtra(forms.ModelForm):
+
+    class Meta:
+        model = EstablecimientoGenerador
+        fields = ['nro_parada_extra', 'recorrido_extra' ]
+
+
 class RecorridoForm(forms.ModelForm):
 
     class Meta:
