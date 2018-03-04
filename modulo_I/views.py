@@ -176,8 +176,7 @@ def listado_general_hojas_de_ruta(request):
 
     #Para cada diá de la hoja de ruta
     dias_semana = Dias[1:len(Dias)]
-    print(dias_semana)
-
+    
     return render(request, 'registroHojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'meses':meses, 'dias_semana':dias_semana})
 
 
@@ -291,18 +290,14 @@ def modificar_itinerario(request, id_generador, id_recorrido, dia):
 def baja_itinerario(request, id_generador, id_recorrido, dia):
     if dia!='0' and dia!='6':
         generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido__id=id_recorrido, recoleccion__icontains=dia)
-        generador.recorrido = None
-        generador.nro_parada = None
         generador.recoleccion.remove(dia)
         generador.save()
     else:
         generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido_extra__id=id_recorrido, recoleccion__icontains=dia)
-        generador.recorrido_extra = None
-        generador.nro_parada_extra = None
         generador.recoleccion.remove(dia)
         generador.save()
 
-    # si no se repite la linea del save y del remove no elimina el dia de la lista. 
+    # si no se repite la linea del save y del remove no elimina el dia de la lista.
 
     return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido, dia=dia)
 
@@ -322,10 +317,12 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
         else:
             establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido_extra__id=recorrido).order_by('nro_parada')
 
+
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
             establecimientos=establecimientos,
-            recorrido = Recorrido.objects.get(id=recorrido)
+            recorrido=Recorrido.objects.get(id=recorrido),
+            dia=Dias[int(dia)]
         )
 
 
