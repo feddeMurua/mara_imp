@@ -175,7 +175,8 @@ def listado_general_hojas_de_ruta(request):
         meses[mes_actual] = (Meses[mes_actual-1][1],anio_hoja_ruta)
 
     #Para cada diá de la hoja de ruta
-    dias_semana = Dias
+    dias_semana = Dias[1:len(Dias)]
+    print(dias_semana)
 
     return render(request, 'registroHojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'meses':meses, 'dias_semana':dias_semana})
 
@@ -228,7 +229,7 @@ def generar_hoja_ruta(request, dia):
     else:
         establecimientos_recorrido_extra = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia).values('recorrido_extra')
         listado_recorridos = Recorrido.objects.filter(id__in=establecimientos_recorrido_extra)
-        
+
     #PARA MOSTRAR NOMBRE DEL DIA: get_dia_display()
     return render(request, "registroHojaRuta/hojaruta_impresion.html", {'listado_recorridos': listado_recorridos, 'dia':Dias[int(dia)]})
 
@@ -288,18 +289,21 @@ def modificar_itinerario(request, id_generador, id_recorrido, dia):
 
 @login_required
 def baja_itinerario(request, id_generador, id_recorrido, dia):
-    generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido__id=id_recorrido, recoleccion__icontains=dia)
-    recorrido= (Recorrido.objects.get(id=id_recorrido))
-
-    if recorrido.extra:
-        generador.recorrido_extra = None
-        generador.nro_parada_extra = None
-    else:
+    if dia!='0' and dia!='6':
+        generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido__id=id_recorrido, recoleccion__icontains=dia)
         generador.recorrido = None
         generador.nro_parada = None
+        generador.recoleccion.remove(dia)
+        generador.save()
+    else:
+        generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido_extra__id=id_recorrido, recoleccion__icontains=dia)
+        generador.recorrido_extra = None
+        generador.nro_parada_extra = None
+        generador.recoleccion.remove(dia)
+        generador.save()
 
-    generador.recoleccion.remove(dia)
-    generador.save()
+    # si no se repite la linea del save y del remove no elimina el dia de la lista. 
+
     return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido, dia=dia)
 
 
@@ -527,6 +531,10 @@ def alta_modif_generadores(request, nro_generador=None):
             generador = generador_form.save(commit=False)
             generador.tipo_actividad = actividades_form.cleaned_data.get('tipo_actividad')
             generador.recoleccion = dias_form.cleaned_data.get('recoleccion')
+
+            if generador_form.cleaned_data.get('recorrido_extra'):
+                if (not('6' in generador.tipo_actividad)): #Agrego que atiene el sabado si no lo seleccionó el usuario
+                    generador.recoleccion.append('6')
             generador.save()
             carga_baldes(request, generador)
             return redirect('generadores:listado_generadores')

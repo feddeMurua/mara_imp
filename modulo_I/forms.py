@@ -144,7 +144,7 @@ class RecorridoForm(forms.ModelForm):
 
 class GeneradorForm(forms.ModelForm):
     localidad = forms.ModelChoiceField(Localidad.objects, widget=SelectLocalidadWithPop)
-    recorrido = forms.ModelChoiceField(Recorrido.objects, widget=SelectRecorridoWithPop, required=False,)
+    recorrido = forms.ModelChoiceField(Recorrido.objects.filter(extra=False), widget=SelectRecorridoWithPop, required=False,)
     recorrido_extra = forms.ModelChoiceField(Recorrido.objects.filter(extra=True), widget=SelectRecorridoWithPop, required=False,)
     class Meta:
         model = EstablecimientoGenerador

@@ -36,7 +36,7 @@ class Recorrido(models.Model):
     extra = models.BooleanField(default=False)
 
     def __str__(self):
-        return "%s %s" % (self.nombre, self.id)
+        return "%s" % (self.nombre)
 
 
 class BaldePactado(models.Model):

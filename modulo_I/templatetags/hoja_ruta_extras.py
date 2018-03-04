@@ -45,16 +45,3 @@ def calcular_vol(balde_utilizado):
     for d in detalles:
         acumu+= int(d.balde.capacidad)
     return acumu
-
-
-@register.filter
-def cant_establecimientos(recorrido):
-    '''
-    FUNCION que se encarga de devolver total de establecimientos en el recorrido
-    '''
-    if EstablecimientoGenerador.objects.filter(recorrido__id=recorrido, recorrido__extra=False).count() > 0:
-        return True
-    elif EstablecimientoGenerador.objects.filter(recorrido_extra__id=recorrido).count() > 0:
-        return True
-    else:
-        return False
