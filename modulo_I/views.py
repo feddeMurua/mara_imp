@@ -176,7 +176,7 @@ def listado_general_hojas_de_ruta(request):
 
     #Para cada diá de la hoja de ruta
     dias_semana = Dias[1:len(Dias)]
-    
+
     return render(request, 'registroHojaRuta/hojaruta_listado_general.html', {'listado_general': listado_general, 'meses':meses, 'dias_semana':dias_semana})
 
 
@@ -261,6 +261,25 @@ def agregar_itinerario(request, id_recorrido, dia):
     return render(request, "registroHojaRuta/itinerario/agregar_generador_form.html", contexto)
 
 
+'''
+def actualizar_nro_parada(generador_nro_parada, id_recorrido, dia):
+    lista_nro_paradas = EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido, recoleccion__icontains=dia).order_by('nro_parada')
+
+    flag = False
+
+    for i in range(generador_nro_parada,len(lista_nro_paradas)):
+        print(i)
+        #
+        if lista_nro_paradas[i].nro_parada == generador_nro_parada:
+            lista_nro_paradas[i].nro_parada+=1
+            flag = True
+        if flag:
+            lista_nro_paradas[i].nro_parada = i
+
+        lista_nro_paradas[i].save()
+'''
+
+
 @login_required
 def modificar_itinerario(request, id_generador, id_recorrido, dia):
     if dia!='0' and dia!='6':
@@ -274,7 +293,8 @@ def modificar_itinerario(request, id_generador, id_recorrido, dia):
         else:
             generador_form = ItinerarioFormExtra(request.POST, instance=generador)
         if generador_form.is_valid():
-            generador_form.save()
+            generador = generador_form.save()
+            #actualizar_nro_parada(generador.nro_parada, id_recorrido, dia)
             return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido, dia=dia)
     else:
         if dia!='0' and dia!='6':
