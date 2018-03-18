@@ -43,7 +43,11 @@
           </tr>
           <tr>
               <th>Recorrido Asociado:</th>
-              <td style="text-align:right;"> {% for recorrido in generador.recorrido.all %}{{ recorrido }}, {% endfor %} || Parada N° {{ generador.nro_parada|default_if_none:"-" }}</td>
+              <td style="text-align:right;"> {{ generador.recorrido|default_if_none:"-" }} || Parada N° {{ generador.nro_parada|default_if_none:"-" }}</td>
+          </tr>
+          <tr>
+              <th>Recorrido Asociado Extra:</th>
+              <td style="text-align:right;"> {{ generador.recorrido_extra|default_if_none:"-" }} || Parada N° {{ generador.nro_parada_extra|default_if_none:"-" }}</td>
           </tr>
       </tbody>
   </table>

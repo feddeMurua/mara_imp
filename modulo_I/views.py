@@ -12,6 +12,7 @@ import datetime
 from django.utils.html import escape
 from .choices import Capacidad_balde, Dias, Meses
 import json
+from django.db.models import Q
 
 # Create your views here.
 
@@ -261,23 +262,13 @@ def agregar_itinerario(request, id_recorrido, dia):
     return render(request, "registroHojaRuta/itinerario/agregar_generador_form.html", contexto)
 
 
-'''
+
 def actualizar_nro_parada(generador_nro_parada, id_recorrido, dia):
     lista_nro_paradas = EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido, recoleccion__icontains=dia).order_by('nro_parada')
 
-    flag = False
-
-    for i in range(generador_nro_parada,len(lista_nro_paradas)):
-        print(i)
-        #
-        if lista_nro_paradas[i].nro_parada == generador_nro_parada:
-            lista_nro_paradas[i].nro_parada+=1
-            flag = True
-        if flag:
-            lista_nro_paradas[i].nro_parada = i
-
+    for i in range(len(lista_nro_paradas)):
+        lista_nro_paradas[i].nro_parada = i
         lista_nro_paradas[i].save()
-'''
 
 
 @login_required
@@ -325,7 +316,7 @@ def baja_itinerario(request, id_generador, id_recorrido, dia):
 class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
 
     template_name = 'registroHojaRuta/hoja_ruta_pdf.html'
-    title = "Planilla de Hoja de Ruta del dia: "
+    title = "Planilla de Hoja de Ruta del día: "
     sub_title = "Fecha de Impresión: " + f"{datetime.datetime.now():%d/%m/%y}"
 
     login_url = '/accounts/login/'
@@ -335,14 +326,33 @@ class HojaRutaPdf(LoginRequiredMixin, PDFTemplateView):
         if dia!='0' and dia!='6':
             establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido__id=recorrido).order_by('nro_parada')
         else:
-            establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido_extra__id=recorrido).order_by('nro_parada')
+            establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True, recorrido_extra__id=recorrido).order_by('nro_parada_extra')
 
+        baldes_utilizados = {}
+
+        for c in Capacidad_balde: #Capacidad_balde: tupla del choices.py
+            cant_envases = BaldePactado.objects.filter(establecimiento_generador__in=establecimientos, capacidad_balde=c[0])
+            acumu = 0
+            for env in cant_envases:
+                acumu+=env.cantidad
+            baldes_utilizados[c[0]] = acumu
+
+        #obtener claves de valores igual a cero
+        vacios = []
+        for k, v in baldes_utilizados.items():
+            if v == 0:
+                vacios.append(k)
+
+        #eliminar cantidades que sean igual a cero
+        for key in vacios:
+            del baldes_utilizados[key]
 
         return super(HojaRutaPdf, self).get_context_data(
             pagesize="A4",
             establecimientos=establecimientos,
             recorrido=Recorrido.objects.get(id=recorrido),
-            dia=Dias[int(dia)]
+            dia=Dias[int(dia)],
+            baldes_utilizados=baldes_utilizados
         )
 
 
@@ -690,7 +700,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
         establecimientos = {}
 
-        total_baldes = DetalleHojaRuta.objects.filter(registro_hoja_ruta__fecha_recorrido__month=mes, registro_hoja_ruta__establecimiento_generador__activo=True, registro_hoja_ruta__establecimiento_generador__recorrido__isnull=False, tipo="Retiro")
+        total_baldes = DetalleHojaRuta.objects.filter(Q(tipo="Retiro") & Q(registro_hoja_ruta__fecha_recorrido__month=mes) & Q(registro_hoja_ruta__establecimiento_generador__activo=True) & Q(registro_hoja_ruta__establecimiento_generador__recorrido__isnull=False) | Q(registro_hoja_ruta__establecimiento_generador__recorrido_extra__isnull=False)  )
 
         for b in total_baldes:
 

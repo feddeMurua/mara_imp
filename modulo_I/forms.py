@@ -8,6 +8,8 @@ from functools import partial
 import re
 import datetime
 from django.template.loader import render_to_string
+from django.db.models import Q
+
 
 DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 regex_alfabetico = re.compile(r"^[a-zñA-ZÑ]+((\s[a-zñA-ZÑ]+)+)?$") #expresiones regulares para control
@@ -101,7 +103,9 @@ class HojaRutaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(HojaRutaForm, self).__init__(*args, **kwargs)
-        self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(activo=True, recorrido__isnull=False)
+        self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(Q(activo=True) &  Q(recorrido__isnull=False) | Q(recorrido_extra__isnull=False))
+
+
 
     class Meta:
         model = RegistroHojaRuta

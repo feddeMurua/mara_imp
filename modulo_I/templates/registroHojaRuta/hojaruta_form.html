@@ -130,14 +130,11 @@
   <script type="text/javascript">
       //MASCARAS
       $(document).ready(function(){
-        $('.hora').mask('HZ:M0', {
+        $('.hora').mask('H0:M0', {
           placeholder: "__:__",
           translation: {
             'H': {
                 pattern: /[0-2]/
-            },
-            'Z': {
-                pattern: /[0-3]/
             },
             'M': {
                 pattern: /[0-5]/

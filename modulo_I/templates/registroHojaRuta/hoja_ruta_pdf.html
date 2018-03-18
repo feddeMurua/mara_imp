@@ -49,13 +49,32 @@
 
 {%endblock%}
 
+
 {% block content %}
   <div id="content">
       <div class="main">
-        <h1 style="background-color: lightblue; padding-top:5px;">IMPEESAmbiental</h1>
-        <h2>{{ view.title }} {{dia.1}}</h2>
-        <h4 style="text-align: right;">{{ view.sub_title }} </h4>
-        <h2 style="text-align: center;"> Recorrido: {{ recorrido.nombre }}</h2>
+
+        <table style="border: none;" cellspacing="0" cellpadding="0">
+          <tr>
+            <th style="text-align: left; font-size:170%;" colspan="13">IMPEESAmbiental</th>
+            <td style="text-align: left; font-size:80%; padding-top:5" colspan="3">LEGAJO IP-0012</td>
+          </tr>
+          <tr>
+            <th style="text-align: left;"colspan="13">CUIT 30-70898647-6</th>
+            <td style="text-align: left; font-size:80%;" colspan="3">REGISTRO OPERADOR N° 852</td>
+          </tr>
+          <tr>
+            <td style="text-align: left;" colspan="13"></td>
+            <td style="text-align: left; font-size:80%;" colspan="3">REGISTRO TRANSPORTISTA N° 853</td>
+          </tr>
+          <tr></tr>
+          <tr>
+            <th style="text-align: left;" colspan="13">{{ view.title }} {{dia.1}}</th>
+            <td style="text-align: left; font-size:100%;" colspan="3"><strong>{{ view.sub_title }}</strong></td>
+          </tr>
+        </table>
+
+        <h3 style="text-align: center; font-size:120%"> Recorrido: {{ recorrido.nombre }}</h3>
           <!-- Table with irregular header -->
           <table class="table">
             {% for establecimiento in establecimientos %}
@@ -91,6 +110,43 @@
               </tr>
             {% endfor %}
           </table>
+
+          <br><br>
+
+          <table style="border: none;" cellspacing="0" cellpadding="0">
+            <tr>
+              <th style="text-align: left; font-size:80%;" colspan="3">PATENTE UNIDAD .........................</th>
+              <th style="text-align: center; font-size:80%;" colspan="10">LTS. COMBUSTIBLE .........................</th>
+              <th style="text-align: left; font-size:80%;" colspan="3">FIRMA .........................</th>
+            </tr>
+            <tr>
+              <th style="text-align: left; font-size:80%;" colspan="3">KM. FINAL  .........................</th>
+            </tr>
+            <tr>
+              <th style="text-align: left; font-size:80%;" colspan="3">KM. INICIAL  .........................</th>
+              <th style="text-align: center; font-size:80%;" colspan="10">PROMEDIO .........................................</th>
+              <th style="text-align: left; font-size:80%;" colspan="3">ACLARACIÓN CHOFER .........................</th>
+            </tr>
+            <tr>
+              <th style="text-align: left; font-size:80%;" colspan="3">TOTAL KMS. .........................</th>
+            </tr>
+          </table>
+
+          {% if baldes_utilizados%}
+            <br>
+            <table style="border: none;" cellspacing="0" cellpadding="0">
+              <tr>
+                <th style="text-align: left; font-size:80%;" colspan="3">TOTAL DE BALDES REQUERIDOS</th>
+              </tr>
+              <td style="text-align: left; font-size:80%; padding-top:1" colspan="1">
+              |
+              {% for k,v in baldes_utilizados.items %}
+                  <strong>{{k}}dm: {{v}}</strong>&nbsp|&nbsp
+              {% endfor %}
+              </td>
+            </table>
+          {% endif %}
+
       </div>
   </div>
 {% endblock %}
