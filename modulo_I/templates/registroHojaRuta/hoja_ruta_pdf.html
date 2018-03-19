@@ -87,7 +87,7 @@
                 <td colspan="1" rowspan="2"><strong>Hora Llegada</strong></td>
                 <td colspan="1" rowspan="2"><strong>Hora Retiro</strong></td>
                 <td colspan="1" rowspan="2"><strong>N° Manifiesto</strong></td>
-                <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}}, Cuit: {{ establecimiento.cuit|default_if_none:"-" }} || {{establecimiento.localidad.nombre}} || BALDES{{ establecimiento|baldes_pactados }} </th>
+                <th colspan="13" scope="colgroup" align="left" >Establecimiento: {{establecimiento.razon_social|upper}}, Domicilio: {{establecimiento.direccion|upper}}, Cuit: {{ establecimiento.cuit|default_if_none:"-" }} || {{establecimiento.localidad.nombre}} ||  {% if establecimiento|baldes_pactados %} BALDES: {{ establecimiento|baldes_pactados }} {% endif %} </th>
 
               </tr>
               <tr>
@@ -117,7 +117,7 @@
             <tr>
               <th style="text-align: left; font-size:80%;" colspan="3">PATENTE UNIDAD .........................</th>
               <th style="text-align: center; font-size:80%;" colspan="10">LTS. COMBUSTIBLE .........................</th>
-              <th style="text-align: left; font-size:80%;" colspan="3">FIRMA .........................</th>
+              <th style="text-align: left; font-size:80%;" colspan="3">FIRMA ...............................................</th>
             </tr>
             <tr>
               <th style="text-align: left; font-size:80%;" colspan="3">KM. FINAL  .........................</th>
@@ -125,7 +125,7 @@
             <tr>
               <th style="text-align: left; font-size:80%;" colspan="3">KM. INICIAL  .........................</th>
               <th style="text-align: center; font-size:80%;" colspan="10">PROMEDIO .........................................</th>
-              <th style="text-align: left; font-size:80%;" colspan="3">ACLARACIÓN CHOFER .........................</th>
+              <th style="text-align: left; font-size:80%;" colspan="3">ACLARACIÓN ...............................................</th>
             </tr>
             <tr>
               <th style="text-align: left; font-size:80%;" colspan="3">TOTAL KMS. .........................</th>

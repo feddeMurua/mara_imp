@@ -713,6 +713,7 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
                 baldes_utilizados[c[0]] = cant_envases
                 total_envases+=cant_envases #acumulador por cada tipo de balde
 
+
                 c_envases = DetalleHojaRuta.objects.filter(registro_hoja_ruta__establecimiento_generador__id=b.registro_hoja_ruta.establecimiento_generador.id, registro_hoja_ruta__fecha_recorrido__month=b.registro_hoja_ruta.fecha_recorrido.month, tipo='Retiro').values_list('balde__capacidad')
                 acumu = 0
 
@@ -721,9 +722,19 @@ class LiquidacionPdf(LoginRequiredMixin, PDFTemplateView):
 
             establecimientos[b.registro_hoja_ruta.establecimiento_generador.razon_social] = (baldes_utilizados, total_envases, acumu) #diccionario de baldes, total de envases, total de dm3
 
+        #Sumarizacion de totales
+        total_general_baldes = 0
+        total_general_dm = 0
+
+        for k,v in establecimientos.items():
+            total_general_baldes+=v[1]
+            total_general_dm+=v[2]
+
         return super(LiquidacionPdf, self).get_context_data(
             pagesize="A4",
             establecimientos=establecimientos,
             nombre_mes=nombre_mes,
-            anio=anio
+            anio=anio,
+            total_general_baldes=total_general_baldes,
+            total_general_dm=total_general_dm
         )
