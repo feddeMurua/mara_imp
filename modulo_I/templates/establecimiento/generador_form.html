@@ -31,7 +31,7 @@
             {{generador_form.direccion|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo dirección es obligatorio"}}
             <br>
             <label>(*)Localidad:</label>
-            {{generador_form.localidad|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
+            {{generador_form.localidad|add_class:'form-control'|attr:"width:100%"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
             <br>
             <label>Activo:</label>
             {{generador_form.activo|add_class:'form-control'}}
@@ -108,7 +108,7 @@
             {{generador_form.nro_parada|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
             <br>
             <label>Recorrido:</label>
-            {{generador_form.recorrido|add_class:'select-2'}}
+            {{generador_form.recorrido|add_class:'form-control'}}
             <br>
 
             <div class="checkbox">
@@ -121,7 +121,7 @@
               {{generador_form.nro_parada_extra|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
               <br>
               <label>Recorrido:</label>
-              {{generador_form.recorrido_extra|add_class:'select-2'}}
+              {{generador_form.recorrido_extra|add_class:'form-control'}}
               <br>
             </div>
 
