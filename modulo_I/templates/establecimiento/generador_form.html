@@ -31,7 +31,7 @@
             {{generador_form.direccion|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo dirección es obligatorio"}}
             <br>
             <label>(*)Localidad:</label>
-            {{generador_form.localidad|add_class:'form-control'|attr:"width:100%"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
+            {{generador_form.localidad|add_class:'select-2'|attr:"width:100%"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo localidad es obligatorio"}}
             <br>
             <label>Activo:</label>
             {{generador_form.activo|add_class:'form-control'}}
@@ -108,7 +108,7 @@
             {{generador_form.nro_parada|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
             <br>
             <label>Recorrido:</label>
-            {{generador_form.recorrido|add_class:'form-control'}}
+            {{generador_form.recorrido|add_class:'select-2'}}
             <br>
 
             <div class="checkbox">
@@ -121,7 +121,7 @@
               {{generador_form.nro_parada_extra|add_class:'form-control'|attr:"type:number"|attr:"data-parsley-type=integer"}}
               <br>
               <label>Recorrido:</label>
-              {{generador_form.recorrido_extra|add_class:'form-control'}}
+              {{generador_form.recorrido_extra|add_class:'select-2'}}
               <br>
             </div>
 
@@ -199,15 +199,15 @@
                  {{ baldepactado_form.media }}
                  <div class="form-group">
                    <label>(*)Capacidad Balde:</label>
-                   {{baldepactado_form.capacidad_balde|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo capacidad del balde es obligatorio"}}
+                   {{baldepactado_form.capacidad_balde|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo capacidad del balde es obligatorio"}}
                  </div>
                  <div class="form-group">
                    <label>(*)Color de Precinto:</label>
-                   {{baldepactado_form.color_precinto|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo color de precinto es obligatorio"}}
+                   {{baldepactado_form.color_precinto|add_class:'select-2'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo color de precinto es obligatorio"}}
                  </div>
                  <div class="form-group">
                    <label>(*)Cantidad:</label>
-                   {{baldepactado_form.cantidad|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo cantidad es obligatorio"}}
+                   {{baldepactado_form.cantidad|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo cantidad es obligatorio"}}
                  </div>
                  <input type="submit" class="btn btn-success" id="btn-confirmar" onclick="return confirm('Confirma los datos ingresados?')" value="Confirmar"/>
                  <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cerrar">

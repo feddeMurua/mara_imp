@@ -12,7 +12,7 @@ import datetime
 from django.utils.html import escape
 from .choices import Capacidad_balde, Dias, Meses
 import json
-from django.db.models import Q
+from django.db.models import Q, F
 
 # Create your views here.
 
@@ -262,13 +262,32 @@ def agregar_itinerario(request, id_recorrido, dia):
     return render(request, "registroHojaRuta/itinerario/agregar_generador_form.html", contexto)
 
 
+def actualizar_nro_parada(generador, id_recorrido, dia):
+    try:
 
-def actualizar_nro_parada(generador_nro_parada, id_recorrido, dia):
-    lista_nro_paradas = EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido, recoleccion__icontains=dia).order_by('nro_parada')
+        '''
+        nro_paradas_existentes = EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido, recoleccion__icontains=dia, nro_parada__lte=generador.nro_parada).exclude(id=generador.id).values('nro_parada').order_by('nro_parada')
+        ultimo_menores = nro_paradas_existentes.last().nro_parada +2 # saltea el nro_parada que viene
+        '''
 
-    for i in range(len(lista_nro_paradas)):
-        lista_nro_paradas[i].nro_parada = i
-        lista_nro_paradas[i].save()
+        filtro = EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido, recoleccion__icontains=dia, nro_parada__gte=generador.nro_parada).exclude(id=generador.id).order_by('nro_parada')
+
+        #primero_mayores = filtro.first().nro_parada
+
+        try:
+            ultimo = filtro.last().nro_parada
+        except:
+            ultimo = generador.nro_parada
+
+        print(filtro)
+
+        for f in filtro:
+            f.nro_parada+=1
+            if f.nro_parada <= (ultimo+1):
+                f.save()
+
+    except:
+        pass #caso que viene vacio la nro_parada
 
 
 @login_required
@@ -285,7 +304,9 @@ def modificar_itinerario(request, id_generador, id_recorrido, dia):
             generador_form = ItinerarioFormExtra(request.POST, instance=generador)
         if generador_form.is_valid():
             generador = generador_form.save()
-            #actualizar_nro_parada(generador.nro_parada, id_recorrido, dia)
+            #.update(nro_parada=F('nro_parada')+1)
+            actualizar_nro_parada(generador, id_recorrido, dia)
+            #EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido, recoleccion__icontains=dia).update(nro_parada=None) # para resetear(modo prueba)
             return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido, dia=dia)
     else:
         if dia!='0' and dia!='6':
@@ -302,10 +323,14 @@ def baja_itinerario(request, id_generador, id_recorrido, dia):
     if dia!='0' and dia!='6':
         generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido__id=id_recorrido, recoleccion__icontains=dia)
         generador.recoleccion.remove(dia)
+        generador.recorrido = None
+        generador.nro_parada = None
         generador.save()
     else:
         generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido_extra__id=id_recorrido, recoleccion__icontains=dia)
         generador.recoleccion.remove(dia)
+        generador.recorrido__extra = None
+        generador.nro_parada_extra = None
         generador.save()
 
     # si no se repite la linea del save y del remove no elimina el dia de la lista.

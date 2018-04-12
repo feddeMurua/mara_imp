@@ -9,12 +9,13 @@
          <div class="panel-body">
            <div class="form-group">
              <label>(*)Capacidad Balde:</label>
-             {{baldepactado_form.capacidad_balde|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo capacidad del balde es obligatorio"}}
+             {{baldepactado_form.capacidad_balde|add_class:"select-2"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo capacidad del balde es obligatorio"}}
            </div>
            <div class="form-group">
              <label>(*)Color de Precinto:</label>
-             {{baldepactado_form.color_precinto|add_class:'form-control'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo color de precinto es obligatorio"}}
            </div>
+           {{baldepactado_form.color_precinto|add_class:'select-2'|attr:"required:"|attr:"data-parsley-error-message:(*)El campo color de precinto es obligatorio"}}
+           <br>
            <div class="form-group">
              <label>(*)Cantidad:</label>
              {{baldepactado_form.cantidad|add_class:"form-control"|attr:"required:"|attr:"data-parsley-error-message:(*)El campo cantidad es obligatorio"}}
