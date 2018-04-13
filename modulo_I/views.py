@@ -234,17 +234,37 @@ def generar_hoja_ruta(request, dia):
     return render(request, "registroHojaRuta/hojaruta_impresion.html", {'listado_recorridos': listado_recorridos, 'dia':Dias[int(dia)]})
 
 
-def actualizar_nro_parada(generador, id_recorrido, dia):
-    try:
-        nro_paradas_existentes = EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido, recoleccion__icontains=dia, nro_parada__lte=generador.nro_parada).values('nro_parada').order_by('nro_parada')
-        ultimo_menores = nro_paradas_existentes.last()['nro_parada']
+def actualizar_nro_parada(generador, id_recorrido, dia, operacion):
 
-        for f in  EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido, recoleccion__icontains=dia, nro_parada__gte=ultimo_menores).exclude(id=generador.id).order_by('nro_parada'):
-            f.nro_parada = ultimo_menores + 1
-            f.save()
-            ultimo_menores+=1
+    try:
+
+        if dia!="6":
+            nro_paradas_mayores = EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido, recoleccion__icontains=dia, nro_parada__gte=generador.nro_parada).exclude(id=generador.id).order_by('nro_parada')
+            nro_paradas_menores = EstablecimientoGenerador.objects.filter(recorrido__id=id_recorrido, recoleccion__icontains=dia, nro_parada__lte=generador.nro_parada).values('nro_parada').order_by('nro_parada')
+            ultimo_menores = nro_paradas_menores.last()['nro_parada']
+        else: # DIA SABADO
+            nro_paradas_mayores = EstablecimientoGenerador.objects.filter(recorrido_extra__id=id_recorrido, recoleccion__icontains=dia, nro_parada_extra__gte=generador.nro_parada_extra).exclude(id=generador.id).order_by('nro_parada_extra')
+            nro_paradas_menores = EstablecimientoGenerador.objects.filter(recorrido_extra__id=id_recorrido, recoleccion__icontains=dia, nro_parada_extra__lte=generador.nro_parada_extra).values('nro_parada_extra').order_by('nro_parada_extra')
+            ultimo_menores = nro_paradas_menores.last()['nro_parada_extra']
+
+        if operacion == 'suma':
+            for f in nro_paradas_mayores:
+                if dia!="6":
+                    f.nro_parada = ultimo_menores + 1
+                else:
+                    f.nro_parada_extra = ultimo_menores + 1
+                f.save()
+                ultimo_menores+=1
+        else:
+            for f in nro_paradas_mayores:
+                if dia!="6":
+                    f.nro_parada -= 1
+                else:
+                    f.nro_parada_extra -= 1
+                f.save()
     except:
         pass
+
 
 
 @login_required
@@ -267,7 +287,7 @@ def agregar_itinerario(request, id_recorrido, dia):
             else:
                 generador.nro_parada = None
         generador.save()
-        actualizar_nro_parada(generador, id_recorrido, dia)
+        actualizar_nro_parada(generador, id_recorrido, dia, "suma")
         return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido, dia=dia)
 
     establecimientos = EstablecimientoGenerador.objects.filter(recoleccion__icontains=dia, activo=True) #Solo establecimientos que atienden ese dia
@@ -290,7 +310,7 @@ def modificar_itinerario(request, id_generador, id_recorrido, dia):
             generador_form = ItinerarioFormExtra(request.POST, instance=generador)
         if generador_form.is_valid():
             generador = generador_form.save()
-            actualizar_nro_parada(generador, id_recorrido, dia)            
+            actualizar_nro_parada(generador, id_recorrido, dia, "suma")
             return redirect('generadores:listado_establecimientos_recorrido', id_recorrido=id_recorrido, dia=dia)
     else:
         if dia!='0' and dia!='6':
@@ -306,14 +326,16 @@ def modificar_itinerario(request, id_generador, id_recorrido, dia):
 def baja_itinerario(request, id_generador, id_recorrido, dia):
     if dia!='0' and dia!='6':
         generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido__id=id_recorrido, recoleccion__icontains=dia)
+        actualizar_nro_parada(generador, id_recorrido, dia, "resta")
         generador.recoleccion.remove(dia)
         generador.recorrido = None
         generador.nro_parada = None
         generador.save()
     else:
         generador = EstablecimientoGenerador.objects.get(id=id_generador, recorrido_extra__id=id_recorrido, recoleccion__icontains=dia)
+        actualizar_nro_parada(generador, id_recorrido, dia, "resta")
         generador.recoleccion.remove(dia)
-        generador.recorrido__extra = None
+        generador.recorrido_extra = None
         generador.nro_parada_extra = None
         generador.save()
 
@@ -474,9 +496,9 @@ def listado_recorridos(request):
 
 @login_required
 def listado_establecimientos_recorrido(request, id_recorrido, dia):
-    flag = True
     if dia!='0' and dia!='6':
         listado_establecimientos = EstablecimientoGenerador.objects.filter(activo=True, recorrido__id=id_recorrido, recoleccion__icontains=dia)
+        flag = True
     else:
         listado_establecimientos = EstablecimientoGenerador.objects.filter(activo=True, recorrido_extra__id=id_recorrido, recoleccion__icontains=dia)
         flag = False
