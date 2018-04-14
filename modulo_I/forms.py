@@ -105,8 +105,6 @@ class HojaRutaForm(forms.ModelForm):
         super(HojaRutaForm, self).__init__(*args, **kwargs)
         self.fields['establecimiento_generador'].queryset = EstablecimientoGenerador.objects.filter(Q(activo=True) &  Q(recorrido__isnull=False) | Q(recorrido_extra__isnull=False))
 
-
-
     class Meta:
         model = RegistroHojaRuta
         fields = '__all__'
@@ -150,6 +148,7 @@ class GeneradorForm(forms.ModelForm):
     localidad = forms.ModelChoiceField(Localidad.objects, widget=SelectLocalidadWithPop)
     recorrido = forms.ModelChoiceField(Recorrido.objects.filter(extra=False), widget=SelectRecorridoWithPop, required=False,)
     recorrido_extra = forms.ModelChoiceField(Recorrido.objects.filter(extra=True), widget=SelectRecorridoWithPop, required=False,)
+
     class Meta:
         model = EstablecimientoGenerador
         exclude = ['domicilio','fecha' ]

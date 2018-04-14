@@ -51,10 +51,26 @@
 {% block content %}
 <div id="content">
     <div class="main">
-      <h1 style="padding-top:5px; font-size:170%;">IMPEESAmbiental</h1>
-      <h2 style="font-size:120%;">{{ view.title }}</h2>
-      <h4 style="text-align: right;">{{ view.sub_title }} </h4>
-      <h3 style="text-align: center;">{{nombre_mes.upper}}, {{anio}}</h3>
+      <table style="border: none;" cellspacing="0" cellpadding="0">
+        <tr>
+          <th style="text-align: left; font-size:170%;" colspan="13">IMPEESAmbiental</th>
+          <td style="text-align: left; font-size:80%; padding-top:5" colspan="3">LEGAJO IP-0012</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;"colspan="13">CUIT 30-70898647-6</th>
+          <td style="text-align: left; font-size:80%;" colspan="3">REGISTRO OPERADOR N° 852</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;" colspan="13"></td>
+          <td style="text-align: left; font-size:80%;" colspan="3">REGISTRO TRANSPORTISTA N° 853</td>
+        </tr>
+        <tr></tr>
+        <tr>
+          <th style="text-align: left;" colspan="13">{{ view.title }} {{dia.1}}</th>
+          <td style="text-align: left; font-size:100%;" colspan="3"><strong>{{ view.sub_title }}</strong></td>
+        </tr>
+      </table>
+      <br>
       <table class="table">
           <tr>
             <!--
